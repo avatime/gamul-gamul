@@ -1,0 +1,13 @@
+
+.buttonFillStyle {
+    background-color: #4411AA;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    font-weight: bold;
+    padding: 10px 120px 10px 120px;
+    letter-spacing: 10px;
+    color: #ffff;
+
+  }
