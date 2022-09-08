@@ -1,7 +1,8 @@
+import { text } from 'node:stream/consumers';
 import React, { FC } from 'react'
 import styles from  '../../../styles/Button.module.css';
 interface IProps {
-
+text:string;
 
 }
 
@@ -11,11 +12,11 @@ interface IProps {
 **/ 
 
 
-export const ButtonFill:FC<IProps> = () => {
+export const ButtonFill:FC<IProps> = ({text}) => {
   return (
    
     <div>
-      <button className={styles.buttonFillStyle}>확 인</button>
+      <button className={styles.buttonFillStyle}>{text}</button>
     </div>
    )
  }
