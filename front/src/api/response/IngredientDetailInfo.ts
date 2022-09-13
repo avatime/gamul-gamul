@@ -1,6 +1,6 @@
-import { IngredientInfo } from "./IngredientInfo";
-import { OnlineMartInfo } from "./OnlineMartInfo";
-import { PriceInfo } from "./PriceInfo";
+import { IngredientInfo } from "./ingredientInfo";
+import { OnlineMartInfo } from "./onlineMartInfo";
+import { PriceInfo } from "./priceInfo";
 
 export interface IngredientDetailInfo {
   ingredient_info: IngredientInfo;

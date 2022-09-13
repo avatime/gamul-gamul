@@ -1,4 +1,4 @@
-import { PriceInfo } from "./PriceInfo";
+import { PriceInfo } from "./priceInfo";
 
 export interface SaleInfo {
   daily: PriceInfo[];

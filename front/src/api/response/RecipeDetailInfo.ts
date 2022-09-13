@@ -1,6 +1,6 @@
-import { IngredientInfo } from "./IngredientInfo";
-import { RecipeInfo } from "./RecipeInfo";
-import { YoutubeInfo } from "./YoutubeInfo";
+import { IngredientInfo } from "./ingredientInfo";
+import { RecipeInfo } from "./recipeInfo";
+import { YoutubeInfo } from "./youtubeInfo";
 
 export interface RecipeDetailInfo {
   recipe_info: RecipeInfo;
