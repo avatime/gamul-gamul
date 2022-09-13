@@ -1,4 +1,4 @@
 export interface HighClass {
-  id: number;
+  high_class_id: number;
   name: string;
 }
