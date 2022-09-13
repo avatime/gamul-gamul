@@ -1,5 +1,5 @@
-import { IngredientInfo } from "./IngredientInfo";
-import { RecipeInfo } from "./RecipeInfo";
+import { IngredientInfo } from "./ingredientInfo";
+import { RecipeInfo } from "./recipeInfo";
 
 export interface SearchResult {
   ingredient_list: IngredientInfo[];
