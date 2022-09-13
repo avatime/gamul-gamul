@@ -1,7 +1,7 @@
-import { RecipeDetailInfo } from "./response/recipeDetailInfo";
-import { RecipeInfo } from "./response/recipeInfo";
-import { RecipeOrderInfo } from "./response/recipeOrderInfo";
-import { YoutubeInfo } from "./response/youtubeInfo";
+import { RecipeDetailInfo } from "../responses/recipeDetailInfo";
+import { RecipeInfo } from "../responses/recipeInfo";
+import { RecipeOrderInfo } from "../responses/recipeOrderInfo";
+import { YoutubeInfo } from "../responses/youtubeInfo";
 
 export enum RecipeOrderType {
   NAME_ASC = 1,

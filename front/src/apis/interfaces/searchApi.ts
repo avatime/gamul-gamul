@@ -1,4 +1,4 @@
-import { SearchResult } from "./response/searchResult";
+import { SearchResult } from "../responses/searchResult";
 
 export interface SearchApi {
   /**

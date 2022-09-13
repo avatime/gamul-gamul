@@ -1,7 +1,6 @@
-import { IngredientInfo } from "./response/ingredientInfo";
-import { MyRecipeDetailInfo } from "./response/myRecipeDetailInfo";
-import { MyRecipeInfo } from "./response/myRecipeInfo";
-import { MyRecipeIngredientInfo } from "./response/myRecipeIngredientInfo";
+import { MyRecipeDetailInfo } from "../responses/myRecipeDetailInfo";
+import { MyRecipeInfo } from "../responses/myRecipeInfo";
+import { MyRecipeIngredientInfo } from "../responses/myRecipeIngredientInfo";
 
 export interface MyRecipeApi {
   /**

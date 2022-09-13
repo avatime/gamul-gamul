@@ -1,7 +1,7 @@
-import { HighClass } from "./response/highClass";
-import { IngredientDetailInfo } from "./response/ingredientDetailInfo";
-import { IngredientInfo } from "./response/ingredientInfo";
-import { OfflineMartInfo } from "./response/offlineMartInfo";
+import { HighClass } from "../responses/highClass";
+import { IngredientDetailInfo } from "../responses/ingredientDetailInfo";
+import { IngredientInfo } from "../responses/ingredientInfo";
+import { OfflineMartInfo } from "../responses/offlineMartInfo";
 
 export enum IngredientOrderType {
   NAME_ASC = 1, // 이름 사전 순 (오름차순)
