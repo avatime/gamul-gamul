@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface locationType {
   loaded: boolean;
-  coordinates?: { lat: number; lng: number };
+  coordinates?: { lat: number; lng: number; };
   error?: { code: number; message: string };
 }
 
@@ -21,6 +21,7 @@ const useGeolocation = () => {
         lng: location.coords.longitude,
       }
     })
+    console.log("lat : "+ location.coords.latitude + " lng : "+ location.coords.longitude);
   }
 
   // 에러에 대한 로직
@@ -31,6 +32,12 @@ const useGeolocation = () => {
     })
   }
 
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000
+  };
+
   useEffect(() => {
     // navigator 객체 안에 geolocation이 없다면
     // 위치 정보가 없는 것.
@@ -40,7 +47,7 @@ const useGeolocation = () => {
         message: "Geolocation not supported",
       })
     }
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    navigator.geolocation.watchPosition(onSuccess, onError, options);
   }, [])
 
   return location;
