@@ -21,14 +21,14 @@ public class QUser extends EntityPathBase<User> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final DateTimePath<java.time.LocalDateTime> createdTime = createDateTime("createdTime", java.time.LocalDateTime.class);
+    public final DateTimePath<java.util.Date> createdTime = createDateTime("createdTime", java.util.Date.class);
 
     //inherited
     public final NumberPath<Long> id = _super.id;
 
     public final StringPath password = createString("password");
 
-    public final DateTimePath<java.time.LocalDateTime> updateTime = createDateTime("updateTime", java.time.LocalDateTime.class);
+    public final DateTimePath<java.util.Date> updateTime = createDateTime("updateTime", java.util.Date.class);
 
     public final StringPath username = createString("username");
 
