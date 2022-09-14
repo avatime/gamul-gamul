@@ -40,9 +40,9 @@ sourceCompatibility = '1.8'
 
 configurations {
 	providedRuntime
-//	compileOnly {
-//		extendsFrom annotationProcessor
-//	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 node {
@@ -102,9 +102,6 @@ dependencies {
 	implementation("org.apache.commons:commons-collections4:4.4")
 	implementation("org.apache.commons:commons-lang3:3.9")
 
-	implementation("com.querydsl:querydsl-jpa:${querydslVer}")
-	implementation("com.querydsl:querydsl-apt:${querydslVer}")
-
 	//Json
 	implementation('org.json:json:20210307')
 	implementation'com.google.code.gson:gson:2.8.7'
@@ -121,13 +118,10 @@ dependencies {
 	//IntelliJ용
 	//IntelliJ에서는 하기 annotationProcessor를 쓰면 별도의 querydsl 플러그인 및 플러그인 설정이 불필요.
 //	annotationProcessor("com.querydsl:querydsl-apt:${querydslVer}:jpa")
-
-	// QueryDSL
+//	implementation('com.querydsl:querydsl-jpa')
+	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${querydslVer}"
-	annotationProcessor(
-			"javax.persistence:javax.persistence-api",
-			"javax.annotation:javax.annotation-api",
-			"com.querydsl:querydsl-apt:${querydslVer}:jpa")
+	implementation "com.querydsl:querydsl-apt:${querydslVer}"
 
 	implementation("com.squareup.retrofit2:retrofit:2.7.1")
 	implementation("com.squareup.retrofit2:converter-jackson:2.7.1")
@@ -146,10 +140,12 @@ dependencies {
 	implementation("io.springfox:springfox-bean-validators:3.0.0")
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
 
-//	compile("javax.annotation:javax.annotation-api:1.2")
+	compile("javax.annotation:javax.annotation-api:1.2")
 
 	implementation("org.projectlombok:lombok:1.18.20")
 	annotationProcessor("org.projectlombok:lombok:1.18.20")
+
+//	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 tasks {
@@ -157,37 +153,25 @@ tasks {
 		duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
 	}
 }
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
-// querydsl 세팅 시작
-def querydslDir = 'src/main/generated'
 querydsl {
-	library = "com.querydsl:querydsl-apt"
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
-
 sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', querydslDir]
-		}
-	}
+	main.java.srcDir querydslDir
 }
-
-compileQuerydsl {
+compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
 }
 
 configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 	querydsl.extendsFrom compileClasspath
 }
+//querydsl 추가 끝
 
-//compileQuerydsl.doFirst {
-//	if(file(querydslDir).exists() )
-//		delete(file(querydslDir))
-//}
-// querydsl 세팅 끝
