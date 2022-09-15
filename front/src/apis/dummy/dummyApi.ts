@@ -12,52 +12,17 @@ import { MyRecipeDetailInfo } from "../responses/myRecipeDetailInfo";
 import { MyRecipeIngredientInfo } from "../responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "../responses/limitPriceNoticeInfo";
 
-export const getIngredientList: IngredientInfo[] = [
-  {
-    ingredient_id: 1,
-    name: "사과",
-    price: 1000,
+export const getIngredientList: IngredientInfo[] = Array.from({length: 100}, (_, i) => i).map((it) => ({
+    ingredient_id: it + 1,
+    name: `사과 ${it + 1}`,
+    price: Math.ceil((10000 * Math.random())),
     unit: "kg",
     quantity: 1,
-    volatility: 20,
-    allergy: false,
-    bookmark: false,
-    basket: false,
-  },
-  {
-    ingredient_id: 2,
-    name: "배(알러지)",
-    price: 1500,
-    unit: "kg",
-    quantity: 1,
-    volatility: 20,
-    allergy: true,
-    bookmark: false,
-    basket: false,
-  },
-  {
-    ingredient_id: 3,
-    name: "귤(북마크)",
-    price: 2000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -20,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 4,
-    name: "복숭아(바구니)",
-    price: 8000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -100,
-    allergy: false,
-    bookmark: false,
-    basket: true,
-  },
-];
+    volatility: Math.ceil(100 * Math.random() * (Math.random() > 0.5 ? 1 : -1)),
+    allergy: Math.random() > 0.5,
+    bookmark: Math.random() > 0.5,
+    basket: Math.random() > 0.5,
+  }));
 
 export const getBookmarkIngredientList: IngredientInfo[] = [
   {
