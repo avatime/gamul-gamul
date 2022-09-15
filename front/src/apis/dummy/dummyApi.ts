@@ -12,110 +12,34 @@ import { MyRecipeDetailInfo } from "../responses/myRecipeDetailInfo";
 import { MyRecipeIngredientInfo } from "../responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "../responses/limitPriceNoticeInfo";
 
-export const getIngredientList: IngredientInfo[] = [
-  {
-    ingredient_id: 1,
-    name: "사과",
-    price: 1000,
+export const getIngredientList: IngredientInfo[] = Array.from({ length: 100 }, (_, i) => i).map(
+  (it) => ({
+    ingredient_id: it + 1,
+    name: `사과 ${it + 1}`,
+    price: Math.ceil(10000 * Math.random()),
     unit: "kg",
     quantity: 1,
-    volatility: 20,
-    allergy: false,
-    bookmark: false,
-    basket: false,
-  },
-  {
-    ingredient_id: 2,
-    name: "배(알러지)",
-    price: 1500,
-    unit: "kg",
-    quantity: 1,
-    volatility: 20,
-    allergy: true,
-    bookmark: false,
-    basket: false,
-  },
-  {
-    ingredient_id: 3,
-    name: "귤(북마크)",
-    price: 2000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -20,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 4,
-    name: "복숭아(바구니)",
-    price: 8000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -100,
-    allergy: false,
-    bookmark: false,
-    basket: true,
-  },
-];
+    volatility: Math.ceil(100 * Math.random() * (Math.random() > 0.5 ? 1 : -1)),
+    allergy: Math.random() > 0.5,
+    bookmark: Math.random() > 0.5,
+    basket: Math.random() > 0.5,
+  })
+);
 
-export const getBookmarkIngredientList: IngredientInfo[] = [
-  {
-    ingredient_id: 1,
-    name: "보리",
-    price: 2500,
-    unit: "kg",
-    quantity: 1,
-    volatility: 20,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 2,
-    name: "고구마",
-    price: 1000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -20,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 3,
-    name: "고추",
-    price: 2000,
-    unit: "kg",
-    quantity: 1,
-    volatility: -80,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 4,
-    name: "초코파이",
-    price: 2000,
-    unit: "kg",
-    quantity: 1,
-    volatility: 0,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-  {
-    ingredient_id: 5,
-    name: "빵또아",
-    price: 2000,
-    unit: "kg",
-    quantity: 1,
-    volatility: 60,
-    allergy: false,
-    bookmark: true,
-    basket: false,
-  },
-];
+export const getBookmarkIngredientList: IngredientInfo[] = Array.from(
+  { length: 79 },
+  (_, i) => i
+).map((it) => ({
+  ingredient_id: 1,
+  name: `사과 ${it + 1}`,
+  price: Math.ceil(10000 * Math.random()),
+  unit: "kg",
+  quantity: 1,
+  volatility: Math.ceil(100 * Math.random() * (Math.random() > 0.5 ? 1 : -1)),
+  allergy: Math.random() > 0.5,
+  bookmark: true,
+  basket: Math.random() > 0.5,
+}));
 
 export const getIngredientDetailInfo: IngredientDetailInfo = {
   ingredient_info: {
@@ -352,50 +276,13 @@ export const getBasketIngredientList: IngredientInfo[] = [
   },
 ];
 
-export const getRecipeList: RecipeInfo[] = [
-  {
-    recipe_id: 1,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침",
-    desc: "맛있는 가지무침~~~~~",
-    bookmark: true,
-  },
-  {
-    recipe_id: 2,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침2",
-    desc: "맛있는 가지무침2~~~~~",
-    bookmark: true,
-  },
-  {
-    recipe_id: 3,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침3",
-    desc: "맛있는 가지무침3~~~~~",
-    bookmark: true,
-  },
-  {
-    recipe_id: 4,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침4",
-    desc: "맛있는 가지무침4~~~~~",
-    bookmark: true,
-  },
-  {
-    recipe_id: 5,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침5",
-    desc: "맛있는 가지무침5~~~~~",
-    bookmark: true,
-  },
-  {
-    recipe_id: 6,
-    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    name: "가지무침6",
-    desc: "맛있는 가지무침6~~~~~",
-    bookmark: true,
-  },
-];
+export const getRecipeList: RecipeInfo[] = Array.from({length: 88}, (_, i) => i).map((it) => ({
+  recipe_id: it + 1,
+  image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
+  name: `가지무침 ${it + 1}`,
+  desc: "맛있는 가지무침~~~~~",
+  bookmark: true,
+}));
 
 export const getRecipeDetailInfo: RecipeDetailInfo = {
   recipe_info: {
