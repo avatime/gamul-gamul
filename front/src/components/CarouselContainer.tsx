@@ -23,16 +23,12 @@ export const CarouselContainer: FC<IProps> = ({
     while (itemListCopied.length % (rowSize * gridSize) !== 0) {
       itemListCopied.push(null);
     }
-
-    
     while (itemListCopied.length) {
       temp.push(itemListCopied.splice(0, gridSize));
     }
-    
     while (temp.length) {
       result.push(temp.splice(0, rowSize));
     }
-    console.log(result)
     return result;
   }, [gridSize, itemList, rowSize]);
 
