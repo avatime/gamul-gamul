@@ -391,10 +391,12 @@ export const search: SearchResult = {
 export const getMyRecipeList: MyRecipeInfo[] = [
   {
     my_recipe_id: 1,
+    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
     name: "콩나물 무침",
   },
   {
     my_recipe_id: 2,
+    image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
     name: "도토리묵사발",
   },
 ];
