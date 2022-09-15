@@ -1,7 +1,7 @@
 .stylesforMobile {
     width: 100vw;
     background-color: none;
-    height: 7vh;
+    height: 40;
     align-items: center;
     position: fixed;
     left: 0;
@@ -13,12 +13,13 @@
 
 .styles{
     width: 100vw;
-    background-color: none;
-    height: 7vh;
+    background-color: #4d4d4d;
+    height: 50px;
     align-items: center;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
+
 
 }
