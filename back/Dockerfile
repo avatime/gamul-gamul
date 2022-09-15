@@ -1,5 +1,4 @@
 FROM openjdk:8-jdk-alpine as builder
-WORKDIR /var/jenkins_home/workspace/backend/back
 ARG CURRENT_DIR=/var/jenkins_home/workspace/backend/back
 RUN chmod +x ${CURRENT_DIR}/gradlew
 RUN ${CURRENT_DIR}/gradlew bootJAR
