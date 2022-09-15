@@ -23,9 +23,10 @@ interface IProps {
   direction: Direction;
   ingredientInfo: IngredientInfo | null;
   onDelete?: () => void;
+  onClickItem: (id: number) => void;
 }
 
-export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete }) => {
+export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete, onClickItem }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
   };
@@ -41,7 +42,7 @@ export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete
         width: direction === "row" ? "100%" : "auto",
         visibility: ingredientInfo ? "visible" : "hidden",
       }}
-      onClick={() => console.log("IngredientItem clicked!!")}
+      onClick={() => onClickItem(ingredientInfo?.ingredient_id || 0)}
     >
       <Box
         flex="1"

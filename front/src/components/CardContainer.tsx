@@ -4,7 +4,6 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 interface IProps {
   title: string;
-  desc?: string;
   children: ReactNode;
   style?: object;
   onClickMore?: () => void;
@@ -13,7 +12,6 @@ interface IProps {
 
 export const CardContainer: FC<IProps> = ({
   title,
-  desc,
   children,
   style,
   onClickMore,

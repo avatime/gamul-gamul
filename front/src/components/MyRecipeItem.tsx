@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Avatar, Box, ButtonBase, IconButton } from "@mui/material";
 import React, { FC } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { RecipeInfo } from "../apis/responses/recipeInfo";
+import { MyRecipeInfo } from "../apis/responses/myRecipeInfo";
 
 interface IProps {}
 
@@ -22,12 +22,12 @@ type Direction = "row" | "column";
 
 interface IProps {
   direction: Direction;
-  recipeInfo: RecipeInfo;
+  myRecipeInfo: MyRecipeInfo;
   onDelete?: () => void;
   onClickItem: (id: number) => void;
 }
 
-export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClickItem }) => {
+export const MyRecipeItem: FC<IProps> = ({ direction, myRecipeInfo, onDelete, onClickItem }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
   };
@@ -41,9 +41,9 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
         borderRadius: 10,
         padding: direction == "column" ? 20 : 0,
         width: direction === "row" ? "100%" : "auto",
-        visibility: recipeInfo ? "visible" : "hidden",
+        visibility: myRecipeInfo ? "visible" : "hidden",
       }}
-      onClick={() => onClickItem(recipeInfo?.recipe_id || 0)}
+      onClick={() => onClickItem(myRecipeInfo?.my_recipe_id || 0)}
     >
       <Box
         flex="1"
@@ -53,7 +53,7 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
         flexDirection={direction}
       >
         <Box position="relative" style={{ margin: direction == "column" ? 3 : 20 }}>
-          <Avatar style={{ width: 60, height: 60 }} src={recipeInfo?.image_path} />
+          <Avatar style={{ width: 60, height: 60 }} />
           {onDelete && (
             <IconButton
               style={{ position: "absolute", right: -20, top: -15 }}
@@ -66,9 +66,9 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
           )}
         </Box>
 
-        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>{recipeInfo?.name || "이름"}</p>
+        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>{myRecipeInfo?.name || "이름"}</p>
         <Box flex={1} />
-        {direction === "row" && <p style={{ fontSize: 8 }}>{recipeInfo?.desc || "설명"}</p>}
+        {direction === "row" && <></>}
       </Box>
     </ItemButton>
   );
