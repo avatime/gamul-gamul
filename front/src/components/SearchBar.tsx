@@ -33,36 +33,32 @@ export const SearchBar: FC<IProps> = ({ color }) => {
         </Box>
       </Mobile>
       <Desktop>
-        <Box sx={{ marginLeft: "5%", marginRight: "5%", borderRadius: 20 }}>
-          <Stack
-            direction="row"
-            sx={{ borderRadius: 20, bgcolor: `${color}` }}
-            className={styles.styles}
-          >
-            <InputBase sx={{ paddingLeft: 2 }} />
-            <Box sx={{ marginLeft: "50%" }}>
-              <IconButton color="success">
-                <SearchIcon />
-              </IconButton>
-            </Box>
-          </Stack>
-        </Box>
+        <Stack
+          direction="row"
+          sx={{ borderRadius: 20, bgcolor: `${color}`, display: "flex", paddingLeft: 3 }}
+          className={styles.styles}
+        >
+          <InputBase sx={{ flex: 1 }} />
+          <Box>
+            <IconButton color="success">
+              <SearchIcon />
+            </IconButton>
+          </Box>
+        </Stack>
       </Desktop>
       <Tablet>
-        <Box sx={{ marginLeft: "5%", marginRight: "5%", borderRadius: 20 }}>
-          <Stack
-            direction="row"
-            sx={{ borderRadius: 20, bgcolor: `${color}` }}
-            className={styles.styles}
-          >
-            <InputBase sx={{ paddingLeft: 2 }} />
-            <Box sx={{ marginLeft: "50%" }}>
-              <IconButton color="success">
-                <SearchIcon />
-              </IconButton>
-            </Box>
-          </Stack>
-        </Box>
+        <Stack
+          direction="row"
+          sx={{ borderRadius: 20, bgcolor: `${color}`, display: "flex", paddingLeft: 3}}
+          className={styles.styles}
+        >
+          <InputBase sx={{ flex: 1}} />
+          <Box>
+            <IconButton color="success">
+              <SearchIcon />
+            </IconButton>
+          </Box>
+        </Stack>
       </Tablet>
     </div>
   );
