@@ -153,6 +153,11 @@ tasks {
 		duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
 	}
 }
+
+jar {
+	enabled = false
+}
+
 //querydsl 추가 시작
 def querydslDir = "src/main/generated"
 
