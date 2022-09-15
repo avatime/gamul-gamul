@@ -19,10 +19,10 @@ public class Store extends BaseEntity{
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private double latitude;
 
-    @Column(nullable = false)
+    @Column
     private double longitude;
 
     @Column(nullable = false)
