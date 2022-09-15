@@ -5,7 +5,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 EXPOSE 3000
-CMD["npm","start"]
+CMD["npm","run","start"]
 # FROM nginx:stable-alpine as production-stage
 
 # COPY --from=build-stage /var/jenkins_home/workspace/frontend/front/ /usr/share/nginx/html
