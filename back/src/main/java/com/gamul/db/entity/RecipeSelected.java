@@ -1,8 +1,10 @@
 package com.gamul.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -11,27 +13,22 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * 유저 모델 정의
- */
 @DynamicInsert
 @DynamicUpdate
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity {
-
-    @Column(nullable = false, unique = true, length = 10)
-    private String username;
-
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
+public class RecipeSelected extends BaseEntity{
 
     @Column(nullable = false)
     private boolean activeFlag;
 
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Recipe recipe;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -54,9 +51,10 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String username, String password, MyRecipe myRecipe){
-        this.username = username;
-        this.password = password;
-        this.activeFlag = false;
+    public RecipeSelected(User user, Recipe recipe){
+        this.activeFlag = true;
+        this.user = user;
+        this.recipe = recipe;
+
     }
 }
