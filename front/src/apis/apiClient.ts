@@ -45,7 +45,7 @@ export class ApiClient
   }
   async getIngredientList(
     orderType: IngredientOrderType,
-    highClassId: number
+    highClassId: number = 0,
   ): Promise<IngredientInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), 2000));
   }
@@ -182,8 +182,8 @@ export class ApiClient
 
     if (token) {
       headers.Authorization = `Bearer ${token}`;
-    } else if (localStorage.getItem("token")) {
-      headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    // } else if (localStorage.getItem("token")) {
+    //   headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
     }
 
     return axios.create({

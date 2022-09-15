@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
+import { IngredientInfo } from "../apis/responses/ingredientInfo";
 
 const ItemButton = styled(ButtonBase)(() => ({
   "&:hover, &.Mui-focusVisible": {
@@ -20,25 +21,11 @@ type Direction = "row" | "column";
 
 interface IProps {
   direction: Direction;
-  ingredientId: number;
-  name: string;
-  price: number;
-  unit: string;
-  quantity: number;
-  volatility: number;
+  ingredientInfo: IngredientInfo | null;
   onDelete?: () => void;
 }
 
-export const IngredientItem: FC<IProps> = ({
-  direction,
-  ingredientId,
-  name,
-  price,
-  unit,
-  quantity,
-  volatility,
-  onDelete,
-}) => {
+export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
   };
@@ -50,8 +37,9 @@ export const IngredientItem: FC<IProps> = ({
     <ItemButton
       style={{
         borderRadius: 10,
-        padding: direction == "column" ? 20 : 0,
-        width: direction === "row" ? "100%" : "",
+        padding: direction == "column" ? 15 : 0,
+        width: direction === "row" ? "100%" : "auto",
+        visibility: ingredientInfo ? "visible" : "hidden",
       }}
       onClick={() => console.log("IngredientItem clicked!!")}
     >
@@ -76,11 +64,12 @@ export const IngredientItem: FC<IProps> = ({
           )}
         </Box>
 
-        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>{name}</p>
+        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>
+          {ingredientInfo?.name || "이름"}</p>
         <Box flex={1} />
         <p style={{ fontSize: 8 }}>
-          {price}원/{quantity}
-          {unit}
+          {ingredientInfo?.price || 0}원/{ingredientInfo?.quantity}
+          {ingredientInfo?.unit}
         </p>
         <Box
           display="flex"
@@ -89,12 +78,19 @@ export const IngredientItem: FC<IProps> = ({
           flexDirection="row"
           style={{
             margin: direction == "column" ? 3 : 20,
-            color: 0 < volatility ? "red" : volatility < 0 ? "blue" : "",
+            color: !ingredientInfo?.volatility
+              ? "inherit"
+              : 0 < ingredientInfo.volatility
+              ? "red"
+              : "blue",
           }}
         >
-          {0 < volatility && <ArrowDropUpIcon />}
-          {volatility < 0 && <ArrowDropDownIcon />}
-          <p style={{ fontSize: 6, fontWeight: "bold" }}>{volatility} %</p>
+          {ingredientInfo?.volatility && 0 < ingredientInfo.volatility ? (
+            <ArrowDropUpIcon />
+          ) : (
+            <ArrowDropDownIcon />
+          )}
+          <p style={{ fontSize: 6, fontWeight: "bold" }}>{ingredientInfo?.volatility || 0} %</p>
         </Box>
       </Box>
     </ItemButton>
