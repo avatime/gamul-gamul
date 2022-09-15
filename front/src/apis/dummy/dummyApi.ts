@@ -205,16 +205,20 @@ export const getIngredientHighClassList: HighClass[] = [
 
 export const getOfflineMartList: OfflineMartInfo[] = [
   {
+    store_id: 1,
     name: "자유시장",
     price: 1000,
     latitude: 37.4834,
     longitude: 126.7804,
+    distance: 100,
   },
   {
+    store_id: 2,
     name: "이마트",
     price: 1000,
     latitude: 37.4842,
     longitude: 126.7823,
+    distance: 200,
   },
 ];
 
