@@ -53,7 +53,7 @@ export const MyRecipeItem: FC<IProps> = ({ direction, myRecipeInfo, onDelete, on
         flexDirection={direction}
       >
         <Box position="relative" style={{ margin: direction == "column" ? 3 : 20 }}>
-          <Avatar style={{ width: 60, height: 60 }} />
+          <Avatar style={{ width: 60, height: 60 }} src={myRecipeInfo?.image_path}/>
           {onDelete && (
             <IconButton
               style={{ position: "absolute", right: -20, top: -15 }}
