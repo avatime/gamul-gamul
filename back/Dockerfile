@@ -1,6 +1,7 @@
 FROM openjdk:8-jdk-alpine as builder
 WORKDIR /var/jenkins_home/workspace/backend/back
-RUN sudo chmod +x ./gradlew
+RUN ls
+RUN chmod +x ./gradlew
 RUN gradlew bootJAR
 
 FROM openjdk:8-jdk-alpine
