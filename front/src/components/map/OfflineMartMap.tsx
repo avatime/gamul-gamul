@@ -19,7 +19,7 @@ function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
     const mapScript = document.createElement("script");
 
     mapScript.async = true;
-    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&autoload=false`;
+    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6ea414c47933a341d2500550a054a5e2&autoload=false`;
 
     document.head.appendChild(mapScript);
 
