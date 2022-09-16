@@ -1,5 +1,5 @@
 FROM node:16.15.0 as build-stage
-WORKDIR /var/jenkins_home/workspace/deploytest/testproject_react
+WORKDIR /var/jenkins_home/workspace/frontend/front
 COPY package*.json ./
 RUN npm i -y
 COPY . .
