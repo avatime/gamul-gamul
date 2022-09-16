@@ -3,5 +3,5 @@ WORKDIR /var/jenkins_home/workspace/frontend/front
 COPY package*.json ./
 RUN npm i -y
 COPY . .
-COPY --from=build-stage /var/jenkins_home/workspace/frontend/front/deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY /deploy_conf/nginx.conf ./etc/nginx/conf.d/default.conf
 CMD [ "npm", "run", "dev"]
