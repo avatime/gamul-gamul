@@ -25,6 +25,45 @@ interface IProps {
   activeIndex: number;
 }
 
+const elements = [
+  {
+    text: "홈",
+    icon: <HomeIcon />,
+  },
+  {
+    text: "식재료",
+    icon: <EggIcon />,
+  },
+  {
+    text: "바구니",
+    icon: <ShoppingCartIcon />,
+  },
+  {
+    text: "요리법",
+    icon: <RestaurantIcon />,
+  },
+  {
+    text: "내정보",
+    icon: <PersonIcon />,
+  },
+];
+
+const iconColor = {
+}
+
+const elementActiveStyles = {
+  borderRadius: 15,
+  backgroundColor: "#4411AA",
+  height: "40px",
+  alignItems: "center",
+};
+
+const activeText = {
+  color: "#fff",
+  marginLeft: 1,
+  marginRight: 1,
+};
+
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
   return (
     <div>
@@ -56,21 +95,26 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
         </BottomNavigation>
       </Mobile>
       <Desktop>
-        <Box
+      <Box
           sx={{
             width: 250,
             height: "100vh",
-            backgroundColor: "#f5f5f4",
+            backgroundColor: "#fff",
             position: "fixed",
             left: 0,
             top: 50,
             bottom: 0,
           }}
         >
-          <Stack direction="row">
-            <HomeIcon />
-            <Typography>홈</Typography>
-          </Stack>
+          <Box p={0.5} />
+          {elements.map((item, idx) => {
+            return (
+              <Stack key={idx} direction="row" sx={{ marginLeft: 1, padding:2}}>
+                {item.icon}
+                <Typography sx={{ marginLeft: 1, marginRight: 1}}>{item.text}</Typography>
+              </Stack>
+            );
+          })}
         </Box>
       </Desktop>
       <Tablet>
@@ -78,15 +122,22 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
           sx={{
             width: 150,
             height: "100vh",
-            backgroundColor: "#f5f5f4",
+            backgroundColor: "#fff",
             position: "fixed",
             left: 0,
             top: 50,
             bottom: 0,
           }}
         >
-          <HomeIcon />
-          <Typography>홈</Typography>
+          <Box p={0.5} />
+          {elements.map((item, idx) => {
+            return (
+              <Stack key={idx} direction="row" sx={{ marginLeft: 1, padding:2}}>
+                {item.icon}
+                <Typography sx={{ marginLeft: 1, marginRight: 1}}>{item.text}</Typography>
+              </Stack>
+            );
+          })}
         </Box>
       </Tablet>
     </div>
