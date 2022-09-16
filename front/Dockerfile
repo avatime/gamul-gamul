@@ -4,5 +4,5 @@ COPY package*.json ./
 RUN npm i -y
 COPY . .
 # COPY --from=build /var/jenkins_home/workspace/frontend/front/deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
-RUN cat --from=build /var/jenkins_home/workspace/frontend/front/deploy_conf/nginx.conf
+RUN COPY --from=build /var/jenkins_home/workspace/frontend/front/deploy_conf/nginx.conf ./
 CMD [ "npm", "run", "dev"]
