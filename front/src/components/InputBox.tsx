@@ -26,14 +26,7 @@ export const InputBox: FC<IProps> = ({ PlaceHolder, Width}) => {
         autoComplete="off"
       >
         <Input color="success" placeholder={PlaceHolder} sx={{width:`${Width}`}}/>
-        <TextField
-          error
-          id="standard-error-helper-text"
-          label="Error"
-          defaultValue="Hello World"
-          helperText="Incorrect entry."
-          variant="standard"
-        />
+       
       </Box>
     </div>
   );
