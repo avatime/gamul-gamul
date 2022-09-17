@@ -1,14 +1,4 @@
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { BottomNavigation,  Box, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import { Desktop } from "./Desktop";
 import { Mobile } from "./Mobile";
@@ -18,50 +8,49 @@ import EggIcon from "@mui/icons-material/Egg";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import styles from "../../styles/Navbar.module.css";
+import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
-
+import MuiBottomNavigationAction from "@mui/material/BottomNavigationAction";
 interface IProps {
   activeIndex: number;
 }
 
+const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
+  color: #A1A1AA;
+
+  &.Mui-selected, .Mui-selected > svg {
+    color: #000;
+  }
+`);
+
 const elements = [
   {
     text: "홈",
-    icon: <HomeIcon />,
+    icon: (isActive: boolean) => <HomeIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
   },
   {
     text: "식재료",
-    icon: <EggIcon />,
+    icon: (isActive: boolean) => <EggIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
   },
   {
     text: "바구니",
-    icon: <ShoppingCartIcon />,
+    icon: (isActive: boolean) => <ShoppingCartIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
   },
   {
     text: "요리법",
-    icon: <RestaurantIcon />,
+    icon: (isActive: boolean) => <RestaurantIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
   },
   {
     text: "내정보",
-    icon: <PersonIcon />,
+    icon: (isActive: boolean) => <PersonIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
   },
 ];
-
-const iconColor = {
-}
 
 const elementActiveStyles = {
   borderRadius: 15,
   backgroundColor: "#4411AA",
-  height: "40px",
   alignItems: "center",
-};
-
-const activeText = {
-  color: "#fff",
-  marginLeft: 1,
-  marginRight: 1,
+  color: "#fff !important",
 };
 
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
@@ -72,12 +61,8 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
           showLabels
           value={activeIndex}
           sx={{
-            "& .BottomNavigation": {
-              color: "#A1A1AA",
-            },
-            "& .Mui-selected, .Mui-selected > svg": {
-              color: "#000",
-            },
+            
+           
             position: "fixed",
             bottom: 0,
             left: 0,
@@ -95,7 +80,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
         </BottomNavigation>
       </Mobile>
       <Desktop>
-      <Box
+        <Box
           sx={{
             width: 250,
             height: "100vh",
@@ -109,9 +94,26 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
           <Box p={0.5} />
           {elements.map((item, idx) => {
             return (
-              <Stack key={idx} direction="row" sx={{ marginLeft: 1, padding:2}}>
-                {item.icon}
-                <Typography sx={{ marginLeft: 1, marginRight: 1}}>{item.text}</Typography>
+              <Stack
+                key={idx}
+                direction="row"
+                sx={{
+                  marginLeft: 1,
+                  padding: 2,
+                  ...(idx === activeIndex ? elementActiveStyles : {}),
+                }}
+              >
+                {item.icon(idx === activeIndex)}
+                <Typography
+                  sx={{
+                    marginLeft: 1,
+                    marginRight: 1,
+                    color: idx === activeIndex ? "#fff" : "#A1A1AA",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.text}
+                </Typography>
               </Stack>
             );
           })}
@@ -132,9 +134,26 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
           <Box p={0.5} />
           {elements.map((item, idx) => {
             return (
-              <Stack key={idx} direction="row" sx={{ marginLeft: 1, padding:2}}>
-                {item.icon}
-                <Typography sx={{ marginLeft: 1, marginRight: 1}}>{item.text}</Typography>
+              <Stack
+                key={idx}
+                direction="row"
+                sx={{
+                  marginLeft: 1,
+                  padding: 2,
+                  ...(idx === activeIndex ? elementActiveStyles : {}),
+                }}
+              >
+                {item.icon(idx === activeIndex)}
+                <Typography
+                  sx={{
+                    marginLeft: 1,
+                    marginRight: 1,
+                    color: idx === activeIndex ? "#fff" : "#A1A1AA",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.text}
+                </Typography>
               </Stack>
             );
           })}
@@ -143,3 +162,5 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
     </div>
   );
 };
+
+
