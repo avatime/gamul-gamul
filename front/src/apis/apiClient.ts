@@ -68,10 +68,10 @@ export class ApiClient
   }
   async getOfflineMartList(
     ingredientId: number,
-    northWestLatitude: number,
-    northWestLongitude: number,
-    southEastLatitude: number,
-    southEastLongitude: number
+    southWestLatitude: number,
+    southWestLongitude: number,
+    northEastLatitude: number,
+    northEastLongitude: number
   ): Promise<OfflineMartInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getOfflineMartList), 2000));
   }

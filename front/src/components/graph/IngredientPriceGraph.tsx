@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
 import dynamic from 'next/dynamic'
 import { PriceTransitionInfo } from '../../apis/responses/priceTransitionInfo';
+import moment from "moment";
 
 interface IProps {
 	priceTransitionInfo: PriceTransitionInfo;
 }
+
+moment.locale('ko');
 
 const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 	const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -13,8 +16,8 @@ const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 	<div>
   		<Chart 
 			type="line"
-			height={350}
-			width={700}
+			height={300}
+			width={370}
 			
 			series = { [
 				{
@@ -29,7 +32,6 @@ const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 
 			  options = {{
 				chart: {
-				  height: 350,
 				  type: 'line',
 				  dropShadow: {
 					enabled: true,
@@ -51,7 +53,7 @@ const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 				  curve: 'smooth'
 				},
 				title: {
-				  text: 'Average High & Low Temperature',
+				  text: '도소매 일자별 가격 변화',
 				  align: 'left'
 				},
 				grid: {
@@ -65,14 +67,14 @@ const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 				  size: 1
 				},
 				xaxis: {
-				  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+				  categories: priceTransitionInfo.retailsales.daily.map((v) => moment(v.date).format('MM-D')),
 				  title: {
-					text: 'Month'
+					text: '일자'
 				  }
 				},
 				yaxis: {
 				  title: {
-					text: 'Temperature'
+					text: `가격(${priceTransitionInfo.retailsales.daily[0].quantity}${priceTransitionInfo.retailsales.daily[0].unit})`
 				  },
 				  min: 0,
 				  max: 1500
@@ -81,8 +83,8 @@ const IngredientPriceGraph: FC<IProps> = ({priceTransitionInfo}) => {
 				  position: 'top',
 				  horizontalAlign: 'right',
 				  floating: true,
-				  offsetY: -25,
-				  offsetX: -5
+				  offsetY: -20,
+				  offsetX: -5,
 				}
 			}}
 			
