@@ -36,9 +36,9 @@ export const HeaderBar: FC<IProps> = ({ badgeContent }) => {
         </Stack>
       </Mobile>
       <Desktop>
-      <Stack direction="row" className={styles.styles}>
+        <Stack direction="row" className={styles.styles}>
           <Typography sx={{ fontWeight: "Bold" }}>가물가물</Typography>
-          <Box sx={{position:"fixed", left:250}}>
+          <Box sx={{ position: "fixed", left: 250 }}>
             <SearchBar color="#f5f5f4" />
           </Box>
           <Box sx={{ position: "fixed", right: 4 }}>
@@ -53,7 +53,7 @@ export const HeaderBar: FC<IProps> = ({ badgeContent }) => {
       <Tablet>
         <Stack direction="row" className={styles.styles}>
           <Typography sx={{ fontWeight: "Bold" }}>가물가물</Typography>
-          <Box sx={{position:"fixed", left:150}}>
+          <Box sx={{ position: "fixed", left: 150 }}>
             <SearchBar color="#f5f5f4" />
           </Box>
           <Box sx={{ position: "fixed", right: 4 }}>
