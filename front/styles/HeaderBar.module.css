@@ -1,25 +1,27 @@
 .stylesforMobile {
     width: 100vw;
-    background-color: none;
-    height: 40;
+    background-color: #fff;
+    height: 60px;
     align-items: center;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
+    z-index: 5;
 
   
 }
 
 .styles{
     width: 100vw;
-    background-color: #4d4d4d;
+    background-color: #fff;
     height: 50px;
     align-items: center;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
+    z-index: 5;
 
 
 }
