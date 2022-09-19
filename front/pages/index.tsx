@@ -34,7 +34,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
       </Head>
       <Desktop>
         <HeaderBar badgeContent={6} />
-        <Box className={styles.Page}>
+        <Box className={styles.PageforDesktop}>
           <Box style={{ padding: 15 }}>
             <IngredientListComp rowSize={2} gridSize={8} ingredientList={ingredientList} />
           </Box>
@@ -48,7 +48,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
         <Navbar activeIndex={0} />
       </Desktop>
       <Tablet>
-        <Box>
+        <Box className={styles.PageforTablet}>
           <HeaderBar badgeContent={6} />
           <Box style={{ padding: 15 }}>
             <IngredientListComp rowSize={2} gridSize={6} ingredientList={ingredientList} />
@@ -63,7 +63,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
         </Box>
       </Tablet>
       <Mobile>
-        <Box>
+        <Box className={styles.PageforMobile}>
           <HeaderBar badgeContent={6} />
           <Box style={{ padding: 15 }}>
             <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
