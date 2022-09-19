@@ -5,4 +5,6 @@ export interface PriceTransitionInfo {
   price: number; // 현재 금액
   wholesales: SaleInfo; // 도매 가격 추이
   retailsales: SaleInfo; // 소매 가격 추이
+  pastvol: number; // 어제 물가 변동률
+  todayvol: number; // 오늘 물가 변동률
 }
