@@ -1,4 +1,4 @@
-import { BottomNavigation,  Box, Typography } from "@mui/material";
+import { BottomNavigation, Box, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import { Desktop } from "./Desktop";
 import { Mobile } from "./Mobile";
@@ -57,27 +57,31 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
   return (
     <div>
       <Mobile>
-        <BottomNavigation
-          showLabels
-          value={activeIndex}
-          sx={{
-            
-           
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            borderTop: "2px #F5F5F4 solid",
-            borderTopRightRadius: 20,
-            borderTopLeftRadius: 20,
-          }}
-        >
-          <BottomNavigationAction label="홈" icon={<HomeIcon />} />
-          <BottomNavigationAction label="식재료" icon={<EggIcon />} />
-          <BottomNavigationAction label="바구니" icon={<RestaurantIcon />} />
-          <BottomNavigationAction label="요리법" icon={<ShoppingCartIcon />} />
-          <BottomNavigationAction label="내정보" icon={<PersonIcon />} />
-        </BottomNavigation>
+        <Box>
+      
+
+          
+          <BottomNavigation
+            showLabels
+            value={activeIndex}
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderTop: "2px #F5F5F4 solid",
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+              zIndex: 5,
+            }}
+          >
+            <BottomNavigationAction label="홈" icon={<HomeIcon />} />
+            <BottomNavigationAction label="식재료" icon={<EggIcon />} />
+            <BottomNavigationAction label="바구니" icon={<RestaurantIcon />} />
+            <BottomNavigationAction label="요리법" icon={<ShoppingCartIcon />} />
+            <BottomNavigationAction label="내정보" icon={<PersonIcon />} />
+          </BottomNavigation>
+        </Box>
       </Mobile>
       <Desktop>
         <Box
@@ -162,5 +166,3 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
     </div>
   );
 };
-
-
