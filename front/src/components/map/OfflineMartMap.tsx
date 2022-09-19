@@ -10,11 +10,11 @@ declare global {
 interface MapProps {
   latitude: any;
   longitude: any;
-  arr : any;
+  stores : any;
   onSetStoreId : Function;
 }
 
-function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
+function OfflineMartMap({ latitude, longitude, stores, onSetStoreId }: MapProps) {
   useEffect(() => {
     const mapScript = document.createElement("script");
 
@@ -59,14 +59,8 @@ function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
 
         var selectedMarker : any = null;
 
-        const marker = new window.kakao.maps.Marker({
-          position: markerPosition,
-          image: markerImage
-        });
-        marker.setMap(map);
-
-        for(var i = 0; i<arr.length;i++) {
-          const markerPosition = new window.kakao.maps.LatLng(arr[i].latitude, arr[i].longitude);
+        for(var i = 0; i<stores.length;i++) {
+          const markerPosition = new window.kakao.maps.LatLng(stores[i].latitude, stores[i].longitude);
           const marker = new window.kakao.maps.Marker({
           position: markerPosition,
           image: markerImage,
@@ -75,8 +69,8 @@ function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
 
         var customOverlay = new window.kakao.maps.CustomOverlay({
           map: map,
-          content: `<div style="padding:0 5px;background:#fff;font-size:10px;">${arr[i].name}</div>`, 
-          position: new window.kakao.maps.LatLng(arr[i].latitude, arr[i].longitude), // 커스텀 오버레이를 표시할 좌표
+          content: `<div style="padding:0 5px;background:#fff;font-size:10px;">${stores[i].name}</div>`, 
+          position: new window.kakao.maps.LatLng(stores[i].latitude, stores[i].longitude), // 커스텀 오버레이를 표시할 좌표
           xAnchor: 0, // 컨텐츠의 x 위치
           yAnchor: -2.35 // 컨텐츠의 y 위치
         });
@@ -84,7 +78,7 @@ function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
         marker.setMap(map);
         customOverlay.setMap(map);
 
-        window.kakao.maps.event.addListener(marker, 'click', makeTest(arr[i].store_id));
+        window.kakao.maps.event.addListener(marker, 'click', makeTest(stores[i].store_id));
         window.kakao.maps.event.addListener(marker, 'click', function() {
           if (!selectedMarker || selectedMarker !== marker) {
 
@@ -114,7 +108,7 @@ function OfflineMartMap({ latitude, longitude, arr, onSetStoreId }: MapProps) {
 }
 
 const MapContainer = styled.div`
-  width: 370px; height:300px; margin:0px 10px 0px;
+width: 370px; height:300px;
 `;
 
 export default OfflineMartMap;

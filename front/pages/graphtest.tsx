@@ -11,11 +11,6 @@ interface IProps {
 }
 
 const GraphTest:NextPage<IProps> = ({ingredientDetailInfo}) => {
-  const [priceinfo, setPriceinfo] = useState<PriceTransitionInfo>();
-
-  useEffect(() => {
-    setPriceinfo(getIngredientDetailInfo.price_transition_info);
-  }, []);
 
   return (
     <Fragment>

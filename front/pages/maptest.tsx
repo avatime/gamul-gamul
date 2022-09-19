@@ -1,45 +1,59 @@
-import { NextPage } from 'next';
-import React, { FC, Fragment, useEffect, useState } from 'react'
-import { OfflineMartInfo } from '../src/apis/responses/offlineMartInfo';
-import OfflineMartMap from '../src/components/map/OfflineMartMap';
-import UseGeolocation from '../src/components/map/UseGeolocation';
-import { ApiClient } from '../src/apis/apiClient';
+import { NextPage } from "next";
+import React, { FC, Fragment, useEffect, useState } from "react";
+import { OfflineMartInfo } from "../src/apis/responses/offlineMartInfo";
+import OfflineMartMap from "../src/components/map/OfflineMartMap";
+import useGeolocation from "../src/hooks/useGeolocation";
+import { ApiClient } from "../src/apis/apiClient";
+import { Box } from "@mui/material";
+import { OfflineMartInfoItem } from "../src/components/OfflineMartInfoItem";
+import { IngredientInfo } from "../src/apis/responses/ingredientInfo";
 
 interface IProps {
-  storeInfo: OfflineMartInfo[]
+  storeInfo: OfflineMartInfo[];
+  ingredientInfo: IngredientInfo;
 }
 
-// 37.501755, 127.0394531
-const Maptest:NextPage<IProps> = ({storeInfo}) => {
-    const [storeId, setStoreId] = useState(0);
+const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
+  const [storeId, setStoreId] = useState(0);
 
-    const storeIdHandler = (storeid : number) => {
-      setStoreId(storeid);
-    }
+  const storeIdHandler = (storeid: number) => {
+    setStoreId(storeid);
+  };
 
-    const location : any = UseGeolocation();
+  const location: any = useGeolocation();
 
   return (
-    <Fragment>
-      <div className="App">
-        <h2>주변 마트</h2>
-      </div>
-      <OfflineMartMap latitude={location.coordinates.lat} longitude={location.coordinates.lng} arr={storeInfo} onSetStoreId={storeIdHandler} />
+    <Box style={{ padding: 15 }}>
+      <h2>주변 마트</h2>
+      <OfflineMartMap
+        latitude={location.coordinates.lat}
+        longitude={location.coordinates.lng}
+        stores={storeInfo}
+        onSetStoreId={storeIdHandler}
+      />
       <h3>마트 이름</h3>
       <h3>{storeId}</h3>
-    </Fragment>
-   )
- }
+      <br />
+      <br />
+      <Box sx={{ width: 370 }}>
+        <OfflineMartInfoItem ingredientInfo={ingredientInfo} />
+        <OfflineMartInfoItem offlineMartInfo={storeInfo[0]} ingredientInfo={ingredientInfo} />
+      </Box>
+    </Box>
+  );
+};
 
 export default Maptest;
 
 export async function getServerSideProps() {
   const apiClient = ApiClient.getInstance();
   // 실 구현시 useEffect로 변환 가능성
-  const storeInfo : OfflineMartInfo[] = await apiClient.getOfflineMartList(1, 1, 1, 1, 1);
+  const storeInfo: OfflineMartInfo[] = await apiClient.getOfflineMartList(1, 1, 1, 1, 1);
+  const ingredientInfo: IngredientInfo = await (await apiClient.getIngredientDetailInfo(1)).ingredient_info;
   return {
     props: {
-      storeInfo
-    }
-  }
+      storeInfo,
+      ingredientInfo,
+    },
+  };
 }

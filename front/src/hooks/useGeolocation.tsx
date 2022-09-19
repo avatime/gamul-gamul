@@ -6,7 +6,7 @@ interface locationType {
   error?: { code: number; message: string };
 }
 
-const UseGeolocation = () => {
+const useGeolocation = () => {
   const [location, setLocation] = useState<locationType>({
     loaded: false,
     coordinates: { lat: 0, lng: 0, }
@@ -47,10 +47,10 @@ const UseGeolocation = () => {
         message: "Geolocation not supported",
       })
     }
-    navigator.geolocation.watchPosition(onSuccess, onError, options);
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
   }, [])
 
   return location;
 }
 
-export default UseGeolocation
+export default useGeolocation
