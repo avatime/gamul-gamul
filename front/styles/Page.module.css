@@ -1,4 +1,4 @@
-.Page {
+.PageforDesktop {
 
     padding-top: 50px;
     padding-left: 250px;
@@ -7,7 +7,12 @@
 }
 
 .PageforMobile {
-    padding-top: 40px;
+    padding-top: 60px;
     padding-bottom: 54px;
+}
+
+.PageforTablet {
+    padding-top: 50px;
+    padding-left: 150px;
 }
 
