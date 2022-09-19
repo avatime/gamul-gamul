@@ -71,6 +71,24 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
           unit: "개",
           quantity: 1,
         },
+        {
+          date: "2022-09-14",
+          price: 150,
+          unit: "개",
+          quantity: 1,
+        },
+        {
+          date: "2022-09-15",
+          price: 100,
+          unit: "개",
+          quantity: 1,
+        },
+        {
+          date: "2022-09-16",
+          price: 300,
+          unit: "개",
+          quantity: 1,
+        },
       ],
       monthly: [
         {
@@ -105,13 +123,31 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
       daily: [
         {
           date: "2022-09-12",
-          price: 1000,
+          price: 500,
           unit: "개",
           quantity: 1,
         },
         {
           date: "2022-09-13",
-          price: 2000,
+          price: 1000,
+          unit: "개",
+          quantity: 1,
+        },
+        {
+          date: "2022-09-14",
+          price: 750,
+          unit: "개",
+          quantity: 1,
+        },
+        {
+          date: "2022-09-15",
+          price: 600,
+          unit: "개",
+          quantity: 1,
+        },
+        {
+          date: "2022-09-16",
+          price: 900,
           unit: "개",
           quantity: 1,
         },
@@ -205,16 +241,20 @@ export const getIngredientHighClassList: HighClass[] = [
 
 export const getOfflineMartList: OfflineMartInfo[] = [
   {
+    store_id: 1,
     name: "자유시장",
     price: 1000,
     latitude: 37.4834,
     longitude: 126.7804,
+    distance: 100,
   },
   {
+    store_id: 2,
     name: "이마트",
     price: 1000,
     latitude: 37.4842,
     longitude: 126.7823,
+    distance: 200,
   },
 ];
 
