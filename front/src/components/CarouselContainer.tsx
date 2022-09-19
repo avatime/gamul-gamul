@@ -60,6 +60,8 @@ export const CarouselContainer: FC<IProps> = ({
       autoPlay={false}
       showStatus={false}
       infiniteLoop={true}
+      preventMovementUntilSwipeScrollTolerance={true}
+      swipeScrollTolerance={60}
       renderArrowNext={(onClickHandler, hasNext, label) =>
         hasNext && (
           <IconButton onClick={onClickHandler} title={label} sx={{ ...arrowStyles, right: 0 }}>
