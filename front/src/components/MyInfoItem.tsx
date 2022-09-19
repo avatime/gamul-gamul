@@ -23,7 +23,7 @@ interface IProps {
 export const MyInfoItem: FC<IProps> = ({ primary, secondary, icon, bgColor }) => {
   return (
     <div>
-      <Mobile>
+      
         <ListItem>
           <ListItemAvatar >
             <Avatar sx={{backgroundColor:bgColor, opacity:"40%"}} >
@@ -33,9 +33,7 @@ export const MyInfoItem: FC<IProps> = ({ primary, secondary, icon, bgColor }) =>
           <ListItemText primary={primary} secondary={secondary} />
           <ArrowForwardIosIcon sx={{color:"#A1A1AA"}}/>
         </ListItem>
-      </Mobile>
-      <Desktop>f</Desktop>
-      <Tablet>f</Tablet>
+     
     </div>
   );
 };
