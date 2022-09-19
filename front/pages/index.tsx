@@ -83,7 +83,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
 
 export default MainPage;
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.VOLATILITY_ASC);
   const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 90);
