@@ -14,6 +14,10 @@ import { MyRecipeInfo } from "../src/apis/responses/myRecipeInfo";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { IngredientListComp } from "../src/components/templates/IngredientListComp";
 import { MyRecipeListComp } from "../src/components/templates/MyRecipeListComp";
+import { NavigateBeforeOutlined } from "@mui/icons-material";
+import { HeaderBar } from "../src/components/HeaderBar";
+import { Navbar } from "../src/components/Navbar";
+import styles from "../styles/Page.module.css";
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -29,36 +33,48 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Desktop>
-        <Box style={{ padding: 15 }}>
-          <IngredientListComp rowSize={2} gridSize={8} ingredientList={ingredientList} />
+        <HeaderBar badgeContent={6} />
+        <Box className={styles.Page}>
+          <Box style={{ padding: 15 }}>
+            <IngredientListComp rowSize={2} gridSize={8} ingredientList={ingredientList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <RecipeListComp rowSize={2} gridSize={8} recipeList={recipeList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <MyRecipeListComp rowSize={2} gridSize={8} myRecipeList={myRecipeList} />
+          </Box>
         </Box>
-        <Box style={{ padding: 15 }}>
-          <RecipeListComp rowSize={2} gridSize={8} recipeList={recipeList} />
-        </Box>{" "}
-        <Box style={{ padding: 15 }}>
-          <MyRecipeListComp rowSize={2} gridSize={8} myRecipeList={myRecipeList} />
-        </Box>
+        <Navbar activeIndex={0} />
       </Desktop>
       <Tablet>
-        <Box style={{ padding: 15 }}>
-          <IngredientListComp rowSize={2} gridSize={6} ingredientList={ingredientList} />
-        </Box>
-        <Box style={{ padding: 15 }}>
-          <RecipeListComp rowSize={2} gridSize={6} recipeList={recipeList} />
-        </Box>
-        <Box style={{ padding: 15 }}>
-          <MyRecipeListComp rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
+        <Box>
+          <HeaderBar badgeContent={6} />
+          <Box style={{ padding: 15 }}>
+            <IngredientListComp rowSize={2} gridSize={6} ingredientList={ingredientList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <RecipeListComp rowSize={2} gridSize={6} recipeList={recipeList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <MyRecipeListComp rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
+          </Box>
+          <Navbar activeIndex={0} />
         </Box>
       </Tablet>
       <Mobile>
-        <Box style={{ padding: 15 }}>
-          <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
-        </Box>
-        <Box style={{ padding: 15 }}>
-          <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
-        </Box>
-        <Box style={{ padding: 15 }}>
-          <MyRecipeListComp rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+        <Box>
+          <HeaderBar badgeContent={6} />
+          <Box style={{ padding: 15 }}>
+            <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
+          </Box>
+          <Box style={{ padding: 15 }}>
+            <MyRecipeListComp rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+          </Box>
+          <Navbar activeIndex={0} />
         </Box>
       </Mobile>
     </Box>
