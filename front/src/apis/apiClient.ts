@@ -45,7 +45,7 @@ export class ApiClient
   }
   async getIngredientList(
     orderType: IngredientOrderType,
-    highClassId: number
+    highClassId: number = 0,
   ): Promise<IngredientInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), 2000));
   }
