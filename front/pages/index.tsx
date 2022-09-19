@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { ApiClient } from "../src/apis/apiClient";
 import { IngredientOrderType } from "../src/apis/interfaces/ingredientApi";
@@ -14,7 +14,6 @@ import { MyRecipeInfo } from "../src/apis/responses/myRecipeInfo";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { IngredientListComp } from "../src/components/templates/IngredientListComp";
 import { MyRecipeListComp } from "../src/components/templates/MyRecipeListComp";
-import { NavigateBeforeOutlined } from "@mui/icons-material";
 import { HeaderBar } from "../src/components/HeaderBar";
 import { Navbar } from "../src/components/Navbar";
 import styles from "../styles/Page.module.css";
@@ -35,15 +34,21 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
       <Desktop>
         <HeaderBar badgeContent={6} />
         <Box className={styles.PageforDesktop}>
-          <Box style={{ padding: 15 }}>
-            <IngredientListComp rowSize={2} gridSize={8} ingredientList={ingredientList} />
-          </Box>
-          <Box style={{ padding: 15 }}>
-            <RecipeListComp rowSize={2} gridSize={8} recipeList={recipeList} />
-          </Box>
-          <Box style={{ padding: 15 }}>
-            <MyRecipeListComp rowSize={2} gridSize={8} myRecipeList={myRecipeList} />
-          </Box>
+          <Grid container direction="row">
+            <Grid item xs={8}>
+              <Box style={{ padding: 15 }}>
+                <IngredientListComp rowSize={4} gridSize={6} ingredientList={ingredientList} />
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box style={{ padding: 15 }}>
+                <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
+              </Box>
+              <Box style={{ padding: 15 }}>
+                <MyRecipeListComp rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
         <Navbar activeIndex={0} />
       </Desktop>
