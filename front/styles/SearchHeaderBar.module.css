@@ -1,0 +1,8 @@
+.input {
+  border: none; /* Removes the default border */
+  flex: 1;
+}
+
+.input:focus {
+  outline: none /* Removes the border when the input is clicked */
+}

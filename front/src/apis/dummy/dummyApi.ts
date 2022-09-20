@@ -316,7 +316,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
   },
 ];
 
-export const getRecipeList: RecipeInfo[] = Array.from({length: 88}, (_, i) => i).map((it) => ({
+export const getRecipeList: RecipeInfo[] = Array.from({ length: 88 }, (_, i) => i).map((it) => ({
   recipe_id: it + 1,
   image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
   name: `가지무침 ${it + 1}`,
@@ -423,10 +423,17 @@ export const getPopularYoutubeList: YoutubeInfo[] = [
   },
 ];
 
-export const search: SearchResult = {
-  ingredient_list: getIngredientList,
-  recipe_list: getRecipeList,
-};
+export function search(keyword: string): SearchResult {
+  const ingredient_list = getIngredientList;
+  ingredient_list.forEach((v, i) => v.name = `${keyword} ${i + 1}`);
+  const recipe_list = getRecipeList;
+  recipe_list.forEach((v, i) => v.name = `${keyword} ${i + 1}`);
+
+  return {
+    ingredient_list,
+    recipe_list: getRecipeList,
+  };
+}
 
 export const getMyRecipeList: MyRecipeInfo[] = [
   {
