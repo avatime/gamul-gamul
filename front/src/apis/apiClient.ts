@@ -121,6 +121,7 @@ export class ApiClient
   }
   async postMyRecipe(
     userName: string,
+    imageDataUrl: string, 
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
@@ -129,6 +130,7 @@ export class ApiClient
   async updateMyRecipe(
     userName: string,
     myRecipeId: number,
+    imageDataUrl: string, 
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
