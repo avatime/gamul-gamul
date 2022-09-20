@@ -5,6 +5,9 @@ import { getIngredientDetailInfo } from '../src/apis/dummy/dummyApi';
 import { ApiClient } from '../src/apis/apiClient';
 import { NextPage } from 'next';
 import { IngredientDetailInfo } from '../src/apis/responses/ingredientDetailInfo';
+import { IngredientPriceComp } from '../src/components/graph/IngredientPriceComp';
+import { Box } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo
@@ -13,9 +16,9 @@ interface IProps {
 const GraphTest:NextPage<IProps> = ({ingredientDetailInfo}) => {
 
   return (
-    <Fragment>
-        <IngredientPriceGraph priceTransitionInfo={ingredientDetailInfo.price_transition_info} />
-    </Fragment>
+    <Box style={{background: grey[100]}}>
+        <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo}></IngredientPriceComp>
+    </Box>
    )
  }
 

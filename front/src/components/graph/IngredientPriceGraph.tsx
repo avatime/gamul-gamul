@@ -5,19 +5,21 @@ import moment from "moment";
 
 interface IProps {
   priceTransitionInfo: PriceTransitionInfo;
+  inputWidth: number;
+  inputHeight: number;
 }
 
 moment.locale("ko");
 
-const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo }) => {
+const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
   return (
     <div>
       <Chart
         type="line"
-        height={300}
-        width={370}
+        height={inputHeight}
+        width={inputWidth}
         series={[
           {
             name: "소매",
