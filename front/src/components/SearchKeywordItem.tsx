@@ -12,13 +12,12 @@ export const SearchKeywordItem: FC<IProps> = ({ searchKeyword, onClickDelete, on
   return (
     <ListItem
       secondaryAction={
-        <Box>
-          <IconButton onClick={onClickDelete}>
+        <IconButton edge="end" onClick={onClickDelete}>
           <CancelIcon />
         </IconButton>
-        </Box>
       }
       disablePadding
+      
     >
       <ListItemButton onClick={onClickItem}>
         <ListItemText primary={searchKeyword} />

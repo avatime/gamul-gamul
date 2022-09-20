@@ -15,13 +15,25 @@ export function saveSearchLocalStorage<T>(searchType: SearchType, newItem: T) {
 }
 
 export function deleteSearchLocalStorage<T>(searchType: SearchType, newItem: T) {
-    const item = localStorage.getItem(searchType);
-    if (item) {
-      const origin = JSON.parse(item) as T[];
-      if (origin.includes(newItem)) {
-        origin.splice(origin.indexOf(newItem), 1);
-      }
-      localStorage.setItem(searchType, JSON.stringify(origin));
+  const item = localStorage.getItem(searchType);
+  if (item) {
+    const origin = JSON.parse(item) as T[];
+    if (origin.includes(newItem)) {
+      origin.splice(origin.indexOf(newItem), 1);
     }
+    localStorage.setItem(searchType, JSON.stringify(origin));
   }
-  
+}
+
+export function getSearchLocalStorage<T>(
+  searchType: SearchType,
+  filter: (item: T) => boolean
+): T[] {
+  const item = localStorage.getItem(searchType);
+  if (item) {
+    const origin = JSON.parse(item) as T[];
+    return origin.filter(filter);
+  }
+
+  return [];
+}

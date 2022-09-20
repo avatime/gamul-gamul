@@ -117,7 +117,7 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getPopularYoutubeList), delay));
   }
   async search(keyword: string): Promise<SearchResult> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.search), delay));
+    return new Promise((resolve) => setTimeout(() => resolve(Dummy.search(keyword)), delay));
   }
   async postMyRecipe(
     userName: string,

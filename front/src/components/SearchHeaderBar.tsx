@@ -7,27 +7,36 @@ import SearchIcon from "@mui/icons-material/Search";
 
 interface IProps {
   searchKeyword: string | undefined;
-  onSearch: () => void;
-  onChange: (e: any) => void;
+  onSearch?: () => void;
+  onChange?: (e: any) => void;
+  onClickInput?: () => void;
 }
 
-export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onSearch, onChange }) => {
+export const SearchHeaderBar: FC<IProps> = ({
+  searchKeyword,
+  onSearch,
+  onChange,
+  onClickInput,
+}) => {
   const router = useRouter();
 
   const onEnter = (e: any) => {
     if (e.key === "Enter") {
-        e.preventDefault();
-        onSearch();
+      e.preventDefault();
+      onSearch?.();
     }
-  }
+  };
   return (
     <Box
-      height="50px"
-      position="relative"
+      className="page-background"
+      width="100vw"
+      height="60px"
+      position="fixed"
       display="flex"
       justifyContent="center"
       paddingX="15px"
       paddingTop="10px"
+      zIndex="5"
     >
       <Box
         width="100vw"
@@ -47,8 +56,10 @@ export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onSearch, onChange 
           type="text"
           value={searchKeyword}
           onChange={onChange}
-          autoFocus
+          autoFocus={typeof onSearch !== "undefined"}
+          readOnly={typeof onSearch === "undefined"}
           onKeyDown={onEnter}
+          onClick={onClickInput}
         />
         <IconButton onClick={onSearch}>
           <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />

@@ -1,23 +1,30 @@
 import { Box, Button } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchHeaderBar } from "../src/components/SearchHeaderBar";
 import { SearchKeywordComp } from "../src/components/templates/SearchKeywordComp";
-import { useSearchLocalStorage } from "../src/hooks/useSearchLocalStorage";
-import { saveSearchLocalStorage } from "../src/utils/localStorageUtil";
+import { saveSearchLocalStorage, getSearchLocalStorage } from "../src/utils/localStorageUtil";
 
 interface IProps {}
 
 const SearchPage: NextPage<IProps> = (props) => {
   const router = useRouter();
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const onSearch = (keyword: string) => {
-    saveSearchLocalStorage<string>("keyword", keyword);
+  const keyword = router.query.searchKeyword as string;
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  useEffect(() => {
+    setSearchKeyword(keyword);
+  }, [keyword]);
+
+  const onSearch = (searchKeyword: string) => {
+    if (!searchKeyword) {
+      return;
+    }
+    saveSearchLocalStorage<string>("keyword", searchKeyword);
     router.push({
-      pathname: "/search",
+      pathname: "/search-result",
       query: {
-        keyword: keyword,
+        searchKeyword,
       },
     });
   };
@@ -25,9 +32,12 @@ const SearchPage: NextPage<IProps> = (props) => {
     setSearchKeyword(keyword);
   };
 
-  const searchKeywordList = useSearchLocalStorage<string>("keyword", (item) =>
-    item.includes(searchKeyword)
-  );
+  const [searchKeywordList, setSearchKeywordList] = useState<string[]>([]);
+  useEffect(() => {
+    setSearchKeywordList(
+      getSearchLocalStorage<string>("keyword", (item) => item.includes(searchKeyword))
+    );
+  }, [searchKeyword]);
 
   return (
     <Box className="page-background" display="flex" flexDirection="column">
@@ -36,12 +46,8 @@ const SearchPage: NextPage<IProps> = (props) => {
         onSearch={() => onSearch(searchKeyword)}
         onChange={(e: any) => onChange(e.target.value)}
       />
-
-      <Box flex={1} position="relative">
-        <SearchKeywordComp
-          searchKeywordList={searchKeywordList}
-          onSearch={onSearch}
-        />
+      <Box flex={1} position="relative" marginTop="60px">
+        <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
       </Box>
     </Box>
   );
