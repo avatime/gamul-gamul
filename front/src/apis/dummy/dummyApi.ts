@@ -181,6 +181,8 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
         },
       ],
     },
+    pastvol: 3,
+    todayvol: 2,
   },
   online_mart_info: [
     {
@@ -542,6 +544,8 @@ export const getMyRecipeDetailInfo: MyRecipeDetailInfo = {
         },
       ],
     },
+    pastvol : -2,
+    todayvol : 1,
   },
 };
 
