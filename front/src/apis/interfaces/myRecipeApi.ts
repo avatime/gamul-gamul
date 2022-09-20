@@ -10,7 +10,7 @@ export interface MyRecipeApi {
    * @param image_data_url 사용자가 업로드한 나만의요리법 사진 base64 기반 스트링
    * @param ingredientList 요리법에 들어가는 식재료 ID와 단량 리스트
    */
-  postMyRecipe(
+postMyRecipe(
     userName: string,
     image_data_url: string, 
     myRecipeName: string,

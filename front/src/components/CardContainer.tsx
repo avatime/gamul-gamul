@@ -10,15 +10,17 @@ interface IProps {
   totalPrice?: number;
 }
 
-export const CardContainer: FC<IProps> = ({
-  title,
-  children,
-  style,
-  onClickMore,
-  totalPrice,
-}) => {
+export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore, totalPrice }) => {
   return (
-    <Box style={{ background: "white", padding: 15, margin: 15, borderRadius: 20, ...style }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      bgcolor="white"
+      padding="15px"
+      margin="15px"
+      borderRadius="20px"
+      style={style}
+    >
       <Box display="flex" alignItems="center">
         <p style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>{title}</p>
         <Box flex="1" />
@@ -27,9 +29,13 @@ export const CardContainer: FC<IProps> = ({
             <KeyboardArrowRightIcon />
           </IconButton>
         )}
-        {totalPrice && <p style={{ fontSize: 12, fontWeight: "bold", marginRight: 10 }}>{totalPrice}원</p>}
+        {totalPrice && (
+          <p style={{ fontSize: 12, fontWeight: "bold", marginRight: 10 }}>{totalPrice}원</p>
+        )}
       </Box>
-      {children}
+      <Box maxHeight="inherit" overflow="auto">
+        {children}
+      </Box>
     </Box>
   );
 };
