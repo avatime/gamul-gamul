@@ -18,7 +18,7 @@ export const CardContainer: FC<IProps> = ({
   totalPrice,
 }) => {
   return (
-    <Box style={{ background: "white", padding: 15, borderRadius: 20, ...style }}>
+    <Box style={{ background: "white", padding: 15, margin: 15, borderRadius: 20, ...style }}>
       <Box display="flex" alignItems="center">
         <p style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>{title}</p>
         <Box flex="1" />
