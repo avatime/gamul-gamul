@@ -18,14 +18,12 @@ export const BackHeader: FC<IProps> = ({text ,textColor}) => {
   const router = useRouter();
   return (
     <div>
-      <Mobile>
         <Stack direction="row" sx={{ width: "100vw", backgroundColor: "none", height: "50px", alignItems:"center"}}>
           <IconButton onClick={() => router.back()}>
             <ArrowBackIcon />
           </IconButton>
           <Typography sx={{fontWeight:"Bold", color:textColor}}>{text}</Typography>
         </Stack>
-      </Mobile>
     </div>
   );
 };
