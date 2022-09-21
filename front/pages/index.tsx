@@ -4,7 +4,6 @@ import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
 import { Box, Grid } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { ApiClient } from "../src/apis/apiClient";
 import { IngredientOrderType } from "../src/apis/interfaces/ingredientApi";
 import { RecipeOrderType } from "../src/apis/interfaces/recipeApi";
@@ -36,7 +35,11 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row">
             <Grid item xs={8}>
-              <IngredientListComp rowSize={4} gridSize={6} ingredientList={ingredientList} />
+              <IngredientListComp
+                rowSize={4}
+                gridSize={6}
+                ingredientList={ingredientList}
+              />
             </Grid>
             <Grid item xs={4}>
               <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
