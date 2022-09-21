@@ -426,6 +426,13 @@ export const getPopularYoutubeList: YoutubeInfo[] = [
 ];
 
 export function search(keyword: string): SearchResult {
+  if (keyword === "결과없음") {
+    return {
+      ingredient_list: [],
+      recipe_list: [],
+    }
+  }
+  
   const ingredient_list = getIngredientList;
   ingredient_list.forEach((v, i) => v.name = `${keyword} ${i + 1}`);
   const recipe_list = getRecipeList;
@@ -433,7 +440,7 @@ export function search(keyword: string): SearchResult {
 
   return {
     ingredient_list,
-    recipe_list: getRecipeList,
+    recipe_list,
   };
 }
 

@@ -26,8 +26,27 @@ const SearchResultPage: NextPage<IProps> = ({ ingredientList, recipeList }) => {
         }
       />
       <Box paddingTop="60px">
-        <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
-        <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
+        {ingredientList.length !== 0 && (
+          <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
+        )}
+        {recipeList.length !== 0 && (
+          <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
+        )}
+        {recipeList.length === 0 && ingredientList.length === 0 && (
+          <Box
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              margin: "auto",
+              display: "table"
+            }}
+          >
+            <p style={{ textAlign: "center", verticalAlign: "middle" }}>검색 결과가 없습니다.</p>
+          </Box>
+        )}
       </Box>
     </Box>
   );
