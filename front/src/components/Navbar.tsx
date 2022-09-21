@@ -29,7 +29,7 @@ const elements = [
   {
     text: "홈",
     icon: (isActive: boolean) => <HomeIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:''
+    path:'/'
   },
   {
     text: "식재료",
@@ -61,7 +61,7 @@ const elementActiveStyles = {
 };
 
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div>
@@ -81,7 +81,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               zIndex: 5,
             }}
           >
-            <BottomNavigationAction label="홈" icon={<HomeIcon />}   onClick={() => router.push('')} />
+            <BottomNavigationAction label="홈" icon={<HomeIcon />}   onClick={() => router.push('/')} />
             <BottomNavigationAction label="식재료" icon={<EggIcon />}  onClick={() => router.push('/ingredient')}/>
             <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => router.push('/basket')} />
             <BottomNavigationAction label="요리법" icon={<RestaurantIcon />}  onClick={() => router.push('/recipe')}/>
