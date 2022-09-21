@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -13,13 +13,16 @@ const SearchPage: NextPage<IProps> = (props) => {
   const keyword = router.query.searchKeyword as string;
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   useEffect(() => {
-    setSearchKeyword(keyword);
+    if (keyword) {
+      setSearchKeyword(keyword);
+    }
   }, [keyword]);
 
   const onSearch = (searchKeyword: string) => {
     if (!searchKeyword) {
       return;
     }
+
     saveSearchLocalStorage<string>("keyword", searchKeyword);
     router.push({
       pathname: "/search-result",

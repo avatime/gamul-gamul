@@ -6,7 +6,7 @@ import styles from "../../styles/SearchHeaderBar.module.css";
 import SearchIcon from "@mui/icons-material/Search";
 
 interface IProps {
-  searchKeyword: string | undefined;
+  searchKeyword: string;
   onSearch?: () => void;
   onChange?: (e: any) => void;
   onClickInput?: () => void;
