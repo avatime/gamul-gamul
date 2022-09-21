@@ -28,8 +28,11 @@ export const MyRecipeListComp: FC<IProps> = ({
   const defaultOnClickItem = (id: number) => {
     router.push(`/my-recipe-info/${id}`);
   };
+  const defaultOnClickMore = () => {
+    router.push("/my-recipe");
+  };
   return (
-    <CardContainer title={title} onClickMore={onClickMore} totalPrice={totalPrice}>
+    <CardContainer title={title} onClickMore={onClickMore || defaultOnClickMore} totalPrice={totalPrice}>
       <CarouselContainer
         itemList={myRecipeList}
         rowSize={rowSize}

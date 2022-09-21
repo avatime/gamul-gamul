@@ -28,8 +28,15 @@ export const IngredientListComp: FC<IProps> = ({
   const defaultOnClickItem = (id: number) => {
     router.push(`/ingredient-info/${id}`);
   };
+  const defaultOnClickMore = () => {
+    router.push("/ingredient");
+  };
   return (
-    <CardContainer title={title} onClickMore={onClickMore} totalPrice={totalPrice}>
+    <CardContainer
+      title={title}
+      onClickMore={onClickMore || defaultOnClickMore}
+      totalPrice={totalPrice}
+    >
       <CarouselContainer
         itemList={ingredientList}
         rowSize={rowSize}
