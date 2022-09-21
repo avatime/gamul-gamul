@@ -30,7 +30,7 @@ const SearchResultPage: NextPage<IProps> = ({ ingredientList, recipeList }) => {
           <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
         )}
         {recipeList.length !== 0 && (
-          <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
+          <RecipeListComp type="row" rowSize={2} gridSize={3} recipeList={recipeList} />
         )}
         {recipeList.length === 0 && ingredientList.length === 0 && (
           <Box
@@ -41,7 +41,7 @@ const SearchResultPage: NextPage<IProps> = ({ ingredientList, recipeList }) => {
               top: 0,
               bottom: 0,
               margin: "auto",
-              display: "table"
+              display: "table",
             }}
           >
             <p style={{ textAlign: "center", verticalAlign: "middle" }}>검색 결과가 없습니다.</p>
