@@ -7,7 +7,7 @@ import { IngredientItem } from "../IngredientItem";
 
 interface IProps {
   title?: string;
-  onClickMore?: () => void;
+  showMore?: boolean;
   totalPrice?: number;
   rowSize: number;
   gridSize: number;
@@ -17,7 +17,7 @@ interface IProps {
 
 export const IngredientListComp: FC<IProps> = ({
   title = "식재료",
-  onClickMore,
+  showMore = false,
   totalPrice,
   rowSize,
   gridSize,
@@ -28,13 +28,10 @@ export const IngredientListComp: FC<IProps> = ({
   const defaultOnClickItem = (id: number) => {
     router.push(`/ingredient-info/${id}`);
   };
-  const defaultOnClickMore = () => {
-    router.push("/ingredient");
-  };
   return (
     <CardContainer
       title={title}
-      onClickMore={onClickMore || defaultOnClickMore}
+      onClickMore={showMore ? () => router.push("/ingredient") : undefined}
       totalPrice={totalPrice}
     >
       <CarouselContainer

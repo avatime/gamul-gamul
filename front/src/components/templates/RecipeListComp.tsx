@@ -11,7 +11,7 @@ type Type = "row" | "column";
 interface IProps {
   type?: Type;
   title?: string;
-  onClickMore?: () => void;
+  showMore?: boolean;
   totalPrice?: number;
   rowSize: number;
   gridSize: number;
@@ -22,7 +22,7 @@ interface IProps {
 export const RecipeListComp: FC<IProps> = ({
   type = "column",
   title = "요리법",
-  onClickMore,
+  showMore = false,
   totalPrice,
   rowSize,
   gridSize,
@@ -33,13 +33,10 @@ export const RecipeListComp: FC<IProps> = ({
   const defaultOnClickItem = (id: number) => {
     router.push(`/recipe-info/${id}`);
   };
-  const defaultOnClickMore = () => {
-    router.push("/recipe");
-  };
   return (
     <CardContainer
       title={title}
-      onClickMore={onClickMore || defaultOnClickMore}
+      onClickMore={showMore ? () => router.push("/recipe") : undefined}
       totalPrice={totalPrice}
     >
       {type === "column" && (
