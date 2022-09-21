@@ -7,7 +7,7 @@ import { MyRecipeItem } from "../MyRecipeItem";
 
 interface IProps {
   title?: string;
-  onClickMore?: () => void;
+  showMore?: boolean;
   totalPrice?: number;
   rowSize: number;
   gridSize: number;
@@ -17,7 +17,7 @@ interface IProps {
 
 export const MyRecipeListComp: FC<IProps> = ({
   title = "나만의 요리법",
-  onClickMore,
+  showMore = false,
   totalPrice,
   rowSize,
   gridSize,
@@ -28,11 +28,12 @@ export const MyRecipeListComp: FC<IProps> = ({
   const defaultOnClickItem = (id: number) => {
     router.push(`/my-recipe-info/${id}`);
   };
-  const defaultOnClickMore = () => {
-    router.push("/my-recipe");
-  };
   return (
-    <CardContainer title={title} onClickMore={onClickMore || defaultOnClickMore} totalPrice={totalPrice}>
+    <CardContainer
+      title={title}
+      onClickMore={showMore ? () => router.push("/my-recipe") : undefined}
+      totalPrice={totalPrice}
+    >
       <CarouselContainer
         itemList={myRecipeList}
         rowSize={rowSize}

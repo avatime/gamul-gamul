@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
-import { Box, Grid } from "@mui/material";
+import { Backdrop, Box, Grid } from "@mui/material";
 import { ApiClient } from "../src/apis/apiClient";
 import { IngredientOrderType } from "../src/apis/interfaces/ingredientApi";
 import { RecipeOrderType } from "../src/apis/interfaces/recipeApi";
@@ -16,6 +16,8 @@ import { MyRecipeListComp } from "../src/components/templates/MyRecipeListComp";
 import { HeaderBar } from "../src/components/HeaderBar";
 import { Navbar } from "../src/components/Navbar";
 import styles from "../styles/Page.module.css";
+import { useState } from "react";
+import { SearchComp } from "../src/components/templates/SearchComp";
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -24,6 +26,13 @@ interface IProps {
 }
 
 const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }) => {
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const onClickSearch = () => {
+    setShowSearch(true);
+  };
+  const onCloseSearch = () => {
+    setShowSearch(false);
+  }
   return (
     <Box className="page-background">
       <Head>
@@ -31,19 +40,20 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Desktop>
-        <HeaderBar badgeContent={6} />
+        <HeaderBar badgeContent={6} onClickSearch={onClickSearch} />
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row">
             <Grid item xs={8}>
               <IngredientListComp
+                showMore
                 rowSize={4}
                 gridSize={6}
                 ingredientList={ingredientList}
               />
             </Grid>
             <Grid item xs={4}>
-              <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
-              <MyRecipeListComp rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+              <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
+              <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
             </Grid>
           </Grid>
         </Box>
@@ -51,22 +61,29 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <HeaderBar badgeContent={6} />
-          <IngredientListComp rowSize={2} gridSize={6} ingredientList={ingredientList} />
-          <RecipeListComp rowSize={2} gridSize={6} recipeList={recipeList} />
-          <MyRecipeListComp rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
+          <HeaderBar badgeContent={6} onClickSearch={onClickSearch} />
+          <IngredientListComp showMore rowSize={2} gridSize={6} ingredientList={ingredientList} />
+          <RecipeListComp showMore rowSize={2} gridSize={6} recipeList={recipeList} />
+          <MyRecipeListComp showMore rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
+
           <Navbar activeIndex={0} />
         </Box>
       </Tablet>
       <Mobile>
         <Box className={styles.PageforMobile}>
-          <HeaderBar badgeContent={6} />
-          <IngredientListComp rowSize={2} gridSize={3} ingredientList={ingredientList} />
-          <RecipeListComp rowSize={2} gridSize={3} recipeList={recipeList} />
-          <MyRecipeListComp rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+          <HeaderBar badgeContent={6} onClickSearch={onClickSearch} />
+          <IngredientListComp showMore rowSize={2} gridSize={3} ingredientList={ingredientList} />
+          <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
+          <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
           <Navbar activeIndex={0} />
         </Box>
       </Mobile>
+      <Backdrop
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={showSearch}
+      >
+        <SearchComp onCloseSearch={onCloseSearch} />
+      </Backdrop>
     </Box>
   );
 };
