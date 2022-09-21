@@ -1,12 +1,15 @@
 import { Table } from '@mui/material';
 import { text } from 'node:stream/consumers';
-import React, { FC } from 'react'
+import React, { FC, MouseEventHandler } from 'react'
 import styles from  '../../../styles/Button.module.css';
 import { Desktop } from '../Desktop';
 import { Mobile } from '../Mobile';
 import { Tablet } from '../Tablet';
 interface IProps {
 text:string;
+onClick:MouseEventHandler<HTMLInputElement>;
+height:string;
+width:string;
 
 }
 
@@ -16,20 +19,11 @@ text:string;
 **/ 
 
 
-export const ButtonFill:FC<IProps> = ({text}) => {
+export const ButtonFill:FC<IProps> = ({text,onClick, height, width}) => {
   return (
    
     <div>
-      <Mobile>
-      <button className={styles.buttonFillStyleMobile}>{text}</button>
-      </Mobile>
-      <Desktop>
-      <button className={styles.buttonFillStyle}>{text}</button>
-      </Desktop>
-      <Tablet>
-      <button className={styles.buttonFillStyle}>{text}</button>
-      </Tablet>
-    
+      <input type="button" value={text} className={styles.buttonFillStyle} onClick={onClick} style={{width:`${width}`, height:`${height}`,cursor:"pointer"}}/> 
     </div>
    )
  }
