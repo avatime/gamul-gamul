@@ -40,7 +40,7 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
     <ItemButton
       style={{
         borderRadius: 10,
-        padding: direction == "column" ? 20 : 0,
+        padding: direction == "column" ? 15 : 0,
         width: direction === "row" ? "100%" : "auto",
         visibility: recipeInfo ? "visible" : "hidden",
       }}

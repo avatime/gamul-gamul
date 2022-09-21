@@ -7,6 +7,7 @@ import { saveSearchLocalStorage, getSearchLocalStorage } from "../../utils/local
 import { Desktop } from "../Desktop";
 import { Tablet } from "../Tablet";
 import { Mobile } from "../Mobile";
+import { SearchResultComp } from "./SearchResultComp";
 
 interface IProps {
   onCloseSearch: () => void;
@@ -69,7 +70,11 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
             onClickBack={onClickBack}
           />
           <Box flex={1} position="relative">
-            <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+            {searchKeyword.length === 0 ? (
+              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+            ) : (
+              <SearchResultComp searchKeyword={searchKeyword} />
+            )}
           </Box>
         </Box>
       </Desktop>
@@ -88,8 +93,12 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
-          <Box flex={1} position="relative">
-            <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+         <Box flex={1} position="relative">
+            {searchKeyword.length === 0 ? (
+              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+            ) : (
+              <SearchResultComp searchKeyword={searchKeyword} />
+            )}
           </Box>
         </Box>
       </Tablet>
@@ -108,7 +117,11 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
             onClickBack={onClickBack}
           />
           <Box flex={1} position="relative">
-            <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+            {searchKeyword.length === 0 ? (
+              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+            ) : (
+              <SearchResultComp searchKeyword={searchKeyword} />
+            )}
           </Box>
         </Box>
       </Mobile>

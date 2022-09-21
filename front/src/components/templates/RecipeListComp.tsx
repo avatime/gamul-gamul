@@ -13,8 +13,8 @@ interface IProps {
   title?: string;
   showMore?: boolean;
   totalPrice?: number;
-  rowSize: number;
-  gridSize: number;
+  rowSize?: number;
+  gridSize?: number;
   recipeList: RecipeInfo[];
   onClickItem?: (id: number) => void;
 }
@@ -24,8 +24,8 @@ export const RecipeListComp: FC<IProps> = ({
   title = "요리법",
   showMore = false,
   totalPrice,
-  rowSize,
-  gridSize,
+  rowSize = 2,
+  gridSize = 3,
   recipeList,
   onClickItem,
 }) => {
