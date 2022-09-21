@@ -2,12 +2,11 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { SearchHeaderBar } from "../SearchHeaderBar";
-import { SearchKeywordComp } from "./SearchKeywordComp";
-import { saveSearchLocalStorage, getSearchLocalStorage } from "../../utils/localStorageUtil";
 import { Desktop } from "../Desktop";
 import { Tablet } from "../Tablet";
 import { Mobile } from "../Mobile";
 import { SearchResultComp } from "./SearchResultComp";
+import { RecentSearchComp } from "./RecentSearchComp";
 
 interface IProps {
   onCloseSearch: () => void;
@@ -28,7 +27,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
       return;
     }
 
-    saveSearchLocalStorage<string>("keyword", searchKeyword);
     router.push({
       pathname: "/search",
       query: {
@@ -39,13 +37,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
   const onChange = (keyword: string) => {
     setSearchKeyword(keyword);
   };
-
-  const [searchKeywordList, setSearchKeywordList] = useState<string[]>([]);
-  useEffect(() => {
-    setSearchKeywordList(
-      getSearchLocalStorage<string>("keyword", (item) => item.includes(searchKeyword))
-    );
-  }, [searchKeyword]);
 
   const onClickBack = () => {
     onCloseSearch();
@@ -71,7 +62,7 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+              <RecentSearchComp />
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
@@ -93,9 +84,9 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
-         <Box flex={1} position="relative">
+          <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+              <RecentSearchComp />
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
@@ -118,7 +109,7 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <SearchKeywordComp searchKeywordList={searchKeywordList} onSearch={onSearch} />
+              <RecentSearchComp />
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
