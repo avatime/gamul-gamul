@@ -35,7 +35,7 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
       <h3>{storeId}</h3>
       <br />
       <br />
-      <Box sx={{ width: 370 }}>
+      <Box sx={{ width: "90%" }}>
         <OfflineMartInfoItem ingredientInfo={ingredientInfo} />
         <OfflineMartInfoItem offlineMartInfo={storeInfo[0]} ingredientInfo={ingredientInfo} />
       </Box>
