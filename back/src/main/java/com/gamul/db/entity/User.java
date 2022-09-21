@@ -17,6 +17,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +30,12 @@ public class User extends BaseEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean activeFlag;
 
+    @JsonProperty("refresh_token")
+    @Column
+    private String refreshToken;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
