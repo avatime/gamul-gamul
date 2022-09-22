@@ -50,13 +50,17 @@ export interface IngredientApi {
    * @param southWestLongitude 지도 남서쪽 경도
    * @param northEastLatitude 지도 북동쪽 위도
    * @param northEastLongitude 지도 북동쪽 경도
+   * @param latitude 지도 중앙 위도
+   * @param longitude 지도 중앙 경도
    */
   getOfflineMartList(
     ingredientId: number,
     southWestLatitude: number,
     southWestLongitude: number,
     northEastLatitude: number,
-    northEastLongitude: number
+    northEastLongitude: number,
+    latitude: number,
+    longitude: number
   ): Promise<OfflineMartInfo[]>;
   /**
    * 오프라인마트 상세 정보 조회 (마트에서 무얼 파는지 조회)

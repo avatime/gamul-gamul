@@ -2,7 +2,7 @@ import React, { FC, Fragment, useEffect, useState } from 'react'
 import { ApiClient } from '../src/apis/apiClient';
 import { NextPage } from 'next';
 import { IngredientDetailInfo } from '../src/apis/responses/ingredientDetailInfo';
-import { IngredientPriceComp } from '../src/components/graph/IngredientPriceComp';
+import { IngredientPriceComp } from '../src/components/templates/IngredientPriceComp';
 import { Box } from '@mui/material';
 import { Mobile } from '../src/components/Mobile';
 import styles from "../styles/Page.module.css"
