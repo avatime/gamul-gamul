@@ -4,11 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -16,21 +18,22 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
     private static String secretKey;
+
+    private static String refreshsecretKey;
     private static Integer expirationTime;
+
+    private static Long refreshexpirationTime;
 
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String ISSUER = "gamul.com";
 
     @Autowired
-    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime) {
+    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.refreshsecret}") String refreshsecretKey, @Value("${jwt.expiration}") Integer expirationTime, @Value("${jwt.refreshexpiration}") Long refreshexpirationTime) {
         this.secretKey = secretKey;
+        this.refreshsecretKey = refreshsecretKey;
         this.expirationTime = expirationTime;
-    }
-
-    public void setExpirationTime() {
-        //JwtTokenUtil.expirationTime = Integer.parseInt(expirationTime);
-        JwtTokenUtil.expirationTime = expirationTime;
+        this.refreshexpirationTime = refreshexpirationTime;
     }
 
     public static JWTVerifier getVerifier() {
@@ -40,26 +43,18 @@ public class JwtTokenUtil {
                 .build();
     }
 
-    public static String getToken(String userId) {
-        Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
-        return JWT.create()
-                .withSubject(userId)
-                .withExpiresAt(expires)
-                .withIssuer(ISSUER)
-                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
-    }
-
-    public static String getToken(Instant expires, String userId) {
-        return JWT.create()
-                .withSubject(userId)
-                .withExpiresAt(Date.from(expires))
-                .withIssuer(ISSUER)
-                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
+    public static Token getToken(String userId) {
+        String accessToken =  createToken(userId, "access");
+        String refreshToken =  createToken(userId, "refresh");
+        return Token.builder().accessToken(accessToken).refreshToken(refreshToken).key(userId).build();
     }
 
     public static Date getTokenExpiration(int expirationTime) {
+        Date now = new Date();
+        return new Date(now.getTime() + expirationTime);
+    }
+
+    public static Date getTokenExpiration(Long expirationTime) {
         Date now = new Date();
         return new Date(now.getTime() + expirationTime);
     }
@@ -115,5 +110,49 @@ public class JwtTokenUtil {
         } catch (Exception ex) {
             throw ex;
         }
+    }
+
+    public static String validateRefreshToken(Token refreshTokenObj){
+        // refresh 객체에서 refreshToken 추출
+        String refreshToken = refreshTokenObj.getRefreshToken();
+
+        try {
+            // 검증
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
+
+            //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
+            if (!claims.getBody().getExpiration().before(new Date())) {
+                return createToken(claims.getBody().get("sub").toString(), "access");
+            }
+        }catch (Exception e) {
+
+            //refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
+            return null;
+
+        }
+
+        return null;
+    }
+
+    public static String createToken(String userId, String type){
+        Date expires = new Date();
+        String key = "";
+        if(type.equals("access")){
+            expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+            key = secretKey;
+        } else if(type.equals("refresh")) {
+            expires = JwtTokenUtil.getTokenExpiration(refreshexpirationTime);
+            key = refreshsecretKey;
+        }
+
+        //Token 발행
+        String token =  JWT.create()
+                .withSubject(userId)
+                .withExpiresAt(expires)
+                .withIssuer(ISSUER)
+                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+                .sign(Algorithm.HMAC512(key.getBytes()));
+
+        return token;
     }
 }

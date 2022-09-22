@@ -1,2 +1,4 @@
-package com.gamul.api.controller;public class MyRecipeController {
+package com.gamul.api.controller;
+
+public class MyRecipeController {
 }
