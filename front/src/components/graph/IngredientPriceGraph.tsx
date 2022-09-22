@@ -5,7 +5,7 @@ import moment from "moment";
 
 interface IProps {
   priceTransitionInfo: PriceTransitionInfo;
-  inputWidth: number;
+  inputWidth: any;
   inputHeight: number;
 }
 
@@ -45,7 +45,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
               show: false,
             },
           },
-          colors: ["#77B6EA", "#545454"],
+          colors: ["#4411AA", "#163ED9"],
           dataLabels: {
             enabled: true,
           },

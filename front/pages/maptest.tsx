@@ -15,10 +15,20 @@ interface IProps {
 
 const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
   const [storeId, setStoreId] = useState(0);
+  const [stores, setStores] = useState<OfflineMartInfo[]>(storeInfo);
+  const [lat, setLat] = useState(0);
 
   const storeIdHandler = (storeid: number) => {
     setStoreId(storeid);
   };
+
+  const storesHandler = (marts: OfflineMartInfo[]) => {
+    setStores(marts);
+  }
+
+  const latHandler = (latitude: number) => {
+    setLat(latitude);
+  }
 
   const location: any = useGeolocation();
 
@@ -26,16 +36,19 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
     <Box style={{ padding: 15 }}>
       <h2>주변 마트</h2>
       <OfflineMartMap
+        ingredientId={ingredientInfo.ingredient_id}
         latitude={location.coordinates.lat}
         longitude={location.coordinates.lng}
-        stores={storeInfo}
         onSetStoreId={storeIdHandler}
+        onSetStores={storesHandler}
+        onSetLat={latHandler}
       />
       <h3>마트 이름</h3>
       <h3>{storeId}</h3>
+      <h3>{lat}</h3>
       <br />
       <br />
-      <Box sx={{ width: 370 }}>
+      <Box sx={{ width: "90%" }}>
         <OfflineMartInfoItem ingredientInfo={ingredientInfo} />
         <OfflineMartInfoItem offlineMartInfo={storeInfo[0]} ingredientInfo={ingredientInfo} />
       </Box>
@@ -48,8 +61,8 @@ export default Maptest;
 export async function getServerSideProps() {
   const apiClient = ApiClient.getInstance();
   // 실 구현시 useEffect로 변환 가능성
-  const storeInfo: OfflineMartInfo[] = await apiClient.getOfflineMartList(1, 1, 1, 1, 1);
-  const ingredientInfo: IngredientInfo = await (await apiClient.getIngredientDetailInfo(1)).ingredient_info;
+  const storeInfo: OfflineMartInfo[] = await apiClient.getOfflineMartList(1, 1, 1, 1, 1, 1, 1);
+  const ingredientInfo: IngredientInfo = (await apiClient.getIngredientDetailInfo(1)).ingredient_info;
   return {
     props: {
       storeInfo,

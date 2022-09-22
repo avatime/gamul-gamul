@@ -1,6 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import React, { FC, ReactNode } from "react";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import AddIcon from '@mui/icons-material/Add';
 
 interface IProps {
   title: string;
@@ -8,9 +9,10 @@ interface IProps {
   style?: object;
   onClickMore?: () => void;
   totalPrice?: number;
+  addPlus?: boolean;
 }
 
-export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore, totalPrice }) => {
+export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore, totalPrice, addPlus }) => {
   return (
     <Box
       display="flex"
@@ -24,9 +26,14 @@ export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore,
       <Box display="flex" alignItems="center">
         <p style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>{title}</p>
         <Box flex="1" />
-        {onClickMore && (
+        {onClickMore && !addPlus && (
           <IconButton onClick={onClickMore}>
             <KeyboardArrowRightIcon />
+          </IconButton>
+        )}
+        {onClickMore && addPlus && (
+          <IconButton onClick={onClickMore}>
+            <AddIcon />
           </IconButton>
         )}
         {totalPrice && (

@@ -1,20 +1,33 @@
 import styled from "@emotion/styled";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { OfflineMartInfo } from "../../apis/responses/offlineMartInfo";
+import { ApiClient } from "../../apis/apiClient";
 
 declare global {
-    interface Window {
-      kakao: any;
-    }
+  interface Window {
+    kakao: any;
   }
-
-interface MapProps {
-  latitude: any;
-  longitude: any;
-  stores : any;
-  onSetStoreId : Function;
 }
 
-function OfflineMartMap({ latitude, longitude, stores, onSetStoreId }: MapProps) {
+interface MapProps {
+  ingredientId: number;
+  latitude: any;
+  longitude: any;
+  onSetStoreId: Function;
+  onSetStores: Function;
+}
+
+function OfflineMartMap({
+  ingredientId,
+  latitude,
+  longitude,
+  onSetStoreId,
+  onSetStores,
+}: MapProps) {
+  const apiClient = ApiClient.getInstance();
+  const [stores, setStores] = useState<OfflineMartInfo[]>();
+  const markers: any[] = [];
+
   useEffect(() => {
     const mapScript = document.createElement("script");
 
@@ -23,12 +36,17 @@ function OfflineMartMap({ latitude, longitude, stores, onSetStoreId }: MapProps)
 
     document.head.appendChild(mapScript);
 
-    function makeTest(storeid: number) {
-      return function() {
+    function setStoreId(storeid: number) {
+      return function () {
         onSetStoreId(storeid);
         console.log(storeid);
       };
-  }
+    }
+
+    function changeStores(stores: OfflineMartInfo[]) {
+      onSetStores(stores);
+      console.log(stores);
+    }
 
     const onLoadKakaoMap = () => {
       window.kakao.maps.load(() => {
@@ -42,58 +60,109 @@ function OfflineMartMap({ latitude, longitude, stores, onSetStoreId }: MapProps)
         // map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
 
         //map.setZoomable(false);
-                
-        const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
 
-        const imageSrc = './non_select_temp.png',
-        imageSize = new window.kakao.maps.Size(30, 30),
-        imageOption = {offset: new window.kakao.maps.Point(0, 0)};
+        const earlyStores = async () => {
+          var center = map.getCenter();
+          var bounds = map.getBounds();
+
+          setStores(
+            await apiClient.getOfflineMartList(
+              ingredientId,
+              bounds.qa,
+              bounds.ha,
+              bounds.pa,
+              bounds.oa,
+              center.getLat(),
+              center.getLng()
+            )
+          );
+        };
+
+        async function getInfo() {
+          // 지도의 현재 중심좌표를 얻어옵니다
+          var center = map.getCenter();
+
+          // 지도의 현재 영역을 얻어옵니다 남서(qa, ha) 북동(pa, oa)
+          var bounds = map.getBounds();
+
+          const store = await apiClient.getOfflineMartList(
+            ingredientId,
+            bounds.qa,
+            bounds.ha,
+            bounds.pa,
+            bounds.oa,
+            center.getLat(),
+            center.getLng()
+          );
+
+          changeStores(store);
+          makeMarker();
+        }
+
+        earlyStores();
+
+        window.kakao.maps.event.addListener(map, "dragend", getInfo);
+        window.kakao.maps.event.addListener(map, "zoom_changed", getInfo);
+
+        const imageSrc = "./non_select_temp.png",
+          imageSize = new window.kakao.maps.Size(30, 30),
+          imageOption = { offset: new window.kakao.maps.Point(0, 0) };
 
         const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-        const imageSrc2 = './select_temp.png',
-        imageSize2 = new window.kakao.maps.Size(30, 30),
-        imageOption2 = {offset: new window.kakao.maps.Point(0, 0)};
+        const imageSrc2 = "./select_temp.png",
+          imageSize2 = new window.kakao.maps.Size(30, 30),
+          imageOption2 = { offset: new window.kakao.maps.Point(0, 0) };
 
         const clickImage = new window.kakao.maps.MarkerImage(imageSrc2, imageSize2, imageOption2);
 
-        var selectedMarker : any = null;
+        var selectedMarker: any = null;
 
-        for(var i = 0; i<stores.length;i++) {
-          const markerPosition = new window.kakao.maps.LatLng(stores[i].latitude, stores[i].longitude);
-          const marker = new window.kakao.maps.Marker({
-          position: markerPosition,
-          image: markerImage,
-        });
-        marker.markerImage = markerImage;
+        const makeMarker = () => {
+          markers?.forEach((v) => {
+            v.setMap(null)
+          })
+          markers.length = 0;
 
-        var customOverlay = new window.kakao.maps.CustomOverlay({
-          map: map,
-          content: `<div style="padding:0 5px;background:#fff;font-size:10px;">${stores[i].name}</div>`, 
-          position: new window.kakao.maps.LatLng(stores[i].latitude, stores[i].longitude), // 커스텀 오버레이를 표시할 좌표
-          xAnchor: 0, // 컨텐츠의 x 위치
-          yAnchor: -2.35 // 컨텐츠의 y 위치
-        });
+          stores?.forEach((v) => {
+            const markerPosition = new window.kakao.maps.LatLng(v.latitude, v.longitude);
+            const marker = new window.kakao.maps.Marker({
+              position: markerPosition,
+              image: markerImage,
+            });
+            marker.markerImage = markerImage;
+    
+            var customOverlay = new window.kakao.maps.CustomOverlay({
+              map: map,
+              content: `<div style="padding:0 5px;background:#fff;font-size:10px;">${v.name}</div>`,
+              position: new window.kakao.maps.LatLng(v.latitude, v.longitude), // 커스텀 오버레이를 표시할 좌표
+              xAnchor: 0, // 컨텐츠의 x 위치
+              yAnchor: -2.35, // 컨텐츠의 y 위치
+            });
+            
+            markers.push(marker);
+            marker.setMap(map);
+            customOverlay.setMap(map);
+    
+            window.kakao.maps.event.addListener(marker, "click", setStoreId(v.store_id));
+    
+            window.kakao.maps.event.addListener(marker, "click", function () {
+              if (!selectedMarker || selectedMarker !== marker) {
+                // 클릭된 마커 객체가 null이 아니면
+                // 클릭된 마커의 이미지를 기본 이미지로 변경하고
+                !!selectedMarker && selectedMarker.setImage(selectedMarker.markerImage);
+    
+                // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
+                marker.setImage(clickImage);
+              }
+    
+              // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
+              selectedMarker = marker;
+            });
+          });
+        };
 
-        marker.setMap(map);
-        customOverlay.setMap(map);
-
-        window.kakao.maps.event.addListener(marker, 'click', makeTest(stores[i].store_id));
-        window.kakao.maps.event.addListener(marker, 'click', function() {
-          if (!selectedMarker || selectedMarker !== marker) {
-
-            // 클릭된 마커 객체가 null이 아니면
-            // 클릭된 마커의 이미지를 기본 이미지로 변경하고
-            !!selectedMarker && selectedMarker.setImage(selectedMarker.markerImage);
-
-            // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
-            marker.setImage(clickImage);
-        }
-
-        // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
-        selectedMarker = marker;
-        });
-        }
+        makeMarker();
 
       });
     };
@@ -102,13 +171,12 @@ function OfflineMartMap({ latitude, longitude, stores, onSetStoreId }: MapProps)
     return () => mapScript.removeEventListener("load", onLoadKakaoMap);
   }, [latitude, longitude]);
 
-  return (
-    <MapContainer id="map" />
-  );
+  return <MapContainer id="map" />;
 }
 
 const MapContainer = styled.div`
-width: 370px; height:300px;
+  width: "90%";
+  height: 300px;
 `;
 
 export default OfflineMartMap;
