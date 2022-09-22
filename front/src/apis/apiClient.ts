@@ -73,7 +73,9 @@ export class ApiClient
     southWestLatitude: number,
     southWestLongitude: number,
     northEastLatitude: number,
-    northEastLongitude: number
+    northEastLongitude: number,
+    latitude: number,
+    longitude: number
   ): Promise<OfflineMartInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getOfflineMartList), delay));
   }
