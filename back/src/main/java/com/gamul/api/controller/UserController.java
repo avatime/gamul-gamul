@@ -63,4 +63,20 @@ public class UserController {
 
         return ResponseEntity.status(200).body("success");
     }
+
+    @DeleteMapping("/{userName}")
+    @ApiOperation(value = "회원 탈퇴", notes = "<strong>아이디</strong>를 탈퇴 시킨다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "탈퇴 완료"),
+            @ApiResponse(code = 404, message = "존재하지 않는 id"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> signOut(@PathVariable String userName){
+        try{
+            userService.deleteUser(userService.getUserByUsername(userName));
+        } catch (Exception e){
+            return ResponseEntity.status(404).body("존재하지 않는 id");
+        }
+        return ResponseEntity.status(200).body("success");
+    }
 }
