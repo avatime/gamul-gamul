@@ -6,7 +6,7 @@ import com.gamul.db.entity.User;
 public interface UserService {
     User createUser(UserRegisterPostReq userRegisterPostReq) throws Exception;
     boolean findUsername(String username) throws Exception;
-    User getUserByUsername(String username);
+    User getUserByUsername(String username) throws Exception;
     User saveUser(User user);
     void deleteUser(User user);
 }
