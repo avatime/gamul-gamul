@@ -10,6 +10,7 @@ import { HeaderBar } from '../src/components/HeaderBar';
 import { Navbar } from '../src/components/Navbar';
 import { MyRecipeInfo } from '../src/apis/responses/myRecipeInfo';
 import { MyRecipeComp } from '../src/components/templates/MyRecipeComp';
+import { OfflineMartComp } from '../src/components/templates/OfflineMartComp';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -25,9 +26,10 @@ const GraphTest:NextPage<IProps> = ({ingredientDetailInfo, myRecipeList}) => {
   return (
     <Box className="page-background">
       <Mobile>
-        <HeaderBar badgeContent={6}/>
+        <HeaderBar badgeContent={6} onClickSearch={test}/>
         <Box className={styles.PageforMobile}>
         <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"95%"} inputHeight={300}></IngredientPriceComp>
+        <OfflineMartComp ingredientInfo={ingredientDetailInfo.ingredient_info} />
         <MyRecipeComp myRecipeList={myRecipeList} />
         <Navbar activeIndex={1} />
         </Box>
