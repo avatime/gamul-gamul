@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### generated ###
+**/generated/com/gamul/db/entity/
+/ssafy-web.log**
