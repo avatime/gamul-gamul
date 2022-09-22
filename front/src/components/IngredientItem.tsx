@@ -34,6 +34,7 @@ export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete
     onDelete?.();
     e.stopPropagation();
   };
+  const avatarSize = direction === "row" ? 42 : 60;
   return (
     <ItemButton
       style={{
@@ -51,8 +52,8 @@ export const IngredientItem: FC<IProps> = ({ direction, ingredientInfo, onDelete
         justifyContent="center"
         flexDirection={direction}
       >
-        <Box position="relative" style={{ margin: direction == "column" ? 3 : 20 }}>
-          <Avatar style={{ width: 60, height: 60 }} />
+        <Box position="relative" style={{ margin: direction == "column" ? 3 : 12 }}>
+          <Avatar style={{ width: avatarSize, height: avatarSize }} />
           {onDelete && (
             <IconButton
               style={{ position: "absolute", right: -20, top: -15 }}

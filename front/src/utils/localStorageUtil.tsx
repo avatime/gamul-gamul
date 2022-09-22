@@ -1,38 +1,37 @@
-export type SearchType = "keyword" | "ingredient" | "recipe";
+type RecentType = "ingredient" | "recipe";
 
-export function saveSearchLocalStorage<T>(searchType: SearchType, newItem: T) {
-  const item = localStorage.getItem(searchType);
+export interface RecentSearch {
+  recentType: RecentType;
+  id: number;
+  name: string;
+}
+
+const key = "recentSearch";
+
+export function saveRecentSearchLocalStorage(recentType: RecentType, id: number, name: string) {
+  const newItem: RecentSearch = {
+    recentType,
+    id,
+    name,
+  };
+  const item = localStorage.getItem(key);
   if (item) {
-    const origin = JSON.parse(item) as T[];
-    if (origin.includes(newItem)) {
-      origin.splice(origin.indexOf(newItem), 1);
+    const origin = JSON.parse(item) as RecentSearch[];
+    const idx = origin.findIndex((v) => v.id === id);
+    if (0 <= idx) {
+      origin.splice(idx, 1);
     }
     origin.splice(0, 0, newItem);
-    localStorage.setItem(searchType, JSON.stringify(origin));
+    localStorage.setItem(key, JSON.stringify(origin));
   } else {
-    localStorage.setItem(searchType, JSON.stringify([newItem]));
+    localStorage.setItem(key, JSON.stringify([newItem]));
   }
 }
 
-export function deleteSearchLocalStorage<T>(searchType: SearchType, newItem: T) {
-  const item = localStorage.getItem(searchType);
+export function getRecentSearchLocalStorage<T>(): T[] {
+  const item = localStorage.getItem(key);
   if (item) {
-    const origin = JSON.parse(item) as T[];
-    if (origin.includes(newItem)) {
-      origin.splice(origin.indexOf(newItem), 1);
-    }
-    localStorage.setItem(searchType, JSON.stringify(origin));
-  }
-}
-
-export function getSearchLocalStorage<T>(
-  searchType: SearchType,
-  filter: (item: T) => boolean
-): T[] {
-  const item = localStorage.getItem(searchType);
-  if (item) {
-    const origin = JSON.parse(item) as T[];
-    return origin.filter(filter);
+    return JSON.parse(item) as T[];
   }
 
   return [];

@@ -35,11 +35,12 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
     onDelete?.();
     e.stopPropagation();
   };
+  const avatarSize = direction === "row" ? 42 : 60;
   return (
     <ItemButton
       style={{
         borderRadius: 10,
-        padding: direction == "column" ? 20 : 0,
+        padding: direction == "column" ? 15 : 0,
         width: direction === "row" ? "100%" : "auto",
         visibility: recipeInfo ? "visible" : "hidden",
       }}
@@ -52,8 +53,8 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
         justifyContent="center"
         flexDirection={direction}
       >
-        <Box position="relative" style={{ margin: direction == "column" ? 3 : 20 }}>
-          <Avatar style={{ width: 60, height: 60 }} src={recipeInfo?.image_path} />
+        <Box position="relative" style={{ margin: direction === "column" ? 3 : 12 }}>
+          <Avatar style={{ width: avatarSize, height: avatarSize }} src={recipeInfo?.image_path} />
           {onDelete && (
             <IconButton
               style={{ position: "absolute", right: -20, top: -15 }}
@@ -68,7 +69,7 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
 
         <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>{recipeInfo?.name || "이름"}</p>
         <Box flex={1} />
-        {direction === "row" && <p style={{ fontSize: 8 }}>{recipeInfo?.desc || "설명"}</p>}
+        {direction === "row" && <p style={{ fontSize: 8, marginRight: "12px" }}>{recipeInfo?.desc || "설명"}</p>}
       </Box>
     </ItemButton>
   );
