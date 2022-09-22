@@ -1,5 +1,6 @@
 package com.gamul.api.controller;
 
+import com.gamul.api.request.RefreshTokenPostReq;
 import com.gamul.api.request.UserLoginPostReq;
 import com.gamul.api.response.UserLoginPostRes;
 import com.gamul.api.service.UserService;
@@ -50,6 +51,13 @@ public class AuthController {
             return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", token));
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> validateRefreshToken(@RequestBody @ApiParam(value="토큰 정보", required = true) RefreshTokenPostReq refreshTokenPostReq){
+        String refreshToken = refreshTokenPostReq.getRefreshToken();
+
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
     }
 }
