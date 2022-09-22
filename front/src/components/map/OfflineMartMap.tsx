@@ -45,7 +45,6 @@ function OfflineMartMap({
 
     function changeStores(stores: OfflineMartInfo[]) {
       onSetStores(stores);
-      console.log(stores);
     }
 
     const onLoadKakaoMap = () => {

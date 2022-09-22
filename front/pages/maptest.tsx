@@ -16,7 +16,6 @@ interface IProps {
 const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
   const [storeId, setStoreId] = useState(0);
   const [stores, setStores] = useState<OfflineMartInfo[]>(storeInfo);
-  const [lat, setLat] = useState(0);
 
   const storeIdHandler = (storeid: number) => {
     setStoreId(storeid);
@@ -24,10 +23,6 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
 
   const storesHandler = (marts: OfflineMartInfo[]) => {
     setStores(marts);
-  }
-
-  const latHandler = (latitude: number) => {
-    setLat(latitude);
   }
 
   const location: any = useGeolocation();
@@ -41,11 +36,9 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
         longitude={location.coordinates.lng}
         onSetStoreId={storeIdHandler}
         onSetStores={storesHandler}
-        onSetLat={latHandler}
       />
       <h3>마트 이름</h3>
       <h3>{storeId}</h3>
-      <h3>{lat}</h3>
       <br />
       <br />
       <Box sx={{ width: "90%" }}>
