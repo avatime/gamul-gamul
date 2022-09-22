@@ -39,3 +39,6 @@ out/
 ### generated ###
 **/generated/com/gamul/db/entity/
 /ssafy-web.log**
+
+### properties ###
+back/scr/main/resources/application.properties

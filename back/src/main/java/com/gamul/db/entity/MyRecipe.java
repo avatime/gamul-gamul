@@ -26,6 +26,10 @@ public class MyRecipe extends BaseEntity{
     @Column(nullable = false)
     private String name;
 
+    @Column
+    @JsonProperty("image_url")
+    private String imageURL;
+
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
