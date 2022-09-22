@@ -1,16 +1,14 @@
 import { Box, List } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
-import { getRecentSearchLocalStorage, RecentSearch } from "../../utils/localStorageUtil";
+import React, { FC } from "react";
+import { RecentSearch } from "../../utils/localStorageUtil";
 import { CardContainer } from "../CardContainer";
 import { RecentSearchItem } from "../RecentSearchItem";
 
-interface IProps {}
+interface IProps {
+  recentList: RecentSearch[];
+}
 
-export const RecentSearchComp: FC<IProps> = (props) => {
-  const [recentList, setRecentList] = useState<RecentSearch[]>([]);
-  useEffect(() => {
-    setRecentList(getRecentSearchLocalStorage<RecentSearch>());
-  }, []);
+export const RecentSearchComp: FC<IProps> = ({ recentList }) => {
   return (
     <CardContainer
       title="최근"

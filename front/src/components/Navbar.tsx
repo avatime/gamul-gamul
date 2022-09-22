@@ -1,5 +1,5 @@
 import { BottomNavigation, Box, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Desktop } from "./Desktop";
 import { Mobile } from "./Mobile";
 import { Tablet } from "./Tablet";

@@ -7,12 +7,14 @@ import { Tablet } from "../Tablet";
 import { Mobile } from "../Mobile";
 import { SearchResultComp } from "./SearchResultComp";
 import { RecentSearchComp } from "./RecentSearchComp";
+import { getRecentSearchLocalStorage, RecentSearch } from "../../utils/localStorageUtil";
 
 interface IProps {
+  showSearch: boolean;
   onCloseSearch: () => void;
 }
 
-export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
+export const SearchComp: FC<IProps> = ({ showSearch, onCloseSearch }) => {
   const router = useRouter();
   const keyword = router.query.searchKeyword as string;
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -30,6 +32,11 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
     onCloseSearch();
     setSearchKeyword("");
   };
+
+  const [recentList, setRecentList] = useState<RecentSearch[]>([]);
+  useEffect(() => {
+    setRecentList(getRecentSearchLocalStorage<RecentSearch>());
+  }, [showSearch]);
 
   return (
     <Box>
@@ -49,7 +56,7 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp recentList={recentList} />
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
@@ -67,13 +74,12 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
         >
           <SearchHeaderBar
             searchKeyword={searchKeyword}
-            onSearch={() => onSearch(searchKeyword)}
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp recentList={recentList} />
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
@@ -90,13 +96,12 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
         >
           <SearchHeaderBar
             searchKeyword={searchKeyword}
-            onSearch={() => onSearch(searchKeyword)}
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp recentList={recentList}/>
             ) : (
               <SearchResultComp searchKeyword={searchKeyword} />
             )}
