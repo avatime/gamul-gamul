@@ -7,4 +7,5 @@ public interface UserService {
     User createUser(UserRegisterPostReq userRegisterPostReq) throws Exception;
     boolean findUsername(String username) throws Exception;
     User getUserByUsername(String username);
+    User saveUser(User user);
 }

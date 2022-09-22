@@ -4,6 +4,7 @@ import com.gamul.api.request.UserLoginPostReq;
 import com.gamul.api.response.UserLoginPostRes;
 import com.gamul.api.service.UserService;
 import com.gamul.common.util.JwtTokenUtil;
+import com.gamul.common.util.Token;
 import com.gamul.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,10 @@ public class AuthController {
         // 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
         if(passwordEncoder.matches(password, user.getPassword())) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-            return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(username)));
+            Token token = JwtTokenUtil.getToken(username);
+            user.setRefreshToken(token.getRefreshToken());
+            if(userService.saveUser(user) == null) return ResponseEntity.status(500).body(UserLoginPostRes.of(500, "Internal Server Error", null));
+            return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", token));
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));

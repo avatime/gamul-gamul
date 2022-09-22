@@ -31,7 +31,7 @@ public class MyRecipe extends BaseEntity{
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date updateTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     @PrePersist
