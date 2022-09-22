@@ -24,9 +24,10 @@ public class UserLoginPostRes extends BaseResponseBody {
         UserLoginPostRes res = new UserLoginPostRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setAccessToken(token.getAccessToken());
-        res.setRefreshToken(token.getRefreshToken());
-
+        if(token != null){
+            res.setAccessToken(token.getAccessToken());
+            res.setRefreshToken(token.getRefreshToken());
+        }
         return res;
     }
 }
