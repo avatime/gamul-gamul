@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { SearchResult } from "../../apis/responses/searchResult";
-import { CardContainer } from "../CardContainer";
 import { ApiClient } from "../../apis/apiClient";
 import { IngredientListComp } from "./IngredientListComp";
 import { RecipeListComp } from './RecipeListComp';

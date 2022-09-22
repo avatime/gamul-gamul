@@ -3,21 +3,15 @@ import React, { FC } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import styles from "../../styles/SearchHeaderBar.module.css";
 import SearchIcon from "@mui/icons-material/Search";
+import { DebounceInput } from "react-debounce-input";
 
 interface IProps {
   searchKeyword: string;
-  onSearch: () => void;
   onChange: (e: any) => void;
   onClickBack: () => void;
 }
 
-export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onSearch, onChange, onClickBack }) => {
-  const onEnter = (e: any) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onSearch();
-    }
-  };
+export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onChange, onClickBack }) => {
   return (
     <Box height="60px" display="flex" justifyContent="center" paddingX="15px">
       <Box
@@ -32,13 +26,14 @@ export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onSearch, onChange,
         marginTop="10px"
       >
         <SearchIcon color="success" style={{ width: "20px", height: "20px", margin: "8px" }} />
-        <input
-          autoFocus
+       
+        <DebounceInput
           className={styles.input}
-          type="text"
+          forceNotifyByEnter={true}
+          forceNotifyOnBlur={true}
           value={searchKeyword}
           onChange={onChange}
-          onKeyDown={onEnter}
+          debounceTimeout={300}
         />
       </Box>
       <IconButton onClick={onClickBack} style={{ height: "40px", marginTop: "10px" }}>
