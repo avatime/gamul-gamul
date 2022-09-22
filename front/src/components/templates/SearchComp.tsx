@@ -22,18 +22,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
     }
   }, [keyword]);
 
-  const onSearch = (searchKeyword: string) => {
-    if (!searchKeyword) {
-      return;
-    }
-
-    router.push({
-      pathname: "/search",
-      query: {
-        searchKeyword,
-      },
-    });
-  };
   const onChange = (keyword: string) => {
     setSearchKeyword(keyword);
   };
@@ -56,7 +44,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
         >
           <SearchHeaderBar
             searchKeyword={searchKeyword}
-            onSearch={() => onSearch(searchKeyword)}
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
