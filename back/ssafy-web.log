@@ -579,3 +579,655 @@
 2022-09-22 13:16:05.145  INFO 11392 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-09-22 13:16:05.147  INFO 11392 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2022-09-22 13:16:05.152  INFO 11392 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-09-22 15:03:02.398  INFO 21960 --- [restartedMain] com.gamul.BackApplication                : Starting BackApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 21960 (C:\Users\SSAFY\Desktop\gamul\S07P22A305\back\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\gamul\S07P22A305\back)
+2022-09-22 15:03:02.400  INFO 21960 --- [restartedMain] com.gamul.BackApplication                : No active profile set, falling back to 1 default profile: "default"
+2022-09-22 15:03:02.436  INFO 21960 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-09-22 15:03:02.436  INFO 21960 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-09-22 15:03:03.288  INFO 21960 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-09-22 15:03:03.343  INFO 21960 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 2 JPA repository interfaces.
+2022-09-22 15:03:03.468  WARN 21960 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.gamul]' package. Please check your configuration.
+2022-09-22 15:03:03.882  INFO 21960 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-09-22 15:03:03.889  INFO 21960 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-22 15:03:03.889  INFO 21960 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-09-22 15:03:03.985  INFO 21960 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-22 15:03:03.985  INFO 21960 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1548 ms
+2022-09-22 15:03:04.033 DEBUG 21960 --- [restartedMain] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
+2022-09-22 15:03:04.139  INFO 21960 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-09-22 15:03:04.209  INFO 21960 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-09-22 15:03:04.316  INFO 21960 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-09-22 15:03:04.395  INFO 21960 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-09-22 15:03:04.553  INFO 21960 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-09-22 15:03:04.563  INFO 21960 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2022-09-22 15:03:05.143  INFO 21960 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-09-22 15:03:05.150  INFO 21960 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:03:05.459  WARN 21960 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-09-22 15:03:05.508  WARN 21960 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+2022-09-22 15:03:05.508  INFO 21960 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:03:05.510  INFO 21960 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-09-22 15:03:05.513  INFO 21960 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-09-22 15:03:05.515  INFO 21960 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-09-22 15:03:05.524  INFO 21960 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-09-22 15:03:05.549 ERROR 21960 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295) [spring-boot-2.7.3.jar:2.7.3]
+	at com.gamul.BackApplication.main(BackApplication.java:10) [main/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_192]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_192]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_192]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_192]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) [spring-boot-devtools-2.7.3.jar:2.7.3]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 39 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:107) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(QueryExecutorMethodInterceptor.java:95) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.Iterator.forEachRemaining(Iterator.java:116) ~[na:1.8.0_192]
+	at java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1049) ~[na:1.8.0_192]
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:97) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.Optional.map(Optional.java:215) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:365) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:323) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:231) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.get(Lazy.java:115) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:329) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:144) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 49 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUserName(java.lang.String)! No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:96) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:119) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:259) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:93) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:103) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	... 71 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'name' found for type 'User' Traversed path: MyRecipe.user.
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:91) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:438) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:414) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:448) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:471) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:414) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:367) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:324) ~[na:1.8.0_192]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:349) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:332) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:384) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:385) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:89) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	... 75 common frames omitted
+
+2022-09-22 15:04:38.346  INFO 2956 --- [restartedMain] com.gamul.BackApplication                : Starting BackApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 2956 (C:\Users\SSAFY\Desktop\gamul\S07P22A305\back\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\gamul\S07P22A305\back)
+2022-09-22 15:04:38.348  INFO 2956 --- [restartedMain] com.gamul.BackApplication                : No active profile set, falling back to 1 default profile: "default"
+2022-09-22 15:04:38.387  INFO 2956 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-09-22 15:04:38.387  INFO 2956 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-09-22 15:04:39.235  INFO 2956 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-09-22 15:04:39.290  INFO 2956 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 2 JPA repository interfaces.
+2022-09-22 15:04:39.416  WARN 2956 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.gamul]' package. Please check your configuration.
+2022-09-22 15:04:39.846  INFO 2956 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-09-22 15:04:39.853  INFO 2956 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-22 15:04:39.853  INFO 2956 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-09-22 15:04:39.955  INFO 2956 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-22 15:04:39.955  INFO 2956 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1568 ms
+2022-09-22 15:04:40.010 DEBUG 2956 --- [restartedMain] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
+2022-09-22 15:04:40.114  INFO 2956 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-09-22 15:04:40.181  INFO 2956 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-09-22 15:04:40.293  INFO 2956 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-09-22 15:04:40.367  INFO 2956 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-09-22 15:04:40.516  INFO 2956 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-09-22 15:04:40.526  INFO 2956 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2022-09-22 15:04:41.046  INFO 2956 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-09-22 15:04:41.053  INFO 2956 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:04:41.352  WARN 2956 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-09-22 15:04:41.401  WARN 2956 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+2022-09-22 15:04:41.401  INFO 2956 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:04:41.403  INFO 2956 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-09-22 15:04:41.406  INFO 2956 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-09-22 15:04:41.407  INFO 2956 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-09-22 15:04:41.416  INFO 2956 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-09-22 15:04:41.442 ERROR 2956 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295) [spring-boot-2.7.3.jar:2.7.3]
+	at com.gamul.BackApplication.main(BackApplication.java:10) [main/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_192]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_192]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_192]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_192]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) [spring-boot-devtools-2.7.3.jar:2.7.3]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 39 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:107) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(QueryExecutorMethodInterceptor.java:95) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.Iterator.forEachRemaining(Iterator.java:116) ~[na:1.8.0_192]
+	at java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1049) ~[na:1.8.0_192]
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:97) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.Optional.map(Optional.java:215) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:365) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:323) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:231) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.get(Lazy.java:115) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:329) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:144) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 49 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.String)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:96) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:119) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:259) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:93) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:103) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	... 71 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:91) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:438) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:414) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:367) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:324) ~[na:1.8.0_192]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:349) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:332) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:384) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:385) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:89) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	... 75 common frames omitted
+
+2022-09-22 15:07:41.831  INFO 10228 --- [restartedMain] com.gamul.BackApplication                : Starting BackApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 10228 (C:\Users\SSAFY\Desktop\gamul\S07P22A305\back\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\gamul\S07P22A305\back)
+2022-09-22 15:07:41.833  INFO 10228 --- [restartedMain] com.gamul.BackApplication                : No active profile set, falling back to 1 default profile: "default"
+2022-09-22 15:07:41.912  INFO 10228 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-09-22 15:07:41.913  INFO 10228 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-09-22 15:07:43.104  INFO 10228 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-09-22 15:07:43.163  INFO 10228 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 2 JPA repository interfaces.
+2022-09-22 15:07:43.293  WARN 10228 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.gamul]' package. Please check your configuration.
+2022-09-22 15:07:43.724  INFO 10228 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-09-22 15:07:43.731  INFO 10228 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-22 15:07:43.731  INFO 10228 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-09-22 15:07:43.827  INFO 10228 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-22 15:07:43.827  INFO 10228 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1911 ms
+2022-09-22 15:07:43.874 DEBUG 10228 --- [restartedMain] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
+2022-09-22 15:07:43.979  INFO 10228 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-09-22 15:07:44.048  INFO 10228 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-09-22 15:07:44.154  INFO 10228 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-09-22 15:07:44.227  INFO 10228 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-09-22 15:07:44.371  INFO 10228 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-09-22 15:07:44.381  INFO 10228 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2022-09-22 15:07:44.895  INFO 10228 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-09-22 15:07:44.901  INFO 10228 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:07:45.200  WARN 10228 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-09-22 15:07:45.250  WARN 10228 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+2022-09-22 15:07:45.250  INFO 10228 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:07:45.252  INFO 10228 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-09-22 15:07:45.255  INFO 10228 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-09-22 15:07:45.257  INFO 10228 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-09-22 15:07:45.266  INFO 10228 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-09-22 15:07:45.291 ERROR 10228 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myRecipeController': Unsatisfied dependency expressed through field 'myRecipeService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.22.jar:5.3.22]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) [spring-boot-2.7.3.jar:2.7.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295) [spring-boot-2.7.3.jar:2.7.3]
+	at com.gamul.BackApplication.main(BackApplication.java:10) [main/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_192]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_192]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_192]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_192]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) [spring-boot-devtools-2.7.3.jar:2.7.3]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'MyRecipeService': Unsatisfied dependency expressed through field 'myRecipeRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:659) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myRecipeRepository' defined in com.gamul.db.repository.MyRecipeRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 39 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:107) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(QueryExecutorMethodInterceptor.java:95) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.Iterator.forEachRemaining(Iterator.java:116) ~[na:1.8.0_192]
+	at java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1049) ~[na:1.8.0_192]
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:97) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.Optional.map(Optional.java:215) ~[na:1.8.0_192]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:87) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:365) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:323) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:231) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.util.Lazy.get(Lazy.java:115) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:329) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:144) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.22.jar:5.3.22]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.22.jar:5.3.22]
+	... 49 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.gamul.db.repository.MyRecipeRepository.findAllByUsername(java.lang.Long)! No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:96) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:119) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:259) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:93) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:103) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	... 71 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'username' found for type 'MyRecipe'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:91) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:438) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:414) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:367) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:324) ~[na:1.8.0_192]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:349) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:332) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:384) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175) ~[na:1.8.0_192]
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471) ~[na:1.8.0_192]
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708) ~[na:1.8.0_192]
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:1.8.0_192]
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499) ~[na:1.8.0_192]
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:385) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96) ~[spring-data-commons-2.7.2.jar:2.7.2]
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:89) ~[spring-data-jpa-2.7.2.jar:2.7.2]
+	... 75 common frames omitted
+
+2022-09-22 15:08:24.138  INFO 22932 --- [restartedMain] com.gamul.BackApplication                : Starting BackApplication using Java 1.8.0_192 on DESKTOP-KVCQHCD with PID 22932 (C:\Users\SSAFY\Desktop\gamul\S07P22A305\back\build\classes\java\main started by SSAFY in C:\Users\SSAFY\Desktop\gamul\S07P22A305\back)
+2022-09-22 15:08:24.139  INFO 22932 --- [restartedMain] com.gamul.BackApplication                : No active profile set, falling back to 1 default profile: "default"
+2022-09-22 15:08:24.178  INFO 22932 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-09-22 15:08:24.178  INFO 22932 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-09-22 15:08:25.008  INFO 22932 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-09-22 15:08:25.067  INFO 22932 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 2 JPA repository interfaces.
+2022-09-22 15:08:25.199  WARN 22932 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.gamul]' package. Please check your configuration.
+2022-09-22 15:08:25.627  INFO 22932 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-09-22 15:08:25.633  INFO 22932 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-09-22 15:08:25.633  INFO 22932 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-09-22 15:08:25.725  INFO 22932 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-09-22 15:08:25.725  INFO 22932 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1547 ms
+2022-09-22 15:08:25.780 DEBUG 22932 --- [restartedMain] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
+2022-09-22 15:08:25.884  INFO 22932 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-09-22 15:08:25.951  INFO 22932 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-09-22 15:08:26.058  INFO 22932 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-09-22 15:08:26.130  INFO 22932 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-09-22 15:08:26.272  INFO 22932 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-09-22 15:08:26.282  INFO 22932 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2022-09-22 15:08:26.830  INFO 22932 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-09-22 15:08:26.837  INFO 22932 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-09-22 15:08:27.140  WARN 22932 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-09-22 15:08:27.421 DEBUG 22932 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 14 mappings in 'requestMappingHandlerMapping'
+2022-09-22 15:08:27.738  INFO 22932 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5d772147, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31b151c5, org.springframework.security.web.context.SecurityContextPersistenceFilter@11ec7029, org.springframework.security.web.header.HeaderWriterFilter@52bc09f, org.springframework.web.filter.CorsFilter@6bee2881, org.springframework.security.web.authentication.logout.LogoutFilter@4b38936c, com.gamul.common.auth.JwtAuthenticationFilter@2634ece2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@14bc75c6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1747e9b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@422d9c7a, org.springframework.security.web.session.SessionManagementFilter@788af6e1, org.springframework.security.web.access.ExceptionTranslationFilter@42d02444, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3f81dffd]
+2022-09-22 15:08:27.822  INFO 22932 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-09-22 15:08:27.826 DEBUG 22932 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2022-09-22 15:08:27.857 DEBUG 22932 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/swagger-ui/] in 'viewControllerHandlerMapping'
+2022-09-22 15:08:27.871 DEBUG 22932 --- [restartedMain] o.s.w.s.c.annotation.WebMvcConfigurer    : Default resource handling disabled
+2022-09-22 15:08:27.876 DEBUG 22932 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
+2022-09-22 15:08:27.883 DEBUG 22932 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2022-09-22 15:08:28.116 DEBUG 22932 --- [restartedMain] o.s.w.s.v.f.FreeMarkerConfigurer         : File system access not preferred: using SpringTemplateLoader
+2022-09-22 15:08:28.216  INFO 22932 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-09-22 15:08:28.380  INFO 22932 --- [restartedMain] com.gamul.BackApplication                : Started BackApplication in 4.554 seconds (JVM running for 5.409)
+2022-09-22 15:09:01.386  INFO 22932 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-09-22 15:09:01.386  INFO 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-09-22 15:09:01.387 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2022-09-22 15:09:01.387 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2022-09-22 15:09:01.387 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2022-09-22 15:09:01.389 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@4a32dbbd
+2022-09-22 15:09:01.389 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@1f4c7df4
+2022-09-22 15:09:01.389 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2022-09-22 15:09:01.390  INFO 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-09-22 15:09:01.415 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/", parameters={}
+2022-09-22 15:09:01.419 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ParameterizableViewController [view="forward:/swagger-ui/index.html"]
+2022-09-22 15:09:01.427 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.v.ContentNegotiatingViewResolver : Selected 'text/html' given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, application/signed-exchange;v=b3;q=0.9, */*;q=0.8]
+2022-09-22 15:09:01.427 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : View name 'forward:', model {}
+2022-09-22 15:09:01.428 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.servlet.view.InternalResourceView  : Forwarding to [/swagger-ui/index.html]
+2022-09-22 15:09:01.429 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : "FORWARD" dispatch for GET "/swagger-ui/index.html", parameters={}
+2022-09-22 15:09:01.431 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.442 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Exiting from "FORWARD" dispatch, status 200
+2022-09-22 15:09:01.445 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.463 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.css?v=3.0.0", parameters={masked}
+2022-09-22 15:09:01.464 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.468 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.468 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui.css?v=3.0.0", parameters={masked}
+2022-09-22 15:09:01.469 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-standalone-preset.js?v=3.0.0", parameters={masked}
+2022-09-22 15:09:01.470 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.470 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.js?v=3.0.0", parameters={masked}
+2022-09-22 15:09:01.470 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.470 DEBUG 22932 --- [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-bundle.js?v=3.0.0", parameters={masked}
+2022-09-22 15:09:01.471 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.471 DEBUG 22932 --- [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2022-09-22 15:09:01.478 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.480 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.492 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.521 DEBUG 22932 --- [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.617 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/ui", parameters={}
+2022-09-22 15:09:01.618 DEBUG 22932 --- [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#uiConfiguration()
+2022-09-22 15:09:01.628 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2022-09-22 15:09:01.654 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.UiConfiguration@3e36d9ed]
+2022-09-22 15:09:01.668 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.672 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/security", parameters={}
+2022-09-22 15:09:01.673 DEBUG 22932 --- [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#securityConfiguration()
+2022-09-22 15:09:01.673 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2022-09-22 15:09:01.677 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.SecurityConfiguration@d7f421d]
+2022-09-22 15:09:01.678 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.681 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources", parameters={}
+2022-09-22 15:09:01.682 DEBUG 22932 --- [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#swaggerResources()
+2022-09-22 15:09:01.683 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2022-09-22 15:09:01.685 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[springfox.documentation.swagger.web.SwaggerResource@b281f2e]]
+2022-09-22 15:09:01.688 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:01.714 DEBUG 22932 --- [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/v2/api-docs", parameters={}
+2022-09-22 15:09:01.714 DEBUG 22932 --- [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)
+2022-09-22 15:09:01.789 DEBUG 22932 --- [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, */*] and supported [application/json, application/hal+json]
+2022-09-22 15:09:01.790 DEBUG 22932 --- [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.spring.web.json.Json@2ca1f5b3]
+2022-09-22 15:09:01.791 DEBUG 22932 --- [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:17.906 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [POST /api/v1/users/register, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"96", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"]]
+2022-09-22 15:09:17.906 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/users/register", parameters={}
+2022-09-22 15:09:17.906 DEBUG 22932 --- [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.UserController#register(UserRegisterPostReq)
+2022-09-22 15:09:17.931 DEBUG 22932 --- [http-nio-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [UserRegisterPostReq(userName=gamulchi, password=gamul)]
+2022-09-22 15:09:18.068 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:09:18.068 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.gamul.common.model.response.BaseResponseBody@59ffbe24]
+2022-09-22 15:09:18.069 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:09:18.069 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [POST /api/v1/users/register, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"96", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"], payload={
+  "message": "정상",
+  "password": "gamul",
+  "statusCode": 200,
+  "user_name": "gamulchi"
+}]
+2022-09-22 15:39:52.783 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.f.CommonsRequestLoggingFilter      : Before request [POST /api/v1/users/register, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"92", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"]]
+2022-09-22 15:39:52.783 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/users/register", parameters={}
+2022-09-22 15:39:52.784 DEBUG 22932 --- [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.UserController#register(UserRegisterPostReq)
+2022-09-22 15:39:52.784 DEBUG 22932 --- [http-nio-8080-exec-9] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [UserRegisterPostReq(userName=test, password=gamul)]
+2022-09-22 15:39:52.875 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:39:52.875 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.gamul.common.model.response.BaseResponseBody@317b27c3]
+2022-09-22 15:39:52.875 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:39:52.876 DEBUG 22932 --- [http-nio-8080-exec-9] o.s.w.f.CommonsRequestLoggingFilter      : After request [POST /api/v1/users/register, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"92", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"], payload={
+  "message": "정상",
+  "password": "gamul",
+  "statusCode": 200,
+  "user_name": "test"
+}]
+2022-09-22 15:40:03.149 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.f.CommonsRequestLoggingFilter      : Before request [POST /api/v1/recipes/my, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"171", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"]]
+2022-09-22 15:40:03.150 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/recipes/my", parameters={}
+2022-09-22 15:40:03.150 DEBUG 22932 --- [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#myrecipe(MyRecipeRegisterPostReq)
+2022-09-22 15:40:03.164 DEBUG 22932 --- [http-nio-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.gamul.api.request.MyRecipeRegisterPostReq@1e1ee6e]
+2022-09-22 15:40:03.271 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:40:03.271 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["가물가물"]
+2022-09-22 15:40:03.272 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:40:03.272 DEBUG 22932 --- [http-nio-8080-exec-10] o.s.w.f.CommonsRequestLoggingFilter      : After request [POST /api/v1/recipes/my, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"171", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"], payload={
+  "image_data_url": "string",
+  "ingredient_list": [
+    {
+      "ingredient_id": 0,
+      "quantity": 0
+    }
+  ],
+  "my_recipe_name": "string",
+  "user_name": "test"
+}]
+2022-09-22 15:40:08.542 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.f.CommonsRequestLoggingFilter      : Before request [DELETE /api/v1/users/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:40:08.542 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : DELETE "/api/v1/users/test", parameters={}
+2022-09-22 15:40:08.543 DEBUG 22932 --- [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.UserController#signOut(String)
+2022-09-22 15:40:08.570 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:40:08.570 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["success"]
+2022-09-22 15:40:08.571 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:40:08.571 DEBUG 22932 --- [http-nio-8080-exec-7] o.s.w.f.CommonsRequestLoggingFilter      : After request [DELETE /api/v1/users/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:41:45.857 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /api/v1/recipes/my/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:41:45.857 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/recipes/my/test", parameters={}
+2022-09-22 15:41:45.858 DEBUG 22932 --- [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#showMyrecipeList(String)
+2022-09-22 15:41:45.861 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:41:45.861 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["서버 에러"]
+2022-09-22 15:41:45.861 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2022-09-22 15:41:45.861 DEBUG 22932 --- [http-nio-8080-exec-1] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /api/v1/recipes/my/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:01.196 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /api/v1/recipes/my/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:01.196 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/recipes/my/test", parameters={}
+2022-09-22 15:42:01.196 DEBUG 22932 --- [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#showMyrecipeList(String)
+2022-09-22 15:42:01.199 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:42:01.199 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["서버 에러"]
+2022-09-22 15:42:01.199 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2022-09-22 15:42:01.200 DEBUG 22932 --- [http-nio-8080-exec-5] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /api/v1/recipes/my/test, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:08.076 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /api/v1/recipes/my/gamulchi, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:08.076 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/recipes/my/gamulchi", parameters={}
+2022-09-22 15:42:08.077 DEBUG 22932 --- [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#showMyrecipeList(String)
+2022-09-22 15:42:08.087 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:42:08.087 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2022-09-22 15:42:08.087 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:42:08.088 DEBUG 22932 --- [http-nio-8080-exec-2] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /api/v1/recipes/my/gamulchi, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:43.434 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.w.f.CommonsRequestLoggingFilter      : Before request [POST /api/v1/recipes/my, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"184", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"]]
+2022-09-22 15:42:43.434 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/api/v1/recipes/my", parameters={}
+2022-09-22 15:42:43.434 DEBUG 22932 --- [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#myrecipe(MyRecipeRegisterPostReq)
+2022-09-22 15:42:43.434 DEBUG 22932 --- [http-nio-8080-exec-6] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.gamul.api.request.MyRecipeRegisterPostReq@16a82cea]
+2022-09-22 15:42:43.443 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'text/plain', given [*/*] and supported [text/plain, */*, text/plain, */*, application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:42:43.443 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing ["가물가물"]
+2022-09-22 15:42:43.444 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:42:43.444 DEBUG 22932 --- [http-nio-8080-exec-6] o.s.w.f.CommonsRequestLoggingFilter      : After request [POST /api/v1/recipes/my, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", content-length:"184", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", origin:"http://localhost:8080", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5", Content-Type:"application/json;charset=UTF-8"], payload={
+  "image_data_url": "string",
+  "ingredient_list": [
+    {
+      "ingredient_id": 0,
+      "quantity": 0
+    }
+  ],
+  "my_recipe_name": "가물치구이",
+  "user_name": "gamulchi"
+}]
+2022-09-22 15:42:46.271 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /api/v1/recipes/my/gamulchi, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 15:42:46.271 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/v1/recipes/my/gamulchi", parameters={}
+2022-09-22 15:42:46.272 DEBUG 22932 --- [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.gamul.api.controller.MyRecipeController#showMyrecipeList(String)
+2022-09-22 15:42:46.278 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+2022-09-22 15:42:46.278 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[com.gamul.api.response.MyRecipeInfoRes@f193691]]
+2022-09-22 15:42:46.279 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2022-09-22 15:42:46.280 DEBUG 22932 --- [http-nio-8080-exec-3] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /api/v1/recipes/my/gamulchi, client=0:0:0:0:0:0:0:1, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"", accept:"*/*", sec-ch-ua-mobile:"?0", user-agent:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"JSESSIONID=3C38435F5E1882E906B3B2160DB09FF5"]]
+2022-09-22 16:01:33.674  WARN 22932 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m36s593ms333µs501ns).
