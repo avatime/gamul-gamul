@@ -81,7 +81,7 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
   }
   async getBasketIngredientList(userName: string): Promise<IngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getBasketIngredientList), delay));
+    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
   }
   async getRecipeList(
     orderType: RecipeOrderType,

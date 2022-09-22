@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { IngredientInfo } from "../../apis/responses/ingredientInfo";
@@ -6,10 +6,12 @@ import { CardContainer } from "../CardContainer";
 import { CarouselContainer } from "../CarouselContainer";
 import { IngredientItem } from "../IngredientItem";
 
-type Type = "row" | "column";
+type ScrollDirection = "horizon" | "vertical";
+type Direction = "row" | "column";
 
 interface IProps {
-  type?: Type;
+  scrollDirection?: ScrollDirection;
+  direction?: Direction;
   title?: string;
   showMore?: boolean;
   totalPrice?: number;
@@ -17,10 +19,12 @@ interface IProps {
   gridSize?: number;
   ingredientList: IngredientInfo[];
   onClickItem?: (id: number) => void;
+  style?: object;
 }
 
 export const IngredientListComp: FC<IProps> = ({
-  type = "column",
+  scrollDirection = "horizon",
+  direction = "column",
   title = "식재료",
   showMore = false,
   totalPrice,
@@ -28,6 +32,7 @@ export const IngredientListComp: FC<IProps> = ({
   gridSize = 3,
   ingredientList,
   onClickItem,
+  style,
 }) => {
   const router = useRouter();
   const defaultOnClickItem = (id: number) => {
@@ -38,33 +43,47 @@ export const IngredientListComp: FC<IProps> = ({
       title={title}
       onClickMore={showMore ? () => router.push("/ingredient") : undefined}
       totalPrice={totalPrice}
+      style={style}
     >
-      {type === "column" && (
+      {scrollDirection === "horizon" && (
         <CarouselContainer
           itemList={ingredientList}
           rowSize={rowSize}
           gridSize={gridSize}
           getItemComponent={(item) => (
             <IngredientItem
-              direction={type}
+              direction={direction}
               ingredientInfo={item}
               onClickItem={onClickItem || defaultOnClickItem}
             />
           )}
         />
       )}
-      {type === "row" && (
-        <Box>
-          {ingredientList.map((v, i) => (
-            <IngredientItem
-              key={i}
-              direction={type}
-              ingredientInfo={v}
-              onClickItem={onClickItem || defaultOnClickItem}
-            />
-          ))}
-        </Box>
-      )}
+      {scrollDirection === "vertical" &&
+        (direction === "column" ? (
+          <Grid container>
+            {ingredientList.map((v, i) => (
+              <Grid item key={i} margin="auto">
+                <IngredientItem
+                  direction={direction}
+                  ingredientInfo={v}
+                  onClickItem={onClickItem || defaultOnClickItem}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box>
+            {ingredientList.map((v, i) => (
+              <IngredientItem
+                key={i}
+                direction={direction}
+                ingredientInfo={v}
+                onClickItem={onClickItem || defaultOnClickItem}
+              />
+            ))}
+          </Box>
+        ))}
     </CardContainer>
   );
 };

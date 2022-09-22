@@ -6,10 +6,12 @@ import { CardContainer } from "../CardContainer";
 import { CarouselContainer } from "../CarouselContainer";
 import { RecipeItem } from "../RecipeItem";
 
-type Type = "row" | "column";
+type ScrollDirection = "horizon" | "vertical";
+type Direction = "row" | "column";
 
 interface IProps {
-  type?: Type;
+  scrollDirection?: ScrollDirection;
+  direction?: Direction;
   title?: string;
   showMore?: boolean;
   totalPrice?: number;
@@ -17,10 +19,12 @@ interface IProps {
   gridSize?: number;
   recipeList: RecipeInfo[];
   onClickItem?: (id: number) => void;
+  style?: object;
 }
 
 export const RecipeListComp: FC<IProps> = ({
-  type = "column",
+  scrollDirection = "row",
+  direction = "column",
   title = "요리법",
   showMore = false,
   totalPrice,
@@ -28,6 +32,7 @@ export const RecipeListComp: FC<IProps> = ({
   gridSize = 3,
   recipeList,
   onClickItem,
+  style,
 }) => {
   const router = useRouter();
   const defaultOnClickItem = (id: number) => {
@@ -38,27 +43,28 @@ export const RecipeListComp: FC<IProps> = ({
       title={title}
       onClickMore={showMore ? () => router.push("/recipe") : undefined}
       totalPrice={totalPrice}
+      style={style}
     >
-      {type === "column" && (
+      {scrollDirection === "horizon" && (
         <CarouselContainer
           itemList={recipeList}
           rowSize={rowSize}
           gridSize={gridSize}
           getItemComponent={(item) => (
             <RecipeItem
-              direction={type}
+              direction={direction}
               recipeInfo={item}
               onClickItem={onClickItem || defaultOnClickItem}
             />
           )}
         />
       )}
-      {type === "row" && (
+      {scrollDirection === "vertical" && (
         <Box>
           {recipeList.map((v, i) => (
             <RecipeItem
               key={i}
-              direction={type}
+              direction={direction}
               recipeInfo={v}
               onClickItem={onClickItem || defaultOnClickItem}
             />
