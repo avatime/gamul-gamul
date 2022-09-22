@@ -8,4 +8,5 @@ public interface UserService {
     boolean findUsername(String username) throws Exception;
     User getUserByUsername(String username);
     User saveUser(User user);
+    void deleteUser(User user);
 }
