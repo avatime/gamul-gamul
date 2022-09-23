@@ -29,6 +29,8 @@ public class QMyRecipe extends EntityPathBase<MyRecipe> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
+    public final StringPath imageURL = createString("imageURL");
+
     public final StringPath name = createString("name");
 
     public final DateTimePath<java.util.Date> updateTime = createDateTime("updateTime", java.util.Date.class);
