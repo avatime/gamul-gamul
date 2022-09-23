@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel("IngredientInfoRes")
 public class IngredientInfoRes {
     @JsonProperty("ingredient_id")
-    int ingredient;
+    Long ingredientId;
 
     String name;
 
@@ -29,8 +29,10 @@ public class IngredientInfoRes {
     boolean basket;
 
     @JsonProperty("high_class_id")
-    int highClassId;
+    Long highClassId;
 
     @JsonProperty("high_class_name")
     String highClassName;
+
+    Long views;
 }

@@ -17,9 +17,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient extends BaseEntity{
-    @JsonProperty("high_class")
+//    @JsonProperty("highclass")
     @Column(updatable = false, nullable = false)
-    private int highClass;
+    private Long highClass;
 
     @JsonProperty("mid_class")
     @Column(updatable = false, nullable = false)
@@ -36,7 +36,7 @@ public class Ingredient extends BaseEntity{
     private long views;
 
     @Builder
-    public Ingredient(int highClass, String midClass, String lowClass, int type){
+    public Ingredient(Long highClass, String midClass, String lowClass, int type){
         this.highClass = highClass;
         this.midClass = midClass;
         this.lowClass = lowClass;

@@ -1,6 +1,5 @@
 package com.gamul.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +16,16 @@ import javax.persistence.ManyToOne;
 @DynamicUpdate
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class RecipeImage extends BaseEntity{
-    @Column
-    @JsonProperty("image_path")
-    String imagePath;
+public class RecipeIngredient extends BaseEntity{
 
     @Column
-    @JsonProperty("image_order")
-    int imageOrder;
+    private String quantity;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private MyRecipe myRecipe;
+    private Recipe recipe;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Ingredient ingredient;
 }

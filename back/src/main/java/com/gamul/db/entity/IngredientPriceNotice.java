@@ -18,7 +18,16 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Allergy extends BaseEntity {
+public class IngredientPriceNotice extends BaseEntity{
+
+    @Column(nullable = false)
+    private boolean activeFlag;
+
+    @Column
+    private int upperLimitPrice;
+
+    @Column
+    private int lowerLimitPrice;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -27,10 +36,6 @@ public class Allergy extends BaseEntity {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Ingredient ingredient;
-
-    @JsonProperty("active_flag")
-    @Column(nullable = false)
-    private boolean activeFlag;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -53,9 +58,10 @@ public class Allergy extends BaseEntity {
     }
 
     @Builder
-    public Allergy(User user, Ingredient ingredient){
+    public IngredientPriceNotice(User user, Ingredient ingredient) {
+        this.activeFlag = true;
         this.user = user;
         this.ingredient = ingredient;
-        this.activeFlag = true;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.models.auth.In;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,44 +19,29 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Allergy extends BaseEntity {
+public class MyRecipeIngredient extends BaseEntity{
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private MyRecipe myRecipe;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Ingredient ingredient;
-
-    @JsonProperty("active_flag")
-    @Column(nullable = false)
-    private boolean activeFlag;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonProperty("update_time")
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Date updateTime;
-
     @PrePersist
     public void onCreate() {
         this.createdTime = Timestamp.valueOf(LocalDateTime.now());
     }
 
-    @PreUpdate
-    public void onUpdate() {
-        this.updateTime = Timestamp.valueOf(LocalDateTime.now());
-    }
-
     @Builder
-    public Allergy(User user, Ingredient ingredient){
-        this.user = user;
+    public MyRecipeIngredient (MyRecipe myRecipe, Ingredient ingredient){
+        this.myRecipe = myRecipe;
         this.ingredient = ingredient;
-        this.activeFlag = true;
     }
 }
