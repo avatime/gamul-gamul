@@ -7,17 +7,17 @@ interface IProps {
   priceTransitionInfo: PriceTransitionInfo;
   inputWidth: any;
   inputHeight: number;
+  type: string;
 }
 
 moment.locale("ko");
 
-const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight }) => {
+const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
   return (
     <div>
       <Chart
-        type="line"
         height={inputHeight}
         width={inputWidth}
         series={[
@@ -32,7 +32,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
         ]}
         options={{
           chart: {
-            type: "line",
+            type: type === "line" ? "line" : "bar",
             dropShadow: {
               enabled: true,
               color: "#000",
@@ -68,7 +68,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           },
           xaxis: {
             categories: priceTransitionInfo.retailsales.daily.map((v) =>
-              moment(v.date).format("MM-D")
+              moment(v.date).format("MM.D")
             ),
             title: {
               text: "일자",

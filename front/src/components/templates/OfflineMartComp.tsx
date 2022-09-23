@@ -19,8 +19,6 @@ export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredien
   const router = useRouter();
   const location: any = useGeolocation();
 
-  const temp = () => {};
-
   const storesHandler = (marts: OfflineMartInfo[]) => {
     setStores(marts);
   };
@@ -36,7 +34,6 @@ export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredien
           ingredientId={ingredientInfo.ingredient_id}
           latitude={location.coordinates.lat}
           longitude={location.coordinates.lng}
-          onSetStoreId={temp}
           onSetStores={storesHandler}
         />
         <OfflineMartInfoItem ingredientInfo={ingredientInfo}/>
