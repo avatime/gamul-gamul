@@ -4,6 +4,7 @@ body {
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   width: 100%;
   min-height: 100vh;
+  overflow: auto;
 }
 
 div#__next,
@@ -24,4 +25,5 @@ a {
 
 .page-background {
  background-color: #f5f5f5;
+ overflow: auto;
 }

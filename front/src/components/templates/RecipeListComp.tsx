@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, List, Stack } from '@mui/material';
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { RecipeInfo } from "../../apis/responses/recipeInfo";
@@ -54,7 +54,7 @@ export const RecipeListComp: FC<IProps> = ({
         />
       )}
       {type === "row" && (
-        <Box>
+        <Stack direction="column">
           {recipeList.map((v, i) => (
             <RecipeItem
               key={i}
@@ -63,7 +63,7 @@ export const RecipeListComp: FC<IProps> = ({
               onClickItem={onClickItem || defaultOnClickItem}
             />
           ))}
-        </Box>
+        </Stack>
       )}
     </CardContainer>
   );
