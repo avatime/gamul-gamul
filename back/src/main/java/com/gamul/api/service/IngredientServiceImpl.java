@@ -5,11 +5,13 @@ import com.gamul.api.response.*;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Service("ingredientService")
 public class IngredientServiceImpl implements IngredientService{
@@ -164,11 +166,11 @@ public class IngredientServiceImpl implements IngredientService{
         basket.setActiveFlag(!basket.isActiveFlag());
     }
 
-//    @Override
-//    public List<OfflineMartInfoRes> getStoreList(OfflineMartInfoReq offlineMartInfoReq){
-//        List<OfflineMartInfoRes> offlineMartInfoRes = new ArrayList<>();
-//
-//    }
+    @Override
+    public List<OfflineMartInfoRes> getStoreList(OfflineMartInfoReq offlineMartInfoReq){
+        List<OfflineMartInfoRes> offlineMartInfoRes = new ArrayList<>();
+        return offlineMartInfoRes;
+    }
     @Override
     public List<IngredientInfoRes> getStoreIngredientList(Long storeId){
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
