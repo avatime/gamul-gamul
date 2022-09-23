@@ -1,10 +1,7 @@
 package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +22,10 @@ public class MyRecipe extends BaseEntity{
 
     @Column(nullable = false)
     private String name;
+
+    @Column
+    @JsonProperty("image_url")
+    private String imageURL;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -51,8 +52,12 @@ public class MyRecipe extends BaseEntity{
     }
 
     @Builder
-    public MyRecipe(String name, User user){
+    public MyRecipe(String name, String imageURL, User user){
         this.name = name;
+        this.imageURL = imageURL;
         this.user = user;
+    }
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }
