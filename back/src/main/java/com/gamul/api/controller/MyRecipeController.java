@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,18 @@ public class MyRecipeController {
             if(user == null)  return ResponseEntity.status(404).body("사용자 없음");
             MyRecipe myRecipe = MyRecipe.builder().name(myRecipeRegisterPostReq.getMyRecipeName())
                     .user(user).build();
-            myRecipe = myRecipeService.saveMyRecipe(myRecipe);
+            if(!myRecipeRegisterPostReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeRegisterPostReq.getImageDataUrl());
+            else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("서버 에러");
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
 
-        return ResponseEntity.status(200).body("가물가물");
+        return ResponseEntity.status(200).body("Success");
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> test(@RequestPart MultipartFile file){
+        return ResponseEntity.status(200).body(file.getName());
     }
 
     @GetMapping("/{userName}")
