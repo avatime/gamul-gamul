@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,5 +29,6 @@ public class RecipeOrder extends BaseEntity {
     int descOrder;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MyRecipe myRecipe;
 }
