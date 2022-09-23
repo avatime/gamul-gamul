@@ -1,7 +1,10 @@
 package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -18,7 +21,10 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Allergy extends BaseEntity {
+public class RecipeSelected extends BaseEntity{
+
+    @Column(nullable = false)
+    private boolean activeFlag;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -26,11 +32,7 @@ public class Allergy extends BaseEntity {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Ingredient ingredient;
-
-    @JsonProperty("active_flag")
-    @Column(nullable = false)
-    private boolean activeFlag;
+    private Recipe recipe;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -53,9 +55,10 @@ public class Allergy extends BaseEntity {
     }
 
     @Builder
-    public Allergy(User user, Ingredient ingredient){
-        this.user = user;
-        this.ingredient = ingredient;
+    public RecipeSelected(User user, Recipe recipe){
         this.activeFlag = true;
+        this.user = user;
+        this.recipe = recipe;
+
     }
 }
