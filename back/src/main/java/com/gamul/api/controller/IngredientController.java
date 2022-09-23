@@ -1,14 +1,12 @@
 package com.gamul.api.controller;
 
 import com.gamul.api.request.OfflineMartInfoReq;
-import com.gamul.api.response.HighClassNameRes;
 import com.gamul.api.response.IngredientDetailRes;
 import com.gamul.api.response.IngredientInfoRes;
 import com.gamul.api.response.OfflineMartInfoRes;
 import com.gamul.api.service.IngredientService;
 import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.db.entity.HighClass;
-import com.gamul.db.entity.Ingredient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -113,7 +111,8 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getStoreList(@RequestBody @PathVariable  Long ingredientId,  OfflineMartInfoReq offlineMartInfoReq){
-        List<OfflineMartInfoRes> storeList = ingredientService.getStoreList(offlineMartInfoReq);
+        List<OfflineMartInfoRes> storeList = null;
+//        List<OfflineMartInfoRes> storeList = ingredientService.getStoreList(offlineMartInfoReq);
         return new ResponseEntity<List<OfflineMartInfoRes>>(storeList, HttpStatus.OK);
     }
 
