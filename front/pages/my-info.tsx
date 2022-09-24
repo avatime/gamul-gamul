@@ -1,9 +1,243 @@
+import { Box, Stack, Typography } from "@mui/material";
 import { NextPage } from "next";
+import { Mobile } from "../src/components/Mobile";
+import { MyInfoItem } from "../src/components/MyInfoItem";
+import { Navbar } from "../src/components/Navbar";
+import styles from "../styles/Page.module.css";
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import LogoutIcon from "@mui/icons-material/Logout";
+import NoMealsIcon from "@mui/icons-material/NoMeals";
+import NoAccountsIcon from "@mui/icons-material/NoAccounts";
+import { LordIcon } from "../public/lordicon/lord-icon";
+import { HeaderBar } from "../src/components/HeaderBar";
+import { getCookie, setCookie, removeCookie } from "../src/utils/cookie";
+import { useRouter } from "next/router";
+import { ApiClient } from "../src/apis/apiClient";
+import { RouterOutlined } from "@mui/icons-material";
+import { Desktop } from "../src/components/Desktop";
+import { Tablet } from "../src/components/Tablet";
 
 interface IProps {}
-
 const MyInfoPage: NextPage<IProps> = (props) => {
-  return <div>MyInfoPage</div>;
+  const router = useRouter();
+  const elements = [
+    {
+      primary: "알러지등록",
+      secondary: "알러지를 등록해보아요",
+      icon: (
+        <lord-icon
+          src="https://cdn.lordicon.com/hdborlrw.json"
+          trigger="hover"
+          colors="primary:#915110,secondary:#915110"
+          style={{ width: 30, height: 30 }}
+        />
+      ),
+      bgColor: "#EFE6C1",
+      nextPage: true,
+      path: "",
+    },
+    {
+      primary: "나만의 요리법 등록",
+      secondary: "나만의 요리법을 등록해보아요",
+      icon: (
+        <>
+          <lord-icon
+            src="https://cdn.lordicon.com/rmjurjdw.json"
+            trigger="hover"
+            style={{ width: 30, height: 30 }}
+          />
+        </>
+      ),
+      bgColor: "#B2DE9D",
+      nextPage: true,
+      path: "/my-recipe",
+    },
+    {
+      primary: "찜 목록",
+      secondary: "관심있는 식재료와 요리법들을 보아요",
+      icon: (
+        <lord-icon
+          src="https://cdn.lordicon.com/rjzlnunf.json"
+          trigger="hover"
+          colors="primary:#121331,secondary:#e83a30"
+          style={{ width: 30, height: 30 }}
+        />
+      ),
+      bgColor: "#FCDADF",
+      nextPage: true,
+      path: "/wish-list",
+    },
+    {
+      primary: "가격 알림 등록",
+      secondary: "관심있는 식재료의 상한가/하한가를 지정해 알림으로 받아보세요.",
+      icon: (
+        <>
+          <lord-icon
+            src="https://cdn.lordicon.com/beqdrtps.json"
+            trigger="hover"
+            colors="primary:#121331,secondary:#08a88a"
+            style={{ width: 30, height: 30 }}
+          ></lord-icon>
+        </>
+      ),
+      bgColor: "#B6D0ED",
+      nextPage: true,
+      path: "/register-alarm",
+    },
+    {
+      primary: "로그아웃",
+      secondary: "",
+      icon: (
+        <lord-icon
+          src="https://cdn.lordicon.com/hirlxdux.json"
+          trigger="hover"
+          style={{ width: 30, height: 30 }}
+        />
+      ),
+      bgColor: "#F9BD9E",
+      nextPage: false,
+      path: "/logout",
+    },
+    {
+      primary: "회원탈퇴",
+      secondary: "",
+      icon: (
+        <lord-icon
+          src="https://cdn.lordicon.com/hmtsmfsf.json"
+          trigger="hover"
+          colors="primary:#121331,secondary:#b4b4b4"
+          style={{ width: 30, height: 30 }}
+        />
+      ),
+      nextPage: false,
+      bgColor: "",
+      path: "/withdraw",
+    },
+  ];
+
+  const userId = getCookie("userName");
+
+  return (
+    <div>
+      <Mobile>
+        <Box className={styles.PageforMobile}>
+          <HeaderBar badgeContent={0} />
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            <lord-icon
+              src="https://cdn.lordicon.com/dymjgskg.json"
+              trigger="loop"
+              style={{ width: "50px", height: "70px" }}
+            />
+            <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
+              {userId}님, 안녕하세요
+            </Typography>
+          </Stack>
+          {elements?.map((item, idx) => {
+            return (
+              <Box key={idx}>
+                <MyInfoItem
+                  primary={item.primary}
+                  secondary={item.secondary}
+                  icon={item.icon}
+                  bgColor={item.bgColor}
+                  nextPage={item.nextPage}
+                  onClick={() => router.push(item.path)}
+                />
+              </Box>
+            );
+          })}
+          <Navbar activeIndex={4} />
+        </Box>
+      </Mobile>
+      <Desktop>
+        <Box className={styles.PageforDesktop}>
+          <HeaderBar badgeContent={0} />
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              margin: "auto",
+              maxWidth: "500px",
+              width: "60vw",
+            }}
+          >
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              <lord-icon
+                src="https://cdn.lordicon.com/dymjgskg.json"
+                trigger="loop"
+                style={{ width: "50px", height: "70px" }}
+              />
+              <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
+                {userId}님, 안녕하세요
+              </Typography>
+            </Stack>
+            {elements?.map((item, idx) => {
+              return (
+                <Box key={idx}>
+                  <MyInfoItem
+                    primary={item.primary}
+                    secondary={item.secondary}
+                    icon={item.icon}
+                    bgColor={item.bgColor}
+                    nextPage={item.nextPage}
+                    onClick={() => router.push(item.path)}
+                  />
+                </Box>
+              );
+            })}
+            <Navbar activeIndex={4} />
+          </Box>
+        </Box>
+      </Desktop>
+      <Tablet>
+        <Box className={styles.PageforTablet}>
+          <HeaderBar badgeContent={0} />
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              margin: "auto",
+              maxWidth: "500px",
+              width: "60vw",
+            }}
+          >
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <lord-icon
+              src="https://cdn.lordicon.com/dymjgskg.json"
+              trigger="loop"
+              style={{ width: "50px", height: "70px" }}
+            />
+            <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
+              {userId}님, 안녕하세요
+            </Typography>
+          </Stack>
+          {elements?.map((item, idx) => {
+            return (
+              <Box key={idx}>
+                <MyInfoItem
+                  primary={item.primary}
+                  secondary={item.secondary}
+                  icon={item.icon}
+                  bgColor={item.bgColor}
+                  nextPage={item.nextPage}
+                  onClick={() => router.push(item.path)}
+                />
+              </Box>
+            );
+          })}
+          <Navbar activeIndex={4} />
+        </Box>
+        </Box>
+      </Tablet>
+    </div>
+  );
 };
 
 export default MyInfoPage;

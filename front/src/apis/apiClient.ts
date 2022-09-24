@@ -21,7 +21,7 @@ import { MyRecipeIngredientInfo } from "./responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
-import { getCookie } from "../utils/cookie";
+import { getCookie, setCookie } from "../utils/cookie";
 
 const delay = 0;
 
@@ -55,7 +55,10 @@ export class ApiClient
     })).data;
   }
   async withdrawal(userName: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method:"delete",
+      url: `/users/${userName}`,
+    });
   }
   async getIngredientList(
     orderType: IngredientOrderType,
@@ -199,6 +202,7 @@ export class ApiClient
 
   logout() {
     this.axiosInstance = this.createAxiosInstance();
+
   }
 
   private createAxiosInstance = (token?: string) => {
