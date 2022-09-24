@@ -13,6 +13,9 @@ interface IProps {
   secondary: string;
   icon: React.ReactNode;
   bgColor: string;
+  nextPage:boolean;
+  onClick:React.MouseEventHandler<HTMLLIElement>;
+
 }
 
 /**
@@ -20,20 +23,21 @@ interface IProps {
  * @function @MyInfoItem
  **/
 
-export const MyInfoItem: FC<IProps> = ({ primary, secondary, icon, bgColor }) => {
+export const MyInfoItem: FC<IProps> = ({ primary, secondary, icon, bgColor, nextPage, onClick }) => {
   return (
     <div>
       
-        <ListItem>
+        <ListItem onClick={onClick}>
           <ListItemAvatar >
-            <Avatar sx={{backgroundColor:bgColor, opacity:"40%"}} >
+            <Avatar sx={{backgroundColor:bgColor, opacity:"50%"}} >
               {icon}
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={primary} secondary={secondary} />
-          <ArrowForwardIosIcon sx={{color:"#A1A1AA"}}/>
+          {nextPage ? <ArrowForwardIosIcon sx={{color:"#A1A1AA"}}/>: ""}
         </ListItem>
      
     </div>
   );
 };
+ 
