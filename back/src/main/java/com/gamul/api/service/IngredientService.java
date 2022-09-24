@@ -1,12 +1,8 @@
 package com.gamul.api.service;
 
 import com.gamul.api.request.OfflineMartInfoReq;
-import com.gamul.api.response.HighClassNameRes;
-import com.gamul.api.response.IngredientDetailRes;
-import com.gamul.api.response.IngredientInfoRes;
-import com.gamul.api.response.OfflineMartInfoRes;
+import com.gamul.api.response.*;
 import com.gamul.db.entity.HighClass;
-import com.gamul.db.entity.Ingredient;
 
 import java.util.List;
 
@@ -22,8 +18,11 @@ public interface IngredientService {
 
     void ingredientBasket(String userName, Long ingredientId);
 
-//    List<OfflineMartInfoRes> getStoreList(OfflineMartInfoReq offlineMartInfoReq);
+    List<OfflineMartInfoRes> getStoreList(OfflineMartInfoReq offlineMartInfoReq);
+
     List<IngredientInfoRes> getStoreIngredientList(Long storeId);
 
     List<IngredientInfoRes> getBasketList(String userName);
+
+    String getOnlineIngredientInfo(Long ingredientId);
 }

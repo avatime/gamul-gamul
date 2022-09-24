@@ -1,12 +1,10 @@
 package com.gamul.api.controller;
 
 import com.gamul.api.request.OfflineMartInfoReq;
-import com.gamul.api.response.HighClassNameRes;
-import com.gamul.api.response.IngredientDetailRes;
-import com.gamul.api.response.IngredientInfoRes;
-import com.gamul.api.response.OfflineMartInfoRes;
+import com.gamul.api.response.*;
 import com.gamul.api.service.IngredientService;
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.HighClass;
 import com.gamul.db.entity.Ingredient;
 import io.swagger.annotations.Api;
@@ -28,6 +26,8 @@ import java.util.List;
 public class IngredientController {
     @Autowired
     IngredientService ingredientService;
+
+    private final NaverShopSearch naverShopSearch;
 
     @GetMapping("/{orderType}/{highClass}")
     @ApiOperation(value = "식재료 목록 반환", notes = "<strong>order type과 high clas id</strong>에 따른 식재료 목록 반환")
@@ -59,6 +59,13 @@ public class IngredientController {
     })
     public ResponseEntity<?> getIngredientDetailInfo(@PathVariable Long ingredientId) {
         IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId);
+
+        // 온라인 마트 정보 추가
+        String query = ingredientDetailRes.getIngredientInfo().getName();
+        String resultString = naverShopSearch.search(query);
+        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.OnlineMartInfo(resultString);
+        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+
 
         return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
     }
@@ -126,6 +133,19 @@ public class IngredientController {
     public ResponseEntity<?> getStoreIngredientList(@PathVariable Long storeId) {
         List<IngredientInfoRes> storeIngredientList = ingredientService.getStoreIngredientList(storeId);
         return new ResponseEntity<List<IngredientInfoRes>>(storeIngredientList, HttpStatus.OK);
+    }
+
+    @GetMapping("/online/{ingredientId}")
+    @ApiOperation(value = "온라인 마트 상세 정보", notes = "<strong>ingredient id</strong>에 따른 마트 상세 정보 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<?> getOnlineIngredient(@PathVariable Long ingredientId){
+        String query = ingredientService.getOnlineIngredientInfo(ingredientId);
+        String resultString = naverShopSearch.search(query);
+        List<OnlineIngredientInfoRes> onlineIngredientInfoResList = naverShopSearch.fromJSONtoItems(resultString);
+        return new ResponseEntity<List<OnlineIngredientInfoRes>>(onlineIngredientInfoResList, HttpStatus.OK);
     }
 
 }
