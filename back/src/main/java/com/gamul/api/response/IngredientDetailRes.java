@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +21,5 @@ public class IngredientDetailRes {
     PriceTransitionInfoRes priceTransitionInfo;
 
     @JsonProperty("online_mart_info")
-    ArrayList<OnlineMartInfoRes> onlineMartInfo;
+    List<OnlineMartInfoRes> onlineMartInfo;
 }
