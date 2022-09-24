@@ -25,24 +25,24 @@ public class Store extends BaseEntity{
     @Column
     private double longitude;
 
-    @Column(nullable = false)
+    @Column()
     private int type;
 
-    @OneToOne
-    @JoinColumn(name = "do_id")
-    private Do dou;
 
-    @OneToOne
-    @JoinColumn(name = "sigugun_id")
-    private Sigugun sigugun;
+    @JoinColumn(name = "do_id")
+    private int doId;
+
+
+    @JoinColumn(name = "si_id")
+    private int siId;
 
     @Builder
-    public Store(String name, double latitude, double longitude, int type, Do dou, Sigugun sigugun){
+    public Store(String name, double latitude, double longitude, int type, int doId, int siId){
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.type = type;
-        this.dou = dou;
-        this.sigugun = sigugun;
+        this.doId = doId;
+        this.siId = siId;
     }
 }

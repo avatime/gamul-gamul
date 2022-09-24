@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel("OfflineMartInfoReq")
 public class OfflineMartInfoReq {
     @JsonProperty("ingredient_id")
-    int ingredientId;
+    Long ingredientId;
 
     double latitude;
 
