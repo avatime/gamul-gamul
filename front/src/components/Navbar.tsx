@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import MuiBottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { useRouter } from 'next/router'
+import { getCookie } from "../utils/cookie";
 
 interface IProps {
   activeIndex: number;
@@ -24,6 +25,9 @@ const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
     color: #000;
   }
 `);
+const token = getCookie("token");
+
+
 
 const elements = [
   {
@@ -49,7 +53,8 @@ const elements = [
   {
     text: "내정보",
     icon: (isActive: boolean) => <PersonIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:'/my-info',
+    path: token ? '/my-info' : 'login',
+
   },
 ];
 
@@ -62,7 +67,7 @@ const elementActiveStyles = {
 
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
   const router = useRouter();
-
+  const token = getCookie("token");
   return (
     <div>
       <Mobile>
@@ -85,7 +90,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
             <BottomNavigationAction label="식재료" icon={<EggIcon />}  onClick={() => router.push('/ingredient')}/>
             <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => router.push('/basket')} />
             <BottomNavigationAction label="요리법" icon={<RestaurantIcon />}  onClick={() => router.push('/recipe')}/>
-            <BottomNavigationAction label="내정보" icon={<PersonIcon />}  onClick={() => router.push('/my-info')}/>
+            <BottomNavigationAction label="내정보" icon={<PersonIcon />}  onClick={() => token?  router.push('/my-info') : router.push('/login')}/>
           </BottomNavigation>
         </Box>
       </Mobile>
