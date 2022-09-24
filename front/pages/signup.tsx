@@ -50,7 +50,7 @@ const SignupPage: NextPage<IProps> = (props) => {
         .catch((e) => {
           const code = e.response.status;
           console.log(e);
-          
+
           console.log(code);
 
           if (code === 404) {
@@ -90,134 +90,416 @@ const SignupPage: NextPage<IProps> = (props) => {
 
   return (
     <div>
-      <Box>
-        {!nextId && !nextPw ? (
-          <>
-            <BackHeader text={""} textColor={""} />
+      <Mobile>
+        <Box>
+          {!nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>아이디를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidId && isCheckId ? "success" : "error"}
+                  placeholder="아이디"
+                  sx={{ maxWidth: "500px" }}
+                  value={inputId}
+                  onChange={handleId}
+                />
+                <FormHelperText id="component-helper-text">{idHelperText}</FormHelperText>
+
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text="확인"
+                    onClick={changeIdcomp}
+                    height="50px"
+                    width="60vw"
+                    maxWidth="500px"
+                    fontSize={""}
+                    disabled={!isValidId}
+                  />
+                </Box>
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>비밀번호를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidPassword ? "success" : "error"}
+                  type="password"
+                  placeholder="비밀번호"
+                  sx={{ width: "60vw", maxWidth: "500px" }}
+                  value={inputPw}
+                  onChange={handlePw}
+                />
+                <Box sx={{ width: "60vw" }}>
+                  <FormHelperText id="component-helper-text">
+                    {isValidPassword
+                      ? ""
+                      : "비밀번호는 특수문자 1자이상 포함 8자 이상 16자 이하여야 합니다."}
+                  </FormHelperText>
+                </Box>
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text={"확인"}
+                    onClick={changePwcomp}
+                    height={"50px"}
+                    width={"60vw"}
+                    maxWidth={"500px"}
+                    fontSize={""}
+                    disabled={!isValidPassword}
+                  />
+                </Box>
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && nextPw ? (
             <Stack
               direction="column"
               sx={{
                 position: "absolute",
-                width: "60vw",
                 left: 0,
                 right: 0,
                 top: "30%",
+                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
                 maxWidth: "500px",
                 margin: "auto",
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>아이디를 입력해주세요.</Typography>
-              <Box p={2} />
-              <Input
-                color={isValidId && isCheckId? "success" : "error"}
-                placeholder="아이디"
-                sx={{ maxWidth: "500px" }}
-                value={inputId}
-                onChange={handleId}
-              />
-              <FormHelperText id="component-helper-text">{idHelperText}</FormHelperText>
+              <Box sx={{ textAlign: "center" }}>
+                <Box p={10} />
+                <Box sx={{ height: "50px", alignItems: "center", justifyContent: "center" }}>
+                  <Typography
+                    sx={{ fontWeight: "bold", width: "60vw", fontSize: "large", ZIndex: 10 }}
+                  >
+                    축하합니다
+                  </Typography>
+                </Box>
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text={"가물가물 시작하기"}
+                    onClick={() => router.push("/login")}
+                    height={"50px"}
+                    width={"60vw"}
+                    maxWidth={"500px"}
+                    fontSize={""}
+                    disabled={false}
+                  />
+                </Box>
+              </Box>
+            </Stack>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Mobile>
+      <Tablet>
+        <Box>
+          {!nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>아이디를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidId && isCheckId ? "success" : "error"}
+                  placeholder="아이디"
+                  sx={{ maxWidth: "500px" }}
+                  value={inputId}
+                  onChange={handleId}
+                />
+                <FormHelperText id="component-helper-text">{idHelperText}</FormHelperText>
 
-              <Box p={6} />
-              <Box sx={{ position: "fixed", bottom: "30px" }}>
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text="확인"
+                    onClick={changeIdcomp}
+                    height="50px"
+                    width="60vw"
+                    maxWidth="500px"
+                    fontSize={""}
+                    disabled={!isValidId}
+                  />
+                </Box>
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>비밀번호를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidPassword ? "success" : "error"}
+                  type="password"
+                  placeholder="비밀번호"
+                  sx={{ width: "60vw", maxWidth: "500px" }}
+                  value={inputPw}
+                  onChange={handlePw}
+                />
+                <Box sx={{ width: "60vw" }}>
+                  <FormHelperText id="component-helper-text">
+                    {isValidPassword
+                      ? ""
+                      : "비밀번호는 특수문자 1자이상 포함 8자 이상 16자 이하여야 합니다."}
+                  </FormHelperText>
+                </Box>
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text={"확인"}
+                    onClick={changePwcomp}
+                    height={"50px"}
+                    width={"60vw"}
+                    maxWidth={"500px"}
+                    fontSize={""}
+                    disabled={!isValidPassword}
+                  />
+                </Box>
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && nextPw ? (
+            <Stack
+              direction="column"
+              sx={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: "30%",
+                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
+                maxWidth: "500px",
+                margin: "auto",
+              }}
+            >
+              <Box sx={{ textAlign: "center" }}>
+                <Box p={10} />
+                <Box sx={{ height: "50px", alignItems: "center", justifyContent: "center" }}>
+                  <Typography
+                    sx={{ fontWeight: "bold", width: "60vw", fontSize: "large", ZIndex: 10 }}
+                  >
+                    축하합니다
+                  </Typography>
+                </Box>
+                <Box p={6} />
+                <Box sx={{ position: "fixed", bottom: "30px" }}>
+                  <ButtonFill
+                    text={"가물가물 시작하기"}
+                    onClick={() => router.push("/login")}
+                    height={"50px"}
+                    width={"60vw"}
+                    maxWidth={"500px"}
+                    fontSize={""}
+                    disabled={false}
+                  />
+                </Box>
+              </Box>
+            </Stack>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Tablet>
+      <Desktop>
+        <Box>
+          {!nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>아이디를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidId && isCheckId ? "success" : "error"}
+                  placeholder="아이디"
+                  sx={{ maxWidth: "500px" }}
+                  value={inputId}
+                  onChange={handleId}
+                />
+                <FormHelperText id="component-helper-text">{idHelperText}</FormHelperText>
+
+                <Box p={6} />
                 <ButtonFill
                   text="확인"
                   onClick={changeIdcomp}
                   height="50px"
                   width="60vw"
                   maxWidth="500px"
+                  fontSize={""}
+                  disabled={!isValidId}
                 />
-              </Box>
-            </Stack>
-          </>
-        ) : (
-          ""
-        )}
-        {nextId && !nextPw ? (
-          <>
-            <BackHeader text={""} textColor={""} />
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && !nextPw ? (
+            <>
+              <BackHeader text={""} textColor={""} />
+              <Stack
+                direction="column"
+                sx={{
+                  position: "absolute",
+                  width: "60vw",
+                  left: 0,
+                  right: 0,
+                  top: "30%",
+                  maxWidth: "500px",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontWeight: "bold" }}>비밀번호를 입력해주세요.</Typography>
+                <Box p={2} />
+                <Input
+                  color={isValidPassword ? "success" : "error"}
+                  type="password"
+                  placeholder="비밀번호"
+                  sx={{ width: "60vw", maxWidth: "500px" }}
+                  value={inputPw}
+                  onChange={handlePw}
+                />
+                <Box sx={{ width: "60vw" }}>
+                  <FormHelperText id="component-helper-text">
+                    {isValidPassword
+                      ? ""
+                      : "비밀번호는 특수문자 1자이상 포함 8자 이상 16자 이하여야 합니다."}
+                  </FormHelperText>
+                </Box>
+                <Box p={6} />
+
+                <ButtonFill
+                  text={"확인"}
+                  onClick={changePwcomp}
+                  height={"50px"}
+                  width={"60vw"}
+                  maxWidth={"500px"}
+                  fontSize={""}
+                  disabled={!isValidPassword}
+                />
+              </Stack>
+            </>
+          ) : (
+            ""
+          )}
+          {nextId && nextPw ? (
             <Stack
               direction="column"
               sx={{
                 position: "absolute",
-                width: "60vw",
                 left: 0,
                 right: 0,
                 top: "30%",
+                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
                 maxWidth: "500px",
                 margin: "auto",
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>비밀번호를 입력해주세요.</Typography>
-              <Box p={2} />
-              <Input
-                color={isValidPassword ? "success" : "error"}
-                type="password"
-                placeholder="비밀번호"
-                sx={{ width: "60vw", maxWidth: "500px" }}
-                value={inputPw}
-                onChange={handlePw}
-              />
-              <Box sx={{ width: "60vw" }}>
-                <FormHelperText id="component-helper-text">
-                  {isValidPassword
-                    ? ""
-                    : "비밀번호는 특수문자 1자이상 포함 8자 이상 16자 이하여야 합니다."}
-                </FormHelperText>
-              </Box>
-              <Box p={6} />
-              <ButtonFill
-                text={"확인"}
-                onClick={changePwcomp}
-                height={"50px"}
-                width={"60vw"}
-                maxWidth={"500px"}
-              />
-            </Stack>
-          </>
-        ) : (
-          ""
-        )}
-        {nextId && nextPw ? (
-          <Stack
-            direction="column"
-            sx={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: "30%",
-              textAlign: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "200px",
-              maxWidth: "500px",
-              margin: "auto",
-            }}
-            className={effect.fireworks}
-          >
-            <Box sx={{ textAlign: "center" }}>
-              <Box p={10} />
-              <Box sx={{ height: "50px", alignItems: "center", justifyContent: "center" }}>
-                <Typography
-                  sx={{ fontWeight: "bold", width: "60vw", fontSize: "large", ZIndex: 10 }}
-                >
-                  축하합니다
-                </Typography>
-              </Box>
-              <Box p={6} />
+              <Box sx={{ textAlign: "center" }}>
+                <Box p={10} />
+                <Box sx={{ height: "50px", alignItems: "center", justifyContent: "center" }}>
+                  <Typography
+                    sx={{ fontWeight: "bold", width: "60vw", fontSize: "large", ZIndex: 10 }}
+                  >
+                    축하합니다
+                  </Typography>
+                </Box>
+                <Box p={6} />
 
-              <ButtonFill
-                text={"가물가물 시작하기"}
-                onClick={() => router.push("/")}
-                height={"50px"}
-                width={"60vw"}
-                maxWidth={"500px"}
-              />
-            </Box>
-          </Stack>
-        ) : (
-          ""
-        )}
-      </Box>
+                <ButtonFill
+                  text={"가물가물 시작하기"}
+                  onClick={() => router.push("/login")}
+                  height={"50px"}
+                  width={"60vw"}
+                  maxWidth={"500px"}
+                  fontSize={""}
+                  disabled={false}
+                />
+              </Box>
+            </Stack>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Desktop>
     </div>
   );
 };
