@@ -1,8 +1,10 @@
 package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.models.auth.In;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -29,6 +31,9 @@ public class MyRecipeIngredient extends BaseEntity{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Ingredient ingredient;
 
+    @Column
+    private int quantity;
+
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -40,8 +45,9 @@ public class MyRecipeIngredient extends BaseEntity{
     }
 
     @Builder
-    public MyRecipeIngredient (MyRecipe myRecipe, Ingredient ingredient){
+    public MyRecipeIngredient (MyRecipe myRecipe, Ingredient ingredient, int quantity){
         this.myRecipe = myRecipe;
         this.ingredient = ingredient;
+        this.quantity = quantity;
     }
 }

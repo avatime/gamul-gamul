@@ -54,4 +54,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user){
         userRepository.delete(user);
     }
+
+    @Override
+    public void logout(String username){
+        User user = getUserByUsername(username);
+        user.setRefreshToken(null);
+        userRepository.save(user);
+    }
 }
