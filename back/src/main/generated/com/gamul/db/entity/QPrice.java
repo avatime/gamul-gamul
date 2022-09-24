@@ -58,7 +58,7 @@ public class QPrice extends EntityPathBase<Price> {
     public QPrice(Class<? extends Price> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.ingredient = inits.isInitialized("ingredient") ? new QIngredient(forProperty("ingredient")) : null;
-        this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store")) : null;
     }
 
 }
