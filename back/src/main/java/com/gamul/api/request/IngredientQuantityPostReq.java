@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel("IngredientQuantityPostReq")
 public class IngredientQuantityPostReq {
     @JsonProperty("ingredient_id")
-    int ingredientId;
+    Long ingredientId;
 
     int quantity;
 }

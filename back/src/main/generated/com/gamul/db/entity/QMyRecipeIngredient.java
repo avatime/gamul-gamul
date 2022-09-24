@@ -33,6 +33,8 @@ public class QMyRecipeIngredient extends EntityPathBase<MyRecipeIngredient> {
 
     public final QMyRecipe myRecipe;
 
+    public final NumberPath<Integer> quantity = createNumber("quantity", Integer.class);
+
     public QMyRecipeIngredient(String variable) {
         this(MyRecipeIngredient.class, forVariable(variable), INITS);
     }

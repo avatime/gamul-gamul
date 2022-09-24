@@ -11,4 +11,5 @@ import java.util.Optional;
  */
 public interface MyRecipeRepository extends JpaRepository<MyRecipe, Long> {
     Optional<List<MyRecipe>> findAllByUserId(Long userId);
+    Optional<MyRecipe> findById(Long id);
 }

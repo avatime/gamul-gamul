@@ -3,6 +3,7 @@ package com.gamul.api.controller;
 import com.gamul.api.request.UserRegisterPostReq;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.common.util.JwtTokenUtil;
 import com.gamul.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +74,17 @@ public class UserController {
     })
     public ResponseEntity<?> signOut(@PathVariable String userName){
         try{
+//            String name = JwtTokenUtil.getCurrentName();
             userService.deleteUser(userService.getUserByUsername(userName));
         } catch (Exception e){
             return ResponseEntity.status(404).body("존재하지 않는 id");
         }
         return ResponseEntity.status(200).body("success");
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<BaseResponseBody> test(){
+        String name = JwtTokenUtil.getCurrentName();
+        return ResponseEntity.ok(BaseResponseBody.of(200, name));
     }
 }

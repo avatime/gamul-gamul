@@ -9,4 +9,5 @@ public interface UserService {
     User getUserByUsername(String username);
     User saveUser(User user);
     void deleteUser(User user);
+    void logout(String username);
 }
