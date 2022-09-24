@@ -2,8 +2,10 @@ package com.gamul.api.controller;
 
 import com.gamul.api.request.RefreshTokenPostReq;
 import com.gamul.api.request.UserLoginPostReq;
+import com.gamul.api.request.UserLogoutPostReq;
 import com.gamul.api.response.UserLoginPostRes;
 import com.gamul.api.service.UserService;
+import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.common.util.JwtTokenUtil;
 import com.gamul.common.util.Token;
 import com.gamul.db.entity.User;
@@ -11,10 +13,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -57,6 +56,18 @@ public class AuthController {
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
+    }
+
+    @PostMapping("/{userName}")
+    @ApiOperation(value = "로그아웃", notes = "<strong>아이디</strong>를 통해 토큰을 만료 시킨 후 로그아웃 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<BaseResponseBody> logout(@RequestBody @ApiParam(value="토큰 정보", required = true) UserLogoutPostReq userLogoutPostReq){
+        userService.logout(userLogoutPostReq.getUserName());
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Logout"));
     }
 
     @PostMapping("/refresh")

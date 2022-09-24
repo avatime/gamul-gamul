@@ -17,7 +17,7 @@ public class MyRecipeEditReq {
     String userName;
 
     @JsonProperty("my_recipe_id")
-    int myRecipeId;
+    Long myRecipeId;
 
     @JsonProperty("image_data_url")
     String imageDataUrl;

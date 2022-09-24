@@ -1,11 +1,17 @@
 package com.gamul.api.controller;
 
+import com.gamul.api.request.IngredientQuantityPostReq;
+import com.gamul.api.request.MyRecipeEditReq;
 import com.gamul.api.request.MyRecipeRegisterPostReq;
 import com.gamul.api.response.MyRecipeInfoRes;
+import com.gamul.api.response.MyRecipeIngredientRes;
 import com.gamul.api.service.MyRecipeService;
 import com.gamul.api.service.UserService;
+import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.db.entity.MyRecipe;
+import com.gamul.db.entity.MyRecipeIngredient;
 import com.gamul.db.entity.User;
+import com.gamul.db.repository.IngredientRepository;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +31,9 @@ public class MyRecipeController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    IngredientRepository ingredientRepository;
+
     @PostMapping("")
     @ApiOperation(value = "나만의 레시피 저장", notes = "<strong>나만의 레시피</strong>를 저장한다.")
     @ApiResponses({
@@ -33,24 +42,55 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> myrecipe(@RequestBody @ApiParam(value="마이레시피 정보", required = true) MyRecipeRegisterPostReq myRecipeRegisterPostReq){
+    public ResponseEntity<BaseResponseBody> RegistMyRecipe(@RequestBody @ApiParam(value="마이레시피 정보", required = true) MyRecipeRegisterPostReq myRecipeRegisterPostReq){
         try{
             User user = userService.getUserByUsername(myRecipeRegisterPostReq.getUserName());
-            if(user == null)  return ResponseEntity.status(404).body("사용자 없음");
+            if(user == null)  return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
             MyRecipe myRecipe = MyRecipe.builder().name(myRecipeRegisterPostReq.getMyRecipeName())
                     .user(user).build();
             if(!myRecipeRegisterPostReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeRegisterPostReq.getImageDataUrl());
             else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
+
+            List<MyRecipeIngredient> list = new ArrayList<>();
+            for(IngredientQuantityPostReq ingredient : myRecipeRegisterPostReq.getIngredientList()){
+                list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
+            }
+            myRecipeService.saveMyRecipeIngredient(list);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Internal Server Error");
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
         }
 
-        return ResponseEntity.status(200).body("Success");
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<String> test(@RequestPart MultipartFile file){
-        return ResponseEntity.status(200).body(file.getName());
+    @PutMapping("")
+    @ApiOperation(value = "나만의 레시피 수정", notes = "<strong>나만의 레시피</strong>를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 405, message = "레시피 정보 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<BaseResponseBody> editMyRecipe(@RequestBody @ApiParam(value="마이레시피 정보", required = true) MyRecipeEditReq myRecipeEditReq){
+        try{
+            User user = userService.getUserByUsername(myRecipeEditReq.getUserName());
+            if(user == null)  return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 정보 없음"));
+            MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeEditReq.getMyRecipeId());
+            if(myRecipe == null) return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 정보 없음"));
+            if(!myRecipeEditReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeEditReq.getImageDataUrl());
+            else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
+
+//            List<MyRecipeIngredient> list = myRecipeService.getMyRecipeIngredientList(myRecipe.getId());
+//            for(IngredientQuantityPostReq ingredient : myRecipeEditReq.getIngredientList()){
+//                list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
+//            }
+//            myRecipeService.saveMyRecipeIngredient(list);
+        } catch (Exception e) {
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
+
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/{userName}")
@@ -81,4 +121,46 @@ public class MyRecipeController {
 
         return ResponseEntity.status(200).body(myRecipeList);
     }
+
+    @GetMapping("/{userName}/{myRecipeId}")
+    @ApiOperation(value = "나만의 요리법 식재료 조회", notes = "<strong>나만의 레시피</strong>목록을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> showMyrecipeIngredientList(@PathVariable String userName, Long myRecipeId){
+        List<MyRecipeIngredient> MyRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
+        List<MyRecipeIngredientRes> list = new ArrayList<>();
+        for(MyRecipeIngredient myRecipeIngredient : MyRecipeIngredientList){
+            list.add(MyRecipeIngredientRes.builder().ingredientId(myRecipeIngredient.getIngredient().getId()).quantity(myRecipeIngredient.getQuantity()).build());
+        }
+        return ResponseEntity.status(200).body(MyRecipeIngredientList);
+    }
+
+    @DeleteMapping("/{userName}/{myRecipeId}")
+    @ApiOperation(value = "나만의 레시피 삭제", notes = "<strong>myRecipeId</strong>를 삭제 시킨다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "삭제 완료"),
+            @ApiResponse(code = 404, message = "존재하지 않는 id"),
+            @ApiResponse(code = 405, message = "해당 유저의 레시피가 아닙니다"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> deleteMyRecipe(@PathVariable String userName, Long myRecipeId){
+        try{
+            if(myRecipeService.getRecipeOwner(myRecipeId).equals(userName))
+                myRecipeService.deleteMyRecipe(myRecipeId);
+            else return ResponseEntity.status(405).body("해당 유저의 레시피가 아닙니다");
+        } catch (Exception e){
+            return ResponseEntity.status(404).body("존재하지 않는 id");
+        }
+        return ResponseEntity.status(200).body("success");
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> test(@RequestPart MultipartFile file){
+        return ResponseEntity.status(200).body(file.getName());
+    }
+
 }
