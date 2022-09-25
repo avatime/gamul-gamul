@@ -13,8 +13,9 @@ interface MapProps {
   ingredientId: number;
   latitude: any;
   longitude: any;
-  onSetStoreId: Function;
-  onSetStores: Function;
+  onSetStoreId?: Function;
+  onSetStoreName?: Function;
+  onSetStores?: Function;
 }
 
 function OfflineMartMap({
@@ -22,11 +23,13 @@ function OfflineMartMap({
   latitude,
   longitude,
   onSetStoreId,
+  onSetStoreName,
   onSetStores,
 }: MapProps) {
   const apiClient = ApiClient.getInstance();
-  const [stores, setStores] = useState<OfflineMartInfo[]>();
   const markers: any[] = [];
+  const [markerLat, setMarkerLat] = useState("");
+  const [markerLng, setMarkerLng] = useState("");
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -38,14 +41,20 @@ function OfflineMartMap({
 
     function setStoreId(storeid: number) {
       return function () {
-        onSetStoreId(storeid);
+        onSetStoreId && (onSetStoreId(storeid));
         console.log(storeid);
       };
     }
 
-    function changeStores(stores: OfflineMartInfo[]) {
-      onSetStores(stores);
-      console.log(stores);
+    function setStoreName(storename: string) {
+      return function () {
+        onSetStoreName && (onSetStoreName(storename));
+        console.log(storename);
+      }
+    }
+
+    function setStores(store: OfflineMartInfo[]) {
+      onSetStores && (onSetStores(store));
     }
 
     const onLoadKakaoMap = () => {
@@ -60,23 +69,6 @@ function OfflineMartMap({
         // map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
 
         //map.setZoomable(false);
-
-        const earlyStores = async () => {
-          var center = map.getCenter();
-          var bounds = map.getBounds();
-
-          setStores(
-            await apiClient.getOfflineMartList(
-              ingredientId,
-              bounds.qa,
-              bounds.ha,
-              bounds.pa,
-              bounds.oa,
-              center.getLat(),
-              center.getLng()
-            )
-          );
-        };
 
         async function getInfo() {
           // 지도의 현재 중심좌표를 얻어옵니다
@@ -95,11 +87,13 @@ function OfflineMartMap({
             center.getLng()
           );
 
-          changeStores(store);
-          makeMarker();
+          setStores(store);
+
+          makeMarker(store);
+          
         }
 
-        earlyStores();
+        var selectedMarker: any = null;
 
         window.kakao.maps.event.addListener(map, "dragend", getInfo);
         window.kakao.maps.event.addListener(map, "zoom_changed", getInfo);
@@ -116,15 +110,13 @@ function OfflineMartMap({
 
         const clickImage = new window.kakao.maps.MarkerImage(imageSrc2, imageSize2, imageOption2);
 
-        var selectedMarker: any = null;
-
-        const makeMarker = () => {
+        const makeMarker = (store: OfflineMartInfo[]) => {
           markers?.forEach((v) => {
             v.setMap(null)
           })
           markers.length = 0;
 
-          stores?.forEach((v) => {
+          store?.forEach((v) => {
             const markerPosition = new window.kakao.maps.LatLng(v.latitude, v.longitude);
             const marker = new window.kakao.maps.Marker({
               position: markerPosition,
@@ -139,12 +131,18 @@ function OfflineMartMap({
               xAnchor: 0, // 컨텐츠의 x 위치
               yAnchor: -2.35, // 컨텐츠의 y 위치
             });
+
+            if(marker.getPosition().getLat() == markerLat && marker.getPosition().getLng() == markerLng) {
+              selectedMarker = marker;
+              marker.setImage(clickImage);
+            }
             
             markers.push(marker);
             marker.setMap(map);
             customOverlay.setMap(map);
     
             window.kakao.maps.event.addListener(marker, "click", setStoreId(v.store_id));
+            window.kakao.maps.event.addListener(marker, "click", setStoreName(v.name));
     
             window.kakao.maps.event.addListener(marker, "click", function () {
               if (!selectedMarker || selectedMarker !== marker) {
@@ -158,11 +156,14 @@ function OfflineMartMap({
     
               // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
               selectedMarker = marker;
+              setMarkerLat(marker.getPosition().getLat());
+              setMarkerLng(marker.getPosition().getLng());
             });
+            
           });
         };
-
-        makeMarker();
+        
+        getInfo();
 
       });
     };

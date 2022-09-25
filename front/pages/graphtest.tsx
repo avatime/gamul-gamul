@@ -10,6 +10,9 @@ import { HeaderBar } from '../src/components/HeaderBar';
 import { Navbar } from '../src/components/Navbar';
 import { MyRecipeInfo } from '../src/apis/responses/myRecipeInfo';
 import { MyRecipeComp } from '../src/components/templates/MyRecipeComp';
+import { OfflineMartComp } from '../src/components/templates/OfflineMartComp';
+import { OfflineMartDetailComp } from '../src/components/templates/OfflineMartDetailComp';
+import useGeolocation from '../src/hooks/useGeolocation';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -17,6 +20,7 @@ interface IProps {
 }
 
 const GraphTest:NextPage<IProps> = ({ingredientDetailInfo, myRecipeList}) => {
+  const location: any = useGeolocation();
 
   const test = () => {
     console.log(test);
@@ -25,10 +29,12 @@ const GraphTest:NextPage<IProps> = ({ingredientDetailInfo, myRecipeList}) => {
   return (
     <Box className="page-background">
       <Mobile>
-        <HeaderBar badgeContent={6}/>
+        <HeaderBar badgeContent={6} onClickSearch={test}/>
         <Box className={styles.PageforMobile}>
         <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"95%"} inputHeight={300}></IngredientPriceComp>
+        {/* <OfflineMartComp ingredientInfo={ingredientDetailInfo.ingredient_info} /> */}
         <MyRecipeComp myRecipeList={myRecipeList} />
+        <OfflineMartDetailComp latitude={location.coordinates.lat} longitude={location.coordinates.lng} ingredientId={ingredientDetailInfo.ingredient_info.ingredient_id} />
         <Navbar activeIndex={1} />
         </Box>
       </Mobile>
