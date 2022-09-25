@@ -6,20 +6,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @ApiModel("RecipeDetailRes")
 public class RecipeDetailRes {
     @JsonProperty("recipe_info")
-    RecipeInfoRes recipeInfo;
+    RecipeInfoRes recipeInfoRes;
 
     @JsonProperty("ingredient_list")
-    ArrayList<IngredientInfoRes> ingredientList;
+    List<IngredientInfoRes> ingredientList;
 
     @JsonProperty("extra_ingredient_list")
-    ArrayList<String> extraIngredientList;
+    List<String> extraIngredientList;
 
     @JsonProperty("youtube_list")
-    ArrayList<YoutubeInfoRes> youtubeList;
+    List<YoutubeInfoRes> youtubeList;
+
+    public RecipeDetailRes(RecipeInfoRes recipeInfoRes, List<IngredientInfoRes> ingredientList, List<String> extraIngredientList, List<YoutubeInfoRes> youtubeList){
+        this.recipeInfoRes = recipeInfoRes;
+        this.ingredientList = ingredientList;
+        this.extraIngredientList = extraIngredientList;
+        this.youtubeList = youtubeList;
+    }
 }
