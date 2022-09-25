@@ -2,6 +2,7 @@ import { Box, IconButton } from "@mui/material";
 import React, { FC, ReactNode } from "react";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import AddIcon from '@mui/icons-material/Add';
+import { Price } from "./Price";
 
 interface IProps {
   title: string;
@@ -37,7 +38,7 @@ export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore,
           </IconButton>
         )}
         {totalPrice && (
-          <p style={{ fontSize: 12, fontWeight: "bold", marginRight: 10 }}>{totalPrice}원</p>
+          <Price total={totalPrice} size="12px" />
         )}
       </Box>
       <Box maxHeight="inherit" overflow="auto">
