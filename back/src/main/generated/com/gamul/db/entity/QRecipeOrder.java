@@ -31,7 +31,7 @@ public class QRecipeOrder extends EntityPathBase<RecipeOrder> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
-    public final QMyRecipe myRecipe;
+    public final QRecipe recipe;
 
     public QRecipeOrder(String variable) {
         this(RecipeOrder.class, forVariable(variable), INITS);
@@ -51,7 +51,7 @@ public class QRecipeOrder extends EntityPathBase<RecipeOrder> {
 
     public QRecipeOrder(Class<? extends RecipeOrder> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.myRecipe = inits.isInitialized("myRecipe") ? new QMyRecipe(forProperty("myRecipe"), inits.get("myRecipe")) : null;
+        this.recipe = inits.isInitialized("recipe") ? new QRecipe(forProperty("recipe")) : null;
     }
 
 }
