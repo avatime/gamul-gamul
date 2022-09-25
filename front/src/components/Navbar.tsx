@@ -11,6 +11,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import MuiBottomNavigationAction from "@mui/material/BottomNavigationAction";
+import { useRouter } from 'next/router'
+import { getCookie } from "../utils/cookie";
+
 interface IProps {
   activeIndex: number;
 }
@@ -22,27 +25,36 @@ const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
     color: #000;
   }
 `);
+const token = getCookie("token");
+
+
 
 const elements = [
   {
     text: "홈",
     icon: (isActive: boolean) => <HomeIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
+    path:'/'
   },
   {
     text: "식재료",
     icon: (isActive: boolean) => <EggIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
+    path:'/ingredient',
   },
   {
     text: "바구니",
     icon: (isActive: boolean) => <ShoppingCartIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
+    path:'/basket',
   },
   {
     text: "요리법",
     icon: (isActive: boolean) => <RestaurantIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
+    path:'/recipe',
   },
   {
     text: "내정보",
     icon: (isActive: boolean) => <PersonIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
+    path: token ? '/my-info' : 'login',
+
   },
 ];
 
@@ -54,13 +66,12 @@ const elementActiveStyles = {
 };
 
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
+  const router = useRouter();
+  const token = getCookie("token");
   return (
     <div>
       <Mobile>
         <Box>
-      
-
-          
           <BottomNavigation
             showLabels
             value={activeIndex}
@@ -75,11 +86,11 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               zIndex: 5,
             }}
           >
-            <BottomNavigationAction label="홈" icon={<HomeIcon />} />
-            <BottomNavigationAction label="식재료" icon={<EggIcon />} />
-            <BottomNavigationAction label="바구니" icon={<RestaurantIcon />} />
-            <BottomNavigationAction label="요리법" icon={<ShoppingCartIcon />} />
-            <BottomNavigationAction label="내정보" icon={<PersonIcon />} />
+            <BottomNavigationAction label="홈" icon={<HomeIcon />}   onClick={() => router.push('/')} />
+            <BottomNavigationAction label="식재료" icon={<EggIcon />}  onClick={() => router.push('/ingredient')}/>
+            <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => router.push('/basket')} />
+            <BottomNavigationAction label="요리법" icon={<RestaurantIcon />}  onClick={() => router.push('/recipe')}/>
+            <BottomNavigationAction label="내정보" icon={<PersonIcon />}  onClick={() => token?  router.push('/my-info') : router.push('/login')}/>
           </BottomNavigation>
         </Box>
       </Mobile>
@@ -100,7 +111,8 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
             return (
               <Stack
                 key={idx}
-                direction="row"
+                direction="row"  
+                onClick={() => router.push(item.path)}
                 sx={{
                   marginLeft: 1,
                   padding: 2,
@@ -141,6 +153,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               <Stack
                 key={idx}
                 direction="row"
+                onClick={() => router.push(item.path)}
                 sx={{
                   marginLeft: 1,
                   padding: 2,

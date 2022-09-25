@@ -21,6 +21,7 @@ import { MyRecipeIngredientInfo } from "./responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
+import { getCookie, setCookie } from "../utils/cookie";
 
 const delay = 0;
 
@@ -34,20 +35,34 @@ export class ApiClient
     this.axiosInstance = this.createAxiosInstance();
   }
   async register(userName: string, password: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "post",
+      url: `/users/register`,
+      data: { user_name: userName, password },
+    });
   }
   async checkId(userName: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "get",
+      url: `/users/check/${userName}`,
+    });
   }
   async login(userName: string, password: string): Promise<LoginRes> {
-    throw new Error("Method not implemented.");
+    return (await this.axiosInstance.request({
+      method:"post",
+      url: `/auth/login`,
+      data :  { user_name: userName, password },
+    })).data;
   }
   async withdrawal(userName: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method:"delete",
+      url: `/users/${userName}`,
+    });
   }
   async getIngredientList(
     orderType: IngredientOrderType,
-    highClassId: number = 0,
+    highClassId: number = 0
   ): Promise<IngredientInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
   }
@@ -57,10 +72,14 @@ export class ApiClient
     );
   }
   async getIngredientDetailInfo(ingredientId: number): Promise<IngredientDetailInfo> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientDetailInfo), delay));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(Dummy.getIngredientDetailInfo), delay)
+    );
   }
   async getIngredientHighClassList(): Promise<HighClass[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientHighClassList), delay));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(Dummy.getIngredientHighClassList), delay)
+    );
   }
   async putBookmarkIngredient(userName: string, ingredientId: number): Promise<void> {
     throw new Error("Method not implemented.");
@@ -83,7 +102,9 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
   }
   async getBasketIngredientList(userName: string): Promise<IngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getBasketIngredientList), delay));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(Dummy.getBasketIngredientList), delay)
+    );
   }
   async getRecipeList(
     orderType: RecipeOrderType,
@@ -123,7 +144,7 @@ export class ApiClient
   }
   async postMyRecipe(
     userName: string,
-    imageDataUrl: string, 
+    imageDataUrl: string,
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
@@ -132,7 +153,7 @@ export class ApiClient
   async updateMyRecipe(
     userName: string,
     myRecipeId: number,
-    imageDataUrl: string, 
+    imageDataUrl: string,
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
@@ -148,7 +169,9 @@ export class ApiClient
     userName: string,
     myRecipeId: number
   ): Promise<MyRecipeIngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getMyRecipeIngredientList), delay));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(Dummy.getMyRecipeIngredientList), delay)
+    );
   }
   async deleteMyRecipe(userName: string, myRecipeId: number): Promise<void> {
     throw new Error("Method not implemented.");
@@ -157,7 +180,9 @@ export class ApiClient
     throw new Error("Method not implemented.");
   }
   async getAllergyIngredientList(userName: string): Promise<number[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getAllergyIngredientList), delay));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(Dummy.getAllergyIngredientList), delay)
+    );
   }
   async postLimitPriceNotice(
     userName: string,
@@ -179,6 +204,7 @@ export class ApiClient
 
   logout() {
     this.axiosInstance = this.createAxiosInstance();
+
   }
 
   private createAxiosInstance = (token?: string) => {
@@ -187,8 +213,9 @@ export class ApiClient
     };
 
     if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    // } else if (localStorage.getItem("token")) {
+      headers.Authorization = `Bearer ${getCookie(token)}`;
+
+      // } else if (localStorage.getItem("token")) {
       // headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
     }
 
