@@ -31,7 +31,7 @@ public class QRecipeImage extends EntityPathBase<RecipeImage> {
 
     public final StringPath imagePath = createString("imagePath");
 
-    public final QMyRecipe myRecipe;
+    public final QRecipe recipe;
 
     public QRecipeImage(String variable) {
         this(RecipeImage.class, forVariable(variable), INITS);
@@ -51,7 +51,7 @@ public class QRecipeImage extends EntityPathBase<RecipeImage> {
 
     public QRecipeImage(Class<? extends RecipeImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.myRecipe = inits.isInitialized("myRecipe") ? new QMyRecipe(forProperty("myRecipe"), inits.get("myRecipe")) : null;
+        this.recipe = inits.isInitialized("recipe") ? new QRecipe(forProperty("recipe")) : null;
     }
 
 }

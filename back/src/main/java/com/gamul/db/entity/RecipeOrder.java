@@ -30,5 +30,5 @@ public class RecipeOrder extends BaseEntity {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private MyRecipe myRecipe;
+    private Recipe recipe;
 }
