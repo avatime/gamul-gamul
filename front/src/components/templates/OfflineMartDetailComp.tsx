@@ -60,17 +60,24 @@ export const OfflineMartDetailComp: FC<IProps> = ({
             longitude={longitude}
             onSetStoreId={storeIdHandler}
             onSetStoreName={storeNameHandler}
+            mapId="desktop"
           />
         </Box>
         <h2>{storeName}</h2>
         <Box sx={{ margin: "5% 0" }}>
           <SearchBar color={"#F5F5F4"} />
         </Box>
-        <Box marginBottom={"5%"} display="flex" alignItems="center" justifyContent="center" flexDirection="row">
-            <span style={{fontSize: 12, fontWeight: "bold", marginLeft: "40px"}}>식재료</span>
-            <Box flex={5} />
-            <span style={{fontSize: 12, fontWeight: "bold", marginRight: "40px"}}>가격</span>
-            <span style={{fontSize: 12, fontWeight: "bold", marginRight: "15px"}}>등락폭</span>
+        <Box
+          marginBottom={"5%"}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="row"
+        >
+          <span style={{ fontSize: 12, fontWeight: "bold", marginLeft: "40px" }}>식재료</span>
+          <Box flex={5} />
+          <span style={{ fontSize: 12, fontWeight: "bold", marginRight: "40px" }}>가격</span>
+          <span style={{ fontSize: 12, fontWeight: "bold", marginRight: "15px" }}>등락폭</span>
         </Box>
         {ingredientInfo?.map((data, index) => {
           return (

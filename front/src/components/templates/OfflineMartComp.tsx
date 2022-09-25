@@ -11,9 +11,10 @@ import { OfflineMartInfoItem } from "../OfflineMartInfoItem";
 interface IProps {
   title?: string;
   ingredientInfo: IngredientInfo;
+  mapId: string;
 }
 
-export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredientInfo }) => {
+export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredientInfo, mapId }) => {
   const [stores, setStores] = useState<OfflineMartInfo[]>();
 
   const router = useRouter();
@@ -31,11 +32,11 @@ export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredien
     <CardContainer title={title} onClickMore={movePage}>
       <Box>
         <OfflineMartMap
+        mapId={mapId} 
           ingredientId={ingredientInfo.ingredient_id}
           latitude={location.coordinates.lat}
           longitude={location.coordinates.lng}
-          onSetStores={storesHandler}
-        />
+          onSetStores={storesHandler}        />
         <Box marginTop="10px">
         <OfflineMartInfoItem ingredientInfo={ingredientInfo}/>
         {stores?.map((data, index) => {

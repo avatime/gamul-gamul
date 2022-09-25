@@ -33,15 +33,25 @@ const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredient
         <Box className={styles.PageforDesktop}>
           {/* InfoTitle */}
           <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
-          <OfflineMartComp ingredientInfo={ingredientInfo} />
+      <OfflineMartComp ingredientInfo={ingredientInfo} mapId="desktop" />
           {/* OnlineMartInfoComp */}
         </Box>
-        <Navbar activeIndex={1} />
       </Desktop>
-      <Tablet>      
+      <Tablet>     
+      <Box className={styles.PageforTablet}>
+        
+      <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
+      <OfflineMartComp ingredientInfo={ingredientInfo} mapId="tablet" />
+          {/* <OfflineMartComp ingredientInfo={ingredientInfo} />  */}
+          </Box>
       </Tablet>
       <Mobile>
-
+      <Box className={styles.PageforMobile}>
+          {/* InfoTitle */}
+          <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
+          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="mobile" />
+          {/* OnlineMartInfoComp */}
+        </Box>
       </Mobile>
     </Box>
   );

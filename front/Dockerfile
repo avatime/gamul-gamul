@@ -4,4 +4,5 @@ COPY package*.json ./
 RUN npm i -y
 COPY . .
 # COPY /deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
-CMD [ "npm", "run", "dev"]
+RUN npm run build
+CMD [ "npm", "run", "start"]
