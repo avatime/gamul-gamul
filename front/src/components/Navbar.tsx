@@ -88,7 +88,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
           >
             <BottomNavigationAction label="홈" icon={<HomeIcon />}   onClick={() => router.push('/')} />
             <BottomNavigationAction label="식재료" icon={<EggIcon />}  onClick={() => router.push('/ingredient')}/>
-            <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => router.push('/basket')} />
+            <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => token? router.push('/basket') : router.push('/login')} />
             <BottomNavigationAction label="요리법" icon={<RestaurantIcon />}  onClick={() => router.push('/recipe')}/>
             <BottomNavigationAction label="내정보" icon={<PersonIcon />}  onClick={() => token?  router.push('/my-info') : router.push('/login')}/>
           </BottomNavigation>
