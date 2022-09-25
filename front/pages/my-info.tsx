@@ -4,16 +4,8 @@ import { Mobile } from "../src/components/Mobile";
 import { MyInfoItem } from "../src/components/MyInfoItem";
 import { Navbar } from "../src/components/Navbar";
 import styles from "../styles/Page.module.css";
-import AutoGraphIcon from "@mui/icons-material/AutoGraph";
-import LogoutIcon from "@mui/icons-material/Logout";
-import NoMealsIcon from "@mui/icons-material/NoMeals";
-import NoAccountsIcon from "@mui/icons-material/NoAccounts";
-import { LordIcon } from "../public/lordicon/lord-icon";
-import { HeaderBar } from "../src/components/HeaderBar";
-import { getCookie, setCookie, removeCookie } from "../src/utils/cookie";
+import { getCookie } from "../src/utils/cookie";
 import { useRouter } from "next/router";
-import { ApiClient } from "../src/apis/apiClient";
-import { RouterOutlined } from "@mui/icons-material";
 import { Desktop } from "../src/components/Desktop";
 import { Tablet } from "../src/components/Tablet";
 
@@ -118,10 +110,9 @@ const MyInfoPage: NextPage<IProps> = (props) => {
   const userId = getCookie("userName");
 
   return (
-    <div>
+    <Box>
       <Mobile>
         <Box className={styles.PageforMobile}>
-          <HeaderBar badgeContent={0} />
           <Stack direction="row" sx={{ alignItems: "center" }}>
             <lord-icon
               src="https://cdn.lordicon.com/dymjgskg.json"
@@ -146,12 +137,10 @@ const MyInfoPage: NextPage<IProps> = (props) => {
               </Box>
             );
           })}
-          <Navbar activeIndex={4} />
         </Box>
       </Mobile>
       <Desktop>
         <Box className={styles.PageforDesktop}>
-          <HeaderBar badgeContent={0} />
           <Box
             sx={{
               position: "absolute",
@@ -192,7 +181,6 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <HeaderBar badgeContent={0} />
           <Box
             sx={{
               position: "absolute",
@@ -203,40 +191,39 @@ const MyInfoPage: NextPage<IProps> = (props) => {
               width: "60vw",
             }}
           >
-          <Stack
-            direction="row"
-            sx={{
-              alignItems: "center",
-            }}
-          >
-            <lord-icon
-              src="https://cdn.lordicon.com/dymjgskg.json"
-              trigger="loop"
-              style={{ width: "50px", height: "70px" }}
-            />
-            <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
-              {userId}님, 안녕하세요
-            </Typography>
-          </Stack>
-          {elements?.map((item, idx) => {
-            return (
-              <Box key={idx}>
-                <MyInfoItem
-                  primary={item.primary}
-                  secondary={item.secondary}
-                  icon={item.icon}
-                  bgColor={item.bgColor}
-                  nextPage={item.nextPage}
-                  onClick={() => router.push(item.path)}
-                />
-              </Box>
-            );
-          })}
-          <Navbar activeIndex={4} />
-        </Box>
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: "center",
+              }}
+            >
+              <lord-icon
+                src="https://cdn.lordicon.com/dymjgskg.json"
+                trigger="loop"
+                style={{ width: "50px", height: "70px" }}
+              />
+              <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
+                {userId}님, 안녕하세요
+              </Typography>
+            </Stack>
+            {elements?.map((item, idx) => {
+              return (
+                <Box key={idx}>
+                  <MyInfoItem
+                    primary={item.primary}
+                    secondary={item.secondary}
+                    icon={item.icon}
+                    bgColor={item.bgColor}
+                    nextPage={item.nextPage}
+                    onClick={() => router.push(item.path)}
+                  />
+                </Box>
+              );
+            })}
+          </Box>
         </Box>
       </Tablet>
-    </div>
+    </Box>
   );
 };
 
