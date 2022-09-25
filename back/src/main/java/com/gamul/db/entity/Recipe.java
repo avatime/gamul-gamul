@@ -28,6 +28,9 @@ public class Recipe extends BaseEntity{
     @Column(updatable = false)
     private String information;
 
+    @Column()
+    private Long views;
+
 
 }
 

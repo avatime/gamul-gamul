@@ -44,7 +44,6 @@ public class IngredientServiceImpl implements IngredientService{
         HighClass highClass = highClassRepository.findById(highClassId);
 
         for (Ingredient ingredient : ingredientList){
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
             // 가격 객체 가져오기
             Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
             // 알러지 객체 가져오기
@@ -54,18 +53,9 @@ public class IngredientServiceImpl implements IngredientService{
             // 바구니 객체 가져오기
             Basket basket = basketRepository.findByIngredientId(ingredient.getId());
 
-            ingredientInfoRes.setIngredientId(ingredient.getId());
-            ingredientInfoRes.setName(ingredient.getMidClass());
-            ingredientInfoRes.setPrice(price.getPrice()); // 지금은 그냥 각각
-            ingredientInfoRes.setUnit(price.getUnit());
-            ingredientInfoRes.setQuantity(price.getQuantity());
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
+
 //            ingredientInfoRes.setVolatility();
-            ingredientInfoRes.setAllergy(allergy.isActiveFlag());
-            ingredientInfoRes.setFavorite(ingredientSelected.isActiveFlag());
-            ingredientInfoRes.setBasket(basket.isActiveFlag());
-            ingredientInfoRes.setHighClassId(ingredient.getHighClass());
-            ingredientInfoRes.setHighClassName(highClass.getName());
-            ingredientInfoRes.setViews(ingredient.getViews());
 
             // 추가하기
             ingredientInfoResList.add(ingredientInfoRes);
@@ -101,10 +91,8 @@ public class IngredientServiceImpl implements IngredientService{
 
         for (IngredientSelected x : ingredientSelectedList){
 
+            // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
-
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
-
             // 가격 객체 가져오기
             Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
             // 알러지 객체 가져오기
@@ -116,18 +104,9 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            ingredientInfoRes.setIngredientId(ingredient.getId());
-            ingredientInfoRes.setName(ingredient.getMidClass());
-            ingredientInfoRes.setPrice(price.getPrice()); // 지금은 그냥 각각
-            ingredientInfoRes.setUnit(price.getUnit());
-            ingredientInfoRes.setQuantity(price.getQuantity());
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
+
 //            ingredientInfoRes.setVolatility();
-            ingredientInfoRes.setAllergy(allergy.isActiveFlag());
-            ingredientInfoRes.setFavorite(ingredientSelected.isActiveFlag());
-            ingredientInfoRes.setBasket(basket.isActiveFlag());
-            ingredientInfoRes.setHighClassId(ingredient.getHighClass());
-            ingredientInfoRes.setHighClassName(highClass.getName());
-            ingredientInfoRes.setViews(ingredient.getViews());
 
             ingredientInfoResList.add(ingredientInfoRes);
         }
@@ -212,9 +191,8 @@ public class IngredientServiceImpl implements IngredientService{
         List<Price> priceList = priceRepository.findByStoreIdAndDateTime(storeId, today);
 
         for (Price x : priceList){
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
+            // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
-
             // 가격 객체 가져오기
             Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
             // 알러지 객체 가져오기
@@ -226,18 +204,9 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            ingredientInfoRes.setIngredientId(ingredient.getId());
-            ingredientInfoRes.setName(ingredient.getMidClass());
-            ingredientInfoRes.setPrice(price.getPrice()); // 지금은 그냥 각각
-            ingredientInfoRes.setUnit(price.getUnit());
-            ingredientInfoRes.setQuantity(price.getQuantity());
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
+
 //            ingredientInfoRes.setVolatility();
-            ingredientInfoRes.setAllergy(allergy.isActiveFlag());
-            ingredientInfoRes.setFavorite(ingredientSelected.isActiveFlag());
-            ingredientInfoRes.setBasket(basket.isActiveFlag());
-            ingredientInfoRes.setHighClassId(ingredient.getHighClass());
-            ingredientInfoRes.setHighClassName(highClass.getName());
-            ingredientInfoRes.setViews(ingredient.getViews());
 
             ingredientInfoResList.add(ingredientInfoRes);
         }
@@ -251,9 +220,8 @@ public class IngredientServiceImpl implements IngredientService{
         List<Basket> basketList = basketRepository.findAllByUserId(user.getId());
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
         for (Basket x : basketList){
+            // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
-
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
 
             // 가격 객체 가져오기
             Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
@@ -266,18 +234,10 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            ingredientInfoRes.setIngredientId(ingredient.getId());
-            ingredientInfoRes.setName(ingredient.getMidClass());
-            ingredientInfoRes.setPrice(price.getPrice()); // 지금은 그냥 각각
-            ingredientInfoRes.setUnit(price.getUnit());
-            ingredientInfoRes.setQuantity(price.getQuantity());
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
+
 //            ingredientInfoRes.setVolatility();
-            ingredientInfoRes.setAllergy(allergy.isActiveFlag());
-            ingredientInfoRes.setFavorite(ingredientSelected.isActiveFlag());
-            ingredientInfoRes.setBasket(basket.isActiveFlag());
-            ingredientInfoRes.setHighClassId(ingredient.getHighClass());
-            ingredientInfoRes.setHighClassName(highClass.getName());
-            ingredientInfoRes.setViews(ingredient.getViews());
+            ingredientInfoResList.add(ingredientInfoRes);
         }
         return ingredientInfoResList;
     }
