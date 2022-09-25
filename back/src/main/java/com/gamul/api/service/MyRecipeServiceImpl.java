@@ -95,6 +95,6 @@ public class MyRecipeServiceImpl implements MyRecipeService {
 
     @Override
     public void deleteMyRecipeIngredients(Long myRecipeId) throws Exception {
-        myRecipeIngredientRepository.deleteAllByMyRecipeIdInBatch(myRecipeId);
+        myRecipeIngredientRepository.deleteAllByMyRecipeId(myRecipeId);
     }
 }

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface MyRecipeIngredientRepository extends JpaRepository<MyRecipeIngredient, Long> {
     Optional<List<MyRecipeIngredient>> findAllByMyRecipeId(Long myRecipeId);
-    void deleteAllByMyRecipeIdInBatch(Long MyRecipeId);
+    void deleteAllByMyRecipeId(Long MyRecipeId);
 }

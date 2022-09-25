@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface AllergyRepository extends JpaRepository<Allergy, Long> {
     Optional<Allergy> findByIngredientId(Long ingredientId);
     Boolean existsByUserIdAndIngredientId(Long userId, Long ingredientId);
-    void deleteAllByUserIdInBatch(Long userId);
+    void deleteAllByUserId(Long userId);
     Optional<List<Allergy>> findAllByUserId(Long userId);
 }
