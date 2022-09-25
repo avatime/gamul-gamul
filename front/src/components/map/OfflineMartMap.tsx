@@ -10,6 +10,7 @@ declare global {
 }
 
 interface MapProps {
+  mapId: string;
   ingredientId: number;
   latitude: any;
   longitude: any;
@@ -19,6 +20,7 @@ interface MapProps {
 }
 
 function OfflineMartMap({
+  mapId,
   ingredientId,
   latitude,
   longitude,
@@ -59,7 +61,7 @@ function OfflineMartMap({
 
     const onLoadKakaoMap = () => {
       window.kakao.maps.load(() => {
-        const container = document.getElementById("map");
+        const container = document.getElementById(mapId);
         const options = {
           center: new window.kakao.maps.LatLng(latitude, longitude),
           level: 4,
@@ -172,7 +174,7 @@ function OfflineMartMap({
     return () => mapScript.removeEventListener("load", onLoadKakaoMap);
   }, [latitude, longitude]);
 
-  return <MapContainer id="map" />;
+  return <MapContainer id={mapId} />;
 }
 
 const MapContainer = styled.div`

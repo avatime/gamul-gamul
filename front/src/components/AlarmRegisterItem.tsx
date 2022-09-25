@@ -69,7 +69,7 @@ export const AlarmRegisterItem: FC<IProps> = () => {
        
             <ButtonFill text={"알림 받기"} height={"50px"} width={"220px"} maxWidth={""} onClick={function (): void {
               throw new Error("Function not implemented.");
-            } } />
+            } } fontSize={""} disabled={false} />
            </Box>
           </Box>
         </Modal>

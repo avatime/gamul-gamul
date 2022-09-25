@@ -24,11 +24,11 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
 
   const storeNameHandler = (storename: string) => {
     setStoreName(storename);
-  }
+  };
 
   const storesHandler = (marts: OfflineMartInfo[]) => {
     setStores(marts);
-  }
+  };
 
   const location: any = useGeolocation();
 
@@ -42,6 +42,7 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
         onSetStoreId={storeIdHandler}
         onSetStoreName={storeNameHandler}
         onSetStores={storesHandler}
+        mapId="test"
       />
       <h3>마트 이름</h3>
       <h3>{storeName}</h3>
@@ -61,7 +62,8 @@ export async function getServerSideProps() {
   const apiClient = ApiClient.getInstance();
   // 실 구현시 useEffect로 변환 가능성
   const storeInfo: OfflineMartInfo[] = await apiClient.getOfflineMartList(1, 1, 1, 1, 1, 1, 1);
-  const ingredientInfo: IngredientInfo = (await apiClient.getIngredientDetailInfo(1)).ingredient_info;
+  const ingredientInfo: IngredientInfo = (await apiClient.getIngredientDetailInfo(1))
+    .ingredient_info;
   return {
     props: {
       storeInfo,
