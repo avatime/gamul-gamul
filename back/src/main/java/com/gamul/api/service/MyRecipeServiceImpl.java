@@ -92,4 +92,9 @@ public class MyRecipeServiceImpl implements MyRecipeService {
     public MyRecipe getMyRecipe(Long myRecipeId) {
         return myRecipeRepository.findById(myRecipeId).orElse(null);
     }
+
+    @Override
+    public void deleteMyRecipeIngredients(Long myRecipeId) throws Exception {
+        myRecipeRepository.deleteById(myRecipeId);
+    }
 }

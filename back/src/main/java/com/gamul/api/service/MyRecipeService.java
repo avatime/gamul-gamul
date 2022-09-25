@@ -14,4 +14,5 @@ public interface MyRecipeService {
     String getRecipeOwner(Long myRecipeId) throws Exception;
     List<MyRecipeIngredient> getMyRecipeIngredientList(Long myRecipeId);
     MyRecipe getMyRecipe(Long myRecipeId);
+    void deleteMyRecipeIngredients(Long myRecipeId) throws Exception;
 }
