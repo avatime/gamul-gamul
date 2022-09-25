@@ -1,6 +1,7 @@
 package com.gamul.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gamul.db.entity.*;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
@@ -37,5 +38,18 @@ public class IngredientInfoRes {
     String highClassName;
 
     Long views;
+
+    public IngredientInfoRes(Ingredient ingredient, Price price, Allergy allgery, IngredientSelected ingredientSelected, Basket basket, HighClass highClass){
+        this.ingredientId = ingredient.getId();
+        this.name = ingredient.getMidClass();
+        this.unit = price.getUnit();
+        this.quantity = price.getQuantity();
+        this.allergy = allgery.isActiveFlag();
+        this.favorite = ingredientSelected.isActiveFlag();
+        this.basket = basket.isActiveFlag();
+        this.highClassId = ingredient.getHighClass();
+        this.highClassName = highClass.getName();
+        this.views = ingredient.getViews();
+    }
 
 }
