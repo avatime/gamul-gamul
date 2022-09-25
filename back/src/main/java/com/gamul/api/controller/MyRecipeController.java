@@ -3,10 +3,7 @@ package com.gamul.api.controller;
 import com.gamul.api.request.IngredientQuantityPostReq;
 import com.gamul.api.request.MyRecipeEditReq;
 import com.gamul.api.request.MyRecipeRegisterPostReq;
-import com.gamul.api.response.IngredientInfoRes;
-import com.gamul.api.response.MyRecipeDetailRes;
-import com.gamul.api.response.MyRecipeInfoRes;
-import com.gamul.api.response.MyRecipeIngredientRes;
+import com.gamul.api.response.*;
 import com.gamul.api.service.MyRecipeService;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
@@ -21,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 @Api(value = "마이레시피 API", tags = {"MyRecipe."})
 @RestController
@@ -147,7 +147,7 @@ public class MyRecipeController {
         MyRecipeDetailRes myRecipeDetailRes = new MyRecipeDetailRes();
         MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
         List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
-        List<IngredientInfoRes> ingreidentlist = new ArrayList<>();
+        List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
 
         for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
             Calendar cal = new GregorianCalendar();
@@ -155,7 +155,7 @@ public class MyRecipeController {
             int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
             cal.add(Calendar.DATE, -1);
             int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
-            IngredientInfoRes ingredientInfoRes = IngredientInfoRes.builder()
+            MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                     .ingredientId(myRecipeIngredient.getIngredient().getId())
                     .name(myRecipeIngredient.getMyRecipe().getName())
                     .price(todayPrice)

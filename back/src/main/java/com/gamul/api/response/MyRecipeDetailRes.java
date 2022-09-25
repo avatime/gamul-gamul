@@ -15,7 +15,7 @@ public class MyRecipeDetailRes {
     int totalPrice;
 
     @JsonProperty("ingredient_list")
-    List<IngredientInfoRes> ingredientList;
+    List<MyRecipeIngredientInfoRes> ingredientList;
 
     @JsonProperty("price_transition_info")
     PriceTransitionInfoRes priceTransitionInfo;
