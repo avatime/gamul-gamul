@@ -33,27 +33,27 @@ const elements = [
   {
     text: "홈",
     icon: (isActive: boolean) => <HomeIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:'/'
+    path:(isUser : boolean) => isUser ? '/' : '/'
   },
   {
     text: "식재료",
     icon: (isActive: boolean) => <EggIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:'/ingredient',
+    path:(isUser : boolean) => isUser ? '/ingredient' : '/ingredient'
   },
   {
     text: "바구니",
     icon: (isActive: boolean) => <ShoppingCartIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:'/basket',
+    path:(isUser : boolean) => isUser ? '/basket' : '/login'
   },
   {
     text: "요리법",
     icon: (isActive: boolean) => <RestaurantIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:'/recipe',
+    path:(isUser : boolean) => isUser ? '/recipe' : '/recipe',
   },
   {
     text: "내정보",
     icon: (isActive: boolean) => <PersonIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path: token ? '/my-info' : 'login',
+    path: (isUser : boolean) => isUser ? '/my-info' : '/login'
 
   },
 ];
@@ -112,7 +112,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               <Stack
                 key={idx}
                 direction="row"  
-                onClick={() => router.push(item.path)}
+                onClick={() => router.push(item.path(token))}
                 sx={{
                   marginLeft: 1,
                   padding: 2,
@@ -153,7 +153,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               <Stack
                 key={idx}
                 direction="row"
-                onClick={() => router.push(item.path)}
+                onClick={() => router.push(item.path(token))}
                 sx={{
                   marginLeft: 1,
                   padding: 2,
