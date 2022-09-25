@@ -6,7 +6,7 @@ interface IProps {}
 const MyRecipeRegisterPage: NextPage<IProps> = (props) => {
   const router = useRouter();
   const { id } = router.query;
-  return <div>MyRecipeRegisterPage {IDBIndex}</div>;
+  return <div>MyRecipeRegisterPage {id}</div>;
 };
 
 export default MyRecipeRegisterPage;

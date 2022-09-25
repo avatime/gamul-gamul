@@ -67,7 +67,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
         >
           <SearchHeaderBar
             searchKeyword={searchKeyword}
-            onSearch={() => onSearch(searchKeyword)}
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />
@@ -90,7 +89,6 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
         >
           <SearchHeaderBar
             searchKeyword={searchKeyword}
-            onSearch={() => onSearch(searchKeyword)}
             onChange={(e: any) => onChange(e.target.value)}
             onClickBack={onClickBack}
           />

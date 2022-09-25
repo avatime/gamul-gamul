@@ -1,16 +1,12 @@
-import { Box, FormHelperText, Input, Paper, Stack, Typography, useForkRef } from "@mui/material";
+import { Box, FormHelperText, Input, Paper, Stack, Typography } from "@mui/material";
 import { NextPage } from "next";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ApiClient } from "../src/apis/apiClient";
 import { ButtonFill } from "../src/components/button/ButtonFill";
 import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
-import styles from "../styles/Page.module.css";
-import fireworks from "../public/assets/fireworks.gif";
-import Image from "next/image";
-import effect from "../styles/Signup.module.css";
 import { BackHeader } from "../src/components/BackHeader";
 
 interface IProps {}
