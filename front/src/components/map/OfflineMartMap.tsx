@@ -132,9 +132,10 @@ function OfflineMartMap({
               yAnchor: -2.35, // 컨텐츠의 y 위치
             });
 
-            // if(marker.getPosition().getLat() == markerLat && marker.getPosition().getLng() == markerLng) {
-            //   marker.setImage(clickImage);
-            // }
+            if(marker.getPosition().getLat() == markerLat && marker.getPosition().getLng() == markerLng) {
+              selectedMarker = marker;
+              marker.setImage(clickImage);
+            }
             
             markers.push(marker);
             marker.setMap(map);
