@@ -28,6 +28,8 @@ function OfflineMartMap({
 }: MapProps) {
   const apiClient = ApiClient.getInstance();
   const markers: any[] = [];
+  const [markerLat, setMarkerLat] = useState("");
+  const [markerLng, setMarkerLng] = useState("");
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -129,6 +131,10 @@ function OfflineMartMap({
               xAnchor: 0, // 컨텐츠의 x 위치
               yAnchor: -2.35, // 컨텐츠의 y 위치
             });
+
+            // if(marker.getPosition().getLat() == markerLat && marker.getPosition().getLng() == markerLng) {
+            //   marker.setImage(clickImage);
+            // }
             
             markers.push(marker);
             marker.setMap(map);
@@ -149,7 +155,10 @@ function OfflineMartMap({
     
               // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
               selectedMarker = marker;
+              setMarkerLat(marker.getPosition().getLat());
+              setMarkerLng(marker.getPosition().getLng());
             });
+            
           });
         };
         

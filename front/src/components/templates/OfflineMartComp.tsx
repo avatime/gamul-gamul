@@ -36,10 +36,13 @@ export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredien
           longitude={location.coordinates.lng}
           onSetStores={storesHandler}
         />
+        <Box marginTop="10px">
         <OfflineMartInfoItem ingredientInfo={ingredientInfo}/>
         {stores?.map((data, index) => {
             return <OfflineMartInfoItem key={index} ingredientInfo={ingredientInfo} offlineMartInfo={data} />
         })}
+        </Box>
+        
       </Box>
     </CardContainer>
   );
