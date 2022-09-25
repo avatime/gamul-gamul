@@ -8,6 +8,7 @@ import { getCookie } from "../src/utils/cookie";
 import { useRouter } from "next/router";
 import { Desktop } from "../src/components/Desktop";
 import { Tablet } from "../src/components/Tablet";
+import { LordIcon } from "../public/lordicon/lord-icon";
 
 interface IProps {}
 const MyInfoPage: NextPage<IProps> = (props) => {
@@ -17,11 +18,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       primary: "알러지등록",
       secondary: "알러지를 등록해보아요",
       icon: (
-        <lord-icon
+        <LordIcon
           src="https://cdn.lordicon.com/hdborlrw.json"
           trigger="hover"
-          colors="primary:#915110,secondary:#915110"
-          style={{ width: 30, height: 30 }}
+          colors={{
+            primary: "#915110",
+            secondary: "#915110",
+          }}
+          size={30}
         />
       ),
       bgColor: "#EFE6C1",
@@ -31,15 +35,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
     {
       primary: "나만의 요리법 등록",
       secondary: "나만의 요리법을 등록해보아요",
-      icon: (
-        <>
-          <lord-icon
-            src="https://cdn.lordicon.com/rmjurjdw.json"
-            trigger="hover"
-            style={{ width: 30, height: 30 }}
-          />
-        </>
-      ),
+      icon: <LordIcon src="https://cdn.lordicon.com/rmjurjdw.json" trigger="hover" size={30} />,
       bgColor: "#B2DE9D",
       nextPage: true,
       path: "/my-recipe",
@@ -48,11 +44,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       primary: "찜 목록",
       secondary: "관심있는 식재료와 요리법들을 보아요",
       icon: (
-        <lord-icon
+        <LordIcon
           src="https://cdn.lordicon.com/rjzlnunf.json"
           trigger="hover"
-          colors="primary:#121331,secondary:#e83a30"
-          style={{ width: 30, height: 30 }}
+          colors={{
+            primary: "#121331",
+            secondary: "#e83a30",
+          }}
+          size={30}
         />
       ),
       bgColor: "#FCDADF",
@@ -63,14 +62,15 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       primary: "가격 알림 등록",
       secondary: "관심있는 식재료의 상한가/하한가를 지정해 알림으로 받아보세요.",
       icon: (
-        <>
-          <lord-icon
-            src="https://cdn.lordicon.com/beqdrtps.json"
-            trigger="hover"
-            colors="primary:#121331,secondary:#08a88a"
-            style={{ width: 30, height: 30 }}
-          ></lord-icon>
-        </>
+        <LordIcon
+          src="https://cdn.lordicon.com/beqdrtps.json"
+          trigger="hover"
+          colors={{
+            primary: "#121331",
+            secondary: "#08a88a",
+          }}
+          size={30}
+        />
       ),
       bgColor: "#B6D0ED",
       nextPage: true,
@@ -79,13 +79,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
     {
       primary: "로그아웃",
       secondary: "",
-      icon: (
-        <lord-icon
-          src="https://cdn.lordicon.com/hirlxdux.json"
-          trigger="hover"
-          style={{ width: 30, height: 30 }}
-        />
-      ),
+      icon: <LordIcon src="https://cdn.lordicon.com/hirlxdux.json" trigger="hover" size={30} />,
       bgColor: "#F9BD9E",
       nextPage: false,
       path: "/logout",
@@ -94,11 +88,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       primary: "회원탈퇴",
       secondary: "",
       icon: (
-        <lord-icon
+        <LordIcon
           src="https://cdn.lordicon.com/hmtsmfsf.json"
           trigger="hover"
-          colors="primary:#121331,secondary:#b4b4b4"
-          style={{ width: 30, height: 30 }}
+          colors={{
+            primary: "#121331",
+            secondary: "#b4b4b4",
+          }}
+          size={30}
         />
       ),
       nextPage: false,
@@ -114,10 +111,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       <Mobile>
         <Box className={styles.PageforMobile}>
           <Stack direction="row" sx={{ alignItems: "center" }}>
-            <lord-icon
+            <LordIcon
               src="https://cdn.lordicon.com/dymjgskg.json"
               trigger="loop"
-              style={{ width: "50px", height: "70px" }}
+              colors={{
+                primary: "#545454",
+                secondary: "#66a1ee",
+              }}
+              size={70}
             />
             <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
               {userId}님, 안녕하세요
@@ -152,10 +153,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
             }}
           >
             <Stack direction="row" sx={{ alignItems: "center" }}>
-              <lord-icon
+              <LordIcon
                 src="https://cdn.lordicon.com/dymjgskg.json"
                 trigger="loop"
-                style={{ width: "50px", height: "70px" }}
+                colors={{
+                  primary: "#545454",
+                  secondary: "#66a1ee",
+                }}
+                size={70}
               />
               <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
                 {userId}님, 안녕하세요
@@ -197,10 +202,14 @@ const MyInfoPage: NextPage<IProps> = (props) => {
                 alignItems: "center",
               }}
             >
-              <lord-icon
+              <LordIcon
                 src="https://cdn.lordicon.com/dymjgskg.json"
                 trigger="loop"
-                style={{ width: "50px", height: "70px" }}
+                colors={{
+                  primary: "#545454",
+                  secondary: "#66a1ee",
+                }}
+                size={70}
               />
               <Typography sx={{ fontSize: "large", fontWeight: "bold" }}>
                 {userId}님, 안녕하세요
