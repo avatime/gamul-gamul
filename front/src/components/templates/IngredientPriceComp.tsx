@@ -27,8 +27,8 @@ export const IngredientPriceComp: FC<IProps> = ({
   const unit = ingredientDetailInfo.ingredient_info.unit;
 
   return (
-    <Box>
       <CardContainer title={title}>
+        <Box overflow={"hidden"}>
         <p style={{ fontWeight: "bold", margin: "20px 10px" }}>
           어제 평균{" "}
           <span
@@ -56,9 +56,8 @@ export const IngredientPriceComp: FC<IProps> = ({
         <IngredientPriceGraph
           priceTransitionInfo={priceTransitionInfo}
           inputWidth={inputWidth}
-          inputHeight={inputHeight}
-        ></IngredientPriceGraph>
+          inputHeight={inputHeight} type={"line"} />
+        </Box>    
       </CardContainer>
-    </Box>
   );
 };
