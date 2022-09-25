@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class MyRecipeDetailRes {
     int totalPrice;
 
     @JsonProperty("ingredient_list")
-    ArrayList<IngredientInfoRes> ingredientList;
+    List<IngredientInfoRes> ingredientList;
 
     @JsonProperty("price_transition_info")
     PriceTransitionInfoRes priceTransitionInfo;

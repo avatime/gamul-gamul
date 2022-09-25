@@ -2,11 +2,13 @@ package com.gamul.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel("IngredientInfoRes")
 public class IngredientInfoRes {
     @JsonProperty("ingredient_id")
@@ -35,4 +37,5 @@ public class IngredientInfoRes {
     String highClassName;
 
     Long views;
+
 }
