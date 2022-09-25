@@ -136,7 +136,7 @@ public class MyRecipeController {
     }
 
     @GetMapping("/{userName}/{myRecipeId}")
-    @ApiOperation(value = "나만의 요리법 식재료 조회", notes = "<strong>나만의 레시피</strong>목록을 조회한다.")
+    @ApiOperation(value = "나만의 요리법 상세 조회", notes = "<strong>나만의 레시피</strong>를 상세 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -177,7 +177,7 @@ public class MyRecipeController {
         return ResponseEntity.status(200).body(myRecipeDetailRes);
     }
 
-    @GetMapping("/{userName}/{myRecipeId}")
+    @GetMapping("/price/{userName}/{myRecipeId}")
     @ApiOperation(value = "나만의 요리법 가격변동", notes = "<strong>나만의 레시피</strong>일자별 가격변동을 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -186,11 +186,11 @@ public class MyRecipeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> showMyrecipePrice(@PathVariable String userName, Long myRecipeId){
-        
+
         return ResponseEntity.status(200).body("success");
     }
 
-    @GetMapping("/{userName}/{myRecipeId}")
+    @GetMapping("/ingredient/{userName}/{myRecipeId}")
     @ApiOperation(value = "나만의 요리법 식재료 조회", notes = "<strong>나만의 레시피</strong>목록을 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
