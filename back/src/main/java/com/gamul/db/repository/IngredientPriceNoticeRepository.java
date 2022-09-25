@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IngredientPriceNoticeRepository extends JpaRepository<IngredientPriceNotice, Long> {
-    void deleteAllByUserIdInBatch(Long userId);
+    void deleteAllByUserId(Long userId);
     Optional<List<IngredientPriceNotice>> findAllByUserId(Long userId);
     Optional<IngredientPriceNotice> findByUserIdAndIngredientId(Long userId, Long ingredientId);
+
 }

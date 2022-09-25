@@ -30,6 +30,8 @@ public class QRecipe extends EntityPathBase<Recipe> {
 
     public final StringPath thumbnail = createString("thumbnail");
 
+    public final NumberPath<Long> views = createNumber("views", Long.class);
+
     public QRecipe(String variable) {
         super(Recipe.class, forVariable(variable));
     }

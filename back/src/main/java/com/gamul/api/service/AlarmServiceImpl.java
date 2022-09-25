@@ -36,12 +36,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void deleteMyAllergy(String userName) {
-        allergyRepository.deleteAllByUserIdInBatch(userRepository.findByUsername(userName).get().getId());
+        allergyRepository.deleteAllByUserId(userRepository.findByUsername(userName).get().getId());
     }
 
     @Override
     public void deleteMyNotice(String userName) {
-        ingredientPriceNoticeRepository.deleteAllByUserIdInBatch(userRepository.findByUsername(userName).get().getId());
+        ingredientPriceNoticeRepository.deleteAllByUserId(userRepository.findByUsername(userName).get().getId());
     }
 
     @Override
