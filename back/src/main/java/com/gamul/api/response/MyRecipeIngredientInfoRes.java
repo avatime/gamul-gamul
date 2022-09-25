@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("IngredientInfoRes")
-public class IngredientInfoRes {
+public class MyRecipeIngredientInfoRes {
     @JsonProperty("ingredient_id")
     Long ingredientId;
 

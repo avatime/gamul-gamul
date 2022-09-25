@@ -3,22 +3,24 @@ package com.gamul.api.controller;
 import com.gamul.api.request.IngredientQuantityPostReq;
 import com.gamul.api.request.MyRecipeEditReq;
 import com.gamul.api.request.MyRecipeRegisterPostReq;
-import com.gamul.api.response.MyRecipeInfoRes;
-import com.gamul.api.response.MyRecipeIngredientRes;
+import com.gamul.api.response.*;
 import com.gamul.api.service.MyRecipeService;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.db.entity.MyRecipe;
 import com.gamul.db.entity.MyRecipeIngredient;
 import com.gamul.db.entity.User;
-import com.gamul.db.repository.IngredientRepository;
+import com.gamul.db.repository.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Api(value = "마이레시피 API", tags = {"MyRecipe."})
@@ -33,6 +35,16 @@ public class MyRecipeController {
 
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    IngredientSelectedRepository ingredientSelectedRepository;
+    @Autowired
+    AllergyRepository allergyRepository;
+    @Autowired
+    BasketRepository basketRepository;
+    @Autowired
+    HighClassRepository highClassRepository;
+    @Autowired
+    PriceRepository priceRepository;
 
     @PostMapping("")
     @ApiOperation(value = "나만의 레시피 저장", notes = "<strong>나만의 레시피</strong>를 저장한다.")
@@ -81,11 +93,12 @@ public class MyRecipeController {
             if(!myRecipeEditReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeEditReq.getImageDataUrl());
             else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
 
-//            List<MyRecipeIngredient> list = myRecipeService.getMyRecipeIngredientList(myRecipe.getId());
-//            for(IngredientQuantityPostReq ingredient : myRecipeEditReq.getIngredientList()){
-//                list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
-//            }
-//            myRecipeService.saveMyRecipeIngredient(list);
+            myRecipeService.deleteMyRecipeIngredients(myRecipeEditReq.getMyRecipeId());
+            List<MyRecipeIngredient> list = new ArrayList<>();
+            for(IngredientQuantityPostReq ingredient : myRecipeEditReq.getIngredientList()){
+                list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
+            }
+            myRecipeService.saveMyRecipeIngredient(list);
         } catch (Exception e) {
             return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
         }
@@ -123,6 +136,61 @@ public class MyRecipeController {
     }
 
     @GetMapping("/{userName}/{myRecipeId}")
+    @ApiOperation(value = "나만의 요리법 상세 조회", notes = "<strong>나만의 레시피</strong>를 상세 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, Long myRecipeId){
+        MyRecipeDetailRes myRecipeDetailRes = new MyRecipeDetailRes();
+        MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
+        List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
+        List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
+
+        for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
+            Calendar cal = new GregorianCalendar();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // 형식 어케 ?/
+            int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
+            cal.add(Calendar.DATE, -1);
+            int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
+            MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                    .ingredientId(myRecipeIngredient.getIngredient().getId())
+                    .name(myRecipeIngredient.getMyRecipe().getName())
+                    .price(todayPrice)
+                    .unit("") // 단량 어떤거로???
+                    .quantity(myRecipeIngredient.getQuantity())
+                    .volatility(((todayPrice - yesterPrice)/todayPrice) * 100)
+                    .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                    .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                    .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                    .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                    .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                    .build();
+
+            ingreidentlist.add(ingredientInfoRes);
+        }
+
+        myRecipeDetailRes.setIngredientList(ingreidentlist);
+
+        return ResponseEntity.status(200).body(myRecipeDetailRes);
+    }
+
+    @GetMapping("/price/{userName}/{myRecipeId}")
+    @ApiOperation(value = "나만의 요리법 가격변동", notes = "<strong>나만의 레시피</strong>일자별 가격변동을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> showMyrecipePrice(@PathVariable String userName, Long myRecipeId){
+
+        return ResponseEntity.status(200).body("success");
+    }
+
+    @GetMapping("/ingredient/{userName}/{myRecipeId}")
     @ApiOperation(value = "나만의 요리법 식재료 조회", notes = "<strong>나만의 레시피</strong>목록을 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
