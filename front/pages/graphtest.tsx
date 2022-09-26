@@ -38,10 +38,9 @@ const GraphTest: NextPage<IProps> = ({ ingredientDetailInfo, myRecipeList }) => 
           {/* <OfflineMartComp ingredientInfo={ingredientDetailInfo.ingredient_info} /> */}
           <MyRecipeComp myRecipeList={myRecipeList} />
           <OfflineMartDetailComp
-            latitude={location.coordinates.lat}
-            longitude={location.coordinates.lng}
             ingredientId={ingredientDetailInfo.ingredient_info.ingredient_id}
-            inputHeight="300px" />
+            inputHeight="300px"
+            mapId="mobile" />
         </Box>
       </Mobile>
     </Box>
