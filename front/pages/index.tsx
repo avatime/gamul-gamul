@@ -13,6 +13,7 @@ import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { IngredientListComp } from "../src/components/templates/IngredientListComp";
 import { MyRecipeListComp } from "../src/components/templates/MyRecipeListComp";
 import styles from "../styles/Page.module.css";
+import { Page } from "../src/components/Page";
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -22,7 +23,7 @@ interface IProps {
 
 const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }) => {
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row">
@@ -55,7 +56,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
           <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

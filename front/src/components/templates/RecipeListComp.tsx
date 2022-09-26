@@ -54,7 +54,7 @@ export const RecipeListComp: FC<IProps> = ({
         />
       )}
       {type === "row" && (
-        <Stack direction="column">
+        <Stack direction="column" overflow="visible">
           {recipeList.map((v, i) => (
             <RecipeItem
               key={i}

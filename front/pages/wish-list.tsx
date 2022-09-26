@@ -11,6 +11,7 @@ import styles from "../styles/Page.module.css";
 import { BackHeader } from "../src/components/BackHeader";
 import { IngredientListComp } from "../src/components/templates/IngredientListComp";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
+import { Page } from '../src/components/Page';
 
 interface IProps {
   bookmarkIngredientList: IngredientInfo[];
@@ -19,7 +20,7 @@ interface IProps {
 
 const WishListPage: NextPage<IProps> = ({ bookmarkIngredientList, bookmarkRecipeList }) => {
   return (
-    <>
+    <Page>
       <Desktop>
       <Box className={styles.PageforDesktop}>
           <IngredientListComp
@@ -69,7 +70,7 @@ const WishListPage: NextPage<IProps> = ({ bookmarkIngredientList, bookmarkRecipe
           />
         </Box>
       </Mobile>
-    </>
+    </Page>
   );
 };
 

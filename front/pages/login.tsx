@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { ButtonFill } from "../src/components/button/ButtonFill";
 import { ApiClient } from "../src/apis/apiClient";
 import { setCookie } from "../src/utils/cookie";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 
@@ -47,7 +48,7 @@ const LoginPage: NextPage<IProps> = (props) => {
       });
   };
   return (
-    <Box>
+    <Page>
       <Box
         sx={{
           position: "absolute",
@@ -96,7 +97,7 @@ const LoginPage: NextPage<IProps> = (props) => {
           disabled={false}
         />
       </Box>
-    </Box>
+    </Page>
   );
 };
 

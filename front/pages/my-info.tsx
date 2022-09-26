@@ -16,6 +16,7 @@ import chart from "../public/assets/chart.json";
 import cook from "../public/assets/cook.json";
 import allergy from "../public/assets/allergy.json";
 import shark from "../public/assets/shark.json";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 const MyInfoPage: NextPage<IProps> = (props) => {
@@ -90,7 +91,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
   const userId = getCookie("userName");
 
   return (
-    <Box>
+    <Page>
       <Mobile>
         <Box className={styles.PageforMobile} sx={{backgroundColor:"#fff"}}>
           <Stack direction="row" sx={{ alignItems: "center"}}>
@@ -191,7 +192,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
           </Box>
         </Box>
       </Tablet>
-    </Box>
+    </Page>
   );
 };
 
