@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { OfflineMartInfo } from "../../apis/responses/offlineMartInfo";
-import { ApiClient } from "../../apis/apiClient";
+import { OfflineMartInfo } from "../apis/responses/offlineMartInfo";
+import { ApiClient } from "../apis/apiClient";
 
 declare global {
   interface Window {
@@ -17,6 +17,7 @@ interface MapProps {
   onSetStoreId?: Function;
   onSetStoreName?: Function;
   onSetStores?: Function;
+  inputHeight: string;
 }
 
 function OfflineMartMap({
@@ -27,11 +28,28 @@ function OfflineMartMap({
   onSetStoreId,
   onSetStoreName,
   onSetStores,
+  inputHeight,
 }: MapProps) {
   const apiClient = ApiClient.getInstance();
   const markers: any[] = [];
-  const [markerLat, setMarkerLat] = useState("");
-  const [markerLng, setMarkerLng] = useState("");
+
+  function setStoreId(storeid: number) {
+    return function () {
+      onSetStoreId && (onSetStoreId(storeid));
+      console.log(storeid);
+    };
+  }
+
+  function setStoreName(storename: string) {
+    return function () {
+      onSetStoreName && (onSetStoreName(storename));
+      console.log(storename);
+    }
+  }
+
+  function setStores(store: OfflineMartInfo[]) {
+    onSetStores && (onSetStores(store));
+  }
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -40,24 +58,6 @@ function OfflineMartMap({
     mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6ea414c47933a341d2500550a054a5e2&autoload=false`;
 
     document.head.appendChild(mapScript);
-
-    function setStoreId(storeid: number) {
-      return function () {
-        onSetStoreId && (onSetStoreId(storeid));
-        console.log(storeid);
-      };
-    }
-
-    function setStoreName(storename: string) {
-      return function () {
-        onSetStoreName && (onSetStoreName(storename));
-        console.log(storename);
-      }
-    }
-
-    function setStores(store: OfflineMartInfo[]) {
-      onSetStores && (onSetStores(store));
-    }
 
     const onLoadKakaoMap = () => {
       window.kakao.maps.load(() => {
@@ -71,6 +71,8 @@ function OfflineMartMap({
         // map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
 
         //map.setZoomable(false);
+
+        var selectedMarker: any = null;
 
         async function getInfo() {
           // 지도의 현재 중심좌표를 얻어옵니다
@@ -94,8 +96,6 @@ function OfflineMartMap({
           makeMarker(store);
           
         }
-
-        var selectedMarker: any = null;
 
         window.kakao.maps.event.addListener(map, "dragend", getInfo);
         window.kakao.maps.event.addListener(map, "zoom_changed", getInfo);
@@ -133,15 +133,17 @@ function OfflineMartMap({
               xAnchor: 0, // 컨텐츠의 x 위치
               yAnchor: -2.35, // 컨텐츠의 y 위치
             });
-
-            if(marker.getPosition().getLat() == markerLat && marker.getPosition().getLng() == markerLng) {
-              selectedMarker = marker;
-              marker.setImage(clickImage);
-            }
             
             markers.push(marker);
             marker.setMap(map);
             customOverlay.setMap(map);
+
+            if(!!selectedMarker && marker.getPosition().getLat() == selectedMarker.lat && marker.getPosition().getLng() == selectedMarker.lng) {
+              selectedMarker = marker;
+              selectedMarker.lat = marker.getPosition().getLat();
+              selectedMarker.lng = marker.getPosition().getLng();
+              marker.setImage(clickImage);
+            }
     
             window.kakao.maps.event.addListener(marker, "click", setStoreId(v.store_id));
             window.kakao.maps.event.addListener(marker, "click", setStoreName(v.name));
@@ -158,8 +160,8 @@ function OfflineMartMap({
     
               // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
               selectedMarker = marker;
-              setMarkerLat(marker.getPosition().getLat());
-              setMarkerLng(marker.getPosition().getLng());
+              selectedMarker.lat = marker.getPosition().getLat();
+              selectedMarker.lng = marker.getPosition().getLng();
             });
             
           });
@@ -174,12 +176,7 @@ function OfflineMartMap({
     return () => mapScript.removeEventListener("load", onLoadKakaoMap);
   }, [latitude, longitude]);
 
-  return <MapContainer id={mapId} />;
+  return <div id={mapId} style={{height: `${inputHeight}`}} />;
 }
-
-const MapContainer = styled.div`
-  width: "90%";
-  height: 300px;
-`;
 
 export default OfflineMartMap;
