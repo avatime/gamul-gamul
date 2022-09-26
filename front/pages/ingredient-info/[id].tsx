@@ -1,27 +1,43 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { saveRecentSearchLocalStorage, RecentSearch } from "../../src/utils/localStorageUtil";
-import { ApiClient } from '../../src/apis/apiClient';
+import { ApiClient } from "../../src/apis/apiClient";
 import { Box } from "@mui/system";
-import { Desktop } from '../../src/components/Desktop';
+import { Desktop } from "../../src/components/Desktop";
 import { Navbar } from "../../src/components/Navbar";
 import styles from "../../styles/Page.module.css";
 import { IngredientPriceComp } from "../../src/components/templates/IngredientPriceComp";
-import { OfflineMartComp } from '../../src/components/templates/OfflineMartComp';
-import { IngredientDetailInfo } from '../../src/apis/responses/ingredientDetailInfo';
-import { IngredientInfo } from '../../src/apis/responses/ingredientInfo';
-import { Tablet } from '../../src/components/Tablet';
-import { Mobile } from '../../src/components/Mobile';
+import { OfflineMartComp } from "../../src/components/templates/OfflineMartComp";
+import { IngredientDetailInfo } from "../../src/apis/responses/ingredientDetailInfo";
+import { IngredientInfo } from "../../src/apis/responses/ingredientInfo";
+import { Tablet } from "../../src/components/Tablet";
+import { Mobile } from "../../src/components/Mobile";
+import { InfoTitle } from "../../src/components/InfoTitle";
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
 }
 
-const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo}) => {
+const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo }) => {
   const router = useRouter();
   const { id } = router.query;
+  const [imagePath, setImagePath] = useState("");
+  const [views, setViews] = useState(0);
+
+  const setImage = () => {
+    // ingredientid 가지고 imagepath 설정
+  };
+
+  const setBookmark = () => {
+    // 북마크 등록/해제 api 호출
+  };
+
+  const getViews = () => {
+    // ingredientid 가지고 views 알아내는 api 호출
+  };
+
   useEffect(() => {
     if (id) {
       saveRecentSearchLocalStorage("ingredient", +(id as string), `이름 ${id}`);
@@ -32,24 +48,42 @@ const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredient
       <Desktop>
         <Box className={styles.PageforDesktop}>
           {/* InfoTitle */}
-          <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
-      <OfflineMartComp ingredientInfo={ingredientInfo} mapId="desktop" />
+          <IngredientPriceComp
+            ingredientDetailInfo={ingredientDetailInfo}
+            inputWidth={"100%"}
+            inputHeight={500}
+          />
+          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="desktop" inputHeight="400px" />
           {/* OnlineMartInfoComp */}
         </Box>
       </Desktop>
-      <Tablet>     
-      <Box className={styles.PageforTablet}>
-        
-      <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
-      <OfflineMartComp ingredientInfo={ingredientInfo} mapId="tablet" />
-          {/* <OfflineMartComp ingredientInfo={ingredientInfo} />  */}
-          </Box>
+      <Tablet>
+        <Box className={styles.PageforTablet}>
+          {/* InfoTitle */}
+          <IngredientPriceComp
+            ingredientDetailInfo={ingredientDetailInfo}
+            inputWidth={"100%"}
+            inputHeight={500}
+          />
+          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="tablet" inputHeight="350px" />
+          {/* <OfflineMartComp } />  */}
+        </Box>
       </Tablet>
       <Mobile>
-      <Box className={styles.PageforMobile}>
-          {/* InfoTitle */}
-          <IngredientPriceComp ingredientDetailInfo={ingredientDetailInfo} inputWidth={"100%"} inputHeight={500} />
-          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="mobile" />
+        <Box className={styles.PageforMobile}>
+          <InfoTitle
+            name={ingredientInfo.name}
+            bookmark={ingredientInfo.bookmark}
+            onClickBookmark={setBookmark}
+            views={views}
+            imagePath={imagePath}
+          />
+          <IngredientPriceComp
+            ingredientDetailInfo={ingredientDetailInfo}
+            inputWidth={"100%"}
+            inputHeight={500}
+          />
+          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="mobile" inputHeight="300px" />
           {/* OnlineMartInfoComp */}
         </Box>
       </Mobile>

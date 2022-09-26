@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { PriceTransitionInfo } from "../../apis/responses/priceTransitionInfo";
+import { PriceTransitionInfo } from "../apis/responses/priceTransitionInfo";
 import moment from "moment";
 
 interface IProps {

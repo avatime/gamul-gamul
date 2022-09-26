@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { CardContainer } from "../CardContainer";
-import OfflineMartMap from "../map/OfflineMartMap";
+import OfflineMartMap from "../OfflineMartMap";
 import { Box } from "@mui/material";
 import { IngredientInfo } from "../../apis/responses/ingredientInfo";
 import { ApiClient } from "../../apis/apiClient";
@@ -14,6 +14,7 @@ interface IProps {
   longitude: number;
   ingredientId: number;
   onClickItem?: (id: number) => void;
+  inputHeight: string;
 }
 
 export const OfflineMartDetailComp: FC<IProps> = ({
@@ -22,6 +23,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
   longitude,
   ingredientId,
   onClickItem,
+  inputHeight
 }) => {
   const apiClient = ApiClient.getInstance();
   const router = useRouter();
@@ -61,6 +63,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
             onSetStoreId={storeIdHandler}
             onSetStoreName={storeNameHandler}
             mapId="desktop"
+            inputHeight={inputHeight}
           />
         </Box>
         <h2>{storeName}</h2>
