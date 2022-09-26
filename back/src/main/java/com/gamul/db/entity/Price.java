@@ -40,12 +40,16 @@ public class Price extends BaseEntity{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Store store;
 
+    @Column(updatable = false, nullable = false)
+    private int type;
+
     @Builder
-    public Price(Date dateTime, String unit, int quantity, int price, Store store){
+    public Price(Date dateTime, String unit, int quantity, int price, Store store, int type){
         this.dateTime = dateTime;
         this.unit = unit;
         this.quantity = quantity;
         this.price = price;
         this.store = store;
+        this.type = type;
     }
 }

@@ -29,18 +29,16 @@ public class Ingredient extends BaseEntity{
     @Column(updatable = false, nullable = false)
     private String lowClass;
 
-    @Column(updatable = false, nullable = false)
-    private int type;
+
 
     @Column(columnDefinition = "INT UNSIGNED")
     private long views;
 
     @Builder
-    public Ingredient(Long highClass, String midClass, String lowClass, int type){
+    public Ingredient(Long highClass, String midClass, String lowClass){
         this.highClass = highClass;
         this.midClass = midClass;
         this.lowClass = lowClass;
-        this.type = type;
         this.views = 0;
     }
 
