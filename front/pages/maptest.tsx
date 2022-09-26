@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { OfflineMartInfo } from "../src/apis/responses/offlineMartInfo";
-import OfflineMartMap from "../src/components/map/OfflineMartMap";
+import OfflineMartMap from "../src/components/OfflineMartMap";
 import useGeolocation from "../src/hooks/useGeolocation";
 import { ApiClient } from "../src/apis/apiClient";
 import { Box } from "@mui/material";
@@ -43,6 +43,7 @@ const Maptest: NextPage<IProps> = ({ storeInfo, ingredientInfo }) => {
         onSetStoreName={storeNameHandler}
         onSetStores={storesHandler}
         mapId="test"
+        inputHeight="300px"
       />
       <h3>마트 이름</h3>
       <h3>{storeName}</h3>

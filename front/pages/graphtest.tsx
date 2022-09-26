@@ -41,7 +41,7 @@ const GraphTest: NextPage<IProps> = ({ ingredientDetailInfo, myRecipeList }) => 
             latitude={location.coordinates.lat}
             longitude={location.coordinates.lng}
             ingredientId={ingredientDetailInfo.ingredient_info.ingredient_id}
-          />
+            inputHeight="300px" />
         </Box>
       </Mobile>
     </Box>
