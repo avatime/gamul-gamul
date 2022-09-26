@@ -29,7 +29,7 @@ const RecipeDetailPage: NextPage<IProps> = (props) => {
             throw new Error("Function not implemented.");
           } }
           views={0}
-          imagePath={""} isUser={userId}        />
+          imagePath={""} />
         <Box className={styles.PageforMobile} sx={{ overflowX: "auto" }}>
           <Box sx={{ backgroundColor: "#000", width: "900px", heigth: "100vh" }}>
             <CardContainer title={"dd"}>dd</CardContainer>
