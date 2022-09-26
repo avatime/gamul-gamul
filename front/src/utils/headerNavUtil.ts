@@ -16,13 +16,41 @@ const navBarIndexArr = [
 ];
 
 const hideHeaderBarArr = [
-  ""
+  "notice",
+  "ingredient-info",
+  "store-info",
+  "recipe-info",
+  "recipe-detail",
+  "signup",
+  "register-allergy",
+  "wish-list",
+  "my-recipe",
+  "my-recipe-info",
+  "register-my-recipe",
+  "register-alarm",
 ];
 
+const hideNavBarArr = ["notice", "signup"];
+
 export const showHeaderBar = (pathname: string) => {
-  const idx = getNavBarActiveIndex(pathname);
-  return 0 <= idx ? true : false;
+  const pathnameSplited = pathname.split("/");
+  if (pathnameSplited.length === 1) {
+    return true;
+  }
+
+  const idx = hideHeaderBarArr.findIndex((v) => v === pathnameSplited[1]);
+  return 0 <= idx ? false : true;
 };
+
+export const showNavBar = (pathname: string) => {
+  const pathnameSplited = pathname.split("/");
+  if (pathnameSplited.length === 1) {
+    return true;
+  }
+
+  const idx = hideNavBarArr.findIndex((v) => v === pathnameSplited[1]);
+  return 0 <= idx ? false : true;
+} 
 
 export const getNavBarActiveIndex = (pathname: string) => {
   const pathnameSplited = pathname.split("/");

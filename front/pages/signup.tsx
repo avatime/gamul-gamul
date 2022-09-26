@@ -8,6 +8,7 @@ import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
 import { BackHeader } from "../src/components/BackHeader";
+import { Page } from "../src/components/Page";
 
 interface IProps {}
 
@@ -85,7 +86,7 @@ const SignupPage: NextPage<IProps> = (props) => {
   };
 
   return (
-    <div>
+    <Page>
       <Mobile>
         <Box>
           {!nextId && !nextPw ? (
@@ -496,7 +497,7 @@ const SignupPage: NextPage<IProps> = (props) => {
           )}
         </Box>
       </Desktop>
-    </div>
+    </Page>
   );
 };
 

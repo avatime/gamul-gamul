@@ -6,7 +6,7 @@ import { HeaderBar } from "../src/components/HeaderBar";
 import { Navbar } from "../src/components/Navbar";
 import { SearchComp } from "../src/components/templates/SearchComp";
 import { useRouter } from "next/router";
-import { showHeaderBar, getNavBarActiveIndex } from "../src/utils/headerNavUtil";
+import { showHeaderBar, getNavBarActiveIndex, showNavBar } from "../src/utils/headerNavUtil";
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
 
@@ -49,22 +49,23 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setShowHeader(!isMobile || showHeaderBar(router.pathname));
   }, [isMobile, router.pathname]);
+
+  const [showNav, setShowNav] = useState<boolean>(true);
+  useEffect(() => {
+    setShowNav(showNavBar(router.pathname));
+  }, [router.pathname]);
   return (
     <ThemeProvider theme={theme}>
       <Head>
         <title>가물가물</title>
         <link rel="icon" href="/icon.png" />
-        <link
-            rel="shortcut icon"
-            href="alarm-clock.png"
-            type="image/x-icon"
-          />
-          <link rel="manifest" href="/manifest.json" />
+        <link rel="shortcut icon" href="alarm-clock.png" type="image/x-icon" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <Box className="page-background">
         {showHeader && <HeaderBar badgeContent={6} onClickSearch={onClickSearch} />}
         <Component {...pageProps} />
-        <Navbar activeIndex={activeIndex} />
+        {showNav && <Navbar activeIndex={activeIndex} />}
       </Box>
       <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={showSearch}>
         <SearchComp onCloseSearch={onCloseSearch} />

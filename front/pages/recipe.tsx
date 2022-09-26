@@ -10,6 +10,7 @@ import { Tablet } from "../src/components/Tablet";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { YoutubeRecipeListComp } from "../src/components/templates/YoutubeRecipeListComp";
 import styles from "../styles/Page.module.css";
+import { Page } from '../src/components/Page';
 
 interface IProps {
   bookmarkRecipeList: RecipeInfo[];
@@ -25,7 +26,7 @@ const RecipePage: NextPage<IProps> = ({
   popularYoutubeList,
 }) => {
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <RecipeListComp title="찜 목록" rowSize={1} gridSize={6} recipeList={bookmarkRecipeList} />
@@ -77,7 +78,7 @@ const RecipePage: NextPage<IProps> = ({
           <YoutubeRecipeListComp title="인기 요리법 유튜브" youtubeInfoList={popularYoutubeList} />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

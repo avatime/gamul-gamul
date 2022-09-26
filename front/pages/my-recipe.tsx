@@ -4,12 +4,13 @@ import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
 import { Tablet } from "../src/components/Tablet";
 import styles from "../styles/Page.module.css";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 
 const MyRecipePage: NextPage<IProps> = (props) => {
   return (
-    <Box className="page-background">
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}></Box>
       </Desktop>
@@ -19,7 +20,7 @@ const MyRecipePage: NextPage<IProps> = (props) => {
       <Mobile>
         <Box className={styles.PageforMobile}></Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

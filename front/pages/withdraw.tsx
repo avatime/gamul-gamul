@@ -5,6 +5,7 @@ import { ButtonFill } from "../src/components/button/ButtonFill";
 import {  useRouter } from "next/router";
 import { ApiClient } from "../src/apis/apiClient";
 import { getCookie, removeCookie } from "../src/utils/cookie";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 
@@ -21,7 +22,7 @@ const WithdrawPage: NextPage<IProps> = (props) => {
     removeCookie("token");
   };
   return (
-    <Box>
+    <Page>
       <Box
         sx={{
           position: "absolute",
@@ -69,7 +70,7 @@ const WithdrawPage: NextPage<IProps> = (props) => {
           )}
         </Stack>
       </Box>
-    </Box>
+    </Page>
   );
 };
 

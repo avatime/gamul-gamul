@@ -443,6 +443,7 @@ export const getRecipeList: RecipeInfo[] = Array.from({ length: 88 }, (_, i) => 
   image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
   name: `가지무침 ${it + 1}`,
   desc: "맛있는 가지무침~~~~~",
+  views: 10000,
   bookmark: true,
 }));
 
@@ -453,6 +454,7 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
     name: "가지무침",
     desc: "맛있는 가지무침~~~~~",
     bookmark: true,
+    views: 10000,
   },
   ingredient_list: [
     {
@@ -550,13 +552,13 @@ export function search(keyword: string): SearchResult {
     return {
       ingredient_list: [],
       recipe_list: [],
-    }
+    };
   }
-  
+
   const ingredient_list = getIngredientList;
-  ingredient_list.forEach((v, i) => v.name = `${keyword} ${i + 1}`);
+  ingredient_list.forEach((v, i) => (v.name = `${keyword} ${i + 1}`));
   const recipe_list = getRecipeList;
-  recipe_list.forEach((v, i) => v.name = `${keyword} ${i + 1}`);
+  recipe_list.forEach((v, i) => (v.name = `${keyword} ${i + 1}`));
 
   return {
     ingredient_list,
@@ -671,8 +673,8 @@ export const getMyRecipeDetailInfo: MyRecipeDetailInfo = {
         },
       ],
     },
-    pastvol : -2,
-    todayvol : 1,
+    pastvol: -2,
+    todayvol: 1,
   },
 };
 

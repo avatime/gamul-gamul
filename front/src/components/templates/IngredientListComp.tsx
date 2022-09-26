@@ -54,7 +54,7 @@ export const IngredientListComp: FC<IProps> = ({
         />
       )}
       {type === "row" && (
-        <Box>
+        <Box overflow="visible">
           {ingredientList.map((v, i) => (
             <IngredientItem
               key={i}
