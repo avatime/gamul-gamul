@@ -25,7 +25,7 @@ export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore,
       style={style}
     >
       <Box display="flex" alignItems="center">
-        <p style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>{title}</p>
+        <p style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10, marginBottom: 10 }}>{title}</p>
         <Box flex="1" />
         {onClickMore && !addPlus && (
           <IconButton onClick={onClickMore}>

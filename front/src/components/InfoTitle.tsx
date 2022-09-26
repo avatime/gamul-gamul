@@ -12,6 +12,7 @@ interface IProps {
   imagePath: string;
   basket?: boolean;
   onClickBasket?: () => void;
+  isExternalImage?: boolean;
 }
 
 export const InfoTitle: FC<IProps> = ({
@@ -22,11 +23,19 @@ export const InfoTitle: FC<IProps> = ({
   imagePath,
   basket,
   onClickBasket,
+  isExternalImage = false,
 }) => {
   return (
     <Box px={2}>
       <Box display="flex" flexDirection="row" alignItems="center">
-        <Image width="32" height="32" src={imagePath} alt={name} style={{ borderRadius: 32 }} />
+        <Image
+          width="32"
+          height="32"
+          src={imagePath}
+          alt={name}
+          style={{ borderRadius: 32 }}
+          unoptimized={isExternalImage}
+        />
         <Box p={1} />
         <p style={{ fontSize: 16, fontWeight: "bold" }}>{name}</p>
         <Box flex="1" />
