@@ -83,13 +83,13 @@ public class AuthController {
             accessToken = userService.refreshToken(refreshToken);
         } catch (AccessDeniedException e){
             Token token = Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "유효하지 않은 토큰입니다", token));
+            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "유효하지 않은 토큰입니다", null));
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body(UserLoginPostRes.of(500, "Internal Server Error", null));
         }
         Token token = Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-        return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "Invalid Password", token));
+        return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "token 갱신에 성공했습니다", token));
 
     }
 }
