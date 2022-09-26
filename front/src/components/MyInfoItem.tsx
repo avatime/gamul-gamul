@@ -29,7 +29,7 @@ export const MyInfoItem: FC<IProps> = ({ primary, secondary, icon, bgColor, next
       
         <ListItem onClick={onClick}>
           <ListItemAvatar >
-            <Avatar sx={{backgroundColor:bgColor, opacity:"50%"}} >
+            <Avatar sx={{backgroundColor:bgColor, opacity:"80%"}} >
               {icon}
             </Avatar>
           </ListItemAvatar>
