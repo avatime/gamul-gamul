@@ -1,9 +1,8 @@
 package com.gamul.api.service;
 
-import com.gamul.api.request.IngredientLimitPricePostReq;
-import com.gamul.api.response.AllergyAlarmRes;
 import com.gamul.db.entity.Allergy;
 import com.gamul.db.entity.IngredientPriceNotice;
+import com.gamul.db.entity.User;
 import com.gamul.db.repository.AllergyRepository;
 import com.gamul.db.repository.IngredientPriceNoticeRepository;
 import com.gamul.db.repository.UserRepository;
@@ -25,12 +24,12 @@ public class AlarmServiceImpl implements AlarmService {
     UserRepository userRepository;
 
     @Override
-    public List<Allergy> getAllergyList(AllergyAlarmRes allergyAlarmRes) {
+    public List<Allergy> getAllergyList(User user) {
         return null;
     }
 
     @Override
-    public List<IngredientPriceNotice> getNoticeList(IngredientLimitPricePostReq ingredientLimitPricePostReq) {
+    public List<IngredientPriceNotice> getNoticeList(User user) {
         return null;
     }
 
@@ -45,7 +44,17 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public IngredientPriceNotice getNoticeDetail(String userName, Long ingredientId) {
-        return ingredientPriceNoticeRepository.findByUserIdAndIngredientId(userRepository.findByUsername(userName).get().getId(), ingredientId).orElseGet(null);
+    public IngredientPriceNotice getNoticeDetail(User user, Long ingredientId) {
+        return ingredientPriceNoticeRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).orElseGet(null);
+    }
+
+    @Override
+    public List<Allergy> saveAllAlergy(List<Allergy> list) {
+        return allergyRepository.saveAll(list);
+    }
+
+    @Override
+    public List<IngredientPriceNotice> saveAllIngredientPriceNotice(List<IngredientPriceNotice> list) {
+        return ingredientPriceNoticeRepository.saveAll(list);
     }
 }

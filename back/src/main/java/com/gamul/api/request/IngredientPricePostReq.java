@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel("IngredientPricePostReq")
 public class IngredientPricePostReq {
     @JsonProperty("ingredient_id")
-    int ingredientId;
+    Long ingredientId;
 
     @JsonProperty("upper_limit_price")
     int upperLimitPrice;

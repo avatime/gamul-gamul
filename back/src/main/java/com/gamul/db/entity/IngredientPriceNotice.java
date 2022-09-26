@@ -1,7 +1,10 @@
 package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
@@ -62,6 +65,13 @@ public class IngredientPriceNotice extends BaseEntity{
         this.activeFlag = true;
         this.user = user;
         this.ingredient = ingredient;
+    }
+
+    public IngredientPriceNotice(User user, Ingredient ingredient, int lowerLimitPrice, int upperLimitPrice) {
+        this.user = user;
+        this.ingredient = ingredient;
+        this.lowerLimitPrice = lowerLimitPrice;
+        this.upperLimitPrice = upperLimitPrice;
     }
 
 }
