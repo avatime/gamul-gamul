@@ -13,7 +13,6 @@ const ItemButton = styled(ButtonBase)(() => ({
       opacity: 0,
     },
   },
-  marginTop: 20,
   padding: 10,
 }));
 

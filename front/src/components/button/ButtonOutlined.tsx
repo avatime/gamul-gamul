@@ -1,35 +1,27 @@
-import { Button, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { FC, MouseEventHandler } from "react";
-import styles from "../../../styles/Button.module.css";
-import { Desktop } from "../Desktop";
-import { Mobile } from "../Mobile";
-import { Tablet } from "../Tablet";
+import { Button } from "@mui/material";
+import React, { FC } from "react";
+
 interface IProps {
   text: string;
   icon: React.ReactNode;
-  onClick: MouseEventHandler<HTMLButtonElement>;
-  width: string;
-  height: string;
-
+  onClick: () => void;
+  style?: object;
 }
 
-/**
-* @author
-
-**/
-
-export const ButtonOutlined: FC<IProps> = ({ text, icon, onClick, width, height}) => {
-  const boxStyle = {
-    display: "flex",
-    alignItems: "center",
-  };
-
+export const ButtonOutlined: FC<IProps> = ({ text, icon, onClick, style }) => {
   return (
-    <div>
-      <Button color="success" endIcon={icon} onClick={onClick} sx={{width:`${width}`, height:`${height}`}}>
-        <Typography sx={{fontWeight:"bold", color:"#000"}}>{text}</Typography>
-      </Button>
-    </div>
+    <Button
+      color="success"
+      endIcon={icon}
+      style={{
+        backgroundColor: "white",
+        borderRadius: "10px",
+        height: "50px",
+        ...style,
+      }}
+      onClick={onClick}
+    >
+      <p style={{ color: "black", fontSize: 16, fontWeight: "bold" }}>{text}</p>
+    </Button>
   );
 };
