@@ -6,8 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +17,5 @@ public class IngredientAllergyRegisterPostReq {
     String userName;
 
     @JsonProperty("ingredient_list")
-    ArrayList<IngredientPostReq> ingredientList;
+    List<Long> ingredientList;
 }

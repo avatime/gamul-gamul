@@ -10,4 +10,5 @@ public interface UserService {
     User saveUser(User user);
     void deleteUser(User user);
     void logout(String username);
+    String refreshToken(String refreshToken) throws Exception;
 }
