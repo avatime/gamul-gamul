@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import React, { FC } from "react";
 import { IngredientDetailInfo } from "../../apis/responses/ingredientDetailInfo";
 import { CardContainer } from "../CardContainer";
-import IngredientPriceGraph from "../graph/IngredientPriceGraph";
+import IngredientPriceGraph from "../IngredientPriceGraph";
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
