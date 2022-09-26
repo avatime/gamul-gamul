@@ -26,7 +26,7 @@ export const OfflineMartComp: FC<IProps> = ({ title = "주변 마트", ingredien
   };
 
   const movePage = () => {
-    router.push(`/store-info/${ingredientInfo.ingredient_id}`);
+    router.push('/store-info');
   };
 
   return (

@@ -7,26 +7,26 @@ import { ApiClient } from "../../apis/apiClient";
 import { useRouter } from "next/router";
 import { SearchBar } from "../SearchBar";
 import { IngredientItem } from "../IngredientItem";
+import useGeolocation from '../../hooks/useGeolocation';
 
 interface IProps {
   title?: string;
-  latitude: number;
-  longitude: number;
-  ingredientId: number;
+  ingredientId?: number;
   onClickItem?: (id: number) => void;
   inputHeight: string;
+  mapId: string;
 }
 
 export const OfflineMartDetailComp: FC<IProps> = ({
   title = "주변 마트",
-  latitude,
-  longitude,
-  ingredientId,
+  ingredientId = -1,
   onClickItem,
-  inputHeight
+  inputHeight,
+  mapId,
 }) => {
   const apiClient = ApiClient.getInstance();
   const router = useRouter();
+  const location: any = useGeolocation();
 
   const [storeId, setStoreId] = useState(0);
   const [storeName, setStoreName] = useState("마트 이름");
@@ -58,11 +58,11 @@ export const OfflineMartDetailComp: FC<IProps> = ({
         <Box sx={{ margin: "5% 0" }}>
           <OfflineMartMap
             ingredientId={ingredientId}
-            latitude={latitude}
-            longitude={longitude}
+            latitude={location.coordinates.lat}
+            longitude={location.coordinates.lng}
             onSetStoreId={storeIdHandler}
             onSetStoreName={storeNameHandler}
-            mapId="desktop"
+            mapId={mapId}
             inputHeight={inputHeight}
           />
         </Box>
