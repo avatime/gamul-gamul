@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { ButtonFill } from "../src/components/button/ButtonFill";
 import { removeCookie } from "../src/utils/cookie";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 
@@ -15,7 +16,7 @@ const LogoutPage: NextPage<IProps> = (props) => {
     router.push("/");
   };
   return (
-    <Box>
+    <Page>
       <Box
         sx={{
           position: "absolute",
@@ -45,7 +46,7 @@ const LogoutPage: NextPage<IProps> = (props) => {
           </>
         </Stack>
       </Box>
-    </Box>
+    </Page>
   );
 };
 export default LogoutPage;

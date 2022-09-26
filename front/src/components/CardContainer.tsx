@@ -41,7 +41,7 @@ export const CardContainer: FC<IProps> = ({ title, children, style, onClickMore,
           <Price total={totalPrice} size="12px" />
         )}
       </Box>
-      <Box maxHeight="inherit" overflow="auto">
+      <Box maxHeight="inherit">
         {children}
       </Box>
     </Box>

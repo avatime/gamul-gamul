@@ -10,6 +10,7 @@ import { IngredientListComp } from "../src/components/templates/IngredientListCo
 import { RecipeInfo } from "../src/apis/responses/recipeInfo";
 import styles from "../styles/Page.module.css";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
+import { Page } from "../src/components/Page";
 
 interface IProps {
   basketIngredientList: IngredientInfo[];
@@ -23,7 +24,7 @@ const BasketPage: NextPage<IProps> = ({
   recipeListWithBasket,
 }) => {
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <IngredientListComp
@@ -58,7 +59,7 @@ const BasketPage: NextPage<IProps> = ({
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

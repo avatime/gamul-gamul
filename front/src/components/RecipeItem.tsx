@@ -1,22 +1,10 @@
-import styled from "@emotion/styled";
-import { Avatar, Box, ButtonBase, IconButton } from "@mui/material";
+import { Avatar, Box, IconButton } from "@mui/material";
 import React, { FC } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { RecipeInfo } from "../apis/responses/recipeInfo";
+import { AnimatedButton } from './button/AnimatedButton';
 
 interface IProps {}
-
-const ItemButton = styled(ButtonBase)(() => ({
-  "&:hover, &.Mui-focusVisible": {
-    zIndex: 1,
-    "& .MuiImageBackdrop-root": {
-      opacity: 0.15,
-    },
-    "& .MuiImageMarked-root": {
-      opacity: 0,
-    },
-  },
-}));
 
 type Direction = "row" | "column";
 
@@ -37,7 +25,7 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
   };
   const avatarSize = direction === "row" ? 42 : 60;
   return (
-    <ItemButton
+    <AnimatedButton
       style={{
         borderRadius: 10,
         padding: direction == "column" ? 15 : 0,
@@ -71,6 +59,6 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
         <Box flex={1} />
         {direction === "row" && <p style={{ fontSize: 8, marginRight: "12px" }}>{recipeInfo?.desc || "설명"}</p>}
       </Box>
-    </ItemButton>
+    </AnimatedButton>
   );
 };
