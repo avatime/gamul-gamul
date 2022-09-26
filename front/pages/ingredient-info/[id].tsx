@@ -18,24 +18,16 @@ import { InfoTitle } from "../../src/components/InfoTitle";
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
+  imagePath: string;
+  views: number;
 }
 
-const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo }) => {
+const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo, imagePath, views }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [imagePath, setImagePath] = useState("");
-  const [views, setViews] = useState(0);
-
-  const setImage = () => {
-    // ingredientid 가지고 imagepath 설정
-  };
 
   const setBookmark = () => {
     // 북마크 등록/해제 api 호출
-  };
-
-  const getViews = () => {
-    // ingredientid 가지고 views 알아내는 api 호출
   };
 
   useEffect(() => {
@@ -105,11 +97,15 @@ export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
   const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(context.params.id);
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
+  const imagePath = ""; // ingredientid 가지고 imagepath 설정
+  const views = 0; // ingredientid 가지고 views 알아내는 api 호출
 
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
+      imagePath,
+      views,
     },
   };
 };
