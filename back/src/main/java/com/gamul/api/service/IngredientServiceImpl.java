@@ -164,8 +164,6 @@ public class IngredientServiceImpl implements IngredientService{
     @Override
     public void ingredientSelected(String userName, Long ingredientId){
         User user = userRepository.findByUsername(userName).get();
-        System.out.println("user: " + user.getUsername());
-        System.out.println("ingredient: "+ ingredientId);
         // 처음 버튼 눌렀음
         if (!ingredientSelectedRepository.existsByUserIdAndIngredientId(user.getId(), ingredientId)){
             Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
@@ -181,9 +179,16 @@ public class IngredientServiceImpl implements IngredientService{
     @Override
     public void ingredientBasket(String userName, Long ingredientId){
         User user = userRepository.findByUsername(userName).get();
-        Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).orElse(null);
 
-        basket.setActiveFlag(!basket.isActiveFlag());
+        if (!basketRepository.existsByUserIdAndIngredientId(user.getId(), ingredientId)){
+            Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
+            Basket basket = new Basket(user, ingredient);
+            basketRepository.saveAndFlush(basket);
+        }else{
+            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).get();
+            basket.setActiveFlag(!basket.isActiveFlag());
+            basketRepository.saveAndFlush(basket);
+        }
     }
 
     @Override
