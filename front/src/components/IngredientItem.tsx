@@ -13,6 +13,7 @@ interface IProps {
   ingredientInfo: IngredientInfo | null;
   onDelete?: () => void;
   onClickItem: (id: number) => void;
+  tail?: React.ReactNode;
 }
 
 export const IngredientItem: FC<IProps> = ({
@@ -20,6 +21,7 @@ export const IngredientItem: FC<IProps> = ({
   ingredientInfo,
   onDelete,
   onClickItem,
+  tail,
 }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
@@ -56,7 +58,7 @@ export const IngredientItem: FC<IProps> = ({
               onMouseDown={onMouseDownDelete}
               onClick={onClickDelete}
             >
-              <CloseIcon />
+              <CloseIcon style={{ width: 16, height: 16 }} />
             </IconButton>
           )}
         </Box>
@@ -89,6 +91,13 @@ export const IngredientItem: FC<IProps> = ({
             <ArrowDropDownIcon />
           )}
           <p style={{ fontSize: 6, fontWeight: "bold" }}>{ingredientInfo?.volatility || 0} %</p>
+        </Box>
+        <Box
+          style={{
+            margin: direction == "column" ? 3 : 10,
+          }}
+        >
+          {tail}
         </Box>
       </Box>
     </AnimatedButton>
