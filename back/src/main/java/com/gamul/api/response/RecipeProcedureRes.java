@@ -1,7 +1,6 @@
 package com.gamul.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gamul.db.entity.RecipeImage;
 import com.gamul.db.entity.RecipeOrder;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
@@ -15,8 +14,8 @@ public class RecipeProcedureRes {
     String imagePath;
     String desc;
 
-    public RecipeProcedureRes(RecipeOrder recipeOrder, RecipeImage recipeImage){
-        this.imagePath = recipeImage.getImagePath();
+    public RecipeProcedureRes(RecipeOrder recipeOrder){
+        this.imagePath = recipeOrder.getImagePath();
         this.desc = recipeOrder.getDescription();
     }
 }
