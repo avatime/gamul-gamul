@@ -12,7 +12,7 @@ public class IngredientListReq {
     @JsonProperty("order_type")
     int orderType;
 
-    @JsonProperty("high_class")
-    int highClass;
+    @JsonProperty("high_class_id")
+    int highClassId;
 
 }
