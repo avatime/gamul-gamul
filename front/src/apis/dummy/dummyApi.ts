@@ -676,6 +676,8 @@ export const getMyRecipeDetailInfo: MyRecipeDetailInfo = {
     pastvol: -2,
     todayvol: 1,
   },
+  image_path: "https://jira.ssafy.com/secure/useravatar?avatarId=10336",
+  name: "윤선이의 된장찌개",
 };
 
 export const getMyRecipeIngredientList: MyRecipeIngredientInfo[] = [

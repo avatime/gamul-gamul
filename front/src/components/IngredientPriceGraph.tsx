@@ -14,6 +14,10 @@ moment.locale("ko");
 
 const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+  const retailMax = 0;
+  const wholeMax = 0;
+  
+  //forEach((data, index))
 
   return (
     <div>
