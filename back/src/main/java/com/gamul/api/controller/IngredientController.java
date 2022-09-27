@@ -95,6 +95,7 @@ public class IngredientController {
     @ApiOperation(value = "식재료 찜 등록 해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 찜 등록/해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "존재하지 않는 id"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> ingredientSelected(@PathVariable String userName, @PathVariable Long ingredientId) {
@@ -114,10 +115,21 @@ public class IngredientController {
     @ApiOperation(value = "식재료 바구니 등록 해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 바구니 등록/해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "존재하지 않는 id"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public void ingredientBasket(@PathVariable String userName, Long ingredientId) {
-        ingredientService.ingredientSelected(userName, ingredientId);
+    public ResponseEntity<?> ingredientBasket(@PathVariable String userName, @PathVariable Long ingredientId) {
+        try{
+            if (userRepository.existsByUsername(userName)){
+                ingredientService.ingredientBasket(userName, ingredientId);
+            }else{
+                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+            }
+        }catch (Exception e){
+
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/basket/{userName}")
