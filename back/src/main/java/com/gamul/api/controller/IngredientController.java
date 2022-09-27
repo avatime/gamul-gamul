@@ -8,6 +8,8 @@ import com.gamul.api.service.IngredientService;
 import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.HighClass;
+import com.gamul.db.entity.User;
+import com.gamul.db.repository.IngredientRepository;
 import com.gamul.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +33,9 @@ public class IngredientController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    IngredientRepository ingredientRepository;
 
     private final NaverShopSearch naverShopSearch;
 
@@ -69,8 +74,8 @@ public class IngredientController {
         // 온라인 마트 정보 추가
         String query = ingredientDetailRes.getIngredientInfo().getName();
         String resultString = naverShopSearch.search(query);
-        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.OnlineMartInfo(resultString);
-        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+//        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.OnlineMartInfo(resultString);
+//        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
 
 
         return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
@@ -139,6 +144,8 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientBasket(@PathVariable String userName) {
+        User user = userRepository.findByUsername(userName).orElse(null);
+
         List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
         return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
     }
@@ -172,10 +179,17 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getOnlineIngredient(@PathVariable Long ingredientId){
-        String query = ingredientService.getOnlineIngredientInfo(ingredientId);
-        String resultString = naverShopSearch.search(query);
-        List<OnlineIngredientInfoRes> onlineIngredientInfoResList = naverShopSearch.fromJSONtoItems(resultString);
-        return new ResponseEntity<List<OnlineIngredientInfoRes>>(onlineIngredientInfoResList, HttpStatus.OK);
+        try{
+            if(!ingredientRepository.existsById(ingredientId)){
+                return ResponseEntity.ok(BaseResponseBody.of(405, "존재하지 않는 식재료"));
+            }
+            String query = ingredientService.getOnlineIngredientInfo(ingredientId);
+            String resultString = naverShopSearch.search(query);
+            List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
+            return ResponseEntity.status(200).body(onlineMartInfoResList);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
 }
