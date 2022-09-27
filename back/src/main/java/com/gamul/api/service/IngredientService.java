@@ -10,7 +10,7 @@ import com.gamul.db.entity.HighClass;
 import java.util.List;
 
 public interface IngredientService {
-    List<IngredientInfoRes> getIngredientList(int orderType, int highClassId);
+    List<IngredientInfoRes> getIngredientList(int orderType, Long highClassId);
     List<IngredientInfoRes> getIngredientSelectedList(String userName);
 
     IngredientDetailRes getIngredientDetailInfo(Long ingredientId);
