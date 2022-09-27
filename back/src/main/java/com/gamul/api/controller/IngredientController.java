@@ -1,5 +1,6 @@
 package com.gamul.api.controller;
 
+import com.gamul.api.request.IngredientListReq;
 import com.gamul.api.request.OfflineMartInfoReq;
 import com.gamul.api.response.*;
 import com.gamul.api.service.IngredientService;
@@ -28,13 +29,14 @@ public class IngredientController {
 
     private final NaverShopSearch naverShopSearch;
 
-    @GetMapping("/{orderType}/{highClass}")
+    @GetMapping("/{orderType}/{highClassId}")
     @ApiOperation(value = "식재료 목록 반환", notes = "<strong>order type과 high clas id</strong>에 따른 식재료 목록 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientList(@PathVariable int orderType, int highClassId) {
+    public ResponseEntity<?> getIngredientList(@PathVariable int orderType, @PathVariable Long highClassId) {
+        System.out.println("컨트롤러: " + highClassId);
         List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(orderType, highClassId);
         return new ResponseEntity<List<IngredientInfoRes>>(ingredientList, HttpStatus.OK);
     }

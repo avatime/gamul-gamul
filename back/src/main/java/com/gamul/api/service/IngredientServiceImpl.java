@@ -5,6 +5,7 @@ import com.gamul.api.response.*;
 import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 @Service("ingredientService")
 public class IngredientServiceImpl implements IngredientService{
@@ -35,34 +37,44 @@ public class IngredientServiceImpl implements IngredientService{
     StoreRepository storeRepository;
 
     @Override
-    public List<IngredientInfoRes> getIngredientList(int orderType, int highClassId){
+    public List<IngredientInfoRes> getIngredientList(int orderType, Long highClassId){
         // 대분류 정보 가지고 재료 목록 리스트 가져오기
-        List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).get();
+        System.out.println("highClassId: "+ highClassId);
+        List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).orElse(null);
+        System.out.println("여기나와?"+ingredientList);
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
         // 대분류 객체 가져오기
-        HighClass highClass = highClassRepository.findById(highClassId);
+        HighClass highClass = highClassRepository.findById(highClassId.intValue());
+
+        System.out.println("대분류 나와?: "+highClass);
 
         for (Ingredient ingredient : ingredientList){
+            System.out.println("for 문 돌아?: " + ingredient);
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
+            Price price = priceRepository.findByIngredientId(ingredient.getId()).orElse(null);
             // 알러지 객체 가져오기
-            Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).get();
+            Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).orElse(null);
             // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId());
+            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId()).orElse(null);
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByIngredientId(ingredient.getId());
+            Basket basket = basketRepository.findByIngredientId(ingredient.getId()).orElse(null);;
 
+            System.out.println("바구니까지 나오지??????");
+            
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
+            System.out.println("과연?: "+ingredientInfoRes);
 
 //            ingredientInfoRes.setVolatility();
 
             // 추가하기
             ingredientInfoResList.add(ingredientInfoRes);
         }
+        System.out.println("중간: " + ingredientList);
         // 사전 순서
         if (orderType == 1){
-//            Collections.sort(ingredientInfoResList, new NameSortComparator());
+            System.out.println("정렬: " + ingredientList);
+            Collections.sort(ingredientInfoResList, new NameSortComparator());
         }
         // 조회 큰 순서
         else if(orderType == 2){
@@ -76,7 +88,7 @@ public class IngredientServiceImpl implements IngredientService{
         else if(orderType == 4){
             Collections.sort(ingredientInfoResList, new PriceSortComparator());
         }
-
+        System.out.println("반환값나와?: "+ ingredientList);
         return ingredientInfoResList;
     }
 
@@ -92,17 +104,17 @@ public class IngredientServiceImpl implements IngredientService{
         for (IngredientSelected x : ingredientSelectedList){
 
             // 식재료 객체 가져오기
-            Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
+            Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).orElse(null);
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
+            Price price = priceRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 알러지 객체 가져오기
-            Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).get();
+            Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId());
+            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByIngredientId(ingredient.getId());
+            Basket basket = basketRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 대분류 객체 가져오기
-            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
+            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).orElse(null);;
 
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
 
@@ -198,9 +210,9 @@ public class IngredientServiceImpl implements IngredientService{
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).get();
             // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId());
+            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByIngredientId(ingredient.getId());
+            Basket basket = basketRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
@@ -228,9 +240,9 @@ public class IngredientServiceImpl implements IngredientService{
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).get();
             // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId());
+            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByIngredientId(ingredient.getId());
+            Basket basket = basketRepository.findByIngredientId(ingredient.getId()).orElse(null);;
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
