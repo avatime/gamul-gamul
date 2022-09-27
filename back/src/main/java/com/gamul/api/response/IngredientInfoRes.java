@@ -39,14 +39,14 @@ public class IngredientInfoRes {
 
     Long views;
 
-    public IngredientInfoRes(Ingredient ingredient, Price price, Allergy allgery, IngredientSelected ingredientSelected, Basket basket, HighClass highClass){
+    public IngredientInfoRes(Ingredient ingredient, Price price, HighClass highClass){
         this.ingredientId = ingredient.getId();
         this.name = ingredient.getMidClass();
         this.unit = price.getUnit();
         this.quantity = price.getQuantity();
-        this.allergy = allgery.isActiveFlag();
-        this.favorite = ingredientSelected.isActiveFlag();
-        this.basket = basket.isActiveFlag();
+        this.allergy = false;
+        this.favorite = false;
+        this.basket = false;
         this.highClassId = ingredient.getHighClass();
         this.highClassName = highClass.getName();
         this.views = ingredient.getViews();

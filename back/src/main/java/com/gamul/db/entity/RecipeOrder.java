@@ -31,4 +31,8 @@ public class RecipeOrder extends BaseEntity {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Recipe recipe;
+
+    @Column
+    @JsonProperty("image_path")
+    String imagePath;
 }
