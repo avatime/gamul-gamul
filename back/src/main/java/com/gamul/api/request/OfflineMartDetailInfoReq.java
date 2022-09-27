@@ -10,5 +10,8 @@ import lombok.Setter;
 @ApiModel("OfflineMartDetailInfoReq")
 public class OfflineMartDetailInfoReq {
     @JsonProperty("store_id")
-    int storeId;
+    Long storeId;
+
+    @JsonProperty("user_name")
+    String userName;
 }
