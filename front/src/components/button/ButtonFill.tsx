@@ -1,36 +1,35 @@
-import { Table } from "@mui/material";
-import { text } from "node:stream/consumers";
-import React, { FC, MouseEventHandler } from "react";
+import React, { FC } from "react";
 import styles from "../../../styles/Button.module.css";
-import { Desktop } from "../Desktop";
-import { Mobile } from "../Mobile";
-import { Tablet } from "../Tablet";
+import { AnimatedButton } from "./AnimatedButton";
+
 interface IProps {
   text: string;
-  onClick: MouseEventHandler<HTMLInputElement>;
+  onClick: () => void;
   height: string;
   width: string;
   maxWidth: string;
-  fontSize:string;
-  disabled:boolean;
+  fontSize: string;
+  disabled: boolean;
 }
 
-/**
- * @author
- * @function @
- **/
-
-export const ButtonFill: FC<IProps> = ({ text, onClick, height, width, maxWidth, fontSize, disabled }) => {
+export const ButtonFill: FC<IProps> = ({
+  text,
+  onClick,
+  height,
+  width,
+  maxWidth,
+  fontSize,
+  disabled,
+}) => {
   return (
-    <div>
+    <AnimatedButton onClick={onClick}>
       <input
         type="button"
         value={text}
         className={styles.buttonFillStyle}
-        onClick={onClick}
         disabled={disabled}
         style={{ width, height, maxWidth, cursor: "pointer", fontSize }}
       />
-    </div>
+    </AnimatedButton>
   );
 };

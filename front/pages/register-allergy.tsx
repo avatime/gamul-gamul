@@ -17,13 +17,14 @@ import { useRouter } from "next/router";
 
 interface IProps {
   ingredientList: IngredientInfo[];
+  allergyIngredientList: number[];
 }
 
-const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
+const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredientList }) => {
   const router = useRouter();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
-  const [selectedList, setSelectedList] = useState<number[]>([]);
+  const [selectedList, setSelectedList] = useState<number[]>(allergyIngredientList);
   useEffect(() => {
     setSearchedIngredientList(ingredientList.filter((v) => v.name.includes(searchKeyword)));
   }, [ingredientList, searchKeyword]);
@@ -77,7 +78,7 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
               ))}
             </Stack>
 
-            <Box height="60px" paddingX="15px">
+            <Box height="40px" paddingX="15px">
               <Box
                 height="40px"
                 borderRadius="20px"
@@ -94,6 +95,7 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
                   value={searchKeyword}
                   onChange={(e: any) => setSearchKeyword(e.target.value)}
                   debounceTimeout={300}
+                  placeholder="식재료 검색"
                   style={{
                     backgroundColor: "inherit",
                   }}
