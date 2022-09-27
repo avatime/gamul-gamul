@@ -23,6 +23,6 @@ public class OnlineMartInfoRes {
         this.name = itemJson.getString("title");
         this.price = itemJson.getInt("lprice");
         this.imagePath = itemJson.getString("image");
-        this.url = itemJson.getString("link");
+        this.url = itemJson.getString("mallName");
     }
 }
