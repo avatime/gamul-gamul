@@ -1,8 +1,19 @@
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box, ButtonBase, IconButton, styled } from "@mui/material";
 import React, { FC } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { MyRecipeInfo } from "../apis/responses/myRecipeInfo";
-import { AnimatedButton } from './button/AnimatedButton';
+
+const ItemButton = styled(ButtonBase)(() => ({
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+  },
+}));
 
 interface IProps {}
 
@@ -24,7 +35,7 @@ export const MyRecipeItem: FC<IProps> = ({ direction, myRecipeInfo, onDelete, on
     e.stopPropagation();
   };
   return (
-    <AnimatedButton
+    <ItemButton
       style={{
         borderRadius: 10,
         padding: direction == "column" ? 20 : 0,
@@ -58,6 +69,6 @@ export const MyRecipeItem: FC<IProps> = ({ direction, myRecipeInfo, onDelete, on
         <Box flex={1} />
         {direction === "row" && <></>}
       </Box>
-    </AnimatedButton>
+    </ItemButton>
   );
 };
