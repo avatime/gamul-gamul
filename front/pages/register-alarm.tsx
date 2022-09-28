@@ -16,6 +16,9 @@ import { useRouter } from "next/router";
 import { LimitPriceNoticeInfo } from "../src/apis/responses/limitPriceNoticeInfo";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { AlarmRegisterModal } from "../src/components/AlarmRegisterModal";
+import { Desktop } from "../src/components/Desktop";
+import { Tablet } from "../src/components/Tablet";
+import styles from "../styles/Page.module.css";
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -76,10 +79,10 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
       .then(() => router.back());
   };
 
-  return (
-    <Mobile>
-      <Box bgcolor="white" minHeight="100vh">
-        <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+  const Comp = (hideBackHeader: boolean) => (
+    <Box bgcolor="white" minHeight="100vh">
+      <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+        {!hideBackHeader && (
           <BackHeader
             backgroundColor="white"
             text="상한가/하한가 알림 등록"
@@ -89,110 +92,120 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
               </IconButton>
             }
           />
-          <Box paddingTop="40px">
-            <Stack
-              direction="row"
-              style={{
-                overflowX: "auto",
-              }}
+        )}
+        <Box paddingTop={hideBackHeader ? "0" : "40px"}>
+          <Stack
+            direction="row"
+            style={{
+              overflowX: "auto",
+            }}
+          >
+            {selectedList.map((v) => (
+              <IngredientItem
+                key={v.ingredient_id}
+                direction="column"
+                ingredientInfo={ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!}
+                onClickItem={() => onClickItem(v.ingredient_id)}
+                onDelete={() => onClickDelete(v.ingredient_id)}
+              />
+            ))}
+          </Stack>
+
+          <Box height="60px" paddingX="15px">
+            <Box
+              height="40px"
+              borderRadius="20px"
+              display="flex"
+              bgcolor="#f5f5f5"
+              alignItems="center"
+              paddingX="10px"
+              marginTop="10px"
             >
-              {selectedList.map((v) => (
-                <IngredientItem
-                  key={v.ingredient_id}
-                  direction="column"
-                  ingredientInfo={
-                    ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!
-                  }
-                  onClickItem={() => onClickItem(v.ingredient_id)}
-                  onDelete={() => onClickDelete(v.ingredient_id)}
-                />
-              ))}
-            </Stack>
-
-            <Box height="60px" paddingX="15px">
-              <Box
-                height="40px"
-                borderRadius="20px"
-                display="flex"
-                bgcolor="#f5f5f5"
-                alignItems="center"
-                paddingX="10px"
-                marginTop="10px"
-              >
-                <DebounceInput
-                  className={searchStyles.input}
-                  forceNotifyByEnter={true}
-                  forceNotifyOnBlur={true}
-                  value={searchKeyword}
-                  onChange={(e: any) => setSearchKeyword(e.target.value)}
-                  debounceTimeout={300}
-                  placeholder="식재료 검색"
-                  style={{
-                    backgroundColor: "inherit",
-                  }}
-                />
-                <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />
-              </Box>
+              <DebounceInput
+                className={searchStyles.input}
+                forceNotifyByEnter={true}
+                forceNotifyOnBlur={true}
+                value={searchKeyword}
+                onChange={(e: any) => setSearchKeyword(e.target.value)}
+                debounceTimeout={300}
+                placeholder="식재료 검색"
+                style={{
+                  backgroundColor: "inherit",
+                }}
+              />
+              <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />
             </Box>
-
-            <p style={{ fontSize: "16px", fontWeight: "bold", margin: "15px", color: "#A1A1AA" }}>
-              식재료
-            </p>
           </Box>
-        </Box>
 
-        <Stack
-          direction="column"
-          paddingTop={selectedList.length === 0 ? "160px" : "320px"}
-          paddingBottom="60px"
-        >
-          {searchedIngredientList.length !== 0 ? (
-            <>
-              {searchedIngredientList.map((v) => (
-                <Stack direction="row" key={v.ingredient_id}>
-                  <IngredientItem
-                    direction="row"
-                    ingredientInfo={v}
-                    onClickItem={() => onClickItem(v.ingredient_id)}
-                    tail={
-                      selectedList.find((it) => it.ingredient_id === v.ingredient_id) ? (
-                        <IconButton
-                          onClick={(e: any) => {
-                            onClickDelete(v.ingredient_id);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <NotificationsActiveIcon
-                            color="success"
-                            style={{ width: "20px", height: "20px" }}
-                          />
-                        </IconButton>
-                      ) : (
-                        <IconButton>
-                          <Box
-                            style={{
-                              width: "20px",
-                              height: "20px",
-                              borderRadius: "20px",
-                              borderColor: "#D9D9D9",
-                              borderWidth: "1px",
-                              borderStyle: "solid",
-                            }}
-                          />
-                        </IconButton>
-                      )
-                    }
-                  />
-                </Stack>
-              ))}
-            </>
-          ) : (
-            <p style={{ fontSize: "14px", fontWeight: "bold", margin: "15px", marginTop: "30px" }}>
-              검색 결과가 없어요.
-            </p>
-          )}
-        </Stack>
+          <p style={{ fontSize: "16px", fontWeight: "bold", margin: "15px", color: "#A1A1AA" }}>
+            식재료
+          </p>
+        </Box>
       </Box>
+
+      <Stack
+        direction="column"
+        paddingTop={selectedList.length === 0 ? "160px" : "320px"}
+        paddingBottom="60px"
+      >
+        {searchedIngredientList.length !== 0 ? (
+          <>
+            {searchedIngredientList.map((v) => (
+              <Stack direction="row" key={v.ingredient_id}>
+                <IngredientItem
+                  direction="row"
+                  ingredientInfo={v}
+                  onClickItem={() => onClickItem(v.ingredient_id)}
+                  tail={
+                    selectedList.find((it) => it.ingredient_id === v.ingredient_id) ? (
+                      <IconButton
+                        onClick={(e: any) => {
+                          onClickDelete(v.ingredient_id);
+                          e.stopPropagation();
+                        }}
+                      >
+                        <NotificationsActiveIcon
+                          color="success"
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      </IconButton>
+                    ) : (
+                      <IconButton>
+                        <Box
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "20px",
+                            borderColor: "#D9D9D9",
+                            borderWidth: "1px",
+                            borderStyle: "solid",
+                          }}
+                        />
+                      </IconButton>
+                    )
+                  }
+                />
+              </Stack>
+            ))}
+          </>
+        ) : (
+          <p style={{ fontSize: "14px", fontWeight: "bold", margin: "15px", marginTop: "30px" }}>
+            검색 결과가 없어요.
+          </p>
+        )}
+      </Stack>
+    </Box>
+  );
+
+  return (
+    <>
+      <Desktop>
+        <Box className={styles.PageforDesktop}>{Comp(true)}</Box>
+      </Desktop>
+      <Tablet>
+        <Box className={styles.PageforTablet}>{Comp(true)}</Box>
+      </Tablet>
+      <Mobile>{Comp(false)}</Mobile>
       {showModal && (
         <Backdrop open={showModal} style={{ zIndex: 11 }} onClick={(e: any) => setShowModal(false)}>
           <AlarmRegisterModal
@@ -205,7 +218,7 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
           />
         </Backdrop>
       )}
-    </Mobile>
+    </>
   );
 };
 
