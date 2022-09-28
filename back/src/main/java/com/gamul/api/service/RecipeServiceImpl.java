@@ -24,8 +24,6 @@ public class RecipeServiceImpl implements RecipeService{
     @Autowired
     RecipeRepository recipeRepository;
     @Autowired
-    RecipeImageRepository recipeImageRepository;
-    @Autowired
     RecipeSelectedRepository recipeSelectedRepository;
     @Autowired
     UserRepository userRepository;
@@ -137,12 +135,11 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public List<RecipeProcedureRes> getRecipeOrder(Long recipeId){
         List<RecipeOrder> recipeOrderList = recipeOrderRepository.findAllByRecipeId(recipeId).get();
-        List<RecipeImage> recipeImageList = recipeImageRepository.findAllByRecipeId(recipeId).get();
+
         List<RecipeProcedureRes> recipeProcedureResList = new ArrayList<>();
         for (int i=0; i<recipeOrderList.size(); i++){
             RecipeOrder recipeOrder = recipeOrderList.get(i);
-            RecipeImage recipeImage = recipeImageList.get(i);
-            RecipeProcedureRes recipeProcedureRes = new RecipeProcedureRes(recipeOrder, recipeImage);
+            RecipeProcedureRes recipeProcedureRes = new RecipeProcedureRes(recipeOrder);
             recipeProcedureResList.add(recipeProcedureRes);
         }
         return recipeProcedureResList;

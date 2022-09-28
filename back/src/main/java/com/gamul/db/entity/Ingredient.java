@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient extends BaseEntity{
-//    @JsonProperty("highclass")
+    @JsonProperty("high_class")
     @Column(updatable = false, nullable = false)
     private Long highClass;
 
@@ -28,8 +28,6 @@ public class Ingredient extends BaseEntity{
     @JsonProperty("low_class")
     @Column(updatable = false, nullable = false)
     private String lowClass;
-
-
 
     @Column(columnDefinition = "INT UNSIGNED")
     private long views;

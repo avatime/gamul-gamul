@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface HighClassRepository extends JpaRepository<HighClass, Long> {
-    HighClass findById(int highClassId);
+    HighClass findById(int highClass);
 }
