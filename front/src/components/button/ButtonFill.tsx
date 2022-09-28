@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import styles from "../../../styles/Button.module.css";
-import { AnimatedButton } from "./AnimatedButton";
 
 interface IProps {
   text: string;
@@ -8,28 +7,26 @@ interface IProps {
   height: string;
   width: string;
   maxWidth: string;
-  fontSize: string;
-  disabled: boolean;
+  fontSize:string;
+  disabled:boolean;
 }
 
-export const ButtonFill: FC<IProps> = ({
-  text,
-  onClick,
-  height,
-  width,
-  maxWidth,
-  fontSize,
-  disabled,
-}) => {
+/**
+ * @author
+ * @function @
+ **/
+
+export const ButtonFill: FC<IProps> = ({ text, onClick, height, width, maxWidth, fontSize, disabled }) => {
   return (
-    <AnimatedButton onClick={onClick}>
+    <div>
       <input
         type="button"
         value={text}
         className={styles.buttonFillStyle}
+        onClick={onClick}
         disabled={disabled}
         style={{ width, height, maxWidth, cursor: "pointer", fontSize }}
       />
-    </AnimatedButton>
+    </div>
   );
 };

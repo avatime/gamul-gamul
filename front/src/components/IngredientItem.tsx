@@ -1,10 +1,21 @@
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box, ButtonBase, IconButton, styled } from "@mui/material";
 import React, { FC } from "react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
 import { IngredientInfo } from "../apis/responses/ingredientInfo";
-import { AnimatedButton } from "./button/AnimatedButton";
+
+const ItemButton = styled(ButtonBase)(() => ({
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+  },
+}));
 
 type Direction = "row" | "column";
 
@@ -32,13 +43,12 @@ export const IngredientItem: FC<IProps> = ({
   };
   const avatarSize = direction === "row" ? 42 : 60;
   return (
-    <AnimatedButton
+    <ItemButton
       style={{
         borderRadius: 10,
         padding: direction == "column" ? 15 : 0,
         width: direction === "row" ? "100%" : "auto",
         visibility: ingredientInfo ? "visible" : "hidden",
-        cursor: "pointer",
       }}
       onClick={() => onClickItem(ingredientInfo?.ingredient_id || 0)}
     >
@@ -100,6 +110,6 @@ export const IngredientItem: FC<IProps> = ({
           {tail}
         </Box>
       </Box>
-    </AnimatedButton>
+    </ItemButton>
   );
 };
