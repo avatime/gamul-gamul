@@ -1,7 +1,10 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { saveRecentSearchLocalStorage, RecentSearch } from "../../src/utils/localStorageUtil";
+import {
+  saveRecentSearchLocalStorage,
+  RecentSearch,
+} from "../../src/utils/localStorageUtil";
 import { ApiClient } from "../../src/apis/apiClient";
 import { Box } from "@mui/system";
 import { Desktop } from "../../src/components/Desktop";
@@ -14,6 +17,8 @@ import { IngredientInfo } from "../../src/apis/responses/ingredientInfo";
 import { Tablet } from "../../src/components/Tablet";
 import { Mobile } from "../../src/components/Mobile";
 import { InfoTitle } from "../../src/components/InfoTitle";
+import { getCookie } from "../../src/utils/cookie";
+import { Grid } from "@mui/material";
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -22,12 +27,19 @@ interface IProps {
   views: number;
 }
 
-const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo, imagePath, views }) => {
+const IngredientInfoPage: NextPage<IProps> = ({
+  ingredientDetailInfo,
+  ingredientInfo,
+  imagePath,
+  views,
+}) => {
   const router = useRouter();
   const { id } = router.query;
+  const userName = getCookie("userName");
+  const apiClient = ApiClient.getInstance();
 
-  const setBookmark = () => {
-    // 북마크 등록/해제 api 호출
+  const setBookmark = async () => {
+    await apiClient.putBookmarkIngredient(userName, Number(id));
   };
 
   useEffect(() => {
@@ -39,26 +51,90 @@ const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredient
     <Box className="page-background">
       <Desktop>
         <Box className={styles.PageforDesktop}>
-          {/* InfoTitle */}
-          <IngredientPriceComp
-            ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"100%"}
-            inputHeight={500}
-          />
-          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="desktop" inputHeight="400px" />
-          {/* OnlineMartInfoComp */}
+          <Grid container>
+            <Grid item xs={7}>
+              <Grid container>
+                <Grid
+                  item
+                  xs={6}
+                  height="100px"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <InfoTitle
+                    name={ingredientInfo.name}
+                    bookmark={ingredientInfo.bookmark}
+                    onClickBookmark={setBookmark}
+                    views={views}
+                    imagePath={imagePath}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  {/* RecipePreviewComp */}
+                </Grid>
+              </Grid>
+              <IngredientPriceComp
+                ingredientDetailInfo={ingredientDetailInfo}
+                inputWidth={"95%"}
+                inputHeight={600}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <OfflineMartComp
+                ingredientInfo={ingredientInfo}
+                mapId="desktop"
+                inputHeight="350px"
+              />
+              {/* OnlineMartInfoComp */}
+            </Grid>
+          </Grid>
         </Box>
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          {/* InfoTitle */}
-          <IngredientPriceComp
-            ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"100%"}
-            inputHeight={500}
-          />
-          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="tablet" inputHeight="350px" />
-          {/* <OfflineMartComp } />  */}
+        <Grid container>
+            <Grid item xs={7}>
+              <Grid container>
+                <Grid
+                  item
+                  xs={6}
+                  height="100px"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <InfoTitle
+                    name={ingredientInfo.name}
+                    bookmark={ingredientInfo.bookmark}
+                    onClickBookmark={setBookmark}
+                    views={views}
+                    imagePath={imagePath}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  {/* RecipePreviewComp */}
+                </Grid>
+              </Grid>
+              <IngredientPriceComp
+                ingredientDetailInfo={ingredientDetailInfo}
+                inputWidth={"95%"}
+                inputHeight={550}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <OfflineMartComp
+                ingredientInfo={ingredientInfo}
+                mapId="tablet"
+                inputHeight="300px"
+              />
+              {/* OnlineMartInfoComp */}
+            </Grid>
+          </Grid>
         </Box>
       </Tablet>
       <Mobile>
@@ -72,10 +148,15 @@ const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredient
           />
           <IngredientPriceComp
             ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"100%"}
+            inputWidth={"95%"}
             inputHeight={500}
           />
-          <OfflineMartComp ingredientInfo={ingredientInfo} mapId="mobile" inputHeight="300px" />
+          {/* RecipePreviewComp */}
+          <OfflineMartComp
+            ingredientInfo={ingredientInfo}
+            mapId="mobile"
+            inputHeight="300px"
+          />
           {/* OnlineMartInfoComp */}
         </Box>
       </Mobile>
@@ -85,20 +166,14 @@ const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredient
 
 export default IngredientInfoPage;
 
-// export const getStaticPaths = async () => {
-
-//   return {
-//     paths: [],
-//     fallback: true
-//   }
-// };
-
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
-  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(context.params.id);
+  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(
+    context.params.id,
+  );
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
-  const imagePath = ""; // ingredientid 가지고 imagepath 설정
-  const views = 0; // ingredientid 가지고 views 알아내는 api 호출
+  const imagePath = "/test_hamburger.jpg"; // ingredientid 가지고 imagepath 설정
+  const views = 100; // ingredientid 가지고 views 알아내는 api 호출
 
   return {
     props: {
