@@ -14,6 +14,9 @@ import searchStyles from "../styles/SearchHeaderBar.module.css";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckIcon from "@mui/icons-material/Check";
 import { useRouter } from "next/router";
+import { Tablet } from "../src/components/Tablet";
+import { Desktop } from "../src/components/Desktop";
+import styles from "../styles/Page.module.css";
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -47,10 +50,10 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
       .then(() => router.back());
   };
 
-  return (
-    <Mobile>
-      <Box bgcolor="white" minHeight="100vh">
-        <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+  const Comp = (hideBackHedaer: boolean) => (
+    <Box bgcolor="white" minHeight="100vh">
+      <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+        {!hideBackHedaer && (
           <BackHeader
             backgroundColor="white"
             text="알러지 정보 등록"
@@ -60,100 +63,109 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
               </IconButton>
             }
           />
-          <Box paddingTop="50px">
-            <Stack
-              direction="row"
-              style={{
-                overflowX: "auto",
-              }}
+        )}
+        <Box paddingTop={hideBackHedaer ? "0" : "50px"}>
+          <Stack
+            direction="row"
+            style={{
+              overflowX: "auto",
+            }}
+          >
+            {selectedList.map((v) => (
+              <IngredientItem
+                key={v}
+                direction="column"
+                ingredientInfo={ingredientList.find((it) => it.ingredient_id === v)!}
+                onClickItem={() => onClickDelete(v)}
+                onDelete={() => onClickDelete(v)}
+              />
+            ))}
+          </Stack>
+
+          <Box height="40px" paddingX="15px">
+            <Box
+              height="40px"
+              borderRadius="20px"
+              display="flex"
+              bgcolor="#f5f5f5"
+              alignItems="center"
+              paddingX="10px"
+              marginTop="10px"
             >
-              {selectedList.map((v) => (
-                <IngredientItem
-                  key={v}
-                  direction="column"
-                  ingredientInfo={ingredientList.find((it) => it.ingredient_id === v)!}
-                  onClickItem={() => onClickDelete(v)}
-                  onDelete={() => onClickDelete(v)}
-                />
-              ))}
-            </Stack>
-
-            <Box height="40px" paddingX="15px">
-              <Box
-                height="40px"
-                borderRadius="20px"
-                display="flex"
-                bgcolor="#f5f5f5"
-                alignItems="center"
-                paddingX="10px"
-                marginTop="10px"
-              >
-                <DebounceInput
-                  className={searchStyles.input}
-                  forceNotifyByEnter={true}
-                  forceNotifyOnBlur={true}
-                  value={searchKeyword}
-                  onChange={(e: any) => setSearchKeyword(e.target.value)}
-                  debounceTimeout={300}
-                  placeholder="식재료 검색"
-                  style={{
-                    backgroundColor: "inherit",
-                  }}
-                />
-                <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />
-              </Box>
+              <DebounceInput
+                className={searchStyles.input}
+                forceNotifyByEnter={true}
+                forceNotifyOnBlur={true}
+                value={searchKeyword}
+                onChange={(e: any) => setSearchKeyword(e.target.value)}
+                debounceTimeout={300}
+                placeholder="식재료 검색"
+                style={{
+                  backgroundColor: "inherit",
+                }}
+              />
+              <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />
             </Box>
-
-            <p style={{ fontSize: "16px", fontWeight: "bold", margin: "15px", color: "#A1A1AA" }}>
-              식재료
-            </p>
           </Box>
-        </Box>
 
-        <Stack
-          direction="column"
-          paddingTop={selectedList.length === 0 ? "160px" : "320px"}
-          paddingBottom="60px"
-        >
-          {searchedIngredientList.length !== 0 ? (
-            <>
-              {searchedIngredientList.map((v) => (
-                <Stack direction="row" key={v.ingredient_id}>
-                  <IngredientItem
-                    direction="row"
-                    ingredientInfo={v}
-                    onClickItem={() => onClickItem(v.ingredient_id)}
-                    tail={
-                      selectedList.find((it) => it === v.ingredient_id) ? (
-                        <CheckCircleIcon
-                          color="success"
-                          style={{ width: "20px", height: "20px" }}
-                        />
-                      ) : (
-                        <Box
-                          style={{
-                            width: "20px",
-                            height: "20px",
-                            borderRadius: "20px",
-                            borderColor: "#D9D9D9",
-                            borderWidth: "1px",
-                            borderStyle: "solid",
-                          }}
-                        />
-                      )
-                    }
-                  />
-                </Stack>
-              ))}
-            </>
-          ) : (
-            <p style={{ fontSize: "14px", fontWeight: "bold", margin: "15px", marginTop: "30px" }}>
-              검색 결과가 없어요.
-            </p>
-          )}
-        </Stack>
+          <p style={{ fontSize: "16px", fontWeight: "bold", margin: "15px", color: "#A1A1AA" }}>
+            식재료
+          </p>
+        </Box>
       </Box>
-    </Mobile>
+
+      <Stack
+        direction="column"
+        paddingTop={selectedList.length === 0 ? "160px" : "320px"}
+        paddingBottom="60px"
+      >
+        {searchedIngredientList.length !== 0 ? (
+          <>
+            {searchedIngredientList.map((v) => (
+              <Stack direction="row" key={v.ingredient_id}>
+                <IngredientItem
+                  direction="row"
+                  ingredientInfo={v}
+                  onClickItem={() => onClickItem(v.ingredient_id)}
+                  tail={
+                    selectedList.find((it) => it === v.ingredient_id) ? (
+                      <CheckCircleIcon color="success" style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <Box
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "20px",
+                          borderColor: "#D9D9D9",
+                          borderWidth: "1px",
+                          borderStyle: "solid",
+                        }}
+                      />
+                    )
+                  }
+                />
+              </Stack>
+            ))}
+          </>
+        ) : (
+          <p style={{ fontSize: "14px", fontWeight: "bold", margin: "15px", marginTop: "30px" }}>
+            검색 결과가 없어요.
+          </p>
+        )}
+      </Stack>
+    </Box>
+  );
+
+  return (
+    <>
+      <Desktop>
+        <Box className={styles.PageforDesktop}>{Comp(true)}</Box>
+      </Desktop>
+      <Tablet>
+        <Box className={styles.PageforTablet}>{Comp(true)}</Box>
+      </Tablet>
+      <Mobile>{Comp(false)}</Mobile>
+    </>
   );
 };
 
