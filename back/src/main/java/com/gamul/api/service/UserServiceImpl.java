@@ -1,6 +1,8 @@
 package com.gamul.api.service;
 
 import com.gamul.api.request.UserRegisterPostReq;
+import com.gamul.common.util.JwtTokenUtil;
+import com.gamul.common.util.Token;
 import com.gamul.db.entity.User;
 import com.gamul.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +62,12 @@ public class UserServiceImpl implements UserService {
         User user = getUserByUsername(username);
         user.setRefreshToken(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public String refreshToken(String refreshToken) throws Exception {
+        Token token = Token.builder().refreshToken(refreshToken).build();
+
+        return JwtTokenUtil.validateRefreshToken(token);
     }
 }

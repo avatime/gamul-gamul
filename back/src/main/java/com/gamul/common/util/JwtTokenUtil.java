@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -115,26 +116,45 @@ public class JwtTokenUtil {
         }
     }
 
-    public static String validateRefreshToken(Token refreshTokenObj){
+    public static String validateRefreshToken(Token refreshTokenObj) throws AccessDeniedException {
         // refresh 객체에서 refreshToken 추출
         String refreshToken = refreshTokenObj.getRefreshToken();
 
         try {
             // 검증
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(refreshToken);
 
             //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
             if (!claims.getBody().getExpiration().before(new Date())) {
                 return createToken(claims.getBody().get("sub").toString(), "access");
             }
         }catch (Exception e) {
-
             //refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
-            return null;
-
+            throw new AccessDeniedException("로그인이 필요합니다");
         }
 
-        return null;
+        throw new AccessDeniedException("로그인이 필요합니다");
+    }
+
+    public boolean validateToken(String username, Token tokenObj) throws AccessDeniedException{
+        String token = tokenObj.getAccessToken();
+        String refreshToken = tokenObj.getRefreshToken();
+        try {
+            // 검증
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token);
+
+            //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
+            if (!claims.getBody().getExpiration().before(new Date())) {
+                return true;
+            } else {
+                validateRefreshToken(tokenObj);
+            }
+        }catch (Exception e) {
+            //refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
+            throw new AccessDeniedException("로그인이 필요합니다");
+        }
+
+        return false;
     }
 
     public static String createToken(String userId, String type){

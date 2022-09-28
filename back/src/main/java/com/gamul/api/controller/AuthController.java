@@ -1,6 +1,5 @@
 package com.gamul.api.controller;
 
-import com.gamul.api.request.RefreshTokenPostReq;
 import com.gamul.api.request.UserLoginPostReq;
 import com.gamul.api.request.UserLogoutPostReq;
 import com.gamul.api.response.UserLoginPostRes;
@@ -14,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -58,7 +59,7 @@ public class AuthController {
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
     }
 
-    @PostMapping("/{userName}")
+    @PostMapping("/logout")
     @ApiOperation(value = "로그아웃", notes = "<strong>아이디</strong>를 통해 토큰을 만료 시킨 후 로그아웃 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -71,9 +72,24 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> validateRefreshToken(@RequestBody @ApiParam(value="토큰 정보", required = true) RefreshTokenPostReq refreshTokenPostReq){
-        String refreshToken = refreshTokenPostReq.getRefreshToken();
+    @ApiOperation(value = "토큰 재발행", notes = "<strong>refresh Token</strong>을 통해 access Token을 재발행 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "refresh token 만료"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<UserLoginPostRes> validateRefreshToken(@RequestHeader(value = "access_token") String accessToken, @RequestHeader(value = "refresh_token") String refreshToken){
+        try{
+            accessToken = userService.refreshToken(refreshToken);
+        } catch (AccessDeniedException e){
+            Token token = Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "유효하지 않은 토큰입니다", null));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body(UserLoginPostRes.of(500, "Internal Server Error", null));
+        }
+        Token token = Token.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "token 갱신에 성공했습니다", token));
 
-        return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
     }
 }
