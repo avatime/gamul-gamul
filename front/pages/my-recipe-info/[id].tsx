@@ -12,8 +12,7 @@ import styles from "../../styles/Page.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import { IngredientListComp } from "../../src/components/templates/IngredientListComp";
 import IngredientPriceGraph from '../../src/components/IngredientPriceGraph';
-import { ButtonOutlined } from "../../src/components/button/ButtonOutlined";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { ButtonFill } from '../../src/components/button/ButtonFill';
 
 interface IProps {
   totalPrice: number;
@@ -47,9 +46,67 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
   return (
     <Box>
       <Desktop>
-        <Box className={styles.PageforDesktop}></Box>
+        <Box className={styles.PageforDesktop}>
+        <Box
+          sx={{ display: "flex", margin: "10px 10px 0px 20px" }}
+        >
+          <Avatar
+            src="/test_hamburger.jpg"
+            alt="햄버거"
+            sx={{ width: "60px", height: "60px" }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              marginLeft: "20px",
+              marginRight: "20px",
+            }}
+          >
+            <h3>{name}</h3>
+          </Box>
+              <IconButton onClick={modifyRecipe}>
+                <EditIcon color="secondary" />
+              </IconButton>
+        </Box>
+        <IngredientListComp ingredientList={ingredientList} totalPrice={totalPrice} rowSize={2} gridSize={5} />
+        <IngredientPriceGraph priceTransitionInfo={priceTransitionInfo} inputWidth="95%" inputHeight={500} type="line" />
+        <Box sx={{display: "flex", justifyContent: "center", padding: "15px"}}>
+          <ButtonFill onClick={deleteRecipe} text="나만의 요리법 삭제" height="50px" width="350px" maxWidth="350px" fontSize="13px" disabled={false}  />
+        </Box>
+        </Box>
       </Desktop>
-      <Tablet></Tablet>
+      <Tablet className={styles.PageforTablet}>
+      <Box
+          sx={{ display: "flex", margin: "10px 10px 0px 20px" }}
+        >
+          <Avatar
+            src="/test_hamburger.jpg"
+            alt="햄버거"
+            sx={{ width: "60px", height: "60px" }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              marginLeft: "20px",
+              marginRight: "20px",
+            }}
+          >
+            <h3>{name}</h3>
+          </Box>
+              <IconButton onClick={modifyRecipe}>
+                <EditIcon color="secondary" />
+              </IconButton>
+        </Box>
+        <IngredientListComp ingredientList={ingredientList} totalPrice={totalPrice} rowSize={2} gridSize={5} />
+        <IngredientPriceGraph priceTransitionInfo={priceTransitionInfo} inputWidth="95%" inputHeight={500} type="line" />
+        <Box sx={{display: "flex", justifyContent: "center", padding: "15px"}}>
+          <ButtonFill onClick={deleteRecipe} text="나만의 요리법 삭제" height="50px" width="350px" maxWidth="350px" fontSize="13px" disabled={false}  />
+        </Box>
+      </Tablet>
       <Mobile>
         {/* 뒤로가기 헤더 */}
         <Box
@@ -93,7 +150,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
         <IngredientListComp ingredientList={ingredientList} totalPrice={totalPrice} />
         <IngredientPriceGraph priceTransitionInfo={priceTransitionInfo} inputWidth="95%" inputHeight={400} type="line" />
         <Box sx={{display: "flex", justifyContent: "center", marginBottom: "75px"}}>
-        <ButtonOutlined onClick={deleteRecipe} text="나만의 요리법 삭제" icon={<DeleteIcon color="secondary" />} width="300px" height="50px" bgcolor="#4411aa" color="#000" />
+          <ButtonFill onClick={deleteRecipe} text="나만의 요리법 삭제" height="50px" width="350px" maxWidth="350px" fontSize="13px" disabled={false}  />
         </Box>
       </Mobile>
     </Box>
