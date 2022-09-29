@@ -42,7 +42,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       ),
       bgColor: "#f5f5f4",
       nextPage: true,
-      path: "/my-recipe",
+      path: "/register-my-recipe",
     },
     {
       primary: "찜 목록",

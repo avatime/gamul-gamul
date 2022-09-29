@@ -1,10 +1,21 @@
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box, ButtonBase, IconButton, styled } from "@mui/material";
 import React, { FC } from "react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
 import { IngredientInfo } from "../apis/responses/ingredientInfo";
-import { AnimatedButton } from "./button/AnimatedButton";
+
+const ItemButton = styled(ButtonBase)(() => ({
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiImageBackdrop-root": {
+      opacity: 0.15,
+    },
+    "& .MuiImageMarked-root": {
+      opacity: 0,
+    },
+  },
+}));
 
 type Direction = "row" | "column";
 
@@ -13,6 +24,7 @@ interface IProps {
   ingredientInfo: IngredientInfo | null;
   onDelete?: () => void;
   onClickItem: (id: number) => void;
+  tail?: React.ReactNode;
 }
 
 export const IngredientItem: FC<IProps> = ({
@@ -20,6 +32,7 @@ export const IngredientItem: FC<IProps> = ({
   ingredientInfo,
   onDelete,
   onClickItem,
+  tail,
 }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
@@ -30,13 +43,12 @@ export const IngredientItem: FC<IProps> = ({
   };
   const avatarSize = direction === "row" ? 42 : 60;
   return (
-    <AnimatedButton
+    <ItemButton
       style={{
         borderRadius: 10,
         padding: direction == "column" ? 15 : 0,
         width: direction === "row" ? "100%" : "auto",
         visibility: ingredientInfo ? "visible" : "hidden",
-        cursor: "pointer",
       }}
       onClick={() => onClickItem(ingredientInfo?.ingredient_id || 0)}
     >
@@ -56,7 +68,7 @@ export const IngredientItem: FC<IProps> = ({
               onMouseDown={onMouseDownDelete}
               onClick={onClickDelete}
             >
-              <CloseIcon />
+              <CloseIcon style={{ width: 16, height: 16 }} />
             </IconButton>
           )}
         </Box>
@@ -90,7 +102,14 @@ export const IngredientItem: FC<IProps> = ({
           )}
           <p style={{ fontSize: 6, fontWeight: "bold" }}>{ingredientInfo?.volatility || 0} %</p>
         </Box>
+        <Box
+          style={{
+            margin: direction == "column" ? 3 : 10,
+          }}
+        >
+          {tail}
+        </Box>
       </Box>
-    </AnimatedButton>
+    </ItemButton>
   );
 };
