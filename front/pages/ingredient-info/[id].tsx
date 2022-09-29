@@ -19,12 +19,15 @@ import { Mobile } from "../../src/components/Mobile";
 import { InfoTitle } from "../../src/components/InfoTitle";
 import { getCookie } from "../../src/utils/cookie";
 import { Grid } from "@mui/material";
+import { OnlineMarketInfoComp } from '../../src/components/OnlineMarketInfoComp';
+import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
   imagePath: string;
   views: number;
+  onlineMartInfo: OnlineMartInfo[];
 }
 
 const IngredientInfoPage: NextPage<IProps> = ({
@@ -32,6 +35,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
   ingredientInfo,
   imagePath,
   views,
+  onlineMartInfo,
 }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -47,6 +51,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
       saveRecentSearchLocalStorage("ingredient", +(id as string), `이름 ${id}`);
     }
   }, [id]);
+
   return (
     <Box className="page-background">
       <Desktop>
@@ -88,7 +93,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 mapId="desktop"
                 inputHeight="350px"
               />
-              {/* OnlineMartInfoComp */}
+              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
             </Grid>
           </Grid>
         </Box>
@@ -132,7 +137,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 mapId="tablet"
                 inputHeight="300px"
               />
-              {/* OnlineMartInfoComp */}
+              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
             </Grid>
           </Grid>
         </Box>
@@ -157,7 +162,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             mapId="mobile"
             inputHeight="300px"
           />
-          {/* OnlineMartInfoComp */}
+          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
         </Box>
       </Mobile>
     </Box>
@@ -174,6 +179,7 @@ export const getServerSideProps = async (context: any) => {
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
   const imagePath = "/test_hamburger.jpg"; // ingredientid 가지고 imagepath 설정
   const views = 100; // ingredientid 가지고 views 알아내는 api 호출
+  const onlineMartInfo = ingredientDetailInfo.online_mart_info;
 
   return {
     props: {
@@ -181,6 +187,7 @@ export const getServerSideProps = async (context: any) => {
       ingredientInfo,
       imagePath,
       views,
+      onlineMartInfo,
     },
   };
 };
