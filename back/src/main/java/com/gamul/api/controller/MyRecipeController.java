@@ -148,6 +148,7 @@ public class MyRecipeController {
         MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
         List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
         List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
+        List<PriceTransitionInfoRes> pricelist = getPriceTransition(myRecipeId);
 
         for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
             Calendar cal = new GregorianCalendar();
@@ -177,17 +178,10 @@ public class MyRecipeController {
         return ResponseEntity.status(200).body(myRecipeDetailRes);
     }
 
-    @GetMapping("/price/{userName}/{myRecipeId}")
-    @ApiOperation(value = "나만의 요리법 가격변동", notes = "<strong>나만의 레시피</strong>일자별 가격변동을 조회한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> showMyrecipePrice(@PathVariable String userName, Long myRecipeId){
+    public List<PriceTransitionInfoRes> getPriceTransition(Long myRecipeId){
+        List<PriceTransitionInfoRes> list = new ArrayList<>();
 
-        return ResponseEntity.status(200).body("success");
+        return list;
     }
 
     @GetMapping("/ingredient/{userName}/{myRecipeId}")
