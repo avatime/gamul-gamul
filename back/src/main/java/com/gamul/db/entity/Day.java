@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
-public class Year extends BaseEntity {
+public class Day extends BaseEntity {
     @Column
     private String datetime;
 
@@ -20,4 +20,7 @@ public class Year extends BaseEntity {
 
     @Column
     private int price;
+
+    @Column
+    private int type;
 }
