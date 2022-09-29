@@ -125,7 +125,7 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({
 
   const Comp = (hideBackHeader: boolean) => (
     <Box bgcolor="white" minHeight="100vh">
-      <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+      <Box position="fixed" width="100vw" maxWidth="500px" bgcolor="white" zIndex="10">
         {!hideBackHeader && (
           <BackHeader
             backgroundColor="white"
