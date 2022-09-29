@@ -23,8 +23,8 @@ const MyInfoPage: NextPage<IProps> = (props) => {
   const router = useRouter();
   const elements = [
     {
-      primary: "알러지등록",
-      secondary: "알러지를 등록해보아요",
+      primary: "알러지 목록",
+      secondary: "내 알러지를 등록해보아요",
       icon: ( 
         <> <Lottie animationData={allergy} loop={true} autoPlay={false}/></>
       ),
@@ -33,7 +33,7 @@ const MyInfoPage: NextPage<IProps> = (props) => {
       path: "/register-allergy",
     },
     {
-      primary: "나만의 요리법 등록",
+      primary: "나만의 요리법",
       secondary: "나만의 요리법을 등록해보아요",
       icon: (
         <>

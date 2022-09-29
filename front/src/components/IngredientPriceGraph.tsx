@@ -14,6 +14,9 @@ moment.locale("ko");
 
 const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+  const retailMax = Math.max(...priceTransitionInfo.retailsales.daily.map((v) => v.price));
+  const wholeMax = Math.max(...priceTransitionInfo.wholesales.daily.map((v) => v.price));
+  const max = Math.floor(Math.max(retailMax, wholeMax) * 1.2 / 100) * 100;
 
   return (
     <div>
@@ -79,7 +82,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
               text: `가격(${priceTransitionInfo.retailsales.daily[0].quantity}${priceTransitionInfo.retailsales.daily[0].unit})`,
             },
             min: 0,
-            max: 1500,
+            max: max,
           },
           legend: {
             position: "top",
