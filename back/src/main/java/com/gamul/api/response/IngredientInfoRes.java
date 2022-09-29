@@ -21,7 +21,7 @@ public class IngredientInfoRes {
 
     String unit;
 
-    int quantity;
+    double quantity;
 
     int volatility;
 
