@@ -59,6 +59,13 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
   };
 
   const onClickRegister = (limitPriceNoticeInfo: LimitPriceNoticeInfo) => {
+    if (
+      limitPriceNoticeInfo.lower_limit_price <= 0 ||
+      limitPriceNoticeInfo.upper_limit_price <= 0
+    ) {
+      alert("0보다 큰 숫자를 입력해주세요");
+      return;
+    }
     const idx = selectedList.findIndex(
       (v) => v.ingredient_id === limitPriceNoticeInfo?.ingredient_id
     );
