@@ -2,8 +2,8 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/mater
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { RecentSearch } from "../utils/localStorageUtil";
-import EggIcon from "@mui/icons-material/Egg";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import Image from "next/image";
 
 interface IProps {
   recentSearch: RecentSearch;
@@ -22,7 +22,17 @@ export const RecentSearchItem: FC<IProps> = ({ recentSearch }) => {
     <ListItem disablePadding>
       <ListItemButton onClick={onClick}>
         <ListItemIcon>
-          {recentSearch.recentType === "ingredient" ? <EggIcon /> : <RestaurantIcon />}
+          {recentSearch.recentType === "ingredient" ? (
+            <Image
+              width="24"
+              height="24"
+              alt={recentSearch.name}
+              src={`/assets/ingredientsImg/${recentSearch.id}.jpg`}
+              style={{ borderRadius: 20 }}
+            />
+          ) : (
+            <RestaurantIcon />
+          )}
         </ListItemIcon>
         <ListItemText primary={recentSearch.name} />
       </ListItemButton>

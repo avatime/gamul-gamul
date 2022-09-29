@@ -17,7 +17,7 @@ export function saveRecentSearchLocalStorage(recentType: RecentType, id: number,
   const item = localStorage.getItem(key);
   if (item) {
     const origin = JSON.parse(item) as RecentSearch[];
-    const idx = origin.findIndex((v) => v.id === id);
+    const idx = origin.findIndex((v) => v.id === id && v.recentType === recentType);
     if (0 <= idx) {
       origin.splice(idx, 1);
     }

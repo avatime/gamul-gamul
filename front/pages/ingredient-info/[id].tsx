@@ -1,10 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {
-  saveRecentSearchLocalStorage,
-  RecentSearch,
-} from "../../src/utils/localStorageUtil";
+import { saveRecentSearchLocalStorage, RecentSearch } from "../../src/utils/localStorageUtil";
 import { ApiClient } from "../../src/apis/apiClient";
 import { Box } from "@mui/system";
 import { Desktop } from "../../src/components/Desktop";
@@ -25,18 +22,10 @@ import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
-  imagePath: string;
-  views: number;
   onlineMartInfo: OnlineMartInfo[];
 }
 
-const IngredientInfoPage: NextPage<IProps> = ({
-  ingredientDetailInfo,
-  ingredientInfo,
-  imagePath,
-  views,
-  onlineMartInfo,
-}) => {
+const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, ingredientInfo, onlineMartInfo }) => {
   const router = useRouter();
   const { id } = router.query;
   const userName = getCookie("userName");
@@ -47,10 +36,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
   };
 
   useEffect(() => {
-    if (id) {
-      saveRecentSearchLocalStorage("ingredient", +(id as string), `이름 ${id}`);
-    }
-  }, [id]);
+    saveRecentSearchLocalStorage("ingredient", ingredientInfo.ingredient_id, ingredientInfo.name);
+  }, [ingredientInfo.ingredient_id, ingredientInfo.name]);
 
   return (
     <Box className="page-background">
@@ -73,8 +60,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
-                    views={views}
-                    imagePath={imagePath}
+                    views={ingredientDetailInfo.views}
+                    imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -100,7 +87,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-        <Grid container>
+          <Grid container>
             <Grid item xs={7}>
               <Grid container>
                 <Grid
@@ -117,8 +104,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
-                    views={views}
-                    imagePath={imagePath}
+                    views={ingredientDetailInfo.views}
+                    imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -148,8 +135,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
             name={ingredientInfo.name}
             bookmark={ingredientInfo.bookmark}
             onClickBookmark={setBookmark}
-            views={views}
-            imagePath={imagePath}
+            views={ingredientDetailInfo.views}
+            imagePath={`/assets/ingredientsImg/${id}.jpg`}
           />
           <IngredientPriceComp
             ingredientDetailInfo={ingredientDetailInfo}
@@ -173,20 +160,14 @@ export default IngredientInfoPage;
 
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
-  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(
-    context.params.id,
-  );
+  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(context.params.id);
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
-  const imagePath = "/test_hamburger.jpg"; // ingredientid 가지고 imagepath 설정
-  const views = 100; // ingredientid 가지고 views 알아내는 api 호출
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
 
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
-      imagePath,
-      views,
       onlineMartInfo,
     },
   };
