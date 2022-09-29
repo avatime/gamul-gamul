@@ -18,6 +18,7 @@ interface MapProps {
   onSetStoreName?: Function;
   onSetStores?: Function;
   inputHeight: string;
+  Clickable?: boolean;
 }
 
 function OfflineMartMap({
@@ -29,6 +30,7 @@ function OfflineMartMap({
   onSetStoreName,
   onSetStores,
   inputHeight,
+  Clickable,
 }: MapProps) {
   const apiClient = ApiClient.getInstance();
   const markers: any[] = [];
@@ -100,13 +102,13 @@ function OfflineMartMap({
         window.kakao.maps.event.addListener(map, "dragend", getInfo);
         window.kakao.maps.event.addListener(map, "zoom_changed", getInfo);
 
-        const imageSrc = "./non_select_temp.png",
+        const imageSrc = "/non_select_temp.png",
           imageSize = new window.kakao.maps.Size(30, 30),
           imageOption = { offset: new window.kakao.maps.Point(0, 0) };
 
         const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-        const imageSrc2 = "./select_temp.png",
+        const imageSrc2 = "/select_temp.png",
           imageSize2 = new window.kakao.maps.Size(30, 30),
           imageOption2 = { offset: new window.kakao.maps.Point(0, 0) };
 
@@ -148,7 +150,7 @@ function OfflineMartMap({
             window.kakao.maps.event.addListener(marker, "click", setStoreId(v.store_id));
             window.kakao.maps.event.addListener(marker, "click", setStoreName(v.name));
     
-            window.kakao.maps.event.addListener(marker, "click", function () {
+            (!!Clickable && window.kakao.maps.event.addListener(marker, "click", function () {
               if (!selectedMarker || selectedMarker !== marker) {
                 // 클릭된 마커 객체가 null이 아니면
                 // 클릭된 마커의 이미지를 기본 이미지로 변경하고
@@ -162,7 +164,7 @@ function OfflineMartMap({
               selectedMarker = marker;
               selectedMarker.lat = marker.getPosition().getLat();
               selectedMarker.lng = marker.getPosition().getLng();
-            });
+            }));
             
           });
         };
