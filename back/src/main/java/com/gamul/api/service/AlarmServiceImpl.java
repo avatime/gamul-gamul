@@ -5,11 +5,13 @@ import com.gamul.db.entity.IngredientPriceNotice;
 import com.gamul.db.entity.User;
 import com.gamul.db.repository.AllergyRepository;
 import com.gamul.db.repository.IngredientPriceNoticeRepository;
+import com.gamul.db.repository.IngredientRepository;
 import com.gamul.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("AlarmService")
@@ -22,15 +24,17 @@ public class AlarmServiceImpl implements AlarmService {
     IngredientPriceNoticeRepository ingredientPriceNoticeRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    IngredientRepository ingredientRepository;
 
     @Override
     public List<Allergy> getAllergyList(User user) {
-        return null;
+        return allergyRepository.findAllByUserId(user.getId()).orElse(new ArrayList<>());
     }
 
     @Override
     public List<IngredientPriceNotice> getNoticeList(User user) {
-        return null;
+        return ingredientPriceNoticeRepository.findAllByUserId(user.getId()).orElse(new ArrayList<>());
     }
 
     @Override
@@ -45,7 +49,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public IngredientPriceNotice getNoticeDetail(User user, Long ingredientId) {
-        return ingredientPriceNoticeRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).orElseGet(null);
+        return ingredientPriceNoticeRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).orElse(null);
     }
 
     @Override
