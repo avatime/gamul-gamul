@@ -46,8 +46,7 @@ const SignupPage: NextPage<IProps> = (props) => {
         })
         .catch((e) => {
           const code = e.response.status;
-          console.log(e);
-
+          setIsValidId(false);
           console.log(code);
 
           if (code === 404) {
@@ -60,6 +59,8 @@ const SignupPage: NextPage<IProps> = (props) => {
       setIdHelperText("아이디는 3자 이상 10자 이하여야 합니다.");
     }
   }, [apiClient, inputId]);
+
+const isRealValidId = isCheckId && isValidId;
 
   const handleId = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const id = e.target.value;
@@ -124,7 +125,7 @@ const SignupPage: NextPage<IProps> = (props) => {
                     width="60vw"
                     maxWidth="500px"
                     fontSize={""}
-                    disabled={!isValidId}
+                    disabled={!isRealValidId }
                   />
                 </Box>
               </Stack>
@@ -262,7 +263,7 @@ const SignupPage: NextPage<IProps> = (props) => {
                     width="60vw"
                     maxWidth="500px"
                     fontSize={""}
-                    disabled={!isValidId}
+                    disabled={!isRealValidId}
                   />
                 </Box>
               </Stack>
@@ -399,7 +400,7 @@ const SignupPage: NextPage<IProps> = (props) => {
                   width="60vw"
                   maxWidth="500px"
                   fontSize={""}
-                  disabled={!isValidId}
+                  disabled={!isRealValidId}
                 />
               </Stack>
             </>
