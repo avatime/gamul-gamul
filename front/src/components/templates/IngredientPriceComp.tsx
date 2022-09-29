@@ -36,7 +36,7 @@ export const IngredientPriceComp: FC<IProps> = ({
               color: !pastVol ? "inherit" : 0 < pastVol ? "red" : "blue",
             }}
           >
-            {pastPrice}
+            {pastPrice.toLocaleString()}
           </span>
           원/{quantity}
           {unit}
@@ -48,7 +48,7 @@ export const IngredientPriceComp: FC<IProps> = ({
               color: !todayVol ? "inherit" : 0 < todayVol ? "red" : "blue",
             }}
           >
-            {todayPrice}
+            {todayPrice.toLocaleString()}
           </span>
           원/{quantity}
           {unit}
