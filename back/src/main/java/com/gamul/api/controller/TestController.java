@@ -1,6 +1,8 @@
 package com.gamul.api.controller;
 
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.db.entity.Price;
+import com.gamul.db.repository.PriceRepository;
 import com.gamul.db.repository.TestRepository;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,13 @@ public class TestController {
     @Autowired
     TestRepository testRepository;
 
+    @Autowired
+    PriceRepository priceRepository;
+
     @GetMapping("/{testnum}")
     public ResponseEntity<BaseResponseBody> test(@RequestParam Long testnum){
-        return ResponseEntity.ok(BaseResponseBody.of(200, testRepository.findById(testnum).get().getName()));
+        Price price = priceRepository.findById(testnum).get();
+
+        return ResponseEntity.ok(BaseResponseBody.of(200, price.getDateTime().toString()));
     }
 }

@@ -21,8 +21,6 @@ public class QStore extends EntityPathBase<Store> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final NumberPath<Integer> doId = createNumber("doId", Integer.class);
-
     //inherited
     public final NumberPath<Long> id = _super.id;
 
@@ -31,10 +29,6 @@ public class QStore extends EntityPathBase<Store> {
     public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final StringPath name = createString("name");
-
-    public final NumberPath<Integer> siId = createNumber("siId", Integer.class);
-
-    public final NumberPath<Integer> type = createNumber("type", Integer.class);
 
     public QStore(String variable) {
         super(Store.class, forVariable(variable));

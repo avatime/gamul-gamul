@@ -16,4 +16,7 @@ public class Month extends BaseEntity {
 
     @Column
     private int price;
+
+    @Column
+    private int type;
 }

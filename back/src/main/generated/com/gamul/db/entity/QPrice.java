@@ -37,6 +37,8 @@ public class QPrice extends EntityPathBase<Price> {
 
     public final QStore store;
 
+    public final NumberPath<Integer> type = createNumber("type", Integer.class);
+
     public final StringPath unit = createString("unit");
 
     public QPrice(String variable) {
