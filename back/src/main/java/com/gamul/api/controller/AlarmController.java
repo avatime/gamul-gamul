@@ -48,7 +48,7 @@ public class AlarmController {
             alarmService.deleteMyAllergy(ingredientAllergyRegisterPostReq.getUserName());
             alarmService.saveAllAlergy(changeAllergy(ingredientAllergyRegisterPostReq.getUserName(), ingredientAllergyRegisterPostReq.getIngredientList()));
         } catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error" + e));
         }
         return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
@@ -147,7 +147,7 @@ public class AlarmController {
     }
 
     @GetMapping("/notice/{userName}/{ingredientId}")
-    @ApiOperation(value = "상하한가 알림 전체 조회", notes = "유저별 <strong>상하한가 알림</strong>를 조회한다")
+    @ApiOperation(value = "상하한가 알림 상세 조회", notes = "유저별 <strong>상하한가 알림</strong>를 조회한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -161,8 +161,14 @@ public class AlarmController {
             return ResponseEntity.ok(IngredientLimitPriceRes.of(401, "인증 실패", null));
         }
         IngredientPriceNotice ingredientPriceNotice = alarmService.getNoticeDetail(user, ingredientId);
-
-        IngredientLimitPriceRes ingredientLimitPriceRes = IngredientLimitPriceRes.builder()
+        IngredientLimitPriceRes ingredientLimitPriceRes;
+        if(ingredientPriceNotice == null) {
+            ingredientLimitPriceRes = IngredientLimitPriceRes.builder()
+                    .ingredientId(ingredientId)
+                    .upperLimitPrice(0)
+                    .lowerLimitPrice(0).build();
+        }
+        else ingredientLimitPriceRes = IngredientLimitPriceRes.builder()
                 .ingredientId(ingredientPriceNotice.getIngredient().getId())
                 .upperLimitPrice(ingredientPriceNotice.getUpperLimitPrice())
                 .lowerLimitPrice(ingredientPriceNotice.getLowerLimitPrice()).build();

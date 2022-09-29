@@ -61,4 +61,8 @@ public class MyRecipe extends BaseEntity{
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+
+    public void setName(String myRecipeName) {
+        this.name = myRecipeName;
+    }
 }
