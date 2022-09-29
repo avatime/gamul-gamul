@@ -92,6 +92,7 @@ public class MyRecipeController {
             if(user == null)  return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 정보 없음"));
             MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeEditReq.getMyRecipeId());
             if(myRecipe == null) return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 정보 없음"));
+            myRecipe.setName(myRecipeEditReq.getMyRecipeName());
             if(!myRecipeEditReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeEditReq.getImageDataUrl());
             else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
 
@@ -203,7 +204,7 @@ public class MyRecipeController {
         for(MyRecipeIngredient myRecipeIngredient : MyRecipeIngredientList){
             list.add(MyRecipeIngredientRes.builder().ingredientId(myRecipeIngredient.getIngredient().getId()).quantity(myRecipeIngredient.getQuantity()).build());
         }
-        return ResponseEntity.status(200).body(MyRecipeIngredientList);
+        return ResponseEntity.status(200).body(list);
     }
 
     @DeleteMapping("/{userName}/{myRecipeId}")
