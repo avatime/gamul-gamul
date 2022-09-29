@@ -13,11 +13,12 @@ import { useState, useEffect } from 'react';
 
 interface IProps {
   wishList: IngredientInfo[];
+  ingredientList: IngredientInfo[];
   upIngredientList: IngredientInfo[];
   downIngredientList: IngredientInfo[];
 }
 
-const IngredientPage: NextPage<IProps> = ({ wishList, upIngredientList, downIngredientList }) => {
+const IngredientPage: NextPage<IProps> = ({ wishList, ingredientList, upIngredientList, downIngredientList }) => {
   const [userName, setUserName] = useState("");
   
   useEffect(() => {
@@ -89,12 +90,15 @@ export const getStaticProps = async () => {
       downIngredientList.push(v);
     }
   });
+  const highClassList = await apiClient.getIngredientHighClassList();
 
   return {
     props: {
       wishList: wishList,
+      ingredientList,
       upIngredientList: upIngredientList,
       downIngredientList: downIngredientList,
+      highClassList,
     },
   };
 };
