@@ -4,6 +4,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
 import { IngredientInfo } from "../apis/responses/ingredientInfo";
+import Image from "next/image";
 
 const ItemButton = styled(ButtonBase)(() => ({
   "&:hover, &.Mui-focusVisible": {
@@ -60,7 +61,13 @@ export const IngredientItem: FC<IProps> = ({
         flexDirection={direction}
       >
         <Box position="relative" style={{ margin: direction == "column" ? 3 : 12 }}>
-          <Avatar style={{ width: avatarSize, height: avatarSize }} />
+          <Image
+            width={avatarSize}
+            height={avatarSize}
+            alt={ingredientInfo?.name}
+            src={`/assets/ingredientsImg/${ingredientInfo?.ingredient_id}.jpg`}
+            style={{borderRadius: avatarSize}}
+          />
           {onDelete && (
             <IconButton
               style={{ position: "absolute", right: -20, top: -15 }}

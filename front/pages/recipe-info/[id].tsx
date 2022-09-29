@@ -16,6 +16,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { CardContainer } from "../../src/components/CardContainer";
 import { YoutubeRecipeListComp } from "../../src/components/templates/YoutubeRecipeListComp";
 import { Grid, Stack } from "@mui/material";
+import { useEffect } from "react";
+import { saveRecentSearchLocalStorage } from "../../src/utils/localStorageUtil";
 
 interface IProps {
   recipeDetailInfo: RecipeDetailInfo;
@@ -26,6 +28,10 @@ const RecipeInfoPage: NextPage<IProps> = ({
   recipeDetailInfo: { recipe_info, extra_ingredient_list, ingredient_list, youtube_list },
   totalPrice,
 }) => {
+  useEffect(() => {
+    saveRecentSearchLocalStorage("recipe", recipe_info.recipe_id, recipe_info.name);
+  }, [recipe_info.recipe_id, recipe_info.name]);
+
   const onClickBookmark = () => {};
   const onClickStartCook = () => {};
   const onClickPutBasket = () => {};
@@ -198,7 +204,7 @@ const RecipeInfoPage: NextPage<IProps> = ({
 export default RecipeInfoPage;
 
 export async function getStaticPaths() {
-  const lastId = 10;
+  const lastId = 72;
   const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
     params: {
       id: id.toString(),
