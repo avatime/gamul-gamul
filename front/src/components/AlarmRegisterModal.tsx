@@ -33,13 +33,12 @@ export const AlarmRegisterModal: FC<IProps> = ({
   limitPriceNoticeInfo,
 }) => {
   const [upperLimitPrice, setUpperLimitPrice] = useState<number>(
-    limitPriceNoticeInfo ? limitPriceNoticeInfo.upper_limit_price : 0
+    limitPriceNoticeInfo.upper_limit_price
   );
   const [lowerLimitPrice, setLowerLimitPrice] = useState<number>(
-    limitPriceNoticeInfo ? limitPriceNoticeInfo.lower_limit_price : 0
+    limitPriceNoticeInfo.lower_limit_price
   );
 
-  console.log(limitPriceNoticeInfo)
   return (
     <Box sx={boxStyle} onClick={(e: any) => e.stopPropagation()}>
       {ingredientInfo && (
@@ -57,7 +56,7 @@ export const AlarmRegisterModal: FC<IProps> = ({
               type="number"
               color="success"
               sx={{ width: "80px" }}
-              onChange={(e: any) => setUpperLimitPrice(+e.target.value)}
+              onChange={(e: any) => setUpperLimitPrice(e.target.value.replace(/^0+/, ''))}
               value={upperLimitPrice}
             />
             <Typography sx={{ fontWeight: "bold", color: "#A1A1AA", paddingTop: "4px" }}>
@@ -72,7 +71,7 @@ export const AlarmRegisterModal: FC<IProps> = ({
               type="number"
               color="success"
               sx={{ width: "80px" }}
-              onChange={(e: any) => setLowerLimitPrice(+e.target.value)}
+              onChange={(e: any) => setLowerLimitPrice(e.target.value.replace(/^0+/, ''))}
               value={lowerLimitPrice}
             />
             <Typography sx={{ fontWeight: "bold", color: "#A1A1AA", paddingTop: "4px" }}>

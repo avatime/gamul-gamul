@@ -679,7 +679,7 @@ export const getMyRecipeDetailInfo: MyRecipeDetailInfo = {
     pastvol: -2,
     todayvol: 1,
   },
-  image_path: "https://jira.ssafy.com/secure/useravatar?avatarId=10336",
+  image_path: "https://gamulbucket2022.s3.ap-northeast-2.amazonaws.com/myRecipe/031b4b72-bf30-4e0f-af45-413dd89c6531.png",
   name: "윤선이의 된장찌개",
 };
 
