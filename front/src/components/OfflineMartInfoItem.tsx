@@ -17,7 +17,7 @@ export const OfflineMartInfoItem: FC<IProps> = ({ offlineMartInfo, ingredientInf
       </Grid>
       <Grid item xs={3}>
         {offlineMartInfo ? (
-          <p style={{ fontSize: 12 }}>{offlineMartInfo?.price || 0}원</p>
+          <p style={{ fontSize: 12 }}>{offlineMartInfo?.price.toLocaleString() || 0}원</p>
         ) : (
           <p style={{ fontSize: 12, fontWeight: "bold" }}>
             가격({ingredientInfo?.quantity}
@@ -27,7 +27,7 @@ export const OfflineMartInfoItem: FC<IProps> = ({ offlineMartInfo, ingredientInf
       </Grid>
       <Grid item xs={1}>
         {offlineMartInfo ? (
-          <p style={{ fontSize: 12 }}>{offlineMartInfo?.distance || "거리"}m</p>
+          <p style={{ fontSize: 12 }}>{offlineMartInfo?.distance.toLocaleString() || "거리"}m</p>
         ) : (
           <p style={{ fontSize: 12, fontWeight: "bold" }}>거리</p>
         )}

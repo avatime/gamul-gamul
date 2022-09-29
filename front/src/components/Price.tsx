@@ -18,7 +18,7 @@ export const Price: FC<IProps> = ({ total, size }) => {
       <Image src={won} alt="원" width={size} height={size} />
       <Box p={0.5}/>
       <Typography fontSize={size} fontWeight="bold">
-        총액 {total}원
+        총액 {total.toLocaleString()}원
       </Typography>
     </Stack>
   );
