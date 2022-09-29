@@ -31,6 +31,8 @@ public class QRecipeOrder extends EntityPathBase<RecipeOrder> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
+    public final StringPath imagePath = createString("imagePath");
+
     public final QRecipe recipe;
 
     public QRecipeOrder(String variable) {

@@ -30,8 +30,6 @@ public class QIngredient extends EntityPathBase<Ingredient> {
 
     public final StringPath midClass = createString("midClass");
 
-    public final NumberPath<Integer> type = createNumber("type", Integer.class);
-
     public final NumberPath<Long> views = createNumber("views", Long.class);
 
     public QIngredient(String variable) {

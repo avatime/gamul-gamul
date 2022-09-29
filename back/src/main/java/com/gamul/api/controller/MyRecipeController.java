@@ -151,7 +151,7 @@ public class MyRecipeController {
 
         for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
             Calendar cal = new GregorianCalendar();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // 형식 어케 ?/
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 형식 어케 ?/
             int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
             cal.add(Calendar.DATE, -1);
             int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
