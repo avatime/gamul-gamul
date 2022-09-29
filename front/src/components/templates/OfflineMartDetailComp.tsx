@@ -64,6 +64,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
             onSetStoreName={storeNameHandler}
             mapId={mapId}
             inputHeight={inputHeight}
+            Clickable
           />
         </Box>
         <h2>{storeName}</h2>

@@ -78,7 +78,7 @@ export const IngredientItem: FC<IProps> = ({
         </p>
         <Box flex={1} />
         <p style={{ fontSize: 8 }}>
-          {ingredientInfo?.price || 0}원/{ingredientInfo?.quantity}
+          {ingredientInfo?.price.toLocaleString() || 0}원/{ingredientInfo?.quantity}
           {ingredientInfo?.unit}
         </p>
         <Box
