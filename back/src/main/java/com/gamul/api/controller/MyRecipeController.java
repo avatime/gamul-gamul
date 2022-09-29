@@ -45,6 +45,8 @@ public class MyRecipeController {
     HighClassRepository highClassRepository;
     @Autowired
     PriceRepository priceRepository;
+    @Autowired
+    DayRepository dayRepository;
 
     @PostMapping("")
     @ApiOperation(value = "나만의 레시피 저장", notes = "<strong>나만의 레시피</strong>를 저장한다.")
@@ -150,12 +152,14 @@ public class MyRecipeController {
         List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
         List<PriceTransitionInfoRes> pricelist = getPriceTransition(myRecipeId);
 
+        int idx = 0;
         for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
             Calendar cal = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 형식 어케 ?/
             int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
             cal.add(Calendar.DATE, -1);
             int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
+//            List<Day> dayPriceList = dayRepository.getAvgPriceByIngredientAndType(myRecipeIngredient.getIngredient(), 1);
             MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                     .ingredientId(myRecipeIngredient.getIngredient().getId())
                     .name(myRecipeIngredient.getMyRecipe().getName())
@@ -171,6 +175,7 @@ public class MyRecipeController {
                     .build();
 
             ingreidentlist.add(ingredientInfoRes);
+            idx++;
         }
 
         myRecipeDetailRes.setIngredientList(ingreidentlist);
