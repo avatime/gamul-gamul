@@ -2,6 +2,7 @@ package com.gamul.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gamul.common.util.JsonToMapConverter;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +11,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 유저 모델 정의
@@ -30,12 +33,14 @@ public class User extends BaseEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private boolean activeFlag;
-
     @JsonProperty("refresh_token")
     @Column
     private String refreshToken;
+
+    @JsonProperty("subscription")
+    @Column(name = "subscription", columnDefinition = "json")
+    @Convert(attributeName = "data", converter = JsonToMapConverter.class)
+    private Map<String, Object> subscription = new HashMap<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -61,6 +66,5 @@ public class User extends BaseEntity {
     public User(String username, String password, MyRecipe myRecipe){
         this.username = username;
         this.password = password;
-        this.activeFlag = false;
     }
 }
