@@ -11,11 +11,19 @@ import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 @Service("RecipeService")
 @RequiredArgsConstructor
@@ -46,19 +54,44 @@ public class RecipeServiceImpl implements RecipeService{
 
 
     @Override
-    public List<RecipeInfoRes> getRecipeList(int orderType, int page, RecipeListReq recipeListReq){
+    public List<RecipeInfoRes> getRecipeList(RecipeListReq recipeListReq){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
-        List<Recipe> recipeList = recipeRepository.findAll();
-        for (Recipe recipe : recipeList){
-            // 레시피 찜 가져오기
-            RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).get();
 
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe, recipeSelected);
+        if(recipeListReq.getOrderType() == 1){
+            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            System.out.println(recipeList.getContent().size());
+            for (Recipe x : recipeList.getContent()){
 
-//            recipeInfoRes.setBookmark();
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
 
-            recipeInfoResList.add(recipeInfoRes);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }else {
+            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            for (Recipe x : recipeList.getContent()){
+//            System.out.println("X: "+ x.getId());
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                recipeInfoResList.add(recipeInfoRes);
+            }
         }
+
         return recipeInfoResList;
     }
 
@@ -75,10 +108,14 @@ public class RecipeServiceImpl implements RecipeService{
         // 반환할 객체
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
         User user = userRepository.findByUsername(userName).get();
-        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserId(user.getId()).get();
+        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserId(user.getId()).orElse(null);
         for(RecipeSelected recipeSelected : recipeSelectedList){
-            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).get();
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe, recipeSelected);
+            boolean bookmark = true;
+            if (recipeSelected == null){
+                bookmark = false;
+            }
+            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).orElse(null);
+            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
             recipeInfoResList.add(recipeInfoRes);
         }
         return recipeInfoResList;

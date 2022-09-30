@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeList(@RequestBody @PathVariable int orderType, int page, RecipeListReq recipeListReq) {
+    public ResponseEntity<?> getRecipeList(@RequestBody RecipeListReq recipeListReq) {
 
-        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeList(orderType, page, recipeListReq);
+        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeList(recipeListReq);
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
     }
 
