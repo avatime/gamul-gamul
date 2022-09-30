@@ -100,6 +100,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
       {type === "bar" && <Chart2
         height={inputHeight}
         width={inputWidth}
+        type="bar"
         series={[
           {
             name: "소매",
@@ -112,7 +113,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
         ]}
         options={{
           chart: {
-            type: "bar",
+            type: "area",
             toolbar: {
               show: false,
             },
@@ -123,7 +124,6 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
               columnWidth: '55%',
             },
           },
-          colors: ["#4411AA", "#163ED9"],
           dataLabels: {
             enabled: false,
           },
@@ -136,13 +136,6 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
             text: "가격 변화",
             align: "left",
           },
-          // grid: {
-          //   borderColor: "#e7e7e7",
-          //   row: {
-          //     colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-          //     opacity: 0.5,
-          //   },
-          // },
           markers: {
             size: 1,
           },
@@ -152,9 +145,6 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
             ),
           },
           yaxis: {
-            title: {
-              text: `가격(${priceTransitionInfo.retailsales.daily[0].quantity}${priceTransitionInfo.retailsales.daily[0].unit})`,
-            },
             min: 0,
             max: max,
           },
