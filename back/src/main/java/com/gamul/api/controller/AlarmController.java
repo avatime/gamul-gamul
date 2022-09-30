@@ -1,9 +1,6 @@
 package com.gamul.api.controller;
 
-import com.gamul.api.request.IngredientAllergyRegisterPostReq;
-import com.gamul.api.request.IngredientLimitPricePostReq;
-import com.gamul.api.request.IngredientPostReq;
-import com.gamul.api.request.IngredientPricePostReq;
+import com.gamul.api.request.*;
 import com.gamul.api.response.AllergyAlarmRes;
 import com.gamul.api.response.IngredientLimitPriceAlarmRes;
 import com.gamul.api.response.IngredientLimitPriceRes;
@@ -173,6 +170,33 @@ public class AlarmController {
                 .upperLimitPrice(ingredientPriceNotice.getUpperLimitPrice())
                 .lowerLimitPrice(ingredientPriceNotice.getLowerLimitPrice()).build();
         return ResponseEntity.ok(IngredientLimitPriceRes.of(200, "Success", ingredientLimitPriceRes));
+    }
+
+    @PostMapping("/notice/regist")
+    @ApiOperation(value = "알림을 위한 정보 등록", notes = "유저별 <strong>알람 정보</strong>를 등록한다")
+    public ResponseEntity<BaseResponseBody> getNoticeDetail(@RequestBody  @ApiParam(value="알람 설정 정보", required = true) AlarmRegisterReq alarmRegisterReq){
+
+        User user = userService.getUserByUsername(alarmRegisterReq.getUserName());
+        user.setSubscription(alarmRegisterReq.getSubscription());
+        userService.saveUser(user);
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping ("/notice/send")
+    @ApiOperation(value = "모든 유저에게 알림 전송", notes = "유저별 <strong>알람</strong>을 전송한다")
+    public ResponseEntity<BaseResponseBody> sendNoticeToAllUsers(){
+
+        // ??
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("notice/list")
+    @ApiOperation(value = "유저별 알람 조회", notes = "유저별 <strong>알람</strong>을 조회한다")
+    public ResponseEntity<?> getNoticeList(@RequestBody @ApiParam(value="알람 설정 정보", required = true)IngredientAllergyListReq usernameReq){
+
+
+
+        return ResponseEntity.ok(200);
     }
 
 //    @Scheduled(fixedRate = 10000)
