@@ -14,6 +14,7 @@ import java.util.Date;
 @DynamicUpdate
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient extends BaseEntity{
