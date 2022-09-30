@@ -7,22 +7,23 @@ import SearchIcon from "@mui/icons-material/Search";
 interface IProps {
   badgeContent: number;
   onClickSearch: () => void;
+  onClickNotice: () => void;
 }
 
-export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch }) => {
+export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch, onClickNotice }) => {
   return (
     <Stack direction="row" className={styles.stylesforMobile}>
-    <Typography sx={{ fontWeight: "Bold" }}>가물가물</Typography>
-    <Box sx={{ position: "fixed", right: 4 }}>
-      <IconButton onClick={onClickSearch}>
-        <SearchIcon color="success" />
-      </IconButton>
-      <IconButton>
-        <Badge badgeContent={badgeContent} color="success">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton>
-    </Box>
-  </Stack>
+      <Typography sx={{ fontWeight: "Bold" }}>가물가물</Typography>
+      <Box sx={{ position: "fixed", right: 4 }}>
+        <IconButton onClick={onClickSearch}>
+          <SearchIcon color="success" />
+        </IconButton>
+        <IconButton onClick={onClickNotice}>
+          <Badge badgeContent={badgeContent} color="success">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+      </Box>
+    </Stack>
   );
 };
