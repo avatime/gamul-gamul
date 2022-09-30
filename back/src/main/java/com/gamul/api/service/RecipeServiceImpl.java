@@ -99,6 +99,40 @@ public class RecipeServiceImpl implements RecipeService{
     public List<RecipeInfoRes> getRecipeBasket(RecipeBasketReq recipeBasketReq){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
 
+        if(recipeBasketReq.getOrderType() == 1){
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            System.out.println(recipeList.getContent().size());
+            for (Recipe x : recipeList.getContent()){
+
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }else {
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            for (Recipe x : recipeList.getContent()){
+//            System.out.println("X: "+ x.getId());
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }
 
         return recipeInfoResList;
     }

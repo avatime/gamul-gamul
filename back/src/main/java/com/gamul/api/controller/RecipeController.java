@@ -47,7 +47,7 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeBasket(@RequestBody @PathVariable String userName, RecipeBasketReq recipeBasketReq){
+    public ResponseEntity<?> getRecipeBasket(@RequestBody RecipeBasketReq recipeBasketReq){
         List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeBasket(recipeBasketReq);
 
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
