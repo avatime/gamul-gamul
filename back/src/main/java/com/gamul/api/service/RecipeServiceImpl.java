@@ -198,9 +198,17 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public void recipeSelected(String userName, Long recipeId){
-        User user = userRepository.findByUsername(userName).get();
-        RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).get();
-        recipeSelected.setActiveFlag(!recipeSelected.isActiveFlag());
+        User user = userRepository.findByUsername(userName).orElse(null);
+
+        if(!recipeSelectedRepository.existsRecipeSelectedByUserIdAndRecipeId(user.getId(), recipeId)){
+            Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+            RecipeSelected recipeSelected = new RecipeSelected(user, recipe);
+            recipeSelectedRepository.saveAndFlush(recipeSelected);
+        }else{
+            RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).get();
+            recipeSelected.setActiveFlag(!recipeSelected.isActiveFlag());
+            recipeSelectedRepository.saveAndFlush(recipeSelected);
+        }
     }
 
     @Override

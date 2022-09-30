@@ -8,6 +8,9 @@ import com.gamul.api.response.RecipeInfoRes;
 import com.gamul.api.response.RecipeProcedureRes;
 import com.gamul.api.service.RecipeService;
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.db.entity.RecipeSelected;
+import com.gamul.db.repository.RecipeRepository;
+import com.gamul.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,6 +31,11 @@ public class RecipeController {
 
     @Autowired
     RecipeService recipeService;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RecipeRepository recipeRepository;
 
     @GetMapping("/{orderType}/{page}")
     @ApiOperation(value = "요리법 목록 반환", notes = "<strong>order type과 page</strong>에 따른 요리법 목록 반환")
@@ -87,10 +95,25 @@ public class RecipeController {
     @ApiOperation(value = "요리법 찜 등록 해제", notes = "<strong>username과 recipe id</strong>에 따른 요리법 찜 등록 해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "존재하지 않는 user"),
+            @ApiResponse(code = 405, message = "존재하지 않는 recipe"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public void recipeSelected(@PathVariable String userName, Long recipeId){
-        recipeService.recipeSelected(userName, recipeId);
+    public ResponseEntity<?> recipeSelected(@PathVariable String userName, @PathVariable Long recipeId){
+        try{
+            if (userRepository.existsByUsername(userName)){
+                if (!recipeRepository.existsById(recipeId)) {
+                    return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 없음"));
+                }
+                recipeService.recipeSelected(userName, recipeId);
+            }
+            else{
+                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
 
     @GetMapping("/{recipeId}/order")
