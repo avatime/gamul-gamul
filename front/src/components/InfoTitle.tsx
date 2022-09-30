@@ -29,23 +29,23 @@ export const InfoTitle: FC<IProps> = ({
     <Box px={2}>
       <Box display="flex" flexDirection="row" alignItems="center">
         <Image
-          width="32"
-          height="32"
+          width="64"
+          height="64"
           src={imagePath}
           alt={name}
           style={{ borderRadius: 32 }}
           unoptimized={isExternalImage}
         />
         <Box p={1} />
-        <p style={{ fontSize: 16, fontWeight: "bold" }}>{name}</p>
+        <p style={{ fontSize: 22, fontWeight: "bold" }}>{name}</p>
         <Box flex="1" />
         <IconButton style={{ color: bookmark ? "red" : "#A1A1AA" }} onClick={onClickBookmark}>
           <FavoriteIcon />
         </IconButton>
       </Box>
       <Box p={0.5} />
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <p style={{ fontSize: 14, fontWeight: "bold" }}>
+      <Box display="flex" flexDirection="row" alignItems="center" marginTop="10px">
+        <p style={{ fontSize: 16, fontWeight: "bold" }}>
           오늘 {views}명의 사용자가 이 품목을 확인했어요!
         </p>
         {onClickBasket && (
