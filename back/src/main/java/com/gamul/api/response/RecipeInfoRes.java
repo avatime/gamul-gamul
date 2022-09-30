@@ -24,11 +24,14 @@ public class RecipeInfoRes {
 
     boolean bookmark;
 
-    public RecipeInfoRes(Long recipeId, String imagePath, String description, String name, boolean bookmark){
+    Long views;
+
+    public RecipeInfoRes(Long recipeId, String imagePath, String description, String name, boolean bookmark, Long views){
         this.recipeId = recipeId;
         this.imagePath = imagePath;
         this.desc = description;
         this.name = name;
         this.bookmark = bookmark;
+        this.views = views;
     }
 }

@@ -71,7 +71,7 @@ public class RecipeServiceImpl implements RecipeService{
                     bookmark = false;
                 }
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
             }
         }else {
@@ -87,7 +87,7 @@ public class RecipeServiceImpl implements RecipeService{
                     bookmark = false;
                 }
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
             }
         }
@@ -113,7 +113,7 @@ public class RecipeServiceImpl implements RecipeService{
                     bookmark = false;
                 }
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
             }
         }else {
@@ -129,7 +129,7 @@ public class RecipeServiceImpl implements RecipeService{
                     bookmark = false;
                 }
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
             }
         }
@@ -149,7 +149,7 @@ public class RecipeServiceImpl implements RecipeService{
                 bookmark = false;
             }
             Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).orElse(null);
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark);
+            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
             recipeInfoResList.add(recipeInfoRes);
         }
         return recipeInfoResList;
@@ -238,6 +238,7 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public void addRecipeViews(Long recipeId){
         Recipe recipe = recipeRepository.findById(recipeId).get();
-
+        recipe.setViews(recipe.getViews()+1);
+        recipeRepository.saveAndFlush(recipe);
     }
 }
