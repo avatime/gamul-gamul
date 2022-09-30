@@ -12,10 +12,10 @@ import lombok.Setter;
 public class RecipeProcedureRes {
     @JsonProperty("image_path")
     String imagePath;
-    String desc;
+    String description;
 
     public RecipeProcedureRes(RecipeOrder recipeOrder){
         this.imagePath = recipeOrder.getImagePath();
-        this.desc = recipeOrder.getDescription();
+        this.description = recipeOrder.getDescription();
     }
 }
