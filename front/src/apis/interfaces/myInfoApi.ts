@@ -26,4 +26,10 @@ export interface MyInfoApi {
    * @param userName 유저 ID
    */
   getLimitPriceList(userName: string): Promise<LimitPriceNoticeInfo[]>;
+  /**
+   * 웹 푸시 구독 객체 등록
+   * @param userName 유저 ID
+   * @param subscription 웹 푸시 구독 객체
+   */
+  postSubscription(userName: string, subscription: PushSubscription): Promise<void>;
 }
