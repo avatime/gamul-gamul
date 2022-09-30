@@ -27,8 +27,6 @@ import { RecipeListComp } from '../../src/components/templates/RecipeListComp';
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
-  imagePath: string;
-  views: number;
   onlineMartInfo: OnlineMartInfo[];
   recipeList: RecipeInfo[];
 }
@@ -36,8 +34,6 @@ interface IProps {
 const IngredientInfoPage: NextPage<IProps> = ({
   ingredientDetailInfo,
   ingredientInfo,
-  imagePath,
-  views,
   onlineMartInfo,
   recipeList,
 }) => {
@@ -74,8 +70,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
-                    views={views}
-                    imagePath={imagePath}
+                    views={ingredientDetailInfo.views}
+                    imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />
                 </Box>
               <IngredientPriceComp
@@ -103,8 +99,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
             name={ingredientInfo.name}
             bookmark={ingredientInfo.bookmark}
             onClickBookmark={setBookmark}
-            views={views}
-            imagePath={imagePath}
+            views={ingredientDetailInfo.views}
+            imagePath={`/assets/ingredientsImg/${id}.jpg`}
           />
           </Box>
           <IngredientPriceComp
@@ -127,8 +123,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
             name={ingredientInfo.name}
             bookmark={ingredientInfo.bookmark}
             onClickBookmark={setBookmark}
-            views={views}
-            imagePath={imagePath}
+            views={ingredientDetailInfo.views}
+            imagePath={`/assets/ingredientsImg/${id}.jpg`}
           />
           <IngredientPriceComp
             ingredientDetailInfo={ingredientDetailInfo}
@@ -156,17 +152,13 @@ export const getServerSideProps = async (context: any) => {
     context.params.id,
   );
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
-  const imagePath = "/test_hamburger.jpg"; // ingredientid 가지고 imagepath 설정
-  const views = 100; // ingredientid 가지고 views 알아내는 api 호출
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
-  // const recipeList = await apiClient.search(ingredientInfo.name);
+  // const recipeList = await apiClient.search(ingredientInfo.name); // api 구현시 적용
   const recipeList = await apiClient.getRecipeList(1, 1, 20);
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
-      imagePath,
-      views,
       onlineMartInfo,
       recipeList,
     },
