@@ -37,12 +37,12 @@ export const OnlineMarketInfoComp: FC<IProps> = ({ onlineMartInfo, width, iconSi
               <TableCell>{row.name}</TableCell>
               <TableCell>
                 <Stack direction="row" sx={{ alignItems: "center" }}>
-                  <Lottie
+                  {/* <Lottie
                     animationData={cart}
                     loop={true}
                     autoPlay={false}
                     style={{ width: iconSize, height: iconSize }}
-                  />
+                  /> */}
                   {row.mall_name}
                 </Stack>
               </TableCell>

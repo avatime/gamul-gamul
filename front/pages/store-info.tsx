@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from '@mui/material';
 import { NextPage } from "next";
 import { Desktop } from "../src/components/Desktop";
 import { Mobile } from "../src/components/Mobile";
@@ -10,12 +10,24 @@ interface IProps {}
 const StoreInfoPage: NextPage<IProps> = (props) => {
 
   return (
-    <Box className="page-background">
+    <Box>
       <Desktop>
-        <Box className={styles.PageforDesktop}></Box>
+        <Box className={styles.PageforDesktop}>
+          <Grid container sx={{display: "flex", justifyContent: "center"}}>
+            <Grid item xs={7} sx={{margin: "20px"}}>
+            <OfflineMartDetailComp inputHeight={"400px"} mapId="desktop" />
+            </Grid>
+          </Grid>
+        </Box>
       </Desktop>
       <Tablet>
-        <Box className={styles.PageforTablet}></Box>
+        <Box className={styles.PageforTablet}>
+        <Grid container sx={{display: "flex", justifyContent: "center"}}>
+            <Grid item xs={8} sx={{margin: "20px"}}>
+            <OfflineMartDetailComp inputHeight={"350px"} mapId="tablet" />
+            </Grid>
+          </Grid>
+        </Box>
       </Tablet>
       <Mobile>
         <Box className={styles.PageforMobile}>

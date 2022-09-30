@@ -21,6 +21,8 @@ import { getCookie } from "../../src/utils/cookie";
 import { Grid } from "@mui/material";
 import { OnlineMarketInfoComp } from '../../src/components/OnlineMarketInfoComp';
 import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
+import { RecipeInfo } from '../../src/apis/responses/recipeInfo';
+import { RecipeListComp } from '../../src/components/templates/RecipeListComp';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -28,6 +30,7 @@ interface IProps {
   imagePath: string;
   views: number;
   onlineMartInfo: OnlineMartInfo[];
+  recipeList: RecipeInfo[];
 }
 
 const IngredientInfoPage: NextPage<IProps> = ({
@@ -36,6 +39,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
   imagePath,
   views,
   onlineMartInfo,
+  recipeList,
 }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -53,16 +57,13 @@ const IngredientInfoPage: NextPage<IProps> = ({
   }, [id]);
 
   return (
-    <Box className="page-background">
+    <Box>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container>
             <Grid item xs={7}>
-              <Grid container>
-                <Grid
-                  item
-                  xs={6}
-                  height="100px"
+                <Box
+                  height="175px"
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -76,22 +77,19 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     views={views}
                     imagePath={imagePath}
                   />
-                </Grid>
-                <Grid item xs={6}>
-                  {/* RecipePreviewComp */}
-                </Grid>
-              </Grid>
+                </Box>
               <IngredientPriceComp
                 ingredientDetailInfo={ingredientDetailInfo}
                 inputWidth={"95%"}
-                inputHeight={600}
+                inputHeight={650}
               />
             </Grid>
             <Grid item xs={5}>
+            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
               <OfflineMartComp
                 ingredientInfo={ingredientInfo}
                 mapId="desktop"
-                inputHeight="350px"
+                inputHeight="300px"
               />
               <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
             </Grid>
@@ -101,12 +99,9 @@ const IngredientInfoPage: NextPage<IProps> = ({
       <Tablet>
         <Box className={styles.PageforTablet}>
         <Grid container>
-            <Grid item xs={7}>
-              <Grid container>
-                <Grid
-                  item
-                  xs={6}
-                  height="100px"
+            <Grid item xs={6}>
+              <Box
+                  height="175px"
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -120,18 +115,15 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     views={views}
                     imagePath={imagePath}
                   />
-                </Grid>
-                <Grid item xs={6}>
-                  {/* RecipePreviewComp */}
-                </Grid>
-              </Grid>
+                </Box>
               <IngredientPriceComp
                 ingredientDetailInfo={ingredientDetailInfo}
                 inputWidth={"95%"}
-                inputHeight={550}
+                inputHeight={650}
               />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
+            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={2} />
               <OfflineMartComp
                 ingredientInfo={ingredientInfo}
                 mapId="tablet"
@@ -156,7 +148,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             inputWidth={"95%"}
             inputHeight={500}
           />
-          {/* RecipePreviewComp */}
+          <RecipeListComp recipeList={recipeList} rowSize={1} />
           <OfflineMartComp
             ingredientInfo={ingredientInfo}
             mapId="mobile"
@@ -180,7 +172,8 @@ export const getServerSideProps = async (context: any) => {
   const imagePath = "/test_hamburger.jpg"; // ingredientid 가지고 imagepath 설정
   const views = 100; // ingredientid 가지고 views 알아내는 api 호출
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
-
+  // const recipeList = await apiClient.search(ingredientInfo.name);
+  const recipeList = await apiClient.getRecipeList(1, 1, 20);
   return {
     props: {
       ingredientDetailInfo,
@@ -188,6 +181,7 @@ export const getServerSideProps = async (context: any) => {
       imagePath,
       views,
       onlineMartInfo,
+      recipeList,
     },
   };
 };
