@@ -101,13 +101,17 @@ public class IngredientController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 404, message = "존재하지 않는 id"),
+            @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> ingredientSelected(@PathVariable String userName, @PathVariable Long ingredientId) {
         try{
-            if (userRepository.existsByUsername(userName)){
-                ingredientService.ingredientSelected(userName, ingredientId);
-            }else{
+            if (userRepository.existsByUsername(userName)) {
+                if (!ingredientRepository.existsById(ingredientId)) {
+                    return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
+                }
+                ingredientService.ingredientBasket(userName, ingredientId);
+            } else{
                 return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
             }
         }catch (Exception e){
@@ -120,16 +124,20 @@ public class IngredientController {
     @ApiOperation(value = "식재료 바구니 등록 해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 바구니 등록/해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
-            @ApiResponse(code = 404, message = "존재하지 않는 id"),
+            @ApiResponse(code = 404, message = "존재하지 않는 user"),
+            @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> ingredientBasket(@PathVariable String userName, @PathVariable Long ingredientId) {
-        try{
-            if (userRepository.existsByUsername(userName)){
-                ingredientService.ingredientBasket(userName, ingredientId);
-            }else{
-                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+        if (userRepository.existsByUsername(userName)) {
+            if (!ingredientRepository.existsById(ingredientId)) {
+                return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
             }
+            ingredientService.ingredientBasket(userName, ingredientId);
+        } else {
+            return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+        }
+        try {
         }catch (Exception e){
 
             return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
