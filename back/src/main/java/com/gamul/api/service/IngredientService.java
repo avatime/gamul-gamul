@@ -31,4 +31,6 @@ public interface IngredientService {
     List<IngredientInfoRes> getBasketList(String userName);
 
     String getOnlineIngredientInfo(Long ingredientId);
+
+    void addIngredientViews(Long ingredientId);
 }

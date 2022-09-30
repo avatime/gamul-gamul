@@ -200,4 +200,26 @@ public class IngredientController {
         }
     }
 
+
+    @PostMapping("/{ingredientId}")
+    @ApiOperation(value = "식재료 조회수 추가", notes = "<strong>ingredient id</strong>에 따른 식재료 조회수 추가")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 405, message = "존재하지 않는 식재료"),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<?> addRecipeViews(@PathVariable Long ingredientId){
+        try{
+            if (!ingredientRepository.existsById(ingredientId)){
+                return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
+            }else{
+                ingredientService.addIngredientViews(ingredientId);
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    }
+
+
 }
