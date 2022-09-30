@@ -98,27 +98,40 @@ const IngredientInfoPage: NextPage<IProps> = ({
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <Box marginTop="10px">
-          <InfoTitle
-            name={ingredientInfo.name}
-            bookmark={ingredientInfo.bookmark}
-            onClickBookmark={setBookmark}
-            views={views}
-            imagePath={imagePath}
-          />
-          </Box>
-          <IngredientPriceComp
-            ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"95%"}
-            inputHeight={500}
-          />
-          <RecipeListComp recipeList={recipeList} gridSize={4} />
-          <OfflineMartComp
-            ingredientInfo={ingredientInfo}
-            mapId="tablet"
-            inputHeight="350px"
-          />
-          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+        <Grid container>
+            <Grid item xs={6}>
+              <Box
+                  height="175px"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <InfoTitle
+                    name={ingredientInfo.name}
+                    bookmark={ingredientInfo.bookmark}
+                    onClickBookmark={setBookmark}
+                    views={views}
+                    imagePath={imagePath}
+                  />
+                </Box>
+              <IngredientPriceComp
+                ingredientDetailInfo={ingredientDetailInfo}
+                inputWidth={"95%"}
+                inputHeight={650}
+              />
+            </Grid>
+            <Grid item xs={6}>
+            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={2} />
+              <OfflineMartComp
+                ingredientInfo={ingredientInfo}
+                mapId="tablet"
+                inputHeight="300px"
+              />
+              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+            </Grid>
+          </Grid>
         </Box>
       </Tablet>
       <Mobile>
