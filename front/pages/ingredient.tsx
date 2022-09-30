@@ -59,46 +59,52 @@ const IngredientPage: NextPage<IProps> = ({
             </Grid>
             <Grid item xs={5}>
               <CardContainer title="주요 물품 현황">
-              <Box>
-                {popularIngredientList.map((data, index) => {
-                  return (
-                    <IngredientBarGraphComp
-                      key={index}
-                      ingredientInfo={data.ingredient_info}
-                      priceTransitionInfo={data.price_transition_info}
-                    />
-                  );
-                })}
-                {/* 종류별 상세 조회 */}
-              </Box>
+                <Box>
+                  {popularIngredientList.map((data, index) => {
+                    return (
+                      <IngredientBarGraphComp
+                        key={index}
+                        ingredientInfo={data.ingredient_info}
+                        priceTransitionInfo={data.price_transition_info}
+                      />
+                    );
+                  })}
+                </Box>
               </CardContainer>
+              {/* 종류별 상세 조회 */}
             </Grid>
           </Grid>
         </Box>
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <Grid container>
-            <Grid item xs={7}>
               {!!userName && (
-                <IngredientListComp ingredientList={wishList} title="찜 목록" />
+                <IngredientListComp ingredientList={wishList} title="찜 목록" gridSize={4} />
               )}
               <IngredientListComp
                 ingredientList={downIngredientList}
                 title="지금이 기회!"
+                gridSize={4}
               />
               <IngredientListComp
                 ingredientList={upIngredientList}
                 title="오늘은 피해요!"
+                gridSize={4}
               />
-            </Grid>
-            <Grid item xs={5}>
-              <Box>
-                {/* 주요 물품 현황 */}
+            <CardContainer title="주요 물품 현황">
+                <Box>
+                  {popularIngredientList.map((data, index) => {
+                    return (
+                      <IngredientBarGraphComp
+                        key={index}
+                        ingredientInfo={data.ingredient_info}
+                        priceTransitionInfo={data.price_transition_info}
+                      />
+                    );
+                  })}
+                </Box>
+              </CardContainer>
                 {/* 종류별 상세 조회 */}
-              </Box>
-            </Grid>
-          </Grid>
         </Box>
       </Tablet>
       <Mobile>
@@ -120,7 +126,19 @@ const IngredientPage: NextPage<IProps> = ({
             title="오늘은 피해요!"
             rowSize={1}
           />
-          {/* 주요 물품 현황 */}
+          <CardContainer title="주요 물품 현황">
+                <Box>
+                  {popularIngredientList.map((data, index) => {
+                    return (
+                      <IngredientBarGraphComp
+                        key={index}
+                        ingredientInfo={data.ingredient_info}
+                        priceTransitionInfo={data.price_transition_info}
+                      />
+                    );
+                  })}
+                </Box>
+              </CardContainer>
           {/* 종류별 상세 조회 */}
         </Box>
       </Mobile>
