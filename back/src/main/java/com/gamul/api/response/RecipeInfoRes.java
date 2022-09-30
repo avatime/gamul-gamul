@@ -1,5 +1,6 @@
 package com.gamul.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gamul.db.entity.Recipe;
 import com.gamul.db.entity.RecipeSelected;
@@ -23,11 +24,11 @@ public class RecipeInfoRes {
 
     boolean bookmark;
 
-    public RecipeInfoRes(Recipe recipe, RecipeSelected recipeSelected){
-        this.recipeId = recipe.getId();
-        this.imagePath = recipe.getThumbnail();
-        this.desc = recipe.getInformation();
-        this.name = recipe.getName();
-        this.bookmark = recipeSelected.isActiveFlag();
+    public RecipeInfoRes(Long recipeId, String imagePath, String description, String name, boolean bookmark){
+        this.recipeId = recipeId;
+        this.imagePath = imagePath;
+        this.desc = description;
+        this.name = name;
+        this.bookmark = bookmark;
     }
 }

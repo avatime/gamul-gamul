@@ -43,4 +43,5 @@ out/
 **.gz
 
 ### properties ###
-back/scr/main/resources/application.properties
+application.properties
+application.yml
