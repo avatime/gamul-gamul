@@ -231,8 +231,8 @@ public class RecipeServiceImpl implements RecipeService{
         for (RecipeIngredient recipeIngredient : recipeIngredientList){
             Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
             Basket basket = new Basket(user, ingredient);
+            basketRepository.saveAndFlush(basket);
         }
-
     }
 
     @Override
