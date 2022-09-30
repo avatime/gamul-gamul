@@ -131,10 +131,23 @@ public class RecipeController {
     @ApiOperation(value = "요리법 바구니 수정", notes = "<strong>username과 recipe id</strong>에 따른 요리법 바구니에 재료 추가")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "존재하지 않는 user"),
+            @ApiResponse(code = 405, message = "존재하지 않는 recipe"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public void addRecipeIngredientBasket(@PathVariable String userName, Long recipeId){
-        recipeService.addRecipeIngredientBasket(userName, recipeId);
+    public ResponseEntity<?> addRecipeIngredientBasket(@PathVariable String userName, @PathVariable Long recipeId){
+        try{
+            if (!userRepository.existsByUsername(userName)){
+                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+            }else if (!recipeRepository.existsById(recipeId)){
+                ResponseEntity.ok(BaseResponseBody.of(405, "레시피 없음"));
+            }else{
+                recipeService.addRecipeIngredientBasket(userName, recipeId);
+            }
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
+        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
     }
 
     @PostMapping("/{recipeId}")
