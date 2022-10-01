@@ -26,6 +26,7 @@ export const getIngredientList: IngredientInfo[] = Array.from({ length: 100 }, (
     basket: Math.random() > 0.5,
     high_class_id: Math.ceil(Math.random() * 10),
     high_class_name: "이름",
+    views: 10000,
   })
 );
 
@@ -44,10 +45,12 @@ export const getBookmarkIngredientList: IngredientInfo[] = Array.from(
   basket: Math.random() > 0.5,
   high_class_id: Math.ceil(Math.random() * 10),
   high_class_name: "이름",
+  views: 10000,
 }));
 
 export const getIngredientDetailInfo: IngredientDetailInfo = {
   ingredient_info: {
+    views: 10000,
     ingredient_id: 5,
     name: "빵또아",
     price: 2000,
@@ -60,7 +63,6 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
     high_class_id: Math.ceil(Math.random() * 10),
     high_class_name: "이름",
   },
-  views: 25040,
   price_transition_info: {
     before_price: 1000,
     price: 2000,
@@ -351,6 +353,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
     basket: true,
     high_class_id: 1,
     high_class_name: "곡식",
+    views: 10000,
   },
   {
     ingredient_id: 2,
@@ -364,6 +367,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
     basket: true,
     high_class_id: 1,
     high_class_name: "곡식",
+    views: 10000,
   },
   {
     ingredient_id: 3,
@@ -377,6 +381,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
     basket: true,
     high_class_id: 1,
     high_class_name: "곡식",
+    views: 10000,
   },
   {
     ingredient_id: 4,
@@ -390,6 +395,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
     basket: true,
     high_class_id: 1,
     high_class_name: "곡식",
+    views: 10000,
   },
   {
     ingredient_id: 5,
@@ -403,6 +409,7 @@ export const getBasketIngredientList: IngredientInfo[] = [
     basket: true,
     high_class_id: 1,
     high_class_name: "곡식",
+    views: 10000,
   },
 ];
 
@@ -417,12 +424,12 @@ export const getRecipeList: RecipeInfo[] = Array.from({ length: 88 }, (_, i) => 
 
 export const getRecipeDetailInfo: RecipeDetailInfo = {
   recipe_info: {
+    views: 10000,
     recipe_id: 1,
     image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
     name: "가지무침",
     desc: "맛있는 가지무침~~~~~",
     bookmark: true,
-    views: 10000,
   },
   ingredient_list: [
     {
@@ -437,6 +444,7 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
       basket: false,
       high_class_id: 1,
       high_class_name: "곡식",
+      views: 10000,
     },
     {
       ingredient_id: 2,
@@ -450,6 +458,7 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
       basket: false,
       high_class_id: 1,
       high_class_name: "곡식",
+      views: 10000,
     },
   ],
   extra_ingredient_list: ["간장", "소금", "참기름"],

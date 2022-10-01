@@ -28,12 +28,16 @@ const RecipeInfoPage: NextPage<IProps> = ({
   recipeDetailInfo: { recipe_info, extra_ingredient_list, ingredient_list, youtube_list },
   totalPrice,
 }) => {
+  const router = useRouter();
+  const { id } = router.query;
   useEffect(() => {
     saveRecentSearchLocalStorage("recipe", recipe_info.recipe_id, recipe_info.name);
   }, [recipe_info.recipe_id, recipe_info.name]);
 
   const onClickBookmark = () => {};
-  const onClickStartCook = () => {};
+  const onClickStartCook = () => {
+    router.push(`/recipe-detail/${id}`);
+  };
   const onClickPutBasket = () => {};
   return (
     <Box>
@@ -203,20 +207,7 @@ const RecipeInfoPage: NextPage<IProps> = ({
 
 export default RecipeInfoPage;
 
-export async function getStaticPaths() {
-  const lastId = 72;
-  const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
-    params: {
-      id: id.toString(),
-    },
-  }));
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   const id = context.params.id;
   const apiClient = ApiClient.getInstance();
   const recipeDetailInfo = await apiClient.getRecipeDetailInfo(+id);

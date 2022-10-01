@@ -22,14 +22,19 @@ import styles from "../styles/Page.module.css";
 
 interface IProps {
   ingredientList: IngredientInfo[];
-  limitPriceList: LimitPriceNoticeInfo[];
 }
 
-const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList }) => {
+const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   const router = useRouter();
+
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
-  const [selectedList, setSelectedList] = useState<LimitPriceNoticeInfo[]>(limitPriceList);
+  const [selectedList, setSelectedList] = useState<LimitPriceNoticeInfo[]>([]);
+  useEffect(() => {
+    ApiClient.getInstance()
+      .getLimitPriceList(getCookie("userName"))
+      .then((data) => setSelectedList(data));
+  }, []);
   useEffect(() => {
     setSearchedIngredientList(ingredientList.filter((v) => v.name.includes(searchKeyword)));
   }, [ingredientList, searchKeyword]);
@@ -247,15 +252,12 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
 export default AlarmRegisterPage;
 
 export async function getStaticProps() {
-  const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.NAME_ASC);
-  const limitPriceList = await apiClient.getLimitPriceList(userName);
 
   return {
     props: {
       ingredientList,
-      limitPriceList,
     },
   };
 }
