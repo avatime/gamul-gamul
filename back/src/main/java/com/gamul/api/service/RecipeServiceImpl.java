@@ -188,6 +188,8 @@ public class RecipeServiceImpl implements RecipeService{
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+            // 재료 찜 객체 가져오기
+            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
             // 바구니 객체 가져오기
             Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
             // 대분류 객체 가져오기
@@ -199,7 +201,7 @@ public class RecipeServiceImpl implements RecipeService{
             int yesterday = dayList.get(1).getPrice();
             int volatility = (today - yesterday) / 100;
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
         }
 

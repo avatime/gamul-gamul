@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> findAllByUserId(Long userId);
+    public List<Basket> findByUserIdOrderByCreatedTimeDesc(Long userId);
 
     Optional<Basket> findByUserIdAndIngredientId(Long userId, Long ingredientId);
     Boolean existsByUserIdAndIngredientId(Long userId, Long ingredientId);
