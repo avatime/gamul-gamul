@@ -22,5 +22,11 @@ public class Day extends BaseEntity {
     private int price;
 
     @Column
+    private int quantity;
+
+    @Column
+    private String unit;
+
+    @Column
     private int type;
 }
