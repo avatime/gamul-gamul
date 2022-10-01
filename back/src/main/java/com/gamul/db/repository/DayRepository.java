@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface DayRepository extends JpaRepository<Day, Long> {
     public List<Day> findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
+    public Day findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
 }

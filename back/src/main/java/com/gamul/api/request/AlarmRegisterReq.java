@@ -6,8 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @ApiModel("AlarmRegisterReq")
@@ -18,5 +16,5 @@ public class AlarmRegisterReq {
 
     @JsonProperty("subscription")
     @ApiModelProperty(name="json 정보", example="json")
-    Map<String, Object> subscription;
+    String subscription;
 }
