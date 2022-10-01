@@ -42,14 +42,14 @@ export const HighClassItem: FC<IProps> = ({ highClass, onClick }) => {
           }}
         >
           <Image
-            src={`/assets/highClassImg/${highClass?.high_class_id}.jpg`}
-            alt={highClass?.name}
+            src={`/assets/highClassImg/${highClass.id}.jpg`}
+            alt={highClass.name}
             width="120"
             height="120"
             style={{ borderRadius: "5px" }}
           />
           <Box paddingTop="5px" paddingBottom="5px" width="100%">
-            <p style={{ color: "white" }}>{highClass?.name}</p>
+            <p style={{ color: "white" }}>{highClass.name}</p>
           </Box>
         </Box>
       </ItemButton>
