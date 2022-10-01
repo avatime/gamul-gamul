@@ -20,7 +20,7 @@ import java.util.Date;
 public class Ingredient extends BaseEntity{
     @JsonProperty("high_class")
     @Column(updatable = false, nullable = false)
-    private Long highClass;
+    private int highClass;
 
     @JsonProperty("mid_class")
     @Column(updatable = false, nullable = false)

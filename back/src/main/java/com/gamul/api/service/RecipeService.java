@@ -16,7 +16,7 @@ public interface RecipeService {
 
     List<RecipeInfoRes> getRecipeSelected(String userName);
 
-//    RecipeDetailRes getRecipeDetail(RecipeDetailReq recipeDetailReq);
+    RecipeDetailRes getRecipeDetail(Long recipeId, String userName);
 
     void recipeSelected(String userName, Long recipeId);
 

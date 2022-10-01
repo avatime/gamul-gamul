@@ -39,6 +39,8 @@ public class IngredientServiceImpl implements IngredientService{
     HighClassRepository highClassRepository;
     @Autowired
     StoreRepository storeRepository;
+    @Autowired
+    DayRepository dayRepository;
 
     @Override
     public List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq){
@@ -52,16 +54,22 @@ public class IngredientServiceImpl implements IngredientService{
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
         // 대분류 객체 가져오기
-        HighClass highClass = highClassRepository.findById(highClassId.intValue());
+        HighClass highClass = highClassRepository.findById(highClassId.intValue()).get();
 
         for (Ingredient ingredient : ingredientList){
             System.out.println("for 문 돌아?: " + ingredient.getMidClass());
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).orElse(null);
+            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             System.out.println("재료: " + ingredient.getMidClass());
-            System.out.println("가격: " + price.getPrice());
+            System.out.println("가격: " + day.getPrice());
             System.out.println("대분류: "+ highClass.getName());
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, highClass);
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            int today = dayList.get(0).getPrice();
+            int yesterday = dayList.get(1).getPrice();
+            int volatility = (today - yesterday) / 100;
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
             System.out.println("처음: " + ingredientInfoRes);
             if (user != null){
                 // 알러지 객체 가져오기
@@ -123,7 +131,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).orElse(null);
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).orElse(null);;
+            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
             // 재료 찜 객체 가져오기
@@ -131,9 +139,15 @@ public class IngredientServiceImpl implements IngredientService{
             // 바구니 객체 가져오기
             Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);;
             // 대분류 객체 가져오기
-            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).orElse(null);;
+            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, highClass);
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            int today = dayList.get(0).getPrice();
+            int yesterday = dayList.get(1).getPrice();
+            int volatility = (today - yesterday) / 100;
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
             System.out.println("얘조 ㅁ나와라 제발!!!!" + ingredientInfoRes);
 //            ingredientInfoRes.setVolatility();
 
@@ -245,7 +259,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
+            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
             // 재료 찜 객체 가져오기
@@ -255,7 +269,13 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, highClass);
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            int today1 = dayList.get(0).getPrice();
+            int yesterday = dayList.get(1).getPrice();
+            int volatility = (today1 - yesterday) / 100;
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
 
 //            ingredientInfoRes.setVolatility();
 
@@ -275,7 +295,7 @@ public class IngredientServiceImpl implements IngredientService{
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
 
             // 가격 객체 가져오기
-            Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
+            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             // 알러지 객체 가져오기
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
             // 재료 찜 객체 가져오기
@@ -285,7 +305,13 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, highClass);
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            int today = dayList.get(0).getPrice();
+            int yesterday = dayList.get(1).getPrice();
+            int volatility = (today - yesterday) / 100;
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
 
 //            ingredientInfoRes.setVolatility();
             ingredientInfoResList.add(ingredientInfoRes);

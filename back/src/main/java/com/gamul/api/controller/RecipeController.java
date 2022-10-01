@@ -3,10 +3,8 @@ package com.gamul.api.controller;
 import com.gamul.api.request.RecipeBasketReq;
 import com.gamul.api.request.RecipeDetailReq;
 import com.gamul.api.request.RecipeListReq;
-import com.gamul.api.response.IngredientInfoRes;
-import com.gamul.api.response.RecipeInfoRes;
-import com.gamul.api.response.RecipeProcedureRes;
-import com.gamul.api.response.YoutubeInfoRes;
+import com.gamul.api.request.RecipeSelectPostReq;
+import com.gamul.api.response.*;
 import com.gamul.api.service.RecipeService;
 import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.common.util.YoutubeChannelSearch;
@@ -56,7 +54,7 @@ public class RecipeController {
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
     }
 
-    @GetMapping("/{userName}")
+    @GetMapping("/basket/{userName}")
     @ApiOperation(value = "요리법 바구니 정보 반환", notes = "<strong>username</strong>에 따른 요리법 바구니 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
@@ -74,8 +72,8 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName){
-        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(userName);
+    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName, @RequestBody RecipeSelectPostReq recipeSelectPostReq){
+        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(recipeSelectPostReq.getUserName());
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
     @GetMapping("/youtube")
@@ -92,15 +90,16 @@ public class RecipeController {
 
     }
 
-//    @GetMapping("/{recipeId}")
-//    @ApiOperation(value = "요리법 상세 조회", notes = "<strong>recipe id</strong>에 따른 요리법 상세 정보 반환")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
-//            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-//    })
-//    public ResponseEntity<?> getRecipeDetail(@RequestBody @PathVariable Long recipeId, RecipeDetailReq recipeDetailReq){
-//
-//    }
+    @GetMapping("/{recipeId}")
+    @ApiOperation(value = "요리법 상세 조회", notes = "<strong>recipe id</strong>에 따른 요리법 상세 정보 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<?> getRecipeDetail(@PathVariable Long recipeId, @RequestBody RecipeDetailReq recipeDetailReq){
+        RecipeDetailRes recipeDetailRes = recipeService.getRecipeDetail(recipeDetailReq.getRecipeId(), recipeDetailReq.getUserName());
+        return ResponseEntity.status(200).body(recipeDetailRes);
+    }
 
     @PutMapping("/bookmark/{userName}/{recipeId}")
     @ApiOperation(value = "요리법 찜 등록 해제", notes = "<strong>username과 recipe id</strong>에 따른 요리법 찜 등록 해제")

@@ -3,10 +3,8 @@ package com.gamul.api.service;
 import com.gamul.api.request.RecipeBasketReq;
 import com.gamul.api.request.RecipeDetailReq;
 import com.gamul.api.request.RecipeListReq;
-import com.gamul.api.response.IngredientInfoRes;
-import com.gamul.api.response.RecipeDetailRes;
-import com.gamul.api.response.RecipeInfoRes;
-import com.gamul.api.response.RecipeProcedureRes;
+import com.gamul.api.response.*;
+import com.gamul.common.util.YoutubeChannelSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +49,12 @@ public class RecipeServiceImpl implements RecipeService{
     HighClassRepository highClassRepository;
     @Autowired
     RecipeOrderRepository recipeOrderRepository;
+    @Autowired
+    IngredientNotneedRepository ingredientNotneedRepository;
+    @Autowired
+    DayRepository dayRepository;
 
-
+    private final YoutubeChannelSearch youtubeChannelSearch;
     @Override
     public List<RecipeInfoRes> getRecipeList(RecipeListReq recipeListReq){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
@@ -148,53 +150,74 @@ public class RecipeServiceImpl implements RecipeService{
             if (recipeSelected == null){
                 bookmark = false;
             }
-            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).orElse(null);
+            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).get();
             RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+            System.out.println("recipeInfoRes: " + recipeInfoRes.getName());
+            System.out.println(recipeInfoResList);
             recipeInfoResList.add(recipeInfoRes);
+            System.out.println(recipeInfoResList);
         }
         return recipeInfoResList;
     }
 
-//    @Override
-//    public RecipeDetailRes getRecipeDetail(RecipeDetailReq recipeDetailReq){
-//        // recipeinfoRes 객체 생성
-//        Recipe recipe = recipeRepository.findById(recipeDetailReq.getRecipeId()).get();
-//        RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).get();
-//        RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe, recipeSelected);
-//
-//        // ingredientList 생성
-//        List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
-//        List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findAllByIngredientId(recipe.getId()).get();
-//        List<String> recipeIngredientName = new ArrayList<>();
-//        for (RecipeIngredient recipeIngredient : recipeIngredientList){
-//            // 식재료 객체 생성
-//            Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
-//            // 가격 객체 가져오기
-//            Price price = priceRepository.findByIngredientId(ingredient.getId()).get();
-//            // 알러지 객체 가져오기
-//            Allergy allergy = allergyRepository.findByIngredientId(ingredient.getId()).get();
-//            // 재료 찜 객체 가져오기
-//            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByIngredientId(ingredient.getId());
-//            // 바구니 객체 가져오기
-//            Basket basket = basketRepository.findByIngredientId(ingredient.getId());
-//            // 대분류 객체 가져오기
-//            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
-//
-//            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, price, allergy, ingredientSelected, basket, highClass);
-//
-//            ingredientInfoResList.add(ingredientInfoRes);
-//
-//            recipeIngredientName.add(ingredient.getMidClass());
-//
-//        }
-//
-//        // extraIngredientList 생성
-//        List<String> extraIngredientList = new ArrayList<>();
-//        for (String item : recipeIngredientName){
-//
-//        }
-//
-//    }
+    @Override
+    public RecipeDetailRes getRecipeDetail(Long recipeId, String userName){
+        // recipeinfoRes 객체 생성
+
+        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+        User user = userRepository.findByUsername(userName).get();
+        RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).orElse(null);
+
+        boolean bookmark;
+        if (recipeSelected != null){
+            if(recipeSelected.isActiveFlag()){
+                bookmark = true;
+            }else{
+                bookmark = false;
+            }
+        }else{
+            bookmark = false;
+        }
+
+        RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+
+        // ingredientList 생성
+        List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
+
+        List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findAllByRecipeId(recipe.getId()).get();
+
+
+        for (RecipeIngredient recipeIngredient : recipeIngredientList){
+            Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
+            // 가격 객체 가져오기
+            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            // 알러지 객체 가져오기
+            Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+            // 바구니 객체 가져오기
+            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+            // 대분류 객체 가져오기
+            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
+
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            int today = dayList.get(0).getPrice();
+            int yesterday = dayList.get(1).getPrice();
+            int volatility = (today - yesterday) / 100;
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
+            ingredientInfoResList.add(ingredientInfoRes);
+        }
+
+        // extraIngredientList 생성
+        List<String> extraIngredientList = new ArrayList<>();
+        List<IngredientNotneed> ingredientNotNeedList = ingredientNotneedRepository.findAllByRecipeId(recipeId).get();
+        for (IngredientNotneed ingredientNotneed : ingredientNotNeedList){
+            extraIngredientList.add(ingredientNotneed.getIngredient());
+        }
+        List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(recipe.getName());
+        RecipeDetailRes recipeDetailRes = new RecipeDetailRes(recipeInfoRes, ingredientInfoResList, extraIngredientList,youtubeInfoResList);
+        return recipeDetailRes;
+    }
 
     @Override
     public void recipeSelected(String userName, Long recipeId){

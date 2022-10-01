@@ -29,12 +29,15 @@ public class YoutubeInfoRes {
 
     String url;
 
-    public YoutubeInfoRes(String thumbnailPath, String name, String channelName, Long view, String date, String url){
+    String description;
+
+    public YoutubeInfoRes(String thumbnailPath, String name, String channelName, Long view, String date, String url, String description){
         this.thumbnailPath = thumbnailPath;
         this.name = name;
         this.channelName = channelName;
         this.view = view;
         this.date = date;
         this.url = url;
+        this.description =description;
     }
 }
