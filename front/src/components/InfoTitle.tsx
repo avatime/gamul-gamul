@@ -60,7 +60,7 @@ export const InfoTitle: FC<IProps> = ({
       <Box p={0.5} />
       <Box display="flex" flexDirection="row" alignItems="center" marginTop="10px">
         <p style={{ fontSize: 16, fontWeight: "bold" }}>
-          오늘 {views}명의 사용자가 이 품목을 확인했어요!
+          오늘 {views.toLocaleString()}명의 사용자가 이 품목을 확인했어요!
         </p>
         {onClickBasket && (
           <>
