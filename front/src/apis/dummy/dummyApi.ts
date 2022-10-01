@@ -468,19 +468,19 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
 export const getRecipeOrderList: RecipeOrderInfo[] = [
   {
     image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    desc: "가지를 맛있게 손질하기",
+    description: "가지를 맛있게 손질하기",
   },
   {
     image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    desc: "가지를 맛있게 볶기",
+    description: "가지를 맛있게 볶기",
   },
   {
     image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    desc: "가지를 맛있게 쳐다보기",
+    description: "가지를 맛있게 쳐다보기",
   },
   {
     image_path: "https://i.ytimg.com/vi/6aZjI0hgEN0/maxresdefault.jpg",
-    desc: "가지를 냠냠 먹기",
+    description: "가지를 냠냠 먹기",
   },
 ];
 

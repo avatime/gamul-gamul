@@ -1,4 +1,4 @@
 export interface RecipeOrderInfo {
   image_path: string;
-  desc: string;
+  description: string;
 }

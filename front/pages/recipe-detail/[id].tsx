@@ -25,10 +25,7 @@ interface IProps {
   recipeDetailInfo: RecipeDetailInfo;
 }
 
-const RecipeDetailPage: NextPage<IProps> = ({
-  recipeOrderInfo,
- 
-}) => {
+const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
   const router = useRouter();
   const { id } = router.query;
   const userName = getCookie("userName");
@@ -36,7 +33,9 @@ const RecipeDetailPage: NextPage<IProps> = ({
 
   return (
     <div>
+  
       <Mobile>
+        <BackHeader/>
         <Box
           className={styles.PageforMobile}
           sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
@@ -56,22 +55,23 @@ const RecipeDetailPage: NextPage<IProps> = ({
               overflowX: "auto",
               flex: 1,
               display: "flex",
-              alignItems: "stretch",
+
               position: "relative",
             }}
           >
             {recipeOrderInfo.map((item, idx) => (
               <Box key={idx} sx={{ display: "flex" }}>
-                <CardContainer title={""} style={{ width: "90vw", flex: 1, position: "relative" }}>
+                <CardContainer title={""} style={{ width: "90vw", position: "relative" }}>
                   <Image
                     src={item.image_path}
-                    width="90%"
-                    height="90%"
+                    width="50px"
+                    height="50px"
                     alt="recipe_order"
                     layout="responsive"
                     unoptimized
+                    style={{borderRadius:10}}
                   />
-                  <Box sx={{ position: "absolute", bottom: "10%", left: 10 }}>
+                  <Box sx={{ bottom: "10%", left: 10 }}>
                     <Typography
                       sx={{
                         color: "#4411AA",
@@ -82,7 +82,7 @@ const RecipeDetailPage: NextPage<IProps> = ({
                     >
                       {idx + 1}.
                     </Typography>
-                    <Typography>{item.desc}</Typography>
+                    <Typography>{item.description}</Typography>
                   </Box>
                 </CardContainer>
               </Box>
@@ -113,7 +113,15 @@ const RecipeDetailPage: NextPage<IProps> = ({
               <Box key={idx} sx={{ display: "flex" }}>
                 <CardContainer title={""} style={{ width: "100vw" }}>
                   <Stack direction="row" sx={{ position: "relative" }}>
-                    <Box sx={{ margin: "auto", marginLeft: "10px", marginTop: "10px" }}>
+                    <Box
+                      sx={{
+                        margin: "auto",
+                        marginLeft: "30px",
+                        marginTop: "10px",
+                        marginRight: "30px",
+                        width: "80%",
+                      }}
+                    >
                       <Typography
                         sx={{
                           color: "#4411AA",
@@ -124,15 +132,16 @@ const RecipeDetailPage: NextPage<IProps> = ({
                       >
                         {idx + 1}.
                       </Typography>
-                      <Typography>{item.desc}</Typography>
+                      <Typography sx={{fontSize:"20px"}}>{item.description}</Typography>
                     </Box>
                     <Image
                       src={item.image_path}
                       width="300px"
                       height="300px"
                       alt="recipe_order"
-                      style={{ right: 0 }}
+                      style={{borderRadius:10}}
                       unoptimized
+                      
                     />
                   </Stack>
                 </CardContainer>
@@ -156,41 +165,46 @@ const RecipeDetailPage: NextPage<IProps> = ({
             imagePath={""}
           />
           <Box p={2} />
-
           <Stack
-            direction="row"
+            direction="column"
             sx={{
-              overflowX: "auto",
-              flex: 1,
-              display: "flex",
-              alignItems: "stretch",
-              position: "relative",
+              overflowY: "auto",
             }}
           >
             {recipeOrderInfo.map((item, idx) => (
               <Box key={idx} sx={{ display: "flex" }}>
-                <CardContainer title={""} style={{ width: "90vw", flex: 1, position: "relative" }}>
-                  <Image
-                    src={item.image_path}
-                    width="90%"
-                    height="90%"
-                    alt="recipe_order"
-                    layout="responsive"
-                    unoptimized
-                  />
-                  <Box sx={{ position: "absolute", bottom: "10%", left: 10 }}>
-                    <Typography
+                <CardContainer title={""} style={{ width: "100vw" }}>
+                  <Stack direction="row" sx={{ position: "relative" }}>
+                    <Box
                       sx={{
-                        color: "#4411AA",
-                        fontWeight: "bold",
-                        marginBottom: "10px",
-                        fontSize: "20px",
+                        margin: "auto",
+                        marginLeft: "30px",
+                        marginTop: "10px",
+                        marginRight: "30px",
+                        width: "80%",
                       }}
                     >
-                      {idx + 1}.
-                    </Typography>
-                    <Typography>{item.desc}</Typography>
-                  </Box>
+                      <Typography
+                        sx={{
+                          color: "#4411AA",
+                          fontWeight: "bold",
+                          fontSize: "30px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {idx + 1}.
+                      </Typography>
+                      <Typography>{item.description}</Typography>
+                    </Box>
+                    <Image
+                      src={item.image_path}
+                      width="300px"
+                      height="300px"
+                      alt="recipe_order"
+                      style={{borderRadius:10}}
+                      unoptimized
+                    />
+                  </Stack>
                 </CardContainer>
               </Box>
             ))}
@@ -201,15 +215,29 @@ const RecipeDetailPage: NextPage<IProps> = ({
   );
 };
 
+export async function getStaticPaths() {
+  const lastId = 151978;
+  const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
+    params: {
+      id: id.toString(),
+    },
+  }));
+  return {
+    paths,
+    fallback: false,
+  };
+}
 export default RecipeDetailPage;
-export const getServerSideProps = async (context: any) => {
-  const id = context.params.id;
+export const getStaticProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
-  const recipeOrderInfo = await apiClient.getRecipeOrderList(id);
+
+  const recipeDetailInfo = await apiClient.getRecipeDetailInfo(context.params.id);
+  const recipeOrderInfo = await apiClient.getRecipeOrderList(context.params.id);
+  console.log(recipeOrderInfo);
+
   return {
     props: {
       recipeOrderInfo,
-     
     },
   };
 };
