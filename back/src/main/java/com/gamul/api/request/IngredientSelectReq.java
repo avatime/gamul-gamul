@@ -15,5 +15,5 @@ public class IngredientSelectReq {
     String userName;
 
     @JsonProperty("ingredient_id")
-    int ingredientId;
+    Long ingredientId;
 }
