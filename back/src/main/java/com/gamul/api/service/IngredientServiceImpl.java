@@ -57,20 +57,17 @@ public class IngredientServiceImpl implements IngredientService{
         HighClass highClass = highClassRepository.findById(highClassId.intValue()).get();
 
         for (Ingredient ingredient : ingredientList){
-            System.out.println("for 문 돌아?: " + ingredient.getMidClass());
+
+
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            System.out.println("재료: " + ingredient.getMidClass());
-            System.out.println("가격: " + day.getPrice());
-            System.out.println("대분류: "+ highClass.getName());
             // 가격 변동률
             List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             int today = dayList.get(0).getPrice();
             int yesterday = dayList.get(1).getPrice();
             int volatility = (today - yesterday) / 100;
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
-            System.out.println("처음: " + ingredientInfoRes);
             if (user != null){
                 // 알러지 객체 가져오기
                 Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
@@ -88,7 +85,13 @@ public class IngredientServiceImpl implements IngredientService{
                 } else if (basket != null & basket.isActiveFlag() == true){
                     ingredientInfoRes.setBasket(true);
                 }
+            } else{
+                boolean allergy = false;
+                boolean ingredientSelected = false;
+                boolean basket = false;
             }
+
+//            IngredientInfoRes ingredientInfoRes1 = new IngredientInfoRes(ingredient, day, allergy, ingredientSelected, basket, highClass, volatility);
 
             System.out.println("과연?: " + ingredientInfoRes);
 
@@ -147,7 +150,8 @@ public class IngredientServiceImpl implements IngredientService{
             int yesterday = dayList.get(1).getPrice();
             int volatility = (today - yesterday) / 100;
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
+
             System.out.println("얘조 ㅁ나와라 제발!!!!" + ingredientInfoRes);
 //            ingredientInfoRes.setVolatility();
 
@@ -275,7 +279,7 @@ public class IngredientServiceImpl implements IngredientService{
             int yesterday = dayList.get(1).getPrice();
             int volatility = (today1 - yesterday) / 100;
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
 
 //            ingredientInfoRes.setVolatility();
 
@@ -288,32 +292,61 @@ public class IngredientServiceImpl implements IngredientService{
     @Override
     public List<IngredientInfoRes> getBasketList(String userName){
         User user = userRepository.findByUsername(userName).get();
-        List<Basket> basketList = basketRepository.findAllByUserId(user.getId());
+        List<Basket> basketList = basketRepository.findByUserIdOrderByCreatedTimeDesc(user.getId());
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
         for (Basket x : basketList){
+
             // 식재료 객체 가져오기
             Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
 
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            // 가격 변동률
+            int volatility = 0;
+            if (day == null){
+                day = new Day();
+                day.setPrice(0);
+                day.setUnit("");
+                day.setQuantity(0);
+            }else{
+                // 가격 변동률
+                List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                int today = dayList.get(0).getPrice();
+
+                int yesterday = dayList.get(1).getPrice();
+                volatility = (today - yesterday) / 100;
+            }
             // 알러지 객체 가져오기
+            boolean allergyStatus;
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+            if (allergy == null){
+                allergyStatus = false;
+            }else{
+                allergyStatus = allergy.isActiveFlag();
+            }
             // 재료 찜 객체 가져오기
+            boolean selectedStatus;
             IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+            if (ingredientSelected == null){
+                selectedStatus = false;
+            }else{
+                selectedStatus = ingredientSelected.isActiveFlag();
+            }
             // 바구니 객체 가져오기
+            boolean basketStatus;
             Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+            if (basket == null){
+                basketStatus = false;
+            }else{
+                basketStatus = basket.isActiveFlag();
+            }
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            // 가격 변동률
-            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            int today = dayList.get(0).getPrice();
-            int yesterday = dayList.get(1).getPrice();
-            int volatility = (today - yesterday) / 100;
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, highClass, volatility);
 
-//            ingredientInfoRes.setVolatility();
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+
             ingredientInfoResList.add(ingredientInfoRes);
         }
         return ingredientInfoResList;
