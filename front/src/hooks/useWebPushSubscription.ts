@@ -20,7 +20,7 @@ export const useWebPushSubscription = () => {
             });
           }
 
-          ApiClient.getInstance().postSubscription(getCookie("userName"), subscription);
+          ApiClient.getInstance().postSubscription(getCookie("userName"), JSON.stringify(subscription));
         });
       });
     }

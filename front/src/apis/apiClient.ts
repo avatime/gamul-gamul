@@ -23,7 +23,7 @@ import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
 import { getCookie, setCookie } from "../utils/cookie";
 import { NotificationInfo } from "./responses/notificationInfo";
-import { getNotificationItemList } from './dummy/dummyApi';
+import { getNotificationItemList } from "./dummy/dummyApi";
 
 const delay = 0;
 
@@ -36,15 +36,28 @@ export class ApiClient
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
   }
-  async getNotificationInfoList(userName: string): Promise<NotificationInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getNotificationItemList), delay));
-    return (await this.axiosInstance.request({
+  postRecipeView(recipeId: number): Promise<void> {
+    return this.axiosInstance.request({
       method: "post",
-      url: "/user/notice/list",
-      data: { user_name: userName },
-    })).data;
+      url: `/recipes/${recipeId}`,
+    });
   }
-  postSubscription(userName: string, subscription: PushSubscription): Promise<void> {
+  postIngredientView(ingredientId: number): Promise<void> {
+    return this.axiosInstance.request({
+      method: "post",
+      url: `/ingredients/${ingredientId}`,
+    });
+  }
+  async getNotificationInfoList(userName: string): Promise<NotificationInfo[]> {
+    return (
+      await this.axiosInstance.request({
+        method: "post",
+        url: "/user/notice/list",
+        data: { user_name: userName },
+      })
+    ).data;
+  }
+  postSubscription(userName: string, subscription: String): Promise<void> {
     return this.axiosInstance.request({
       method: "post",
       url: "/user/notice/regist",
@@ -96,15 +109,24 @@ export class ApiClient
     );
   }
   async getIngredientHighClassList(): Promise<HighClass[]> {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(Dummy.getIngredientHighClassList), delay)
-    );
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/high-class`,
+      })
+    ).data;
   }
   async putBookmarkIngredient(userName: string, ingredientId: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "put",
+      url: `/ingredients/bookmark/${userName}/${ingredientId}`,
+    });
   }
   async putBasketIngredient(userName: string, ingredientId: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "put",
+      url: `/ingredients/basket/${userName}/${ingredientId}`,
+    });
   }
   async getOfflineMartList(
     ingredientId: number,
@@ -145,13 +167,19 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeDetailInfo), delay));
   }
   async putBookmarkRecipe(userName: string, recipeId: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "put",
+      url: `/recipes/bookmark/${userName}/${recipeId}`,
+    });
   }
   async getRecipeOrderList(recipeId: number): Promise<RecipeOrderInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeOrderList), delay));
   }
   async putBasketAllRecipeIngredient(userName: string, recipeId: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "put",
+      url: `/recipes/${userName}/${recipeId}`,
+    });
   }
   async getPopularYoutubeList(): Promise<YoutubeInfo[]> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getPopularYoutubeList), delay));
@@ -165,7 +193,16 @@ export class ApiClient
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "post",
+      url: "/recipes/my",
+      data: {
+        user_name: userName,
+        image_data_url: imageDataUrl,
+        my_recipe_name: myRecipeName,
+        ingredient_list: ingredientList,
+      },
+    });
   }
   async updateMyRecipe(
     userName: string,
@@ -174,10 +211,24 @@ export class ApiClient
     myRecipeName: string,
     ingredientList: MyRecipeIngredientInfo[]
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "put",
+      url: "/recipes/my",
+      data: {
+        user_name: userName,
+        image_data_url: imageDataUrl,
+        my_recipe_name: myRecipeName,
+        ingredient_list: ingredientList,
+      },
+    });
   }
   async getMyRecipeList(userName: string): Promise<MyRecipeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getMyRecipeList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/my/${userName}`,
+      })
+    ).data;
   }
   async getMyRecipeDetailInfo(userName: string, myRecipeId: number): Promise<MyRecipeDetailInfo> {
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getMyRecipeDetailInfo), delay));
@@ -186,29 +237,55 @@ export class ApiClient
     userName: string,
     myRecipeId: number
   ): Promise<MyRecipeIngredientInfo[]> {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(Dummy.getMyRecipeIngredientList), delay)
-    );
+    return await this.axiosInstance.request({
+      method: "get",
+      url: `/recipes/my/ingredients/${userName}/${myRecipeId}`,
+    });
   }
   async deleteMyRecipe(userName: string, myRecipeId: number): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "delete",
+      url: `/recipes/my/${userName}/${myRecipeId}`,
+    });
   }
   async putAllergy(userName: string, ingredientIdList: number[]): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "post",
+      url: "/user/allergy",
+      data: {
+        user_name: userName,
+        ingredient_list: ingredientIdList,
+      },
+    });
   }
   async getAllergyIngredientList(userName: string): Promise<number[]> {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(Dummy.getAllergyIngredientList), delay)
-    );
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/user/allergy/${userName}`,
+      })
+    ).data;
   }
   async postLimitPriceNotice(
     userName: string,
     limitPriceNoticeInfoList: LimitPriceNoticeInfo[]
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.axiosInstance.request({
+      method: "post",
+      url: `/user/notice`,
+      data: {
+        user_name: userName,
+        ingredient_list: limitPriceNoticeInfoList,
+      },
+    });
   }
   async getLimitPriceList(userName: string): Promise<LimitPriceNoticeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getLimitPriceList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/user/notice/${userName}`,
+      })
+    ).data;
   }
 
   static getInstance(): ApiClient {

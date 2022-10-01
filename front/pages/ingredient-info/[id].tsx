@@ -37,14 +37,24 @@ const IngredientInfoPage: NextPage<IProps> = ({
   onlineMartInfo,
   recipeList,
 }) => {
+ 
+
   const router = useRouter();
   const { id } = router.query;
   const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
 
+  useEffect(() => {
+    apiClient.postIngredientView(Number(id as string));
+  }, [apiClient, id]);
+
   const setBookmark = async () => {
     await apiClient.putBookmarkIngredient(userName, Number(id));
   };
+
+  const onClickBasket = () => {
+    apiClient.putBasketIngredient(userName, Number(id));
+  }
 
   useEffect(() => {
     if (id) {
@@ -70,6 +80,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
+                    onClickBasket={onClickBasket}
                     views={ingredientDetailInfo.views}
                     imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />
