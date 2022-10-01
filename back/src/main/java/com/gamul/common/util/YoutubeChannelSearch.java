@@ -13,6 +13,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
 import io.micrometer.core.instrument.search.Search;
+import org.springframework.stereotype.Component;
 
 
 import java.io.IOException;
@@ -23,7 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-public class YoutubeChannelSearch implements YoutubeProvider{
+@Component
+public class YoutubeChannelSearch {
 
     private static String PROPERTIES_FILENAME = "youtube.properties";
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
@@ -35,16 +37,6 @@ public class YoutubeChannelSearch implements YoutubeProvider{
     public static List<ResourceId> Search(String query){
         Properties properties = new Properties();
         YoutubeInfoRes youtubeInfoRes = new YoutubeInfoRes();
-        try {
-            InputStream in = Search.class.getResourceAsStream("/" + PROPERTIES_FILENAME);
-            properties.load(in);
-
-        } catch (IOException e) {
-            System.err.println("There was an error reading " + PROPERTIES_FILENAME + ": " + e.getCause()
-                    + " : " + e.getMessage());
-            System.exit(1);
-        }
-
         List<ResourceId> videoIdList = new ArrayList<>();
 
         try {
@@ -66,7 +58,8 @@ public class YoutubeChannelSearch implements YoutubeProvider{
              * non-authenticated requests (found under the Credentials tab at this link:
              * console.developers.google.com/). This is good practice and increased your quota.
              */
-            String apiKey = properties.getProperty("AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA");
+            String apiKey = "AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA";
+
             search.setKey(apiKey);
             search.setQ(queryTerm);
             /*
@@ -159,9 +152,10 @@ public class YoutubeChannelSearch implements YoutubeProvider{
         }
     }
 
-    @Override
+
     public List<YoutubeInfoRes> get(String query){
         List<ResourceId> videoIdList = Search(query);
+        System.out.println("이거 한번 보자 "+ videoIdList);
         List<YoutubeInfoRes> youtubeInfoResList = new ArrayList<>();
         try {
             youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
@@ -174,7 +168,7 @@ public class YoutubeChannelSearch implements YoutubeProvider{
                 //내가 원하는 정보 지정할 수 있어요. 공식 API문서를 참고해주세요.
                 YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
                 videos.setKey("AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA");
-                videos.setId(videoId.toString());
+                videos.setId(videoId.getVideoId());
                 videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED); //조회 최대 갯수.
                 List<Video> videoList = videos.execute().getItems();
 
