@@ -148,6 +148,7 @@ public class YoutubeChannelSearch {
                 String date = singleVideo.getSnippet().getPublishedAt().toString();
                 youtubeInfoRes.setDate(date);
                 youtubeInfoRes.setUrl(videoLink);
+                youtubeInfoRes.setDescription(singleVideo.getSnippet().getDescription());
 
                 return youtubeInfoRes;
 

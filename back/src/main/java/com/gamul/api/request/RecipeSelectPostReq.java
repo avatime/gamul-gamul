@@ -14,6 +14,4 @@ public class RecipeSelectPostReq {
     @ApiModelProperty(name="유저 ID", example="your_Id")
     String userName;
 
-    @JsonProperty("recipe_id")
-    int recipeId;
 }

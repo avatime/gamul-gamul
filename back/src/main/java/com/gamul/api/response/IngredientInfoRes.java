@@ -32,18 +32,20 @@ public class IngredientInfoRes {
     boolean basket;
 
     @JsonProperty("high_class_id")
-    Long highClassId;
+    int highClassId;
 
     @JsonProperty("high_class_name")
     String highClassName;
 
     Long views;
 
-    public IngredientInfoRes(Ingredient ingredient, Price price, HighClass highClass){
+    public IngredientInfoRes(Ingredient ingredient, Day day, HighClass highClass, int volatility){
         this.ingredientId = ingredient.getId();
         this.name = ingredient.getMidClass();
-        this.unit = price.getUnit();
-        this.quantity = price.getQuantity();
+        this.price = day.getPrice();
+        this.unit = day.getUnit();
+        this.quantity = day.getQuantity();
+        this.volatility = volatility;
         this.allergy = false;
         this.favorite = false;
         this.basket = false;
