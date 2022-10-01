@@ -6,8 +6,11 @@ import com.gamul.api.request.RecipeListReq;
 import com.gamul.api.response.IngredientInfoRes;
 import com.gamul.api.response.RecipeInfoRes;
 import com.gamul.api.response.RecipeProcedureRes;
+import com.gamul.api.response.YoutubeInfoRes;
 import com.gamul.api.service.RecipeService;
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.common.util.YoutubeChannelSearch;
+import com.gamul.db.entity.Recipe;
 import com.gamul.db.entity.RecipeSelected;
 import com.gamul.db.repository.RecipeRepository;
 import com.gamul.db.repository.UserRepository;
@@ -15,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,6 +30,7 @@ import java.util.List;
 
 @Api(value = "레시피 API", tags = {"Recipe."})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/recipes")
 public class RecipeController {
 
@@ -36,6 +41,8 @@ public class RecipeController {
 
     @Autowired
     RecipeRepository recipeRepository;
+
+    private final YoutubeChannelSearch youtubeChannelSearch;
 
     @GetMapping("/{orderType}/{page}")
     @ApiOperation(value = "요리법 목록 반환", notes = "<strong>order type과 page</strong>에 따른 요리법 목록 반환")
@@ -71,15 +78,19 @@ public class RecipeController {
         List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(userName);
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
-//    @GetMapping("/{recipeId}")
-//    @ApiOperation(value = "인기 요리법 유튜브", notes = "<strong>recipe id</strong>에 따른 인기 요리법 반환")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
-//            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-//    })
-//    public ResponseEntity<?> getRecipeYoutube(@PathVariable Long recipeId){
-//
-//    }
+    @GetMapping("/youtube")
+    @ApiOperation(value = "인기 요리법 유튜브", notes = "<strong>recipe id</strong>에 따른 인기 요리법 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<?> getRecipeYoutube(){
+
+        String query = "인기 요리법";
+        List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(query);
+        return ResponseEntity.status(200).body(youtubeInfoResList);
+
+    }
 
 //    @GetMapping("/{recipeId}")
 //    @ApiOperation(value = "요리법 상세 조회", notes = "<strong>recipe id</strong>에 따른 요리법 상세 정보 반환")
