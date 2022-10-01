@@ -97,20 +97,20 @@ const IngredientPage: NextPage<IProps> = ({
               ingredientList={wishList}
               title="찜 목록"
               rowSize={1}
-              gridSize={4}
+              gridSize={6}
             />
           )}
           <IngredientListComp
             ingredientList={downIngredientList}
             title="지금이 기회!"
             rowSize={1}
-            gridSize={4}
+            gridSize={6}
           />
           <IngredientListComp
             ingredientList={upIngredientList}
             title="오늘은 피해요!"
             rowSize={1}
-            gridSize={4}
+            gridSize={6}
           />
           <CardContainer title="주요 물품 현황">
             <Box>

@@ -14,14 +14,22 @@ import { IngredientListComp } from "../src/components/templates/IngredientListCo
 import { MyRecipeListComp } from "../src/components/templates/MyRecipeListComp";
 import styles from "../styles/Page.module.css";
 import { Page } from "../src/components/Page";
+import { HighClass } from "../src/apis/responses/highClass";
+import { HighClassComp } from "../src/components/templates/HighClassComp";
 
 interface IProps {
   ingredientList: IngredientInfo[];
   recipeList: RecipeInfo[];
   myRecipeList: MyRecipeInfo[];
+  highClassList: HighClass[];
 }
 
-const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }) => {
+const MainPage: NextPage<IProps> = ({
+  ingredientList,
+  recipeList,
+  myRecipeList,
+  highClassList,
+}) => {
   return (
     <Page>
       <Desktop>
@@ -30,14 +38,19 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
             <Grid item xs={8}>
               <IngredientListComp
                 showMore
-                rowSize={4}
+                rowSize={2}
                 gridSize={6}
                 ingredientList={ingredientList}
               />
+              <HighClassComp
+                highClassList={highClassList}
+                ingredientList={ingredientList}
+                gridSize={6}
+              />
             </Grid>
             <Grid item xs={4}>
-              <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
-              <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+              <RecipeListComp showMore rowSize={3} gridSize={3} recipeList={recipeList} />
+              <MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} />
             </Grid>
           </Grid>
         </Box>
@@ -45,6 +58,13 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
       <Tablet>
         <Box className={styles.PageforTablet}>
           <IngredientListComp showMore rowSize={2} gridSize={6} ingredientList={ingredientList} />
+          <HighClassComp
+          title="식재료 분류별 조회"
+            highClassList={highClassList}
+            ingredientList={ingredientList}
+            rowSize={2}
+            gridSize={4}
+          />
           <RecipeListComp showMore rowSize={2} gridSize={6} recipeList={recipeList} />
           <MyRecipeListComp showMore rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
         </Box>
@@ -52,6 +72,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, myRecipeList }
       <Mobile>
         <Box className={styles.PageforMobile}>
           <IngredientListComp showMore rowSize={2} gridSize={3} ingredientList={ingredientList} />
+          <HighClassComp highClassList={highClassList} rowSize={2} gridSize={3} ingredientList={ingredientList} />
           <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
           <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
         </Box>
@@ -67,12 +88,14 @@ export const getStaticProps = async () => {
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.VOLATILITY_ASC);
   const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 90);
   const myRecipeList = await apiClient.getMyRecipeList("userId");
+  const highClassList = await apiClient.getIngredientHighClassList();
 
   return {
     props: {
       ingredientList,
       recipeList,
       myRecipeList,
+      highClassList,
     },
   };
 };
