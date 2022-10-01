@@ -42,7 +42,7 @@ export const HighClassItem: FC<IProps> = ({ highClass, onClick }) => {
           }}
         >
           <Image
-            src={`/assets/ingredientsImg/${highClass?.high_class_id}.jpg`}
+            src={`/assets/highClassImg/${highClass?.high_class_id}.jpg`}
             alt={highClass?.name}
             width="120"
             height="120"
