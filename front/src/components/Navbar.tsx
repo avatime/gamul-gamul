@@ -117,6 +117,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
                   marginLeft: 1,
                   padding: 2,
                   ...(idx === activeIndex ? elementActiveStyles : {}),
+                  cursor:"pointer",
                 }}
               >
                 {item.icon(idx === activeIndex)}
@@ -158,6 +159,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
                   marginLeft: 1,
                   padding: 2,
                   ...(idx === activeIndex ? elementActiveStyles : {}),
+                  cursor:"pointer",
                 }}
               >
                 {item.icon(idx === activeIndex)}

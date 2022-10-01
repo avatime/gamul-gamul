@@ -5,7 +5,11 @@ import { ChangeEvent, useState } from "react";
 import { ButtonFill } from "../src/components/button/ButtonFill";
 import { ApiClient } from "../src/apis/apiClient";
 import { setCookie } from "../src/utils/cookie";
-import { Page } from '../src/components/Page';
+import { Page } from "../src/components/Page";
+import { Mobile } from "../src/components/Mobile";
+import { Desktop } from "../src/components/Desktop";
+import { Tablet } from "../src/components/Tablet";
+import styles from "../styles/Page.module.css";
 
 interface IProps {}
 
@@ -49,54 +53,162 @@ const LoginPage: NextPage<IProps> = (props) => {
   };
   return (
     <Page>
-      <Box
-        sx={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: "20%",
-          margin: "auto",
-          maxWidth: "500px",
-          width: "60vw",
-        }}
-      >
-        <Input
-          color="success"
-          placeholder="아이디"
-          sx={{ width: "60vw", maxWidth: "500px" }}
-          value={inputId}
-          onChange={handleInputId}
-        />
-        <Box p={3} />
-        <Input
-          type="password"
-          color="success"
-          placeholder="비밀번호"
-          sx={{ width: "60vw", maxWidth: "500px" }}
-          value={inputPw}
-          onChange={handleInputPw}
-        />
-        <Box p={4} />
-        <ButtonFill
-          text={"로그인"}
-          onClick={onClickLogin}
-          height={"50px"}
-          width={"60vw"}
-          maxWidth={"500px"}
-          fontSize={""}
-          disabled={false}
-        />
-        <Box p={1} />
-        <ButtonFill
-          text={"가물가물 회원 되기"}
-          onClick={() => router.push("/signup")}
-          height={"50px"}
-          width={"60vw"}
-          maxWidth={"500px"}
-          fontSize={""}
-          disabled={false}
-        />
-      </Box>
+      <Mobile>
+        <Box className={styles.PageforMobile}>
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: "20%",
+              margin: "auto",
+              maxWidth: "500px",
+              width: "60vw",
+            }}
+          >
+            <Input
+              color="success"
+              placeholder="아이디"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputId}
+              onChange={handleInputId}
+            />
+            <Box p={3} />
+            <Input
+              type="password"
+              color="success"
+              placeholder="비밀번호"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputPw}
+              onChange={handleInputPw}
+            />
+            <Box p={4} />
+            <ButtonFill
+              text={"로그인"}
+              onClick={onClickLogin}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+            <Box p={1} />
+            <ButtonFill
+              text={"가물가물 회원 되기"}
+              onClick={() => router.push("/signup")}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+          </Box>
+        </Box>
+      </Mobile>
+      <Desktop>
+        <Box className={styles.PageforDesktop}>
+          <Box
+            sx={{
+              position: "absolute",
+              left: 200,
+              right: 0,
+              top: "20%",
+              margin: "auto",
+              maxWidth: "500px",
+              width: "60vw",
+            }}
+          >
+            <Input
+              color="success"
+              placeholder="아이디"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputId}
+              onChange={handleInputId}
+            />
+            <Box p={3} />
+            <Input
+              type="password"
+              color="success"
+              placeholder="비밀번호"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputPw}
+              onChange={handleInputPw}
+            />
+            <Box p={4} />
+            <ButtonFill
+              text={"로그인"}
+              onClick={onClickLogin}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+            <Box p={1} />
+            <ButtonFill
+              text={"가물가물 회원 되기"}
+              onClick={() => router.push("/signup")}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+          </Box>
+        </Box>
+      </Desktop>
+      <Tablet>
+        <Box className={styles.PageforTablet}>
+          <Box
+            sx={{
+              position: "absolute",
+              left: 150,
+              right: 0,
+              top: "20%",
+              margin: "auto",
+              maxWidth: "500px",
+              width: "60vw",
+            }}
+          >
+            <Input
+              color="success"
+              placeholder="아이디"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputId}
+              onChange={handleInputId}
+            />
+            <Box p={3} />
+            <Input
+              type="password"
+              color="success"
+              placeholder="비밀번호"
+              sx={{ width: "60vw", maxWidth: "500px" }}
+              value={inputPw}
+              onChange={handleInputPw}
+            />
+            <Box p={4} />
+            <ButtonFill
+              text={"로그인"}
+              onClick={onClickLogin}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+            <Box p={1} />
+            <ButtonFill
+              text={"가물가물 회원 되기"}
+              onClick={() => router.push("/signup")}
+              height={"50px"}
+              width={"60vw"}
+              maxWidth={"500px"}
+              fontSize={""}
+              disabled={false}
+            />
+          </Box>
+        </Box>
+      </Tablet>
     </Page>
   );
 };
