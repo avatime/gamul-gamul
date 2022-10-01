@@ -66,6 +66,11 @@ const IngredientPage: NextPage<IProps> = ({
                 rowSize={1}
                 gridSize={6}
               />
+              <HighClassComp
+            highClassList={highClassList}
+            ingredientList={ingredientList}
+            gridSize={5}
+          />
             </Grid>
             <Grid item xs={5}>
               <CardContainer title="주요 물품 현황">
@@ -83,11 +88,6 @@ const IngredientPage: NextPage<IProps> = ({
               </CardContainer>
             </Grid>
           </Grid>
-          <HighClassComp
-            highClassList={highClassList}
-            ingredientList={ingredientList}
-            gridSize={8}
-          />
         </Box>
       </Desktop>
       <Tablet>
