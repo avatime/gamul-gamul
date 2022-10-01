@@ -1,9 +1,6 @@
 package com.gamul.api.controller;
 
-import com.gamul.api.request.RecipeBasketReq;
-import com.gamul.api.request.RecipeDetailReq;
-import com.gamul.api.request.RecipeListReq;
-import com.gamul.api.request.RecipeSelectPostReq;
+import com.gamul.api.request.*;
 import com.gamul.api.response.*;
 import com.gamul.api.service.RecipeService;
 import com.gamul.common.model.response.BaseResponseBody;
@@ -72,8 +69,8 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName, @RequestBody RecipeSelectPostReq recipeSelectPostReq){
-        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(recipeSelectPostReq.getUserName());
+    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName, @RequestBody RecipeSelectListReq recipeSelectListReq){
+        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(recipeSelectListReq.getUserName());
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
     @GetMapping("/youtube")
@@ -109,13 +106,13 @@ public class RecipeController {
             @ApiResponse(code = 405, message = "존재하지 않는 recipe"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> recipeSelected(@PathVariable String userName, @PathVariable Long recipeId){
+    public ResponseEntity<?> recipeSelected(@RequestBody RecipeSelectPostReq recipeSelectPostReq){
         try{
-            if (userRepository.existsByUsername(userName)){
-                if (!recipeRepository.existsById(recipeId)) {
+            if (userRepository.existsByUsername(recipeSelectPostReq.getUserName())){
+                if (!recipeRepository.existsById(recipeSelectPostReq.getRecipeId())) {
                     return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 없음"));
                 }
-                recipeService.recipeSelected(userName, recipeId);
+                recipeService.recipeSelected(recipeSelectPostReq.getUserName(), recipeSelectPostReq.getRecipeId());
             }
             else{
                 return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));

@@ -144,18 +144,13 @@ public class RecipeServiceImpl implements RecipeService{
         // 반환할 객체
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
         User user = userRepository.findByUsername(userName).get();
-        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserId(user.getId()).orElse(null);
+        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserIdOrderByCreatedTimeDesc(user.getId());
         for(RecipeSelected recipeSelected : recipeSelectedList){
-            boolean bookmark = true;
-            if (recipeSelected == null){
-                bookmark = false;
+            if (recipeSelected.isActiveFlag()){
+                Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).get();
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), recipeSelected.isActiveFlag(), recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
             }
-            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).get();
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
-            System.out.println("recipeInfoRes: " + recipeInfoRes.getName());
-            System.out.println(recipeInfoResList);
-            recipeInfoResList.add(recipeInfoRes);
-            System.out.println(recipeInfoResList);
         }
         return recipeInfoResList;
     }
@@ -221,16 +216,18 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public void recipeSelected(String userName, Long recipeId){
-        User user = userRepository.findByUsername(userName).orElse(null);
+        User user = userRepository.findByUsername(userName).get();
 
         if(!recipeSelectedRepository.existsRecipeSelectedByUserIdAndRecipeId(user.getId(), recipeId)){
-            Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+            System.out.println("레시피 아이디: " + recipeId);
+            Recipe recipe = recipeRepository.findById(recipeId).get();
             RecipeSelected recipeSelected = new RecipeSelected(user, recipe);
-            recipeSelectedRepository.saveAndFlush(recipeSelected);
+            recipeSelectedRepository.save(recipeSelected);
         }else{
+            System.out.println("레시피 아이디: " + recipeId);
             RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).get();
             recipeSelected.setActiveFlag(!recipeSelected.isActiveFlag());
-            recipeSelectedRepository.saveAndFlush(recipeSelected);
+            recipeSelectedRepository.save(recipeSelected);
         }
     }
 
