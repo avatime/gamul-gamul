@@ -52,6 +52,10 @@ const IngredientInfoPage: NextPage<IProps> = ({
     await apiClient.putBookmarkIngredient(userName, Number(id));
   };
 
+  const onClickBasket = () => {
+    apiClient.putBasketIngredient(userName, Number(id));
+  }
+
   useEffect(() => {
     if (id) {
       saveRecentSearchLocalStorage("ingredient", +(id as string), `이름 ${id}`);
@@ -76,6 +80,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
+                    onClickBasket={onClickBasket}
                     views={ingredientDetailInfo.views}
                     imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />

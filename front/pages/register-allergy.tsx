@@ -20,14 +20,18 @@ import styles from "../styles/Page.module.css";
 
 interface IProps {
   ingredientList: IngredientInfo[];
-  allergyIngredientList: number[];
 }
 
-const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredientList }) => {
+const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   const router = useRouter();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
-  const [selectedList, setSelectedList] = useState<number[]>(allergyIngredientList);
+  const [selectedList, setSelectedList] = useState<number[]>([]);
+  useEffect(() => {
+    ApiClient.getInstance()
+      .getAllergyIngredientList(getCookie("userName"))
+      .then((data) => setSelectedList(data));
+  }, []);
   useEffect(() => {
     setSearchedIngredientList(ingredientList.filter((v) => v.name.includes(searchKeyword)));
   }, [ingredientList, searchKeyword]);
@@ -186,15 +190,12 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
 export default AllergyRegisterPage;
 
 export async function getStaticProps() {
-  const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.NAME_ASC);
-  const allergyIngredientList = await apiClient.getAllergyIngredientList(userName);
 
   return {
     props: {
       ingredientList,
-      allergyIngredientList,
     },
   };
 }
