@@ -2,11 +2,9 @@ package com.gamul.api.service;
 
 import com.gamul.db.entity.Allergy;
 import com.gamul.db.entity.IngredientPriceNotice;
+import com.gamul.db.entity.Notice;
 import com.gamul.db.entity.User;
-import com.gamul.db.repository.AllergyRepository;
-import com.gamul.db.repository.IngredientPriceNoticeRepository;
-import com.gamul.db.repository.IngredientRepository;
-import com.gamul.db.repository.UserRepository;
+import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,8 @@ public class AlarmServiceImpl implements AlarmService {
     UserRepository userRepository;
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    NoticeRepository noticeRepository;
 
     @Override
     public List<Allergy> getAllergyList(User user) {
@@ -60,5 +60,10 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public List<IngredientPriceNotice> saveAllIngredientPriceNotice(List<IngredientPriceNotice> list) {
         return ingredientPriceNoticeRepository.saveAll(list);
+    }
+
+    @Override
+    public List<Notice> getAllNoticeByUser(User user) {
+        return noticeRepository.getAllByIngredientPriceNotice_User(user);
     }
 }

@@ -8,11 +8,16 @@ import lombok.Setter;
 @Setter
 @ApiModel("PriceInfoRes")
 public class PriceInfoRes {
-    String data;
+    String date;
 
     int price;
 
     String unit;
 
     int quantity;
+
+    public PriceInfoRes(String date, int price){
+        this.date = date;
+        this.price = price;
+    }
 }

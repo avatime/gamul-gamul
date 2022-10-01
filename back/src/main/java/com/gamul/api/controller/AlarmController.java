@@ -4,18 +4,19 @@ import com.gamul.api.request.*;
 import com.gamul.api.response.AllergyAlarmRes;
 import com.gamul.api.response.IngredientLimitPriceAlarmRes;
 import com.gamul.api.response.IngredientLimitPriceRes;
+import com.gamul.api.response.NoticeRes;
 import com.gamul.api.service.AlarmService;
+import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
-import com.gamul.db.entity.Allergy;
-import com.gamul.db.entity.IngredientPriceNotice;
-import com.gamul.db.entity.User;
+import com.gamul.db.entity.*;
 import com.gamul.db.repository.IngredientRepository;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class AlarmController {
     UserService userService;
     @Autowired
     IngredientRepository ingredientRepository;
+
+    @Autowired
+    DailyPriceService dailyPriceService;
 
     @PostMapping("/allergy")
     @ApiOperation(value = "알러지 등록/해제", notes = "식재료별 <strong>알러지</strong>를 등록 혹은 해제한다")
@@ -193,10 +197,21 @@ public class AlarmController {
     @PostMapping("notice/list")
     @ApiOperation(value = "유저별 알람 조회", notes = "유저별 <strong>알람</strong>을 조회한다")
     public ResponseEntity<?> getNoticeList(@RequestBody @ApiParam(value="알람 설정 정보", required = true)IngredientAllergyListReq usernameReq){
+        DecimalFormat decFormat = new DecimalFormat("###,###");
+        try{
+            User user = userService.getUserByUsername(usernameReq.getUserName());
+            List<Notice> noticeList = alarmService.getAllNoticeByUser(user);
+            List<NoticeRes> list = new ArrayList<>();
+            for(Notice notice : noticeList){
+                Day day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 1);
+                String info = " - " +  decFormat.format(day.getPrice()) + "원/" + day.getQuantity() + day.getUnit();
+                list.add(new NoticeRes(notice, info));
+            }
 
-
-
-        return ResponseEntity.ok(200);
+            return ResponseEntity.status(200).body(list);
+        } catch (Exception e) {
+            return ResponseEntity.status(200).body("Internal Server Error");
+        }
     }
 
 //    @Scheduled(fixedRate = 10000)

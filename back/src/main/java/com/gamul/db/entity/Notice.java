@@ -28,6 +28,9 @@ public class Notice extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private IngredientPriceNotice ingredientPriceNotice;
 
+    @Column
+    private boolean type;
+
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -37,4 +40,5 @@ public class Notice extends BaseEntity {
     public void onCreate() {
         this.createdTime = Timestamp.valueOf(LocalDateTime.now());
     }
+
 }

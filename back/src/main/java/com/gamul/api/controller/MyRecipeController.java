@@ -4,9 +4,11 @@ import com.gamul.api.request.IngredientQuantityPostReq;
 import com.gamul.api.request.MyRecipeEditReq;
 import com.gamul.api.request.MyRecipeRegisterPostReq;
 import com.gamul.api.response.*;
+import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.MyRecipeService;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
+import com.gamul.db.entity.Day;
 import com.gamul.db.entity.MyRecipe;
 import com.gamul.db.entity.MyRecipeIngredient;
 import com.gamul.db.entity.User;
@@ -17,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @Api(value = "마이레시피 API", tags = {"MyRecipe."})
@@ -46,7 +45,7 @@ public class MyRecipeController {
     @Autowired
     PriceRepository priceRepository;
     @Autowired
-    DayRepository dayRepository;
+    DailyPriceService dailyPriceService;
 
     @PostMapping("")
     @ApiOperation(value = "나만의 레시피 저장", notes = "<strong>나만의 레시피</strong>를 저장한다.")
@@ -152,34 +151,54 @@ public class MyRecipeController {
         List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
         List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
         List<PriceTransitionInfoRes> pricelist = getPriceTransition(myRecipeId);
+        PriceTransitionInfoRes priceTransitionInfoRes = new PriceTransitionInfoRes();
+        ArrayList<PriceInfoRes> dayWholePrice =new ArrayList<PriceInfoRes>(10);
+        ArrayList<PriceInfoRes> yearWholePrice =new ArrayList<PriceInfoRes>(10);
+        ArrayList<PriceInfoRes> monthWholePrice =new ArrayList<PriceInfoRes>(10);
+        ArrayList<PriceInfoRes> dayRetailPrice =new ArrayList<PriceInfoRes>(10);
+        ArrayList<PriceInfoRes> yearRetailPrice =new ArrayList<PriceInfoRes>(10);
+        ArrayList<PriceInfoRes> monthRetailPrice =new ArrayList<PriceInfoRes>(10);
+
 
         int idx = 0;
-        for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
-            Calendar cal = new GregorianCalendar();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 형식 어케 ?/
-            int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
-            cal.add(Calendar.DATE, -1);
-            int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
-//            List<Day> dayPriceList = dayRepository.getAvgPriceByIngredientAndType(myRecipeIngredient.getIngredient(), 1);
-            MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
-                    .ingredientId(myRecipeIngredient.getIngredient().getId())
-                    .name(myRecipeIngredient.getMyRecipe().getName())
-                    .price(todayPrice)
-                    .unit("") // 단량 어떤거로???
-                    .quantity(myRecipeIngredient.getQuantity())
-                    .volatility(((todayPrice - yesterPrice)/todayPrice) * 100)
-                    .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .highClassId(myRecipeIngredient.getIngredient().getHighClass())
-                    .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
-                    .build();
 
-            ingreidentlist.add(ingredientInfoRes);
-            idx++;
+        try{
+            for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
+                List<Day> dailyPrice = dailyPriceService.findDailyPrices(myRecipeIngredient.getIngredient().getId(), 1);
+                priceTransitionInfoRes.getRetailsales().getDaily().set(idx, new PriceInfoRes(dailyPrice.get(0).getDatetime(), dailyPrice.get(0).getPrice()));
+                MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                        .ingredientId(myRecipeIngredient.getIngredient().getId())
+                        .name(myRecipeIngredient.getIngredient().getMidClass())
+                        .price(dailyPrice.get(0).getPrice())
+                        .unit(dailyPrice.get(0).getUnit())
+                        .quantity(dailyPrice.get(0).getQuantity())
+                        .volatility(((dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice())/dailyPrice.get(0).getPrice()) * 100)
+                        .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                        .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                        .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                        .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                        .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                        .build();
+
+                ingreidentlist.add(ingredientInfoRes);
+
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
+        priceTransitionInfoRes.getWholesales().setDaily(new ArrayList<PriceInfoRes>(10));
+        priceTransitionInfoRes.getWholesales().setYearly(new ArrayList<PriceInfoRes>(10));
+        priceTransitionInfoRes.getWholesales().setMonthly(new ArrayList<PriceInfoRes>(10));
+        priceTransitionInfoRes.getRetailsales().setDaily(new ArrayList<PriceInfoRes>(10));
+        priceTransitionInfoRes.getRetailsales().setYearly(new ArrayList<PriceInfoRes>(10));
+        priceTransitionInfoRes.getRetailsales().setMonthly(new ArrayList<PriceInfoRes>(10));
 
         myRecipeDetailRes.setIngredientList(ingreidentlist);
+        myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getWholesales().getDaily().get(0).getPrice());
+        myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
+        myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
+        myRecipeDetailRes.setName(myRecipe.getName());
+
 
         return ResponseEntity.status(200).body(myRecipeDetailRes);
     }
