@@ -22,14 +22,14 @@ public class YoutubeInfoRes {
     @JsonProperty("channel_name")
     String channelName;
 
-    BigInteger view;
+    Long view;
 
     // ex) 1년 전, 3일 전
     String date;
 
     String url;
 
-    public YoutubeInfoRes(String thumbnailPath, String name, String channelName, BigInteger view, String date, String url){
+    public YoutubeInfoRes(String thumbnailPath, String name, String channelName, Long view, String date, String url){
         this.thumbnailPath = thumbnailPath;
         this.name = name;
         this.channelName = channelName;
