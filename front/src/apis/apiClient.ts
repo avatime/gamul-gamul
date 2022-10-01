@@ -173,8 +173,14 @@ export class ApiClient
     });
   }
   async getRecipeOrderList(recipeId: number): Promise<RecipeOrderInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeOrderList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/${recipeId}/order`,
+      })
+    ).data;
   }
+
   async putBasketAllRecipeIngredient(userName: string, recipeId: number): Promise<void> {
     return this.axiosInstance.request({
       method: "put",
