@@ -125,35 +125,63 @@ public class IngredientServiceImpl implements IngredientService{
         // 사용자 정보
         User user = userRepository.findByUsername(userName).get();
         // 사용자 pk로 찜한 재료 객체들 가져오기
-        List<IngredientSelected> ingredientSelectedList = ingredientSelectedRepository.findAllByUserId(user.getId());
+        List<IngredientSelected> ingredientSelectedList = ingredientSelectedRepository.findByUserIdOrderByCreatedTimeDesc(user.getId());
         // response dto 생성 해서 값 넣기
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
+
 
         for (IngredientSelected x : ingredientSelectedList){
 
             // 식재료 객체 가져오기
-            Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).orElse(null);
+            Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
+
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            // 가격 변동률
+            int volatility = 0;
+            if (day == null){
+                day = new Day();
+                day.setPrice(0);
+                day.setUnit("");
+                day.setQuantity(0);
+            }else{
+                // 가격 변동률
+                List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                int today = dayList.get(0).getPrice();
+
+                int yesterday = dayList.get(1).getPrice();
+                volatility = (today - yesterday) / 100;
+            }
             // 알러지 객체 가져오기
+            boolean allergyStatus;
             Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+            if (allergy == null){
+                allergyStatus = false;
+            }else{
+                allergyStatus = allergy.isActiveFlag();
+            }
             // 재료 찜 객체 가져오기
+            boolean selectedStatus;
             IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+            if (ingredientSelected == null){
+                selectedStatus = false;
+            }else{
+                selectedStatus = ingredientSelected.isActiveFlag();
+            }
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);;
+            boolean basketStatus;
+            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+            if (basket == null){
+                basketStatus = false;
+            }else{
+                basketStatus = basket.isActiveFlag();
+            }
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            // 가격 변동률
-            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            int today = dayList.get(0).getPrice();
-            int yesterday = dayList.get(1).getPrice();
-            int volatility = (today - yesterday) / 100;
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
 
-            System.out.println("얘조 ㅁ나와라 제발!!!!" + ingredientInfoRes);
-//            ingredientInfoRes.setVolatility();
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
 
             ingredientInfoResList.add(ingredientInfoRes);
         }

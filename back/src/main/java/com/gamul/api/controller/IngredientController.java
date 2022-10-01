@@ -1,8 +1,6 @@
 package com.gamul.api.controller;
 
-import com.gamul.api.request.IngredientListReq;
-import com.gamul.api.request.OfflineMartDetailInfoReq;
-import com.gamul.api.request.OfflineMartInfoReq;
+import com.gamul.api.request.*;
 import com.gamul.api.response.*;
 import com.gamul.api.service.IngredientService;
 import com.gamul.common.model.response.BaseResponseBody;
@@ -57,8 +55,8 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getSelectedIngredientList(@PathVariable String userName) {
-        List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(userName);
+    public ResponseEntity<?> getSelectedIngredientList(@RequestBody IngredientSelectListReq ingredientSelectListReq) {
+        List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(ingredientSelectListReq.getUserName());
         return new ResponseEntity<List<IngredientInfoRes>>(ingredientSelectedList, HttpStatus.OK);
     }
 
@@ -104,13 +102,13 @@ public class IngredientController {
             @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> ingredientSelected(@PathVariable String userName, @PathVariable Long ingredientId) {
+    public ResponseEntity<?> ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
         try{
-            if (userRepository.existsByUsername(userName)) {
-                if (!ingredientRepository.existsById(ingredientId)) {
+            if (userRepository.existsByUsername(ingredientSelectReq.getUserName())) {
+                if (!ingredientRepository.existsById(ingredientSelectReq.getIngredientId())) {
                     return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
                 }
-                ingredientService.ingredientBasket(userName, ingredientId);
+                ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
             } else{
                 return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
             }
