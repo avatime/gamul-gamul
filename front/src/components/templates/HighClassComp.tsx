@@ -8,6 +8,7 @@ import { IngredientItem } from "../IngredientItem";
 import { useRouter } from "next/router";
 
 interface IProps {
+  title?: string;
   highClassList: HighClass[];
   ingredientList: IngredientInfo[];
   rowSize?: number;
@@ -15,6 +16,7 @@ interface IProps {
 }
 
 export const HighClassComp: FC<IProps> = ({
+  title = "분류별 조회",
   highClassList,
   ingredientList,
   rowSize = 2,
@@ -32,10 +34,7 @@ export const HighClassComp: FC<IProps> = ({
     setHighClassId(0);
   };
   return (
-    <CardContainer
-      title="종류별 상세 조회"
-      onClickBack={highClassId !== 0 ? onClickBack : undefined}
-    >
+    <CardContainer title={title} onClickBack={highClassId !== 0 ? onClickBack : undefined}>
       {highClassId === 0 ? (
         <CarouselContainer
           showArrowBackground={true}
