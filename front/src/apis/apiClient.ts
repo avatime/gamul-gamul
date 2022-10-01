@@ -22,6 +22,8 @@ import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
 import { getCookie, setCookie } from "../utils/cookie";
+import { NotificationInfo } from "./responses/notificationInfo";
+import { getNotificationItemList } from './dummy/dummyApi';
 
 const delay = 0;
 
@@ -33,6 +35,14 @@ export class ApiClient
 
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
+  }
+  async getNotificationInfoList(userName: string): Promise<NotificationInfo[]> {
+    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getNotificationItemList), delay));
+    return (await this.axiosInstance.request({
+      method: "post",
+      url: "/user/notice/list",
+      data: { user_name: userName },
+    })).data;
   }
   postSubscription(userName: string, subscription: PushSubscription): Promise<void> {
     return this.axiosInstance.request({
