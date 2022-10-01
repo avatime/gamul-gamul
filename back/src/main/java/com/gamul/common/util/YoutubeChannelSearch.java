@@ -146,9 +146,9 @@ public class YoutubeChannelSearch {
                 Long viewCount = getViewCountFromVideo(singleVideo.getId());
                 youtubeInfoRes.setView(viewCount);
                 String date = singleVideo.getSnippet().getPublishedAt().toString();
-                youtubeInfoRes.setDate(date);
+                youtubeInfoRes.setDate(date.substring(0,10));
                 youtubeInfoRes.setUrl(videoLink);
-                youtubeInfoRes.setDescription(singleVideo.getSnippet().getDescription());
+
 
                 return youtubeInfoRes;
 
