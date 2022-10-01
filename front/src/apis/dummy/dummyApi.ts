@@ -11,6 +11,7 @@ import { MyRecipeInfo } from "../responses/myRecipeInfo";
 import { MyRecipeDetailInfo } from "../responses/myRecipeDetailInfo";
 import { MyRecipeIngredientInfo } from "../responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "../responses/limitPriceNoticeInfo";
+import { NotificationInfo } from "../responses/notificationInfo";
 
 export const getIngredientList: IngredientInfo[] = Array.from({ length: 100 }, (_, i) => i).map(
   (it) => ({
@@ -248,21 +249,21 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
     {
       image_path: "https://img.danawa.com/cmpny_info/images/ED910_logo.gif",
       mall_name: "인터파크",
-      name : "보라보라보라보라색 가지",
+      name: "보라보라보라보라색 가지",
       price: 2020,
       url: "https://shopping.interpark.com/product/productInfo.do?prdNo=8519195204&dispNo=016001&bizCd=P01415&utm_medium=affiliate&utm_source=danawa&utm_campaign=shop_20211015_danawa_p01415_cps&utm_content=conversion_47",
     },
     {
       image_path: "https://img.danawa.com/cmpny_info/images/TH201_logo.gif",
       mall_name: "11번가",
-      name:"진짜 가지",
+      name: "진짜 가지",
       price: 2080,
       url: "https://www.11st.co.kr/products/4564092401?service_id=pcdn&utm_term=&utm_campaign=%B4%D9%B3%AA%BF%CDpc_%B0%A1%B0%DD%BA%F1%B1%B3%B1%E2%BA%BB&utm_source=%B4%D9%B3%AA%BF%CD_PC_PCS&utm_medium=%B0%A1%B0%DD%BA%F1%B1%B3",
     },
     {
       image_path: "https://img.danawa.com/cmpny_info/images/EE128_logo.gif",
       mall_name: "G마켓",
-      name:"가지무침이 되기싫은가지",
+      name: "가지무침이 되기싫은가지",
       price: 2130,
       url: "http://item.gmarket.co.kr/DetailView/Item.asp?goodscode=2475349781&GoodsSale=Y&jaehuid=200002657&service_id=pcdn",
     },
@@ -619,7 +620,8 @@ export const getMyRecipeDetailInfo: MyRecipeDetailInfo = {
     pastvol: -2,
     todayvol: 1,
   },
-  image_path: "https://gamulbucket2022.s3.ap-northeast-2.amazonaws.com/myRecipe/031b4b72-bf30-4e0f-af45-413dd89c6531.png",
+  image_path:
+    "https://gamulbucket2022.s3.ap-northeast-2.amazonaws.com/myRecipe/031b4b72-bf30-4e0f-af45-413dd89c6531.png",
   name: "윤선이의 된장찌개",
 };
 
@@ -648,3 +650,12 @@ export const getLimitPriceList: LimitPriceNoticeInfo[] = [
     lower_limit_price: 8,
   },
 ];
+
+export const getNotificationItemList: NotificationInfo[] = Array.from(
+  { length: 50 },
+  (_, i) => i
+).map((it) => ({
+  ingredient_id: it + 1,
+  title: "고추 상한가 알림",
+  message: "고추가 1,000원/100g 까지 떨어졌어요! 지금이 바로 기회!!",
+}));

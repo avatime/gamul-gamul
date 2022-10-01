@@ -30,7 +30,7 @@ const hideHeaderBarArr = [
   "register-alarm",
 ];
 
-const hideNavBarArr = ["notice", "signup"];
+const hideNavBarArr = ["signup"];
 
 export const showHeaderBar = (pathname: string) => {
   const pathnameSplited = pathname.split("/");

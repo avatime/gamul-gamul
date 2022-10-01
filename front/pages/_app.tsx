@@ -58,7 +58,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useWebPushSubscription();
 
-  const onClickNotice = async () => {
+  const onClickNotice = () => {
+    router.push("/notice");
   };
   return (
     <ThemeProvider theme={theme}>
@@ -70,7 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Box className="page-background">
         {showHeader && (
-          <HeaderBar badgeContent={6} onClickSearch={onClickSearch} onClickNotice={onClickNotice} />
+          <HeaderBar onClickSearch={onClickSearch} onClickNotice={onClickNotice} />
         )}
         <Component {...pageProps} />
         {showNav && <Navbar activeIndex={activeIndex} />}

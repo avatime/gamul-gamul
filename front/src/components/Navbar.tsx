@@ -22,7 +22,7 @@ const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
   color: #A1A1AA;
 
   &.Mui-selected, .Mui-selected > svg {
-    color: #000;
+    color: #4411AA;
   }
 `);
 const token = getCookie("token");
