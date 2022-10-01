@@ -55,4 +55,9 @@ export interface RecipeApi {
    * 인기 요리법 유튜브 목록 조회
    */
   getPopularYoutubeList(): Promise<YoutubeInfo[]>;
+   /**
+   * 요리법 조회수 업데이트
+   * @param recipeId 요리법 ID
+   */
+    postRecipeView(recipeId: number): Promise<void>;
 }
