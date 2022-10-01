@@ -45,7 +45,6 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
   };
   const onClickItem = (id: number) => {
     const idx = selectedList.findIndex((v) => v.ingredient_id === id);
-    console.log(idx);
     if (idx < 0) {
       setLimitPriceNoticeInfo({
         ingredient_id: id,
@@ -86,9 +85,14 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
       .then(() => router.back());
   };
 
-  const Comp = (hideBackHeader: boolean) => (
+  const Comp = (hideBackHeader: boolean, navBarWidth?: String) => (
     <Box bgcolor="white" minHeight="100vh">
-      <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
+      <Box
+        position="fixed"
+        width={`calc(100% - ${navBarWidth || "0px"})`}
+        bgcolor="white"
+        zIndex="10"
+      >
         {!hideBackHeader && (
           <BackHeader
             backgroundColor="white"
@@ -100,6 +104,13 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
             }
           />
         )}
+        {hideBackHeader && (
+          <Box display="flex" flexDirection="row" justifyContent="end">
+            <IconButton onClick={onClickSave}>
+              <CheckIcon />
+            </IconButton>
+          </Box>
+        )}
         <Box paddingTop={hideBackHeader ? "0" : "40px"}>
           <Stack
             direction="row"
@@ -108,18 +119,22 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
             }}
           >
             {selectedList.map((v) => (
-              <IngredientItem
-                key={v.ingredient_id}
-                direction="column"
-                ingredientInfo={ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!}
-                onClickItem={() => onClickItem(v.ingredient_id)}
-                onDelete={() => onClickDelete(v.ingredient_id)}
-              />
+              <Box minWidth="95px" key={v.ingredient_id}>
+                <IngredientItem
+                  direction="column"
+                  ingredientInfo={
+                    ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!
+                  }
+                  onClickItem={() => onClickItem(v.ingredient_id)}
+                  onDelete={() => onClickDelete(v.ingredient_id)}
+                />
+              </Box>
             ))}
           </Stack>
 
           <Box height="60px" paddingX="15px">
             <Box
+              maxWidth="500px"
               height="40px"
               borderRadius="20px"
               display="flex"
@@ -207,10 +222,10 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList, limitPriceList })
   return (
     <>
       <Desktop>
-        <Box className={styles.PageforDesktop}>{Comp(true)}</Box>
+        <Box className={styles.PageforDesktop}>{Comp(true, "250px")}</Box>
       </Desktop>
       <Tablet>
-        <Box className={styles.PageforTablet}>{Comp(true)}</Box>
+        <Box className={styles.PageforTablet}>{Comp(true, "150px")}</Box>
       </Tablet>
       <Mobile>{Comp(false)}</Mobile>
       {showModal && (
