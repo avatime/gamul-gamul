@@ -50,10 +50,15 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
       .then(() => router.back());
   };
 
-  const Comp = (hideBackHedaer: boolean) => (
+  const Comp = (hideBackHeader: boolean, navBarWidth?: String) => (
     <Box bgcolor="white" minHeight="100vh">
-      <Box position="fixed" width="100vw" bgcolor="white" zIndex="10">
-        {!hideBackHedaer && (
+      <Box
+        position="fixed"
+        width={`calc(100% - ${navBarWidth || "0px"})`}
+        bgcolor="white"
+        zIndex="10"
+      >
+        {!hideBackHeader && (
           <BackHeader
             backgroundColor="white"
             text="알러지 정보 등록"
@@ -64,7 +69,14 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
             }
           />
         )}
-        <Box paddingTop={hideBackHedaer ? "0" : "50px"}>
+        {hideBackHeader && (
+          <Box display="flex" flexDirection="row" justifyContent="end">
+            <IconButton onClick={onClickSave}>
+              <CheckIcon />
+            </IconButton>
+          </Box>
+        )}
+        <Box paddingTop={hideBackHeader ? "0" : "50px"}>
           <Stack
             direction="row"
             style={{
@@ -72,18 +84,20 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
             }}
           >
             {selectedList.map((v) => (
-              <IngredientItem
-                key={v}
-                direction="column"
-                ingredientInfo={ingredientList.find((it) => it.ingredient_id === v)!}
-                onClickItem={() => onClickDelete(v)}
-                onDelete={() => onClickDelete(v)}
-              />
+              <Box minWidth="95px" key={v}>
+                <IngredientItem
+                  direction="column"
+                  ingredientInfo={ingredientList.find((it) => it.ingredient_id === v)!}
+                  onClickItem={() => onClickDelete(v)}
+                  onDelete={() => onClickDelete(v)}
+                />
+              </Box>
             ))}
           </Stack>
 
           <Box height="40px" paddingX="15px">
             <Box
+              maxWidth="500px"
               height="40px"
               borderRadius="20px"
               display="flex"
@@ -159,10 +173,10 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList, allergyIngredie
   return (
     <>
       <Desktop>
-        <Box className={styles.PageforDesktop}>{Comp(true)}</Box>
+        <Box className={styles.PageforDesktop}>{Comp(true, "250px")}</Box>
       </Desktop>
       <Tablet>
-        <Box className={styles.PageforTablet}>{Comp(true)}</Box>
+        <Box className={styles.PageforTablet}>{Comp(true, "150px")}</Box>
       </Tablet>
       <Mobile>{Comp(false)}</Mobile>
     </>
