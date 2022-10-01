@@ -10,4 +10,5 @@ export interface IngredientInfo {
   basket: boolean; // 바구니 여부,
   high_class_id: number; // 대분류 id
   high_class_name: string; // 대분류 이름
+  views: number; // 조회수;
 }

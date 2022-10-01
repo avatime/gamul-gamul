@@ -82,7 +82,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                     bookmark={ingredientInfo.bookmark}
                     onClickBookmark={setBookmark}
                     onClickBasket={onClickBasket}
-                    views={ingredientDetailInfo.views}
+                    views={ingredientInfo.views}
                     imagePath={`/assets/ingredientsImg/${id}.jpg`}
                   />
                 </Box>
@@ -112,7 +112,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             bookmark={ingredientInfo.bookmark}
             onClickBookmark={setBookmark}
             onClickBasket={onClickBasket}
-            views={ingredientDetailInfo.views}
+            views={ingredientInfo.views}
             imagePath={`/assets/ingredientsImg/${id}.jpg`}
           />
           </Box>
@@ -138,7 +138,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             bookmark={ingredientInfo.bookmark}
             onClickBookmark={setBookmark}
             onClickBasket={onClickBasket}
-            views={ingredientDetailInfo.views}
+            views={ingredientInfo.views}
             imagePath={`/assets/ingredientsImg/${id}.jpg`}
           />
           <IngredientPriceComp

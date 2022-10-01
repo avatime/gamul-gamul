@@ -25,27 +25,25 @@ interface IProps {
   recipeDetailInfo: RecipeDetailInfo;
 }
 
-const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
+const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, recipeDetailInfo }) => {
   const router = useRouter();
-  const { id } = router.query;
-  const userName = getCookie("userName");
   const onClickBookmark = () => {};
 
   return (
     <div>
-  
       <Mobile>
-        <BackHeader/>
+        <BackHeader />
         <Box
           className={styles.PageforMobile}
           sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
         >
           <InfoTitle
-            name={""}
-            bookmark={true}
+            name={recipeDetailInfo.recipe_info.name}
+            bookmark={recipeDetailInfo.recipe_info.bookmark}
             onClickBookmark={onClickBookmark}
-            views={0}
-            imagePath={""}
+            views={recipeDetailInfo.recipe_info.views}
+            imagePath={recipeDetailInfo.recipe_info.image_path}
+            isExternalImage={true}
           />
           <Box p={2} />
 
@@ -69,7 +67,7 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
                     alt="recipe_order"
                     layout="responsive"
                     unoptimized
-                    style={{borderRadius:10}}
+                    style={{ borderRadius: 10 }}
                   />
                   <Box sx={{ bottom: "10%", left: 10 }}>
                     <Typography
@@ -93,13 +91,12 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
       <Desktop>
         <Box className={styles.PageforDesktop} sx={{ flexDirection: "column", height: "100vh" }}>
           <InfoTitle
-            name={""}
-            bookmark={false}
-            onClickBookmark={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-            views={0}
-            imagePath={""}
+            name={recipeDetailInfo.recipe_info.name}
+            bookmark={recipeDetailInfo.recipe_info.bookmark}
+            onClickBookmark={onClickBookmark}
+            views={recipeDetailInfo.recipe_info.views}
+            imagePath={recipeDetailInfo.recipe_info.image_path}
+            isExternalImage={true}
           />
           <Box p={2} />
 
@@ -132,16 +129,15 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
                       >
                         {idx + 1}.
                       </Typography>
-                      <Typography sx={{fontSize:"20px"}}>{item.description}</Typography>
+                      <Typography sx={{ fontSize: "20px" }}>{item.description}</Typography>
                     </Box>
                     <Image
                       src={item.image_path}
                       width="300px"
                       height="300px"
                       alt="recipe_order"
-                      style={{borderRadius:10}}
+                      style={{ borderRadius: 10 }}
                       unoptimized
-                      
                     />
                   </Stack>
                 </CardContainer>
@@ -156,13 +152,12 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
           sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
         >
           <InfoTitle
-            name={""}
-            bookmark={false}
-            onClickBookmark={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-            views={0}
-            imagePath={""}
+            name={recipeDetailInfo.recipe_info.name}
+            bookmark={recipeDetailInfo.recipe_info.bookmark}
+            onClickBookmark={onClickBookmark}
+            views={recipeDetailInfo.recipe_info.views}
+            imagePath={recipeDetailInfo.recipe_info.image_path}
+            isExternalImage={true}
           />
           <Box p={2} />
           <Stack
@@ -201,7 +196,7 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
                       width="300px"
                       height="300px"
                       alt="recipe_order"
-                      style={{borderRadius:10}}
+                      style={{ borderRadius: 10 }}
                       unoptimized
                     />
                   </Stack>
@@ -215,28 +210,17 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo }) => {
   );
 };
 
-export async function getStaticPaths() {
-  const lastId = 151978;
-  const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
-    params: {
-      id: id.toString(),
-    },
-  }));
-  return {
-    paths,
-    fallback: false,
-  };
-}
 export default RecipeDetailPage;
-export const getStaticProps = async (context: any) => {
+
+export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
 
   const recipeDetailInfo = await apiClient.getRecipeDetailInfo(context.params.id);
   const recipeOrderInfo = await apiClient.getRecipeOrderList(context.params.id);
-  console.log(recipeOrderInfo);
 
   return {
     props: {
+      recipeDetailInfo,
       recipeOrderInfo,
     },
   };
