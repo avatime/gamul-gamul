@@ -18,7 +18,7 @@ interface IProps {
 
 export const RecipeDetailComp: FC<IProps> = ({ recipeOrderInfo, order }) => {
   const imagePath = recipeOrderInfo.image_path;
-  const desc = recipeOrderInfo.desc;
+  const desc = recipeOrderInfo.description;
 
   return (
     <div>

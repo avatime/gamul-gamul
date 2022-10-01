@@ -11,23 +11,20 @@ import grape2 from "../../public/assets/grape2.png";
 import { Mobile } from "./Mobile";
 import { Tablet } from "./Tablet";
 import { Desktop } from "./Desktop";
-import headerlogo from "../../public/assets/headerlogo.png";
+
 interface IProps {
-  badgeContent: number;
   onClickSearch: () => void;
+  onClickNotice: () => void;
 }
 
-export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch }) => {
+export const HeaderBar: FC<IProps> = ({ onClickSearch, onClickNotice }) => {
   const router = useRouter();
   const [play, setPlay] = useState(false);
   const startPlay = () => {
-    console.log(play);
-
     setPlay(true);
   };
   const stopPlay = () => {
     setPlay(false);
-    console.log(play);
   };
   return (
     <div>
@@ -54,10 +51,8 @@ export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch }) => {
             <IconButton onClick={onClickSearch}>
               <SearchIcon color="success" />
             </IconButton>
-            <IconButton>
-              <Badge badgeContent={badgeContent} color="success">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton onClick={onClickNotice}>
+              <NotificationsIcon color="success" />
             </IconButton>
           </Box>
         </Stack>
@@ -89,10 +84,8 @@ export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch }) => {
             <IconButton onClick={onClickSearch}>
               <SearchIcon color="success" />
             </IconButton>
-            <IconButton>
-              <Badge badgeContent={badgeContent} color="success">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton onClick={onClickNotice}>
+              <NotificationsIcon color="success" />
             </IconButton>
           </Box>
         </Stack>
@@ -124,10 +117,8 @@ export const HeaderBar: FC<IProps> = ({ badgeContent, onClickSearch }) => {
             <IconButton onClick={onClickSearch}>
               <SearchIcon color="success" />
             </IconButton>
-            <IconButton>
-              <Badge badgeContent={badgeContent} color="success">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton onClick={onClickNotice}>
+              <NotificationsIcon color="success" />
             </IconButton>
           </Box>
         </Stack>

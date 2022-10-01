@@ -66,7 +66,7 @@ export const InfoTitle: FC<IProps> = ({
           <>
             <Box flex="1" />
             <IconButton
-              style={{ color: basketed ? "red" : "#A1A1AA" }}
+              style={{ color: basketed ? "#4411AA" : "#A1A1AA" }}
               onClick={() => {
                 onClickBasket();
                 setBasketed((prev) => !prev);
