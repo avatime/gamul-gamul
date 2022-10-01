@@ -18,7 +18,6 @@ import { HighClass } from "../src/apis/responses/highClass";
 import { HighClassComp } from "../src/components/templates/HighClassComp";
 
 interface IProps {
-  wishList: IngredientInfo[];
   upIngredientList: IngredientInfo[];
   downIngredientList: IngredientInfo[];
   popularIngredientList: IngredientDetailInfo[];
@@ -27,7 +26,6 @@ interface IProps {
 }
 
 const IngredientPage: NextPage<IProps> = ({
-  wishList,
   upIngredientList,
   downIngredientList,
   popularIngredientList,
@@ -35,9 +33,13 @@ const IngredientPage: NextPage<IProps> = ({
   ingredientList,
 }) => {
   const [userName, setUserName] = useState("");
+  const [wishList, setWishList] = useState<IngredientInfo[]>([]);
 
   useEffect(() => {
     setUserName(getCookie("userName"));
+    ApiClient.getInstance()
+      .getBookmarkIngredientList(getCookie("userName"))
+      .then((data) => setWishList(data));
   }, []);
 
   return (
@@ -171,13 +173,10 @@ export default IngredientPage;
 
 export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
-  const userName: string = getCookie("userName");
-  const wishList = await apiClient.getBookmarkIngredientList(userName);
   const ingredientList = await apiClient.getIngredientList(3, 0);
   const upIngredientList = new Array<IngredientInfo>();
   const downIngredientList = new Array<IngredientInfo>();
   const ingredientList2 = await apiClient.getIngredientList(2, 0);
-  const popularIdList = new Array();
   const highClassList = await apiClient.getIngredientHighClassList();
 
   ingredientList.forEach((v) => {
@@ -198,7 +197,6 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      wishList: wishList,
       upIngredientList: upIngredientList,
       downIngredientList: downIngredientList,
       popularIngredientList: popularIngredientList,

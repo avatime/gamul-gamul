@@ -23,6 +23,7 @@ import { OnlineMarketInfoComp } from '../../src/components/OnlineMarketInfoComp'
 import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
 import { RecipeInfo } from '../../src/apis/responses/recipeInfo';
 import { RecipeListComp } from '../../src/components/templates/RecipeListComp';
+import { BackHeader } from '../../src/components/BackHeader';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -130,6 +131,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
         </Box>
       </Tablet>
       <Mobile>
+      <BackHeader />
         <Box className={styles.PageforMobile}>
           <InfoTitle
             name={ingredientInfo.name}

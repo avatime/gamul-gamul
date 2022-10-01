@@ -26,8 +26,10 @@ interface IProps {
 }
 
 const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList }) => {
+  const [userName, setUserName] = useState("");
   const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
   useEffect(() => {
+    setUserName(getCookie("userName"));
     ApiClient.getInstance()
       .getMyRecipeList(getCookie("userName"))
       .then((data) => setMyRecipeList(data));
@@ -37,7 +39,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row">
-            <Grid item xs={8}>
+            <Grid item xs={8} marginTop="10px">
               <IngredientListComp
                 showMore
                 rowSize={2}
