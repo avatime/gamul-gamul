@@ -11,11 +11,19 @@ import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 @Service("RecipeService")
 @RequiredArgsConstructor
@@ -46,19 +54,44 @@ public class RecipeServiceImpl implements RecipeService{
 
 
     @Override
-    public List<RecipeInfoRes> getRecipeList(int orderType, int page, RecipeListReq recipeListReq){
+    public List<RecipeInfoRes> getRecipeList(RecipeListReq recipeListReq){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
-        List<Recipe> recipeList = recipeRepository.findAll();
-        for (Recipe recipe : recipeList){
-            // 레시피 찜 가져오기
-            RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).get();
 
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe, recipeSelected);
+        if(recipeListReq.getOrderType() == 1){
+            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            System.out.println(recipeList.getContent().size());
+            for (Recipe x : recipeList.getContent()){
 
-//            recipeInfoRes.setBookmark();
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
 
-            recipeInfoResList.add(recipeInfoRes);
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }else {
+            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            for (Recipe x : recipeList.getContent()){
+//            System.out.println("X: "+ x.getId());
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
+            }
         }
+
         return recipeInfoResList;
     }
 
@@ -66,6 +99,40 @@ public class RecipeServiceImpl implements RecipeService{
     public List<RecipeInfoRes> getRecipeBasket(RecipeBasketReq recipeBasketReq){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
 
+        if(recipeBasketReq.getOrderType() == 1){
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            System.out.println(recipeList.getContent().size());
+            for (Recipe x : recipeList.getContent()){
+
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }else {
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
+            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
+            for (Recipe x : recipeList.getContent()){
+//            System.out.println("X: "+ x.getId());
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
+            }
+        }
 
         return recipeInfoResList;
     }
@@ -75,10 +142,14 @@ public class RecipeServiceImpl implements RecipeService{
         // 반환할 객체
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
         User user = userRepository.findByUsername(userName).get();
-        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserId(user.getId()).get();
+        List<RecipeSelected> recipeSelectedList = recipeSelectedRepository.findByUserId(user.getId()).orElse(null);
         for(RecipeSelected recipeSelected : recipeSelectedList){
-            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).get();
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe, recipeSelected);
+            boolean bookmark = true;
+            if (recipeSelected == null){
+                bookmark = false;
+            }
+            Recipe recipe = recipeRepository.findById(recipeSelected.getRecipe().getId()).orElse(null);
+            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
             recipeInfoResList.add(recipeInfoRes);
         }
         return recipeInfoResList;
@@ -127,9 +198,17 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public void recipeSelected(String userName, Long recipeId){
-        User user = userRepository.findByUsername(userName).get();
-        RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).get();
-        recipeSelected.setActiveFlag(!recipeSelected.isActiveFlag());
+        User user = userRepository.findByUsername(userName).orElse(null);
+
+        if(!recipeSelectedRepository.existsRecipeSelectedByUserIdAndRecipeId(user.getId(), recipeId)){
+            Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+            RecipeSelected recipeSelected = new RecipeSelected(user, recipe);
+            recipeSelectedRepository.saveAndFlush(recipeSelected);
+        }else{
+            RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).get();
+            recipeSelected.setActiveFlag(!recipeSelected.isActiveFlag());
+            recipeSelectedRepository.saveAndFlush(recipeSelected);
+        }
     }
 
     @Override
@@ -152,13 +231,14 @@ public class RecipeServiceImpl implements RecipeService{
         for (RecipeIngredient recipeIngredient : recipeIngredientList){
             Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
             Basket basket = new Basket(user, ingredient);
+            basketRepository.saveAndFlush(basket);
         }
-
     }
 
     @Override
     public void addRecipeViews(Long recipeId){
         Recipe recipe = recipeRepository.findById(recipeId).get();
-
+        recipe.setViews(recipe.getViews()+1);
+        recipeRepository.saveAndFlush(recipe);
     }
 }

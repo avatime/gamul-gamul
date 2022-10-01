@@ -12,4 +12,6 @@ public interface RecipeSelectedRepository extends JpaRepository<RecipeSelected, 
     Optional<RecipeSelected> findByRecipeId(Long recipeId);
 
     Optional<RecipeSelected> findByUserIdAndRecipeId(Long userId, Long recipeId);
+
+    boolean existsRecipeSelectedByUserIdAndRecipeId(Long userId, Long recipeId);
 }

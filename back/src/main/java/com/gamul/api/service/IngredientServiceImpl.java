@@ -299,6 +299,13 @@ public class IngredientServiceImpl implements IngredientService{
         String query = ingredient.getMidClass();
         return query;
     }
+
+    @Override
+    public void addIngredientViews(Long ingredientId){
+        Ingredient ingredient = ingredientRepository.findById(ingredientId).get();
+        ingredient.setViews(ingredient.getViews()+1);
+        ingredientRepository.saveAndFlush(ingredient);
+    }
 }
 
 

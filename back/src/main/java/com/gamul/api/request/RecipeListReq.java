@@ -15,4 +15,7 @@ public class RecipeListReq {
     int page;
 
     int size;
+
+    @JsonProperty("user_name")
+    String userName;
 }

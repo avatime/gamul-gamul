@@ -19,10 +19,14 @@ public class OnlineMartInfoRes {
 
     String url;
 
+    @JsonProperty("mall_name")
+    String mallName;
+
     public OnlineMartInfoRes(JSONObject itemJson){
         this.name = itemJson.getString("title");
         this.price = itemJson.getInt("lprice");
         this.imagePath = itemJson.getString("image");
-        this.url = itemJson.getString("mallName");
+        this.url = itemJson.getString("link");
+        this.mallName = itemJson.getString("mallName");
     }
 }
