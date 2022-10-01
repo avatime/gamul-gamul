@@ -29,6 +29,7 @@ interface IProps {
   rowSize: number;
   gridSize: number;
   getItemComponent: (item: any) => ReactNode;
+  showArrowBackground?: boolean;
 }
 
 export const CarouselContainer: FC<IProps> = ({
@@ -36,6 +37,7 @@ export const CarouselContainer: FC<IProps> = ({
   rowSize,
   gridSize,
   getItemComponent,
+  showArrowBackground = false,
 }) => {
   const dataList = useMemo(() => {
     const result = [];
@@ -54,6 +56,12 @@ export const CarouselContainer: FC<IProps> = ({
     return result;
   }, [gridSize, itemList, rowSize]);
 
+  const arrowBackgroundStyle = {
+    backgroundColor: "white",
+    borderStyle: "solid",
+    borderWidth: "2px",
+    borderColor: "#bdbdbd",
+  };
   return (
     <Carousel
       showThumbs={false}
@@ -64,14 +72,30 @@ export const CarouselContainer: FC<IProps> = ({
       swipeScrollTolerance={60}
       renderArrowNext={(onClickHandler, hasNext, label) =>
         hasNext && (
-          <IconButton onClick={onClickHandler} title={label} sx={{ ...arrowStyles, right: 0 }}>
+          <IconButton
+            onClick={onClickHandler}
+            title={label}
+            sx={{
+              ...arrowStyles,
+              right: 0,
+              ...(showArrowBackground && arrowBackgroundStyle),
+            }}
+          >
             <ChevronRightIcon sx={{ width: 40, height: 40 }} />
           </IconButton>
         )
       }
       renderArrowPrev={(onClickHandler, hasPrev, label) =>
         hasPrev && (
-          <IconButton onClick={onClickHandler} title={label} sx={{ ...arrowStyles, left: 0 }}>
+          <IconButton
+            onClick={onClickHandler}
+            title={label}
+            sx={{
+              ...arrowStyles,
+              left: 0,
+              ...(showArrowBackground && arrowBackgroundStyle),
+            }}
+          >
             <ChevronLeftIcon sx={{ width: 40, height: 40 }} />
           </IconButton>
         )

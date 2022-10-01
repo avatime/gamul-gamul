@@ -24,6 +24,8 @@ export const getIngredientList: IngredientInfo[] = Array.from({ length: 100 }, (
     allergy: Math.random() > 0.5,
     bookmark: Math.random() > 0.5,
     basket: Math.random() > 0.5,
+    high_class_id: Math.ceil(Math.random() * 10),
+    high_class_name: "이름",
   })
 );
 
@@ -40,6 +42,8 @@ export const getBookmarkIngredientList: IngredientInfo[] = Array.from(
   allergy: Math.random() > 0.5,
   bookmark: true,
   basket: Math.random() > 0.5,
+  high_class_id: Math.ceil(Math.random() * 10),
+  high_class_name: "이름",
 }));
 
 export const getIngredientDetailInfo: IngredientDetailInfo = {
@@ -53,6 +57,8 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
     allergy: false,
     bookmark: true,
     basket: false,
+    high_class_id: Math.ceil(Math.random() * 10),
+    high_class_name: "이름",
   },
   views: 25040,
   price_transition_info: {
@@ -303,6 +309,14 @@ export const getIngredientHighClassList: HighClass[] = [
     high_class_id: 8,
     name: "삼류",
   },
+  {
+    high_class_id: 9,
+    name: "오류",
+  },
+  {
+    high_class_id: 10,
+    name: "하류",
+  },
 ];
 
 export const getOfflineMartList: OfflineMartInfo[] = [
@@ -335,6 +349,8 @@ export const getBasketIngredientList: IngredientInfo[] = [
     allergy: false,
     bookmark: true,
     basket: true,
+    high_class_id: 1,
+    high_class_name: "곡식",
   },
   {
     ingredient_id: 2,
@@ -346,6 +362,8 @@ export const getBasketIngredientList: IngredientInfo[] = [
     allergy: false,
     bookmark: true,
     basket: true,
+    high_class_id: 1,
+    high_class_name: "곡식",
   },
   {
     ingredient_id: 3,
@@ -357,6 +375,8 @@ export const getBasketIngredientList: IngredientInfo[] = [
     allergy: false,
     bookmark: true,
     basket: true,
+    high_class_id: 1,
+    high_class_name: "곡식",
   },
   {
     ingredient_id: 4,
@@ -368,6 +388,8 @@ export const getBasketIngredientList: IngredientInfo[] = [
     allergy: false,
     bookmark: true,
     basket: true,
+    high_class_id: 1,
+    high_class_name: "곡식",
   },
   {
     ingredient_id: 5,
@@ -379,6 +401,8 @@ export const getBasketIngredientList: IngredientInfo[] = [
     allergy: false,
     bookmark: true,
     basket: true,
+    high_class_id: 1,
+    high_class_name: "곡식",
   },
 ];
 
@@ -411,6 +435,8 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
       allergy: false,
       bookmark: false,
       basket: false,
+      high_class_id: 1,
+      high_class_name: "곡식",
     },
     {
       ingredient_id: 2,
@@ -422,6 +448,8 @@ export const getRecipeDetailInfo: RecipeDetailInfo = {
       allergy: true,
       bookmark: false,
       basket: false,
+      high_class_id: 1,
+      high_class_name: "곡식",
     },
   ],
   extra_ingredient_list: ["간장", "소금", "참기름"],

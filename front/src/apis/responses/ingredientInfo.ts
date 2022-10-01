@@ -8,4 +8,6 @@ export interface IngredientInfo {
   allergy: boolean; // 알러지 등록한 식재료 인지,
   bookmark: boolean; // 찜 여부,
   basket: boolean; // 바구니 여부,
+  high_class_id: number; // 대분류 id
+  high_class_name: string; // 대분류 이름
 }

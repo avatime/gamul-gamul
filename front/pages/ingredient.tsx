@@ -13,12 +13,17 @@ import { useState, useEffect } from "react";
 import { IngredientBarGraphComp } from "../src/components/templates/IngredientBarGraphComp";
 import { IngredientDetailInfo } from "../src/apis/responses/ingredientDetailInfo";
 import { CardContainer } from "../src/components/CardContainer";
+import { getIngredientHighClassList } from "../src/apis/dummy/dummyApi";
+import { HighClass } from "../src/apis/responses/highClass";
+import { HighClassComp } from "../src/components/templates/HighClassComp";
 
 interface IProps {
   wishList: IngredientInfo[];
   upIngredientList: IngredientInfo[];
   downIngredientList: IngredientInfo[];
   popularIngredientList: IngredientDetailInfo[];
+  highClassList: HighClass[];
+  ingredientList: IngredientInfo[];
 }
 
 const IngredientPage: NextPage<IProps> = ({
@@ -26,6 +31,8 @@ const IngredientPage: NextPage<IProps> = ({
   upIngredientList,
   downIngredientList,
   popularIngredientList,
+  highClassList,
+  ingredientList,
 }) => {
   const [userName, setUserName] = useState("");
 
@@ -43,18 +50,21 @@ const IngredientPage: NextPage<IProps> = ({
                 <IngredientListComp
                   ingredientList={wishList}
                   title="찜 목록"
-                  gridSize={4}
+                  rowSize={1}
+                  gridSize={6}
                 />
               )}
               <IngredientListComp
                 ingredientList={downIngredientList}
                 title="지금이 기회!"
-                gridSize={4}
+                rowSize={1}
+                gridSize={6}
               />
               <IngredientListComp
                 ingredientList={upIngredientList}
                 title="오늘은 피해요!"
-                gridSize={4}
+                rowSize={1}
+                gridSize={6}
               />
             </Grid>
             <Grid item xs={5}>
@@ -71,50 +81,61 @@ const IngredientPage: NextPage<IProps> = ({
                   })}
                 </Box>
               </CardContainer>
-              {/* 종류별 상세 조회 */}
             </Grid>
           </Grid>
+          <HighClassComp
+            highClassList={highClassList}
+            ingredientList={ingredientList}
+            gridSize={8}
+          />
         </Box>
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-              {!!userName && (
-                <IngredientListComp ingredientList={wishList} title="찜 목록" gridSize={4} />
-              )}
-              <IngredientListComp
-                ingredientList={downIngredientList}
-                title="지금이 기회!"
-                gridSize={4}
-              />
-              <IngredientListComp
-                ingredientList={upIngredientList}
-                title="오늘은 피해요!"
-                gridSize={4}
-              />
-            <CardContainer title="주요 물품 현황">
-                <Box>
-                  {popularIngredientList.map((data, index) => {
-                    return (
-                      <IngredientBarGraphComp
-                        key={index}
-                        ingredientInfo={data.ingredient_info}
-                        priceTransitionInfo={data.price_transition_info}
-                      />
-                    );
-                  })}
-                </Box>
-              </CardContainer>
-                {/* 종류별 상세 조회 */}
-        </Box>
-      </Tablet>
-      <Mobile>
-        <Box className={styles.PageforMobile}>
           {!!userName && (
             <IngredientListComp
               ingredientList={wishList}
               title="찜 목록"
               rowSize={1}
+              gridSize={6}
             />
+          )}
+          <IngredientListComp
+            ingredientList={downIngredientList}
+            title="지금이 기회!"
+            rowSize={1}
+            gridSize={6}
+          />
+          <IngredientListComp
+            ingredientList={upIngredientList}
+            title="오늘은 피해요!"
+            rowSize={1}
+            gridSize={6}
+          />
+          <CardContainer title="주요 물품 현황">
+            <Box>
+              {popularIngredientList.map((data, index) => {
+                return (
+                  <IngredientBarGraphComp
+                    key={index}
+                    ingredientInfo={data.ingredient_info}
+                    priceTransitionInfo={data.price_transition_info}
+                  />
+                );
+              })}
+            </Box>
+          </CardContainer>
+          <HighClassComp
+            highClassList={highClassList}
+            ingredientList={ingredientList}
+            gridSize={4}
+          />
+        </Box>
+      </Tablet>
+      <Mobile>
+        <Box className={styles.PageforMobile}>
+          {!!userName && (
+            <IngredientListComp ingredientList={wishList} title="찜 목록" rowSize={1} />
           )}
           <IngredientListComp
             ingredientList={downIngredientList}
@@ -127,19 +148,19 @@ const IngredientPage: NextPage<IProps> = ({
             rowSize={1}
           />
           <CardContainer title="주요 물품 현황">
-                <Box>
-                  {popularIngredientList.map((data, index) => {
-                    return (
-                      <IngredientBarGraphComp
-                        key={index}
-                        ingredientInfo={data.ingredient_info}
-                        priceTransitionInfo={data.price_transition_info}
-                      />
-                    );
-                  })}
-                </Box>
-              </CardContainer>
-          {/* 종류별 상세 조회 */}
+            <Box>
+              {popularIngredientList.map((data, index) => {
+                return (
+                  <IngredientBarGraphComp
+                    key={index}
+                    ingredientInfo={data.ingredient_info}
+                    priceTransitionInfo={data.price_transition_info}
+                  />
+                );
+              })}
+            </Box>
+          </CardContainer>
+          <HighClassComp highClassList={highClassList} ingredientList={ingredientList} />
         </Box>
       </Mobile>
     </Box>
@@ -157,6 +178,7 @@ export const getStaticProps = async () => {
   const downIngredientList = new Array<IngredientInfo>();
   const ingredientList2 = await apiClient.getIngredientList(2, 0);
   const popularIdList = new Array();
+  const highClassList = await apiClient.getIngredientHighClassList();
 
   ingredientList.forEach((v) => {
     if (v.volatility > 0) {
@@ -180,6 +202,8 @@ export const getStaticProps = async () => {
       upIngredientList: upIngredientList,
       downIngredientList: downIngredientList,
       popularIngredientList: popularIngredientList,
+      highClassList,
+      ingredientList,
     },
   };
 };
