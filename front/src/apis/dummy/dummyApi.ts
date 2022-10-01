@@ -278,43 +278,43 @@ export const getIngredientDetailInfo: IngredientDetailInfo = {
 
 export const getIngredientHighClassList: HighClass[] = [
   {
-    high_class_id: 1,
+    id: 1,
     name: "곡식류",
   },
   {
-    high_class_id: 2,
+    id: 2,
     name: "과일류",
   },
   {
-    high_class_id: 3,
+    id: 3,
     name: "정육",
   },
   {
-    high_class_id: 4,
+    id: 4,
     name: "과자류",
   },
   {
-    high_class_id: 5,
+    id: 5,
     name: "빙과류",
   },
   {
-    high_class_id: 6,
+    id: 6,
     name: "베이커리류",
   },
   {
-    high_class_id: 7,
+    id: 7,
     name: "몰류",
   },
   {
-    high_class_id: 8,
+    id: 8,
     name: "삼류",
   },
   {
-    high_class_id: 9,
+    id: 9,
     name: "오류",
   },
   {
-    high_class_id: 10,
+    id: 10,
     name: "하류",
   },
 ];
