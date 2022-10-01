@@ -32,7 +32,7 @@ export interface MyInfoApi {
    * @param userName 유저 ID
    * @param subscription 웹 푸시 구독 객체
    */
-  postSubscription(userName: string, subscription: PushSubscription): Promise<void>;
+  postSubscription(userName: string, subscription: String): Promise<void>;
   /**
    * 알림 정보 목록 조회
    * @param userName 유저 ID

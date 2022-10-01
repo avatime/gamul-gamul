@@ -57,7 +57,7 @@ export class ApiClient
       })
     ).data;
   }
-  postSubscription(userName: string, subscription: PushSubscription): Promise<void> {
+  postSubscription(userName: string, subscription: String): Promise<void> {
     return this.axiosInstance.request({
       method: "post",
       url: "/user/notice/regist",
