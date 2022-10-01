@@ -1,4 +1,5 @@
 import { LimitPriceNoticeInfo } from "../responses/limitPriceNoticeInfo";
+import { NotificationInfo } from "../responses/notificationInfo";
 
 export interface MyInfoApi {
   /**
@@ -26,4 +27,15 @@ export interface MyInfoApi {
    * @param userName 유저 ID
    */
   getLimitPriceList(userName: string): Promise<LimitPriceNoticeInfo[]>;
+  /**
+   * 웹 푸시 구독 객체 등록
+   * @param userName 유저 ID
+   * @param subscription 웹 푸시 구독 객체
+   */
+  postSubscription(userName: string, subscription: PushSubscription): Promise<void>;
+  /**
+   * 알림 정보 목록 조회
+   * @param userName 유저 ID
+   */
+  getNotificationInfoList(userName: string): Promise<NotificationInfo[]>;
 }

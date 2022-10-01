@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { showHeaderBar, getNavBarActiveIndex, showNavBar } from "../src/utils/headerNavUtil";
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
+import { useWebPushSubscription } from "../src/hooks/useWebPushSubscription";
 
 export const theme = createTheme({
   palette: {
@@ -54,6 +55,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setShowNav(showNavBar(router.pathname));
   }, [router.pathname]);
+
+  useWebPushSubscription();
+
+  const onClickNotice = () => {
+    router.push("/notice");
+  };
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -63,7 +70,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <Box className="page-background">
-        {showHeader && <HeaderBar badgeContent={6} onClickSearch={onClickSearch} />}
+        {showHeader && (
+          <HeaderBar onClickSearch={onClickSearch} onClickNotice={onClickNotice} />
+        )}
         <Component {...pageProps} />
         {showNav && <Navbar activeIndex={activeIndex} />}
       </Box>

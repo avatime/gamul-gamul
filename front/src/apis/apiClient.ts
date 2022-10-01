@@ -22,6 +22,8 @@ import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
 import { getCookie, setCookie } from "../utils/cookie";
+import { NotificationInfo } from "./responses/notificationInfo";
+import { getNotificationItemList } from './dummy/dummyApi';
 
 const delay = 0;
 
@@ -33,6 +35,21 @@ export class ApiClient
 
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
+  }
+  async getNotificationInfoList(userName: string): Promise<NotificationInfo[]> {
+    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getNotificationItemList), delay));
+    return (await this.axiosInstance.request({
+      method: "post",
+      url: "/user/notice/list",
+      data: { user_name: userName },
+    })).data;
+  }
+  postSubscription(userName: string, subscription: PushSubscription): Promise<void> {
+    return this.axiosInstance.request({
+      method: "post",
+      url: "/user/notice/regist",
+      data: { user_name: userName, subscription },
+    });
   }
   async register(userName: string, password: string): Promise<void> {
     return this.axiosInstance.request({
@@ -48,15 +65,17 @@ export class ApiClient
     });
   }
   async login(userName: string, password: string): Promise<LoginRes> {
-    return (await this.axiosInstance.request({
-      method:"post",
-      url: `/auth/login`,
-      data :  { user_name: userName, password },
-    })).data;
+    return (
+      await this.axiosInstance.request({
+        method: "post",
+        url: `/auth/login`,
+        data: { user_name: userName, password },
+      })
+    ).data;
   }
   async withdrawal(userName: string): Promise<void> {
     return this.axiosInstance.request({
-      method:"delete",
+      method: "delete",
       url: `/users/${userName}`,
     });
   }
@@ -202,7 +221,6 @@ export class ApiClient
 
   logout() {
     this.axiosInstance = this.createAxiosInstance();
-
   }
 
   private createAxiosInstance = (token?: string) => {
