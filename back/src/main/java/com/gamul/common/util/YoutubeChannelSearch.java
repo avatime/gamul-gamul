@@ -13,11 +13,19 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
 import io.micrometer.core.instrument.search.Search;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -115,10 +123,7 @@ public class YoutubeChannelSearch {
     }
 
 
-    private static void prettyPrint(Iterator<Video> iteratorSearchResults, YoutubeInfoRes youtubeInfoRes, String query) {
-
-        System.out.println("\n=============================================================");
-        System.out.println("=============================================================\n");
+    private static YoutubeInfoRes prettyPrint(Iterator<Video> iteratorSearchResults, YoutubeInfoRes youtubeInfoRes, String query) throws Exception{
 
         if (!iteratorSearchResults.hasNext()) {
             System.out.println(" There aren't any results for your query.");
@@ -133,29 +138,27 @@ public class YoutubeChannelSearch {
                 Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                System.out.println(" Video Id" + singleVideo.getId());
-                System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
-                System.out
-                        .println(" contentDetails Duration: " + singleVideo.getContentDetails().getDuration());
-                System.out.println(" Thumbnail: " + thumbnail.getUrl());
-                System.out.println("\n-------------------------------------------------------------\n");
+                String videoLink = "https://www.youtube.com/watch?v=" + singleVideo.getId();
 
                 youtubeInfoRes.setThumbnailPath(thumbnail.getUrl());
                 youtubeInfoRes.setName(singleVideo.getSnippet().getTitle());
                 youtubeInfoRes.setChannelName(singleVideo.getSnippet().getChannelTitle());
-                youtubeInfoRes.setView(singleVideo.getStatistics().getViewCount());
-                String date = format.format(singleVideo.getSnippet().getPublishedAt());
+                Long viewCount = getViewCountFromVideo(singleVideo.getId());
+                youtubeInfoRes.setView(viewCount);
+                String date = singleVideo.getSnippet().getPublishedAt().toString();
                 youtubeInfoRes.setDate(date);
-//                youtubeInfoRes.setUrl();
+                youtubeInfoRes.setUrl(videoLink);
+
+                return youtubeInfoRes;
 
             }
         }
+        return youtubeInfoRes;
     }
 
 
     public List<YoutubeInfoRes> get(String query){
         List<ResourceId> videoIdList = Search(query);
-        System.out.println("이거 한번 보자 "+ videoIdList);
         List<YoutubeInfoRes> youtubeInfoResList = new ArrayList<>();
         try {
             youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
@@ -173,11 +176,11 @@ public class YoutubeChannelSearch {
                 List<Video> videoList = videos.execute().getItems();
 
                 if (videoList != null) {
-                    prettyPrint(videoList.iterator(), youtubeInfoRes, query);
+                    YoutubeInfoRes youtubeInfoRes1 = prettyPrint(videoList.iterator(), youtubeInfoRes, query);
+                    youtubeInfoResList.add(youtubeInfoRes1);
                 }
 
             }
-
 
         } catch (GoogleJsonResponseException e) {
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
@@ -190,4 +193,34 @@ public class YoutubeChannelSearch {
 
         return youtubeInfoResList;
     }
+
+    private static long getViewCountFromVideo(String videoId) throws IOException, JSONException {
+        String apikey = "AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA";
+
+        String url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id="+videoId+"&key="+apikey;
+        JSONObject json = readJsonFromUrl(url);
+        JSONArray items = json.getJSONArray("items");
+        String parentKey = items.getJSONObject(0).getJSONObject("statistics").getString("viewCount");
+        Long viewCount = Long.parseLong(parentKey);
+
+        return viewCount;
+    }
+
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream inputStream = new URL(url).openStream();
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")))) {
+            StringBuilder responseBody = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                responseBody.append(line);
+            }
+            String jsonText = responseBody.toString();
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        } finally {
+            inputStream.close();
+        }
+    }
+
+
 }
