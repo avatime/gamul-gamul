@@ -72,4 +72,9 @@ export interface IngredientApi {
    * @param userName 유저 ID
    */
   getBasketIngredientList(userName: string): Promise<IngredientInfo[]>;
+  /**
+   * 식재료 조회수 업데이트
+   * @param ingredientId 식재료 ID
+   */
+  postIngredientView(ingredientId: number): Promise<void>;
 }

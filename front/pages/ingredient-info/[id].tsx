@@ -37,10 +37,16 @@ const IngredientInfoPage: NextPage<IProps> = ({
   onlineMartInfo,
   recipeList,
 }) => {
+ 
+
   const router = useRouter();
   const { id } = router.query;
   const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
+
+  useEffect(() => {
+    apiClient.postIngredientView(Number(id as string));
+  }, [apiClient, id]);
 
   const setBookmark = async () => {
     await apiClient.putBookmarkIngredient(userName, Number(id));
