@@ -168,6 +168,7 @@ public class MyRecipeController {
             }
 
             boolean setDate = true;
+            int dailySize = 10, monthlySize = 10, dailyWholeSize = 10, monthlyWholeSize = 10, yearSize = 10;
 
             for (MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList) {
                 List<Day> dailyPrice = dailyPriceService.findDailyPrices(myRecipeIngredient.getIngredient().getId(), 1);
@@ -175,18 +176,31 @@ public class MyRecipeController {
                 List<Year> yearlyPrice = dailyPriceService.findYearlyPrices(myRecipeIngredient.getIngredient().getId(), 1);
                 List<Day> dailyWholePrice = dailyPriceService.findDailyPrices(myRecipeIngredient.getIngredient().getId(), 0);
                 List<Month> monthlyWholePrice = dailyPriceService.findMonthlyPrices(myRecipeIngredient.getIngredient().getId(), 0);
+                dailySize = Math.min(dailySize, dailyPrice.size());
+                monthlySize = Math.min(monthlySize, monthlyPrice.size());
+                dailyWholeSize = Math.min(dailyWholeSize, dailyWholePrice.size());
+                monthlyWholeSize = Math.min(monthlyWholeSize, dailyWholePrice.size());
+                yearSize = Math.min(monthlySize, Math.min(yearSize, yearlyPrice.size()));
 
                 int price = 0;
                 for (int i = 0; i < 10; i++) {
-                    price = (int) (dailyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyPrice.get(i).getQuantity()));
-                    dayRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
-                    price = (int) (monthlyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
-                    monthRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
-                    price = (int) (dailyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyWholePrice.get(i).getQuantity()));
-                    dayWholePrice.get(i).setPrice(dayWholePrice.get(i).getPrice() + price);
-                    price = (int) (monthlyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyWholePrice.get(i).getQuantity()));
-                    monthWholePrice.get(i).setPrice(monthWholePrice.get(i).getPrice() + price);
-                    if (i < yearlyPrice.size()) {
+                    if(i<dailyPrice.size()) {
+                        price = (int) (dailyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyPrice.get(i).getQuantity()));
+                        dayRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
+                    }
+                    if(i<monthlyPrice.size()) {
+                        price = (int) (monthlyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
+                        monthRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
+                    }
+                    if(i<dailyWholePrice.size()) {
+                        price = (int) (dailyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyWholePrice.get(i).getQuantity()));
+                        dayWholePrice.get(i).setPrice(dayWholePrice.get(i).getPrice() + price);
+                    }
+                    if(i<monthlyWholePrice.size()){
+                        price = (int) (monthlyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyWholePrice.get(i).getQuantity()));
+                        monthWholePrice.get(i).setPrice(monthWholePrice.get(i).getPrice() + price);
+                    }
+                    if (i < yearlyPrice.size() && i<monthlyPrice.size()) {
                         price = (int) (yearlyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
                         yearRetailPrice.get(i).setPrice(monthRetailPrice.get(i).getPrice() + price);
                     }
@@ -203,41 +217,62 @@ public class MyRecipeController {
                     }
                 }
 
-                MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
-                        .ingredientId(myRecipeIngredient.getIngredient().getId())
-                        .name(myRecipeIngredient.getIngredient().getMidClass())
-                        .price(dailyPrice.get(0).getPrice())
-                        .unit(dailyPrice.get(0).getUnit())
-                        .quantity(dailyPrice.get(0).getQuantity())
-                        .volatility(((dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice()) / dailyPrice.get(1).getPrice()) * 100)
-                        .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                        .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                        .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                        .highClassId(myRecipeIngredient.getIngredient().getHighClass())
-                        .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
-                        .build();
+                System.out.println(myRecipeIngredient.getIngredient().getId());
+                if(dailyPrice.size() > 0) {
+                    double volatility = 1.0 * ((dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice()) / dailyPrice.get(1).getPrice()) * 100;
+                    volatility = Math.round(volatility * 100) / 100.0;
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(dailyPrice.get(0).getPrice())
+                            .unit(dailyPrice.get(0).getUnit())
+                            .quantity(dailyPrice.get(0).getQuantity())
+                            .volatility(volatility)
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+                else {
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
 
-                ingreidentlist.add(ingredientInfoRes);
             }
 
 
             yearRetailPrice.removeIf(item -> item.getDate() == null);
 
-            priceTransitionInfoRes.setBeforePrice(dayRetailPrice.get(1).getPrice());
-            priceTransitionInfoRes.setPrice(dayRetailPrice.get(0).getPrice());
+            if(dailySize != 0) {
+                priceTransitionInfoRes.setBeforePrice(dayRetailPrice.get(1).getPrice());
+                priceTransitionInfoRes.setPrice(dayRetailPrice.get(0).getPrice());
+                double pastvol = (1.0 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100;
+                priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                double todayvol = (1.0 * (dayRetailPrice.get(0).getPrice() - dayRetailPrice.get(1).getPrice()) / dayRetailPrice.get(1).getPrice()) * 100;
+                priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+            }
             priceTransitionInfoRes.setWholesales(new SaleInfoRes());
-            priceTransitionInfoRes.getWholesales().setDaily(dayWholePrice);
-            priceTransitionInfoRes.getWholesales().setYearly(yearRetailPrice);
-            priceTransitionInfoRes.getWholesales().setMonthly(monthWholePrice);
+            priceTransitionInfoRes.getWholesales().setDaily(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize)));
+            priceTransitionInfoRes.getWholesales().setYearly(new ArrayList<>(yearRetailPrice.subList(0, yearSize)));
+            priceTransitionInfoRes.getWholesales().setMonthly(new ArrayList<>(monthWholePrice.subList(0, monthlyWholeSize)));
             priceTransitionInfoRes.setRetailsales(new SaleInfoRes());
-            priceTransitionInfoRes.getRetailsales().setDaily(dayRetailPrice);
-            priceTransitionInfoRes.getRetailsales().setYearly(yearRetailPrice);
-            priceTransitionInfoRes.getRetailsales().setMonthly(monthRetailPrice);
-            priceTransitionInfoRes.setPastvol((0.1 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100);
-            priceTransitionInfoRes.setTodayvol((0.1 * (dayRetailPrice.get(0).getPrice() - dayRetailPrice.get(1).getPrice()) / dayRetailPrice.get(1).getPrice()) * 100);
+            priceTransitionInfoRes.getRetailsales().setDaily(new ArrayList<>(dayRetailPrice.subList(0, dailySize)));
+            priceTransitionInfoRes.getRetailsales().setYearly(new ArrayList<>(yearRetailPrice.subList(0, yearSize)));
+            priceTransitionInfoRes.getRetailsales().setMonthly(new ArrayList<>(monthRetailPrice.subList(0,monthlySize)));
 
             myRecipeDetailRes.setIngredientList(ingreidentlist);
-            myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
+            if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
             myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
             myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
             myRecipeDetailRes.setName(myRecipe.getName());
