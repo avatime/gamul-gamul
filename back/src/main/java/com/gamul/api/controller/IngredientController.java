@@ -162,7 +162,7 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getStoreList(@PathVariable Long ingredientId, @RequestBody OfflineMartInfoReq offlineMartInfoReq){
+    public ResponseEntity<?> getStoreList(@RequestBody OfflineMartInfoReq offlineMartInfoReq){
         List<OfflineMartInfoRes> storeList = ingredientService.getStoreList(offlineMartInfoReq);
         return new ResponseEntity<List<OfflineMartInfoRes>>(storeList, HttpStatus.OK);
     }
