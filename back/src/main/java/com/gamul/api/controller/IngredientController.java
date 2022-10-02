@@ -55,8 +55,8 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getSelectedIngredientList(@RequestBody IngredientSelectListReq ingredientSelectListReq) {
-        List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(ingredientSelectListReq.getUserName());
+    public ResponseEntity<?> getSelectedIngredientList(@PathVariable String userName) {
+        List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(userName);
         return new ResponseEntity<List<IngredientInfoRes>>(ingredientSelectedList, HttpStatus.OK);
     }
 
