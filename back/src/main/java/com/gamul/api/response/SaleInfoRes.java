@@ -5,15 +5,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @ApiModel("SaleInfoRes")
 public class SaleInfoRes {
-    ArrayList<PriceInfoRes> daily;
+    List<PriceInfoRes> daily;
 
-    ArrayList<PriceInfoRes> monthly;
+    List<PriceInfoRes> monthly;
 
-    ArrayList<PriceInfoRes> yearly;
+    List<PriceInfoRes> yearly;
 
+    public SaleInfoRes (List<PriceInfoRes> daily, List<PriceInfoRes> monthly, List<PriceInfoRes> yearly){
+        this.daily = daily;
+        this.monthly = monthly;
+        this.yearly = yearly;
+    }
 }

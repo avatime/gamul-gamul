@@ -66,15 +66,15 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientDetailInfo(@PathVariable Long ingredientId) {
-        IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId);
+    public ResponseEntity<?> getIngredientDetailInfo(@RequestBody IngredientDetailReq ingredientDetailReq) {
+        IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientDetailReq);
 
         // 온라인 마트 정보 추가
-        String query = ingredientDetailRes.getIngredientInfo().getName();
+        String query = ingredientService.getOnlineIngredientInfo(ingredientDetailReq.getIngredientId());
         String resultString = naverShopSearch.search(query);
-//        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.OnlineMartInfo(resultString);
-//        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
 
+        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
 
         return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
     }
