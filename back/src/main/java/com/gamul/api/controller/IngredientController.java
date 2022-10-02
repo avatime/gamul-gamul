@@ -43,8 +43,8 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientList(@PathVariable int orderType, @PathVariable Long highClassId, @RequestBody IngredientListReq ingredientListReq) {
-        System.out.println("컨트롤러: " + highClassId);
+    public ResponseEntity<?> getIngredientList(@RequestBody IngredientListReq ingredientListReq) {
+
         List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(ingredientListReq);
         return new ResponseEntity<List<IngredientInfoRes>>(ingredientList, HttpStatus.OK);
     }

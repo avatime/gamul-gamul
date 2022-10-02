@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
-    Optional<List<Ingredient>> findAllByHighClass(Long highClass);
+    Optional<List<Ingredient>> findAllByHighClass(int highClass);
     Optional<Ingredient> findById(Long ingredientId);
 
 }

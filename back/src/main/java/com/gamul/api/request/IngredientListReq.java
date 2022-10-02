@@ -13,7 +13,7 @@ public class IngredientListReq {
     int orderType;
 
     @JsonProperty("high_class_id")
-    Long highClassId;
+    int highClassId;
 
     @JsonProperty("user_name")
     String userName;
