@@ -10,5 +10,8 @@ import lombok.Setter;
 @ApiModel("IngredientDetailReq")
 public class IngredientDetailReq {
     @JsonProperty("ingredient_id")
-    int ingredientId;
+    Long ingredientId;
+
+    @JsonProperty("user_name")
+    String userName;
 }

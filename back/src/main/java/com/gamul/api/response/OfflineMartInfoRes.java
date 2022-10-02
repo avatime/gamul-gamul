@@ -20,5 +20,5 @@ public class OfflineMartInfoRes {
 
     double longitude;
 
-    double distance;
+    int distance;
 }

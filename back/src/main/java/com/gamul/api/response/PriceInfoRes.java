@@ -20,4 +20,5 @@ public class PriceInfoRes {
         this.date = date;
         this.price = price;
     }
+
 }
