@@ -12,4 +12,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findById(Long ingredientId);
     Optional<List<Ingredient>> findByMidClassLike(String keyword);
 
+    Optional<Ingredient> findByMidClass(String midClass);
+
 }
