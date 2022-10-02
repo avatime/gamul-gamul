@@ -8,7 +8,6 @@ import com.gamul.api.response.NoticeRes;
 import com.gamul.api.service.AlarmService;
 import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.UserService;
-import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.IngredientRepository;
 import io.swagger.annotations.*;
@@ -44,14 +43,14 @@ public class AlarmController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> allergyAlarm(@RequestBody @ApiParam(value="알러지 정보", required = true)IngredientAllergyRegisterPostReq ingredientAllergyRegisterPostReq){
+    public ResponseEntity<?> allergyAlarm(@RequestBody @ApiParam(value="알러지 정보", required = true)IngredientAllergyRegisterPostReq ingredientAllergyRegisterPostReq){
         try{
             alarmService.deleteMyAllergy(ingredientAllergyRegisterPostReq.getUserName());
             alarmService.saveAllAlergy(changeAllergy(ingredientAllergyRegisterPostReq.getUserName(), ingredientAllergyRegisterPostReq.getIngredientList()));
         } catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error" + e));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     List<Allergy> changeAllergy(String username, List<Long> list){
@@ -70,14 +69,14 @@ public class AlarmController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> noticeAlarm(@RequestBody @ApiParam(value="가격 알림 정보", required = true)IngredientLimitPricePostReq ingredientLimitPricePostReq){
+    public ResponseEntity<?> noticeAlarm(@RequestBody @ApiParam(value="가격 알림 정보", required = true)IngredientLimitPricePostReq ingredientLimitPricePostReq){
         try{
             alarmService.deleteMyNotice(ingredientLimitPricePostReq.getUserName());
             alarmService.saveAllIngredientPriceNotice(changeIngredientPriceNotice(ingredientLimitPricePostReq.getUserName(), ingredientLimitPricePostReq.getIngredientList()));
         } catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     List<IngredientPriceNotice> changeIngredientPriceNotice(String username, List<IngredientPricePostReq> priceList){
@@ -96,7 +95,7 @@ public class AlarmController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<AllergyAlarmRes> getAllergyList(@PathVariable String userName){
+    public ResponseEntity<?> getAllergyList(@PathVariable String userName){
         AllergyAlarmRes allergyAlarmRes = new AllergyAlarmRes();
         User user = new User();
         try{
@@ -112,9 +111,9 @@ public class AlarmController {
             }
             allergyAlarmRes.setIngredientList(list);
         } catch (Exception e){
-            return ResponseEntity.ok(AllergyAlarmRes.of(500, "Internal Server Error", null));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.ok(AllergyAlarmRes.of(200, "Success", allergyAlarmRes));
+        return ResponseEntity.status(200).body(allergyAlarmRes);
     }
 
     @GetMapping("/notice/{userName}")
@@ -124,13 +123,13 @@ public class AlarmController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<IngredientLimitPriceAlarmRes> getNoticeList(@PathVariable String userName){
+    public ResponseEntity<?> getNoticeList(@PathVariable String userName){
         IngredientLimitPriceAlarmRes ingredientLimitPriceAlarmRes = new IngredientLimitPriceAlarmRes();
         User user = new User();
         try{
             user = userService.getUserByUsername(userName);
         } catch (Exception e){
-            return ResponseEntity.ok(IngredientLimitPriceAlarmRes.of(401, "인증 실패", null));
+            return ResponseEntity.status(401).body("인증 실패");
         }
         try{
             List<IngredientPriceNotice> allergyList = alarmService.getNoticeList(user);
@@ -142,9 +141,9 @@ public class AlarmController {
             }
             ingredientLimitPriceAlarmRes.setIngredientList(list);
         } catch (Exception e){
-            return ResponseEntity.ok(IngredientLimitPriceAlarmRes.of(500, "Internal Server Error", null));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.ok(IngredientLimitPriceAlarmRes.of(200, "Success", ingredientLimitPriceAlarmRes));
+        return ResponseEntity.status(200).body(ingredientLimitPriceAlarmRes);
     }
 
     @GetMapping("/notice/{userName}/{ingredientId}")
@@ -154,12 +153,12 @@ public class AlarmController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<IngredientLimitPriceRes> getNoticeDetail(@PathVariable String userName, @PathVariable Long ingredientId){
+    public ResponseEntity<?> getNoticeDetail(@PathVariable String userName, @PathVariable Long ingredientId){
         User user = new User();
         try{
             user = userService.getUserByUsername(userName);
         } catch (Exception e){
-            return ResponseEntity.ok(IngredientLimitPriceRes.of(401, "인증 실패", null));
+            return ResponseEntity.status(401).body("인증 실패");
         }
         IngredientPriceNotice ingredientPriceNotice = alarmService.getNoticeDetail(user, ingredientId);
         IngredientLimitPriceRes ingredientLimitPriceRes;
@@ -173,25 +172,25 @@ public class AlarmController {
                 .ingredientId(ingredientPriceNotice.getIngredient().getId())
                 .upperLimitPrice(ingredientPriceNotice.getUpperLimitPrice())
                 .lowerLimitPrice(ingredientPriceNotice.getLowerLimitPrice()).build();
-        return ResponseEntity.ok(IngredientLimitPriceRes.of(200, "Success", ingredientLimitPriceRes));
+        return ResponseEntity.status(200).body(ingredientLimitPriceRes);
     }
 
     @PostMapping("/notice/regist")
     @ApiOperation(value = "알림을 위한 정보 등록", notes = "유저별 <strong>알람 정보</strong>를 등록한다")
-    public ResponseEntity<BaseResponseBody> getNoticeDetail(@RequestBody  @ApiParam(value="알람 설정 정보", required = true) AlarmRegisterReq alarmRegisterReq){
+    public ResponseEntity<?> getNoticeDetail(@RequestBody  @ApiParam(value="알람 설정 정보", required = true) AlarmRegisterReq alarmRegisterReq){
 
         User user = userService.getUserByUsername(alarmRegisterReq.getUserName());
         user.setSubscription(alarmRegisterReq.getSubscription());
         userService.saveUser(user);
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     @GetMapping ("/notice/send")
     @ApiOperation(value = "모든 유저에게 알림 전송", notes = "유저별 <strong>알람</strong>을 전송한다")
-    public ResponseEntity<BaseResponseBody> sendNoticeToAllUsers(){
+    public ResponseEntity<?> sendNoticeToAllUsers(){
 
         // ??
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     @PostMapping("notice/list")

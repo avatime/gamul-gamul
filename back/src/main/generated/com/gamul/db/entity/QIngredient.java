@@ -21,7 +21,7 @@ public class QIngredient extends EntityPathBase<Ingredient> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final NumberPath<Long> highClass = createNumber("highClass", Long.class);
+    public final NumberPath<Integer> highClass = createNumber("highClass", Integer.class);
 
     //inherited
     public final NumberPath<Long> id = _super.id;

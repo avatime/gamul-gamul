@@ -19,9 +19,9 @@ public class PriceTransitionInfoRes {
     SaleInfoRes retailsales;
 
     // 어제 물가 변동
-    int pastvol;
+    double pastvol;
     // 오늘 물가 변동
-    int todayvol;
+    double todayvol;
 
 
 }
