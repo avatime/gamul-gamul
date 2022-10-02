@@ -17,9 +17,4 @@ public class SaleInfoRes {
 
     List<PriceInfoRes> yearly;
 
-    public SaleInfoRes (List<PriceInfoRes> daily, List<PriceInfoRes> monthly, List<PriceInfoRes> yearly){
-        this.daily = daily;
-        this.monthly = monthly;
-        this.yearly = yearly;
-    }
 }
