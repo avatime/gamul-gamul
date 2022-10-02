@@ -54,11 +54,18 @@ public class IngredientServiceImpl implements IngredientService{
     public List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq){
         int highClassId = ingredientListReq.getHighClassId();
         int orderType = ingredientListReq.getOrderType();
-        User user = userRepository.findByUsername(ingredientListReq.getUserName()).orElse(null);
-        System.out.println("user 있나연~: " + user.getUsername());
+        User user = new User();
+        boolean allergyStatus = false;
+        boolean selectedStatus = false;
+        boolean basketStatus = false;
+        if (ingredientListReq.getUserName() == ""){
+            user = null;
+        }else{
+            user = userRepository.findByUsername(ingredientListReq.getUserName()).get();
+        }
 
         // 대분류 정보 가지고 재료 목록 리스트 가져오기
-        List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).orElse(null);
+        List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).get();
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
         // 대분류 객체 가져오기
@@ -66,50 +73,67 @@ public class IngredientServiceImpl implements IngredientService{
 
         for (Ingredient ingredient : ingredientList){
 
-
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            // 가격 변동률
-            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            int today = dayList.get(0).getPrice();
-            int yesterday = dayList.get(1).getPrice();
-            int volatility = ((today - yesterday) / today) * 100;
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes();
-
-            if (user != null){
-                // 알러지 객체 가져오기
-                Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
-                System.out.println("알러지 문제야? " + allergy);
-                // 재료 찜 객체 가져오기
-                IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
-                System.out.println("재료찜 문제야? " + ingredientSelected);
-                // 바구니 객체 가져오기
-                Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);;
-                System.out.println("베스킷 문제야? " + basket);
-                if (allergy != null & allergy.isActiveFlag() == true){
-                    ingredientInfoRes.setAllergy(true);
-                } else if (ingredientSelected != null & ingredientSelected.isActiveFlag() == true){
-                    ingredientInfoRes.setFavorite(true);
-                } else if (basket != null & basket.isActiveFlag() == true){
-                    ingredientInfoRes.setBasket(true);
-                }
-            } else{
-                boolean allergy = false;
-                boolean ingredientSelected = false;
-                boolean basket = false;
+            if (day == null){
+                day = new Day();
+                day.setPrice(0);
+                day.setUnit("");
+                day.setQuantity(0);
             }
 
-//            IngredientInfoRes ingredientInfoRes1 = new IngredientInfoRes(ingredient, day, allergy, ingredientSelected, basket, highClass, volatility);
+            // 가격 변동률
+            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
 
-            System.out.println("과연?: " + ingredientInfoRes);
+            int today = 0;
+            int yesterday = 0;
+            double volatility = 0.0;
 
-            // 추가하기
+            if(dayList.size() == 0){
+                today = 0;
+                yesterday = 0;
+                volatility = 0.0;
+            }
+            else if (dayList.size() == 1){
+                volatility = 100.0;
+            }else {
+                today = dayList.get(0).getPrice();
+                yesterday = dayList.get(1).getPrice();
+                volatility = (today - yesterday) * 100.0 / today ;
+                volatility = Math.round((volatility * 100) / 100.0);
+            }
+
+            // 알러지 객체 가져오기
+            if (user != null){
+                Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+                if (allergy != null){
+                    allergyStatus = allergy.isActiveFlag();
+                }
+            }
+
+            // 재료 찜 객체 가져오기
+            if (user != null){
+                IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+                if (ingredientSelected != null){
+                    selectedStatus = ingredientSelected.isActiveFlag();
+                }
+            }
+
+            // 바구니 객체 가져오기
+            if (user != null){
+                Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+                if (basket != null){
+                    basketStatus = basket.isActiveFlag();
+                }
+            }
+
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
+
         }
-        System.out.println("중간: " + ingredientList);
+
         // 사전 순서
         if (orderType == 1){
-            System.out.println("정렬: " + ingredientList);
             Collections.sort(ingredientInfoResList, new NameSortComparator());
         }
         // 조회 큰 순서
@@ -124,7 +148,7 @@ public class IngredientServiceImpl implements IngredientService{
         else if(orderType == 4){
             Collections.sort(ingredientInfoResList, new PriceSortComparator());
         }
-        System.out.println("반환값나와?: "+ ingredientList);
+
         return ingredientInfoResList;
     }
 
@@ -159,6 +183,7 @@ public class IngredientServiceImpl implements IngredientService{
 
                 int yesterday = dayList.get(1).getPrice();
                 volatility = (today - yesterday) * 100.0 / today ;
+                volatility = Math.round((volatility * 100) / 100.0);
             }
             // 알러지 객체 가져오기
             boolean allergyStatus;
@@ -201,8 +226,12 @@ public class IngredientServiceImpl implements IngredientService{
         // 반환해야할 객체
         IngredientDetailRes ingredientDetailRes = new IngredientDetailRes();
         Ingredient ingredient = ingredientRepository.findById(ingredientDetailReq.getIngredientId()).get();
-        User user = userRepository.findByUsername(ingredientDetailReq.getUserName()).get();
-
+        User user = new User();
+        if (ingredientDetailReq.getUserName() != ""){
+            user = userRepository.findByUsername(ingredientDetailReq.getUserName()).orElse(null);
+        }else {
+            user = null;
+        }
 
         // 평균 가격
         Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
@@ -262,8 +291,14 @@ public class IngredientServiceImpl implements IngredientService{
             priceInfoRes.setQuantity(day.getQuantity());
             yearDo.add(priceInfoRes);
         }
-        SaleInfoRes wholeSales = new SaleInfoRes(dailyDo, monthDo, yearDo);
-        SaleInfoRes retailSales = new SaleInfoRes(dailySo, monthSo, yearSo);
+        SaleInfoRes wholeSales = new SaleInfoRes();
+        wholeSales.setDaily(dailyDo);
+        wholeSales.setMonthly(monthDo);
+        wholeSales.setYearly(yearDo);
+        SaleInfoRes retailSales = new SaleInfoRes();
+        retailSales.setDaily(dailySo);
+        retailSales.setMonthly(monthSo);
+        retailSales.setYearly(yearSo);
         int beforePrice = 0;
         int todayPrice = 0;
         int pastPrice = 0;
@@ -528,7 +563,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             // 가격 변동률
-            int volatility = 0;
+            double volatility = 0;
             if (day == null){
                 day = new Day();
                 day.setPrice(0);
@@ -540,7 +575,8 @@ public class IngredientServiceImpl implements IngredientService{
                 int today = dayList.get(0).getPrice();
 
                 int yesterday = dayList.get(1).getPrice();
-                volatility = (today - yesterday) / 100;
+                volatility = (today - yesterday) * 100.0 / today;
+                volatility = Math.round((volatility * 100) / 100.0);
             }
             // 알러지 객체 가져오기
             boolean allergyStatus;
