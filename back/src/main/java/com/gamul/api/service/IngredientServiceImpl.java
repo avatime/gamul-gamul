@@ -52,7 +52,7 @@ public class IngredientServiceImpl implements IngredientService{
 
     @Override
     public List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq){
-        Long highClassId = ingredientListReq.getHighClassId();
+        int highClassId = ingredientListReq.getHighClassId();
         int orderType = ingredientListReq.getOrderType();
         User user = userRepository.findByUsername(ingredientListReq.getUserName()).orElse(null);
         System.out.println("user 있나연~: " + user.getUsername());
@@ -62,7 +62,7 @@ public class IngredientServiceImpl implements IngredientService{
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
         // 대분류 객체 가져오기
-        HighClass highClass = highClassRepository.findById(highClassId.intValue()).get();
+        HighClass highClass = highClassRepository.findById(highClassId).get();
 
         for (Ingredient ingredient : ingredientList){
 
