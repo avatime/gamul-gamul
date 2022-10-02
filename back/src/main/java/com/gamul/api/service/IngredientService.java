@@ -1,5 +1,6 @@
 package com.gamul.api.service;
 
+import com.gamul.api.request.IngredientDetailReq;
 import com.gamul.api.request.IngredientListReq;
 import com.gamul.api.request.OfflineMartDetailInfoReq;
 import com.gamul.api.request.OfflineMartInfoReq;
@@ -16,7 +17,7 @@ public interface IngredientService {
     List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq);
     List<IngredientInfoRes> getIngredientSelectedList(String userName);
 
-    IngredientDetailRes getIngredientDetailInfo(Long ingredientId);
+    IngredientDetailRes getIngredientDetailInfo(IngredientDetailReq ingredientDetailReq);
 
     List<HighClass> getHighClassList();
 

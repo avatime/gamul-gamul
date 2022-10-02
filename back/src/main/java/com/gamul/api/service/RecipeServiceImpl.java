@@ -199,7 +199,8 @@ public class RecipeServiceImpl implements RecipeService{
             List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             int today = dayList.get(0).getPrice();
             int yesterday = dayList.get(1).getPrice();
-            int volatility = (today - yesterday) / 100;
+            double volatility = ((today - yesterday) / today) * 100;
+            volatility = Math.round((volatility * 100) / 100.0);
 
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
