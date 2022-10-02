@@ -37,10 +37,16 @@ const IngredientPage: NextPage<IProps> = ({
 
   useEffect(() => {
     setUserName(getCookie("userName"));
-    ApiClient.getInstance()
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
       .getBookmarkIngredientList(getCookie("userName"))
       .then((data) => setWishList(data));
+    }
   }, []);
+
+  useEffect(() => {
+    console.log(wishList);
+  }, [wishList]);
 
   return (
     <Box>

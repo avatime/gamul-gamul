@@ -49,13 +49,15 @@ const IngredientInfoPage: NextPage<IProps> = ({
     apiClient.postIngredientView(Number(id as string));
   }, [apiClient, id]);
 
-  const setBookmark = async () => {
-    await apiClient.putBookmarkIngredient(userName, Number(id));
+  const onClickBookmark = async () => {
+    ApiClient.getInstance()
+      .putBookmarkIngredient(userName, Number(id));
   };
 
   const onClickBasket = () => {
-    apiClient.putBasketIngredient(userName, Number(id));
-  }
+    ApiClient.getInstance()
+      .putBasketIngredient(userName, Number(id));
+    }
 
   useEffect(() => {
     if (id) {
@@ -80,7 +82,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                   <InfoTitle
                     name={ingredientInfo.name}
                     bookmark={ingredientInfo.bookmark}
-                    onClickBookmark={setBookmark}
+                    onClickBookmark={onClickBookmark}
                     onClickBasket={onClickBasket}
                     views={ingredientInfo.views}
                     imagePath={`/assets/ingredientsImg/${id}.jpg`}
@@ -110,7 +112,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
           <InfoTitle
             name={ingredientInfo.name}
             bookmark={ingredientInfo.bookmark}
-            onClickBookmark={setBookmark}
+            onClickBookmark={onClickBookmark}
             onClickBasket={onClickBasket}
             views={ingredientInfo.views}
             imagePath={`/assets/ingredientsImg/${id}.jpg`}
@@ -136,7 +138,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
           <InfoTitle
             name={ingredientInfo.name}
             bookmark={ingredientInfo.bookmark}
-            onClickBookmark={setBookmark}
+            onClickBookmark={onClickBookmark}
             onClickBasket={onClickBasket}
             views={ingredientInfo.views}
             imagePath={`/assets/ingredientsImg/${id}.jpg`}
