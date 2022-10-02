@@ -246,15 +246,6 @@ public class IngredientServiceImpl implements IngredientService{
         List<OfflineMartInfoRes> offlineMartInfoResList = new ArrayList<>();
         // 주어진 위경도 내 store 객체
         List<Store> storeList = storeRepository.findByLatitudeAndLongitude(offlineMartInfoReq.getSouthWestLatitude(), offlineMartInfoReq.getNorthEastLatitude(), offlineMartInfoReq.getSouthWestLongitude(), offlineMartInfoReq.getNorthEastLongitude());
-//        for(Store store : storeList){
-//            if (offlineMartInfoReq.getSouthWestLatitude() <= store.getLatitude() & store.getLatitude() <= offlineMartInfoReq.getNorthEastLatitude() &
-//            offlineMartInfoReq.getSouthWestLongitude() <= store.getLongitude() & store.getLongitude() <= offlineMartInfoReq.getNorthEastLongitude()
-//            ){
-//                System.out.println("마트: " + store.getName());
-//                System.out.println(store.getLatitude());
-//                System.out.println(store.getLongitude());
-//            }
-//        }
 
         for (Store store: storeList){
             OfflineMartInfoRes offlineMartInfoRes = new OfflineMartInfoRes();
@@ -297,37 +288,80 @@ public class IngredientServiceImpl implements IngredientService{
         User user = userRepository.findByUsername(offlineMartDetailInfoReq.getUserName()).orElse(null);
 
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
-        // 오늘 날짜
-        LocalDate today = LocalDate.now();
-        // 오늘 상점 id와 오늘 날짜를 가지고 물가 객체 가져오기
-        List<Price> priceList = priceRepository.findByStoreIdAndDateTime(storeId, today);
 
-        for (Price x : priceList){
+        // 최근 날짜 가져오기
+        String dateTime = priceRepository.findTop1ByStoreIdOrderByDateTimeDesc(storeId).getDateTime();
+
+        // 상점 id를 가지고 물가 객체 가져오기
+        List<Price> priceList = priceRepository.findByStoreIdAndDateTime(storeId, dateTime);
+
+        for (Price price : priceList){
             // 식재료 객체 가져오기
-            Ingredient ingredient = ingredientRepository.findById(x.getIngredient().getId()).get();
+            Ingredient ingredient = ingredientRepository.findById(price.getIngredient().getId()).get();
+
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            // 가격 변동률
+            int volatility = 0;
+            if (day == null){
+                day = new Day();
+                day.setPrice(0);
+                day.setUnit("");
+                day.setQuantity(0);
+            }else{
+                // 가격 변동률
+                List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                int today = dayList.get(0).getPrice();
+
+                int yesterday = dayList.get(1).getPrice();
+                volatility = (today - yesterday) / 100;
+            }
             // 알러지 객체 가져오기
-            Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+            boolean allergyStatus;
+            if (user == null){
+                allergyStatus = false;
+            }else{
+                Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+                if (allergy == null){
+                    allergyStatus = false;
+                }else{
+                    allergyStatus = allergy.isActiveFlag();
+                }
+            }
+
             // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+            boolean selectedStatus;
+            if (user == null){
+                selectedStatus = false;
+            }else{
+                IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+                if (ingredientSelected == null){
+                    selectedStatus = false;
+                }else{
+                    selectedStatus = ingredientSelected.isActiveFlag();
+                }
+            }
             // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+            boolean basketStatus;
+            if (user == null){
+                basketStatus = false;
+            }else{
+                Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+                if (basket == null){
+                    basketStatus = false;
+                }else{
+                    basketStatus = basket.isActiveFlag();
+                }
+            }
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            // 가격 변동률
-            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            int today1 = dayList.get(0).getPrice();
-            int yesterday = dayList.get(1).getPrice();
-            int volatility = (today1 - yesterday) / 100;
-
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
-
-//            ingredientInfoRes.setVolatility();
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
 
             ingredientInfoResList.add(ingredientInfoRes);
         }
+
+        Collections.sort(ingredientInfoResList, new NameSortComparator());
 
         return ingredientInfoResList;
     }
