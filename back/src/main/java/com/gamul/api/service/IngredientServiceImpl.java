@@ -410,8 +410,7 @@ public class IngredientServiceImpl implements IngredientService{
             basketRepository.saveAndFlush(basket);
         }else{
             Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).get();
-            basket.setActiveFlag(!basket.isActiveFlag());
-            basketRepository.saveAndFlush(basket);
+            basketRepository.deleteById(basket.getId());
         }
     }
 
