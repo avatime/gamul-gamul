@@ -11,18 +11,29 @@ import { RecipeInfo } from "../src/apis/responses/recipeInfo";
 import styles from "../styles/Page.module.css";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { Page } from "../src/components/Page";
+import { useState, useEffect } from 'react';
+import { getCookie } from '../src/utils/cookie';
 
 interface IProps {
-  basketIngredientList: IngredientInfo[];
-  totalPrice: number;
   recipeListWithBasket: RecipeInfo[];
 }
 
 const BasketPage: NextPage<IProps> = ({
-  basketIngredientList,
-  totalPrice,
   recipeListWithBasket,
 }) => {
+  const [basketIngredientList, setBasketIngredientList] = useState<IngredientInfo[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    ApiClient.getInstance()
+      .getBasketIngredientList(getCookie("userName"))
+      .then((data) => setBasketIngredientList(data));
+  }, []);
+
+  useEffect(() => {
+    setTotalPrice(basketIngredientList.reduce((p, c) => p + c.price, 0));
+  }, [basketIngredientList]);
+
   return (
     <Page>
       <Desktop>
@@ -36,7 +47,7 @@ const BasketPage: NextPage<IProps> = ({
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
       </Desktop>
-      <Tablet>
+      {/* <Tablet>
         <Box className={styles.PageforTablet}>
           <IngredientListComp
             title="바구니"
@@ -58,7 +69,7 @@ const BasketPage: NextPage<IProps> = ({
           />
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
-      </Mobile>
+      </Mobile> */}
     </Page>
   );
 };
@@ -68,8 +79,6 @@ export default BasketPage;
 export async function getServerSideProps() {
   const userName = "";
   const apiClient = ApiClient.getInstance();
-  const basketIngredientList = await apiClient.getBasketIngredientList(userName);
-  const totalPrice = basketIngredientList.reduce((p, c) => p + c.price, 0);
   const recipeListWithBasket = await apiClient.getRecipeWithBasketList(
     userName,
     RecipeOrderType.NAME_ASC,
@@ -79,8 +88,6 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      basketIngredientList,
-      totalPrice,
       recipeListWithBasket,
     },
   };
