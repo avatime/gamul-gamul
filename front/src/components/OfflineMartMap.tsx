@@ -133,7 +133,7 @@ function OfflineMartMap({
               content: `<div style="padding:0 5px;background:#fff;font-size:10px;">${v.name}</div>`,
               position: new window.kakao.maps.LatLng(v.latitude, v.longitude), // 커스텀 오버레이를 표시할 좌표
               xAnchor: 0, // 컨텐츠의 x 위치
-              yAnchor: -2.35, // 컨텐츠의 y 위치
+              yAnchor: -2.75, // 컨텐츠의 y 위치
             });
             
             markers.push(marker);

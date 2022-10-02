@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { Box } from "@mui/system";
-import { Grid, Avatar } from "@mui/material";
+import { Grid, Avatar, IconButton } from '@mui/material';
 import { IngredientInfo } from "../../apis/responses/ingredientInfo";
 import IngredientPriceGraph from "../IngredientPriceGraph";
 import { PriceTransitionInfo } from "../../apis/responses/priceTransitionInfo";
+import { useRouter } from "next/router";
 
 interface IProps {
   ingredientInfo: IngredientInfo;
@@ -14,6 +15,12 @@ export const IngredientBarGraphComp: FC<IProps> = ({
   ingredientInfo,
   priceTransitionInfo,
 }) => {
+  const router = useRouter();
+
+  const movePage = () => {
+    router.push(`/ingredient-info/${ingredientInfo.ingredient_id}`);
+  }
+
   return (
     <Grid container>
       <Grid
@@ -32,11 +39,13 @@ export const IngredientBarGraphComp: FC<IProps> = ({
             marginBottom: "5px",
           }}
         >
-          <Avatar
+          <IconButton onClick={movePage}>
+            <Avatar
             src={`/assets/ingredientsImg/${ingredientInfo?.ingredient_id}.jpg`}
             alt={ingredientInfo.name}
             sx={{ width: "50px", height: "50px" }}
-          />
+          /></IconButton>
+          
         </Box>
         <p
           style={{ fontSize: 16, display: "flex", justifyContent: "flex-end" }}

@@ -13,6 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IngredientListComp } from "../../src/components/templates/IngredientListComp";
 import IngredientPriceGraph from '../../src/components/IngredientPriceGraph';
 import { ButtonFill } from '../../src/components/button/ButtonFill';
+import { BackHeader } from '../../src/components/BackHeader';
 
 interface IProps {
   totalPrice: number;
@@ -108,7 +109,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
         </Box>
       </Tablet>
       <Mobile>
-        {/* 뒤로가기 헤더 */}
+        <BackHeader />
         <Box
           sx={{ display: "flex", margin: "60px 10px 0px 10px" }}
         >
