@@ -201,7 +201,7 @@ public class AlarmController {
                 sendNotice(notice);
             }
         } catch (Exception e){
-            return ResponseEntity.status(500).body("Internal Server Error" + e);
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
 
         return ResponseEntity.status(200).body("Success");
@@ -226,7 +226,7 @@ public class AlarmController {
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, headers);
 
         ResponseEntity<String> response = rt.exchange(
-                "https://j7a305.p.ssafy.io:3000/api/notification",
+                "https://j7a305.p.ssafy.io/api/notification",
                 HttpMethod.POST,
                 entity,
                 String.class
