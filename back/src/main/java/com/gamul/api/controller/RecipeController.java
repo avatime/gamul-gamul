@@ -69,7 +69,8 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName, @RequestBody RecipeSelectListReq recipeSelectListReq){
+    public ResponseEntity<?> getRecipeSelected(@RequestBody RecipeSelectListReq recipeSelectListReq){
+
         List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(recipeSelectListReq.getUserName());
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
@@ -93,9 +94,13 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeDetail(@PathVariable Long recipeId, @RequestBody RecipeDetailReq recipeDetailReq){
-        RecipeDetailRes recipeDetailRes = recipeService.getRecipeDetail(recipeDetailReq.getRecipeId(), recipeDetailReq.getUserName());
-        return ResponseEntity.status(200).body(recipeDetailRes);
+    public ResponseEntity<?> getRecipeDetail(@RequestBody RecipeDetailReq recipeDetailReq){
+        try {
+            RecipeDetailRes recipeDetailRes = recipeService.getRecipeDetail(recipeDetailReq.getRecipeId(), recipeDetailReq.getUserName());
+            return ResponseEntity.status(200).body(recipeDetailRes);
+        } catch (Exception e){
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 
     @PutMapping("/bookmark/{userName}/{recipeId}")
