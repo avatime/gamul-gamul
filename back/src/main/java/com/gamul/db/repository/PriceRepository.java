@@ -18,6 +18,7 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
 
     public Price findTop1ByIngredientIdAndStoreIdOrderByDateTimeDesc(Long ingredientId, Long StoreId);
     public Price findTop1ByStoreIdOrderByDateTimeDesc(Long storeId);
+    public List<Price> findTop10ByIngredientIdAndStoreIdOrderByDateTimeDesc(Long ingredientId, Long StoreId);
 
     @Query(value = "select AVG(p.price) from Price p where p.dateTime = :date and p.ingredient.id = :#{#paramIngredient.id}")
     public double getAvgPriceByDateAndIngredient(@Param(value = "date") String date, @Param(value = "paramIngredient")Ingredient ingredient);

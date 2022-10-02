@@ -24,7 +24,7 @@ public class IngredientInfoRes {
 
     double quantity;
 
-    int volatility;
+    double volatility;
 
     boolean allergy;
 
@@ -40,7 +40,7 @@ public class IngredientInfoRes {
 
     Long views;
 
-    public IngredientInfoRes(Ingredient ingredient, Day day, boolean allergy, boolean ingredientSelected, boolean basket, HighClass highClass, int volatility){
+    public IngredientInfoRes(Ingredient ingredient, Day day, boolean allergy, boolean ingredientSelected, boolean basket, HighClass highClass, double volatility){
         this.ingredientId = ingredient.getId();
         this.name = ingredient.getMidClass();
         this.price = day.getPrice();
