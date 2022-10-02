@@ -22,7 +22,7 @@ public class MyRecipeIngredientInfoRes {
 
     int quantity;
 
-    int volatility;
+    double volatility;
 
     boolean allergy;
 

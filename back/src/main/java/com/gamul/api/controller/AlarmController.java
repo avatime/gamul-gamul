@@ -2,7 +2,6 @@ package com.gamul.api.controller;
 
 import com.gamul.api.request.*;
 import com.gamul.api.response.AllergyAlarmRes;
-import com.gamul.api.response.IngredientLimitPriceAlarmRes;
 import com.gamul.api.response.IngredientLimitPriceRes;
 import com.gamul.api.response.NoticeRes;
 import com.gamul.api.service.AlarmService;
@@ -10,14 +9,22 @@ import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.UserService;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.IngredientRepository;
+import com.google.gson.Gson;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 알람 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -124,7 +131,6 @@ public class AlarmController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getNoticeList(@PathVariable String userName){
-        IngredientLimitPriceAlarmRes ingredientLimitPriceAlarmRes = new IngredientLimitPriceAlarmRes();
         User user = new User();
         try{
             user = userService.getUserByUsername(userName);
@@ -132,18 +138,17 @@ public class AlarmController {
             return ResponseEntity.status(401).body("인증 실패");
         }
         try{
-            List<IngredientPriceNotice> allergyList = alarmService.getNoticeList(user);
+            List<IngredientPriceNotice> noticeList = alarmService.getNoticeList(user);
             List<IngredientLimitPriceRes> list = new ArrayList<>();
-            for(IngredientPriceNotice notice : allergyList) {
+            for(IngredientPriceNotice notice : noticeList) {
                 list.add(IngredientLimitPriceRes.builder().ingredientId(notice.getIngredient().getId())
                         .lowerLimitPrice(notice.getLowerLimitPrice())
                         .upperLimitPrice(notice.getUpperLimitPrice()).build());
             }
-            ingredientLimitPriceAlarmRes.setIngredientList(list);
+            return ResponseEntity.status(200).body(list);
         } catch (Exception e){
             return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.status(200).body(ingredientLimitPriceAlarmRes);
     }
 
     @GetMapping("/notice/{userName}/{ingredientId}")
@@ -186,16 +191,51 @@ public class AlarmController {
     }
 
     @GetMapping ("/notice/send")
+    @Scheduled(cron = "0 0 1 * * *", zone = "Asia/Seoul")
     @ApiOperation(value = "모든 유저에게 알림 전송", notes = "유저별 <strong>알람</strong>을 전송한다")
     public ResponseEntity<?> sendNoticeToAllUsers(){
+        List<Notice> list = alarmService.getAllNotice();
 
-        // ??
+        try {
+            for (Notice notice : list) {
+                sendNotice(notice);
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(500).body("Internal Server Error" + e);
+        }
+
         return ResponseEntity.status(200).body("Success");
+    }
+
+    public void sendNotice(Notice notice) throws Exception{
+        DecimalFormat decFormat = new DecimalFormat("###,###");
+        RestTemplate rt = new RestTemplate();
+        String json = notice.getIngredientPriceNotice().getUser().getSubscription();
+        Gson gson = new Gson();
+        Map<String, String> map = gson.fromJson(json, Map.class);
+        Day day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 1);
+        if (day == null)
+            day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 0);
+        String info = " - " + decFormat.format(day.getPrice()) + "원/" + day.getQuantity() + day.getUnit();
+        NoticeRes send = new NoticeRes(notice, info);
+        Map<String, Object> params = new HashMap<>();
+        params.put("subscription", map);
+        params.put("title", send.getTitle());
+        params.put("message", send.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> response = rt.exchange(
+                "https://j7a305.p.ssafy.io/api/notification",
+                HttpMethod.POST,
+                entity,
+                String.class
+        );
     }
 
     @PostMapping("notice/list")
     @ApiOperation(value = "유저별 알람 조회", notes = "유저별 <strong>알람</strong>을 조회한다")
-    public ResponseEntity<?> getNoticeList(@RequestBody @ApiParam(value="알람 설정 정보", required = true)IngredientAllergyListReq usernameReq){
+    public ResponseEntity<?> getNoticeList(@RequestBody @ApiParam(value="알람 설정 정보", required = true)IngredientAllergyListReq usernameReq) {
         DecimalFormat decFormat = new DecimalFormat("###,###");
         try{
             User user = userService.getUserByUsername(usernameReq.getUserName());
@@ -203,13 +243,14 @@ public class AlarmController {
             List<NoticeRes> list = new ArrayList<>();
             for(Notice notice : noticeList){
                 Day day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 1);
+                if (day == null) day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 0);
                 String info = " - " +  decFormat.format(day.getPrice()) + "원/" + day.getQuantity() + day.getUnit();
                 list.add(new NoticeRes(notice, info));
             }
 
             return ResponseEntity.status(200).body(list);
         } catch (Exception e) {
-            return ResponseEntity.status(200).body("Internal Server Error");
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
 

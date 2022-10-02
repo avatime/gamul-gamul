@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +69,12 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public List<Notice> getAllNoticeByUser(User user) {
         return noticeRepository.getAllByIngredientPriceNotice_User(user);
+    }
+
+    @Override
+    public List<Notice> getAllNotice() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        return noticeRepository.getAllByCreatedTimeBetween(Timestamp.valueOf(start), Timestamp.valueOf(end));
     }
 }
