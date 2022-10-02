@@ -16,4 +16,5 @@ public interface AlarmService {
     List<Allergy> saveAllAlergy(List<Allergy> list);
     List<IngredientPriceNotice> saveAllIngredientPriceNotice(List<IngredientPriceNotice> list);
     List<Notice> getAllNoticeByUser(User user);
+    List<Notice> getAllNotice();
 }
