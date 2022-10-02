@@ -60,7 +60,8 @@ public class RecipeServiceImpl implements RecipeService{
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
 
         if(recipeListReq.getOrderType() == 1){
-            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.DESC, "name"));
+            System.out.println("페이지: " + pageRequest);
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
             System.out.println(recipeList.getContent().size());
             for (Recipe x : recipeList.getContent()){
@@ -102,7 +103,8 @@ public class RecipeServiceImpl implements RecipeService{
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
 
         if(recipeBasketReq.getOrderType() == 1){
-            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.ASC, "name"));
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "name"));
+            System.out.println("페이지: " + pageRequest);
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
             System.out.println(recipeList.getContent().size());
             for (Recipe x : recipeList.getContent()){
