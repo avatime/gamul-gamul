@@ -17,5 +17,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 //    @Query("select r from Recipe r where trim(r.name)")
     Page<Recipe> findAll(Pageable pageable);
     Optional<Recipe> findById(Long recipeId);
+    Optional<List<Recipe>> findByNameLike(String keyword);
 
 }
