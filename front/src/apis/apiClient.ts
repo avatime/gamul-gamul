@@ -99,9 +99,15 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
   }
   async getBookmarkIngredientList(userName: string): Promise<IngredientInfo[]> {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(Dummy.getBookmarkIngredientList), delay)
-    );
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/bookmark/${userName}`,
+        data: {
+          user_name: userName,
+        },
+      })
+    ).data;
   }
   async getIngredientDetailInfo(ingredientId: number): Promise<IngredientDetailInfo> {
     return new Promise((resolve) =>
@@ -117,15 +123,23 @@ export class ApiClient
     ).data;
   }
   async putBookmarkIngredient(userName: string, ingredientId: number): Promise<void> {
-    return this.axiosInstance.request({
+    return await this.axiosInstance.request({
       method: "put",
       url: `/ingredients/bookmark/${userName}/${ingredientId}`,
+      data: {
+        user_name: userName,
+        ingredient_id: ingredientId,
+      },
     });
   }
   async putBasketIngredient(userName: string, ingredientId: number): Promise<void> {
-    return this.axiosInstance.request({
+    return await this.axiosInstance.request({
       method: "put",
       url: `/ingredients/basket/${userName}/${ingredientId}`,
+      data: {
+        user_name: userName,
+        ingredient_id: ingredientId,
+      },
     });
   }
   async getOfflineMartList(
@@ -137,13 +151,42 @@ export class ApiClient
     latitude: number,
     longitude: number
   ): Promise<OfflineMartInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getOfflineMartList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/stores/${ingredientId}`,
+        data: {
+          ingredient_id: ingredientId,
+          south_west_latitude: southWestLatitude,
+          south_west_longitude: southWestLongitude,
+          north_east_latitude: northEastLatitude,
+          north_east_longitude: northEastLongitude,
+          latitude: latitude,
+          longitude: longitude,
+        },
+      })
+    ).data;
   }
   async getOfflineMartDetailInfo(storeId: number): Promise<IngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/stores/${storeId}`,
+        data: {
+          store_id: storeId,
+        }
+      })
+    ).data;
   }
   async getBasketIngredientList(userName: string): Promise<IngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
+    return (await this.axiosInstance.request({
+      method: "get",
+      url: `/ingredients/basket/${userName}`,
+      data: {
+        user_name: userName,
+      },
+    })
+    ).data;
   }
   async getRecipeList(
     orderType: RecipeOrderType,
@@ -167,7 +210,7 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeDetailInfo), delay));
   }
   async putBookmarkRecipe(userName: string, recipeId: number): Promise<void> {
-    return this.axiosInstance.request({
+    return await this.axiosInstance.request({
       method: "put",
       url: `/recipes/bookmark/${userName}/${recipeId}`,
     });
@@ -182,7 +225,7 @@ export class ApiClient
   }
 
   async putBasketAllRecipeIngredient(userName: string, recipeId: number): Promise<void> {
-    return this.axiosInstance.request({
+    return await this.axiosInstance.request({
       method: "put",
       url: `/recipes/${userName}/${recipeId}`,
     });
@@ -320,7 +363,7 @@ export class ApiClient
 
     return axios.create({
       baseURL: API_BASE_URL,
-      timeout: 1000,
+      timeout: 3000,
       headers,
     });
   };
