@@ -158,10 +158,22 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public RecipeDetailRes getRecipeDetail(Long recipeId, String userName){
         // recipeinfoRes 객체 생성
-
         Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
-        User user = userRepository.findByUsername(userName).get();
-        RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).orElse(null);
+        User user = new User();
+        boolean allergyStatus = false;
+        boolean selectedStatus = false;
+        boolean basketStatus = false;
+        if (userRepository.existsByUsername(userName)){
+            user = userRepository.findByUsername(userName).orElse(null);
+        }else{
+            user = null;
+        }
+        RecipeSelected recipeSelected = new RecipeSelected();
+        if (user == null){
+            recipeSelected = null;
+        }else{
+            recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipeId).orElse(null);
+        }
 
         boolean bookmark;
         if (recipeSelected != null){
@@ -178,33 +190,73 @@ public class RecipeServiceImpl implements RecipeService{
 
         // ingredientList 생성
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
-
         List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findAllByRecipeId(recipe.getId()).get();
+        ;
+        if (recipeIngredientList.size() >= 1){
+            for (RecipeIngredient recipeIngredient : recipeIngredientList){
+                Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
 
+                // 가격 객체 가져오기
+                Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                // 가격 변동률
+                double volatility = 0;
+                if (day == null){
+                    day = new Day();
+                    day.setPrice(0);
+                    day.setUnit("");
+                    day.setQuantity(0);
+                }else{
+                    // 가격 변동률
+                    List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                    int today = dayList.get(0).getPrice();
 
-        for (RecipeIngredient recipeIngredient : recipeIngredientList){
-            Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
-            // 가격 객체 가져오기
-            Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            // 알러지 객체 가져오기
-            Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
-            // 재료 찜 객체 가져오기
-            IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
-            // 바구니 객체 가져오기
-            Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
-            // 대분류 객체 가져오기
-            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
+                    int yesterday = dayList.get(1).getPrice();
+                    volatility = (today - yesterday) * 100.0 / today ;
+                    volatility = Math.round((volatility * 100) / 100.0);
+                }
 
-            // 가격 변동률
-            List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-            int today = dayList.get(0).getPrice();
-            int yesterday = dayList.get(1).getPrice();
-            double volatility = ((today - yesterday) / today) * 100;
-            volatility = Math.round((volatility * 100) / 100.0);
+                Allergy allergy = new Allergy();
+                IngredientSelected ingredientSelected = new IngredientSelected();
+                Basket basket = new Basket();
+                if (user != null){
+                    allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
+                    ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
+                    basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
+                }else{
+                    allergy = null;
+                    ingredientSelected = null;
+                    basket = null;
+                }
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergy.isActiveFlag(), ingredientSelected.isActiveFlag(), basket.isActiveFlag(), highClass, volatility);
-            ingredientInfoResList.add(ingredientInfoRes);
+                // 알러지 객체 가져오기
+                if (allergy == null){
+                    allergyStatus = false;
+                }else{
+                    allergyStatus = allergy.isActiveFlag();
+                }
+
+                // 재료 찜 객체 가져오기
+                if (ingredientSelected == null){
+                    selectedStatus = false;
+                }else{
+                    selectedStatus = ingredientSelected.isActiveFlag();
+                }
+
+                // 바구니 객체 가져오기
+                if (basket == null){
+                    basketStatus = false;
+                }else{
+                    basketStatus = basket.isActiveFlag();
+                }
+
+                // 대분류 객체 가져오기
+                HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
+
+                IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+                ingredientInfoResList.add(ingredientInfoRes);
+            }
         }
+
 
         // extraIngredientList 생성
         List<String> extraIngredientList = new ArrayList<>();
@@ -213,7 +265,7 @@ public class RecipeServiceImpl implements RecipeService{
             extraIngredientList.add(ingredientNotneed.getIngredient());
         }
         List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(recipe.getName());
-        RecipeDetailRes recipeDetailRes = new RecipeDetailRes(recipeInfoRes, ingredientInfoResList, extraIngredientList,youtubeInfoResList);
+        RecipeDetailRes recipeDetailRes = new RecipeDetailRes(recipeInfoRes, ingredientInfoResList, extraIngredientList, youtubeInfoResList);
         return recipeDetailRes;
     }
 

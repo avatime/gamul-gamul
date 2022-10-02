@@ -161,7 +161,6 @@ public class IngredientServiceImpl implements IngredientService{
         // response dto 생성 해서 값 넣기
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
-
         for (IngredientSelected x : ingredientSelectedList){
 
             // 식재료 객체 가져오기
@@ -212,10 +211,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-
-
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
-
             ingredientInfoResList.add(ingredientInfoRes);
         }
         return ingredientInfoResList;
