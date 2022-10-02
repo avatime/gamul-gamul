@@ -22,7 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Price extends BaseEntity{
     @Column(updatable = false, nullable = false)
-    private Date dateTime;
+    private String dateTime;
 
     @Column(nullable = false)
     private String unit;
@@ -45,7 +45,7 @@ public class Price extends BaseEntity{
 
     @Builder
     public Price(Date dateTime, String unit, Double quantity, int price, Store store, int type){
-        this.dateTime = dateTime;
+        this.dateTime = dateTime.toString();
         this.unit = unit;
         this.quantity = quantity;
         this.price = price;

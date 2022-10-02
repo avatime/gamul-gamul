@@ -4,6 +4,7 @@ import com.gamul.api.request.IngredientListReq;
 import com.gamul.api.request.OfflineMartDetailInfoReq;
 import com.gamul.api.request.OfflineMartInfoReq;
 import com.gamul.api.response.*;
+import com.gamul.common.util.LocationDistance;
 import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
@@ -41,6 +42,8 @@ public class IngredientServiceImpl implements IngredientService{
     StoreRepository storeRepository;
     @Autowired
     DayRepository dayRepository;
+
+    private final LocationDistance locationDistance;
 
     @Override
     public List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq){
@@ -243,36 +246,48 @@ public class IngredientServiceImpl implements IngredientService{
         List<OfflineMartInfoRes> offlineMartInfoResList = new ArrayList<>();
         // 주어진 위경도 내 store 객체
         List<Store> storeList = storeRepository.findByLatitudeAndLongitude(offlineMartInfoReq.getSouthWestLatitude(), offlineMartInfoReq.getNorthEastLatitude(), offlineMartInfoReq.getSouthWestLongitude(), offlineMartInfoReq.getNorthEastLongitude());
-        for (Store x: storeList){
-            System.out.println("store : " + x);
-            System.out.println("store name: " + x.getName() + " " + x.getId());
+//        for(Store store : storeList){
+//            if (offlineMartInfoReq.getSouthWestLatitude() <= store.getLatitude() & store.getLatitude() <= offlineMartInfoReq.getNorthEastLatitude() &
+//            offlineMartInfoReq.getSouthWestLongitude() <= store.getLongitude() & store.getLongitude() <= offlineMartInfoReq.getNorthEastLongitude()
+//            ){
+//                System.out.println("마트: " + store.getName());
+//                System.out.println(store.getLatitude());
+//                System.out.println(store.getLongitude());
+//            }
+//        }
+
+        for (Store store: storeList){
             OfflineMartInfoRes offlineMartInfoRes = new OfflineMartInfoRes();
-            int price = priceRepository.findByIngredientIdAndStoreId(offlineMartInfoReq.getIngredientId(), x.getId()).orElse(null).getPrice();
-            System.out.println("price: " + price);
-            offlineMartInfoRes.setStoreId(x.getId());
-            offlineMartInfoRes.setName(x.getName());
-            offlineMartInfoRes.setPrice(price);
-            offlineMartInfoRes.setLatitude(x.getLatitude());
-            offlineMartInfoRes.setLongitude(x.getLongitude());
-            System.out.println("이건 있음?? " + offlineMartInfoRes);
+            int priceStatus = 0;
+
+            Price price = priceRepository.findTop1ByIngredientIdAndStoreIdOrderByDateTimeDesc(offlineMartInfoReq.getIngredientId(), store.getId());
+            if (price != null){
+                priceStatus = price.getPrice();
+            }
+            offlineMartInfoRes.setStoreId(store.getId());
+            offlineMartInfoRes.setName(store.getName());
+            offlineMartInfoRes.setPrice(priceStatus);
+            offlineMartInfoRes.setLatitude(store.getLatitude());
+            offlineMartInfoRes.setLongitude(store.getLongitude());
+
             // 거리 계산
-            double lat1 = x.getLatitude();
-            double lon1 = x.getLongitude();
-            double lat2 = offlineMartInfoRes.getLatitude();
-            double lon2 = offlineMartInfoRes.getLongitude();
+            double lat1 = offlineMartInfoRes.getLatitude();
+            double lon1 = offlineMartInfoRes.getLongitude();
+            double lat2 = store.getLatitude();
+            double lon2 = store.getLongitude();
 
-            double theta = lon1 - lon2;
-            double dist = Math.sin(lat1 * Math.PI / 180.0) * Math.sin(lat2 * Math.PI / 180.0) + Math.cos(lat1 * Math.PI / 180.0) * Math.cos(lat2 * Math.PI / 180.0) * Math.cos(theta * Math.PI / 180.0);
-            dist = Math.acos(dist);
-            dist = (dist * 180) / Math.PI;
-            dist = dist * 60 * 1.1515;
-            dist = dist * 1609.344;
-            int distance = (int) dist;
+            double distance = locationDistance.distance(lat1, lon1, lat2, lon2, "meter");
+
+
             offlineMartInfoRes.setDistance(distance);
-            System.out.println("오프라인마트: " + offlineMartInfoRes);
 
-            offlineMartInfoResList.add(offlineMartInfoRes);
+            if (priceStatus != 0){
+                offlineMartInfoResList.add(offlineMartInfoRes);
+            }
         }
+
+        Collections.sort(offlineMartInfoResList, new DistanceSortComparator());
+
         return offlineMartInfoResList;
 
     }
@@ -371,8 +386,6 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-
-
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
 
             ingredientInfoResList.add(ingredientInfoRes);
@@ -438,6 +451,18 @@ class PriceSortComparator implements Comparator<IngredientInfoRes>{
         if (o1.getPrice() > o2.getPrice()){
             return 1;
         } else if (o1.getPrice() < o2.getPrice()) {
+            return -1;
+        }
+        return 0;
+    }
+}
+
+class DistanceSortComparator implements Comparator<OfflineMartInfoRes>{
+    @Override
+    public int compare(OfflineMartInfoRes o1, OfflineMartInfoRes o2){
+        if (o1.getDistance() > o2.getDistance()){
+            return 1;
+        } else if (o1.getDistance() < o2.getDistance()){
             return -1;
         }
         return 0;
