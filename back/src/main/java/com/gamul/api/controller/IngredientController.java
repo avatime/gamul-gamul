@@ -173,7 +173,7 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getStoreIngredientList(@PathVariable Long storeId, @RequestBody OfflineMartDetailInfoReq offlineMartDetailInfoReq) {
+    public ResponseEntity<?> getStoreIngredientList(@RequestBody OfflineMartDetailInfoReq offlineMartDetailInfoReq) {
         List<IngredientInfoRes> storeIngredientList = ingredientService.getStoreIngredientList(offlineMartDetailInfoReq);
         return new ResponseEntity<List<IngredientInfoRes>>(storeIngredientList, HttpStatus.OK);
     }
