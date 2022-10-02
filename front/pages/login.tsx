@@ -84,7 +84,8 @@ const LoginPage: NextPage<IProps> = (props) => {
               sx={{ width: "60vw", maxWidth: "500px" }}
               value={inputId}
               onChange={handleInputId}
-            />
+              onKeyPress={enterKey}/>
+              
             <Box p={3} />
             <Input
               type="password"
@@ -93,6 +94,7 @@ const LoginPage: NextPage<IProps> = (props) => {
               sx={{ width: "60vw", maxWidth: "500px" }}
               value={inputPw}
               onChange={handleInputPw}
+              onKeyPress={enterKey}
             />
             <Box p={4} />
             <ButtonFill
@@ -136,6 +138,7 @@ const LoginPage: NextPage<IProps> = (props) => {
               sx={{ width: "60vw", maxWidth: "500px" }}
               value={inputId}
               onChange={handleInputId}
+              onKeyPress={enterKey}
             />
             <Box p={3} />
             <Input
@@ -190,6 +193,7 @@ const LoginPage: NextPage<IProps> = (props) => {
               sx={{ width: "60vw", maxWidth: "500px" }}
               value={inputId}
               onChange={handleInputId}
+              onKeyPress={enterKey}
             />
             <Box p={3} />
             <Input
@@ -199,6 +203,7 @@ const LoginPage: NextPage<IProps> = (props) => {
               sx={{ width: "60vw", maxWidth: "500px" }}
               value={inputPw}
               onChange={handleInputPw}
+              onKeyPress={enterKey}
             />
             <Box p={4} />
             <ButtonFill
