@@ -65,7 +65,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
   return (
     <CardContainer title={title}>
       <Box>
-        <Box sx={{ margin: "5% 0" }}>
+        <Box marginBottom="20px">
           <OfflineMartMap
             ingredientId={ingredientId}
             latitude={location.coordinates.lat}
@@ -105,7 +105,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
             </Box>
           </Box>
         <Box
-          marginBottom={"5%"}
+          marginBottom="10px"
           display="flex"
           alignItems="center"
           justifyContent="center"
