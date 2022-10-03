@@ -257,10 +257,19 @@ public class MyRecipeController {
             if(dailySize != 0) {
                 priceTransitionInfoRes.setBeforePrice(dayRetailPrice.get(1).getPrice());
                 priceTransitionInfoRes.setPrice(dayRetailPrice.get(0).getPrice());
-                double pastvol = (1.0 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100;
-                priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
-                double todayvol = (1.0 * (dayRetailPrice.get(0).getPrice() - dayRetailPrice.get(1).getPrice()) / dayRetailPrice.get(1).getPrice()) * 100;
-                priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                if(dayRetailPrice.get(1).getPrice() == 0){
+                    priceTransitionInfoRes.setTodayvol(0);
+                    priceTransitionInfoRes.setPastvol(0);
+                } else {
+                    double todayvol = (1.0 * (dayRetailPrice.get(0).getPrice() - dayRetailPrice.get(1).getPrice()) / dayRetailPrice.get(1).getPrice()) * 100;
+                    priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                    if(dayRetailPrice.get(2).getPrice() == 0){
+                        priceTransitionInfoRes.setPastvol(0);
+                    } else {
+                        double pastvol = (1.0 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100;
+                        priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                    }
+                }
             }
             priceTransitionInfoRes.setWholesales(new SaleInfoRes());
             priceTransitionInfoRes.getWholesales().setDaily(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize)));

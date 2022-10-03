@@ -1,6 +1,5 @@
 package com.gamul.db.repository;
 
-import com.gamul.db.entity.Day;
 import com.gamul.db.entity.Month;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +12,7 @@ public interface MonthRepository extends JpaRepository<Month, Long> {
 
     public Month findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
     public List<Month>findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
+
+    public Month findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(Long ingredientId, int type);
+    public List<Month>findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(Long ingredientId, int type, String unit);
 }

@@ -25,12 +25,14 @@ public class DailyPriceServiceImpl implements DailyPriceService {
 
     @Override
     public List<Day> findDailyPrices(Long ingredientId, int type) throws Exception {
-        return dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
+//        return dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
+        Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
+        return dayRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredientId, type, day.getUnit());
     }
 
     @Override
     public Day findDailyPrice(Long ingredientId, int type) throws Exception {
-        return dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
+        return dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
     }
 
     @Override
@@ -45,11 +47,12 @@ public class DailyPriceServiceImpl implements DailyPriceService {
 
     @Override
     public List<Month> findMonthlyPrices(Long ingredientId, int type) throws Exception {
-        return monthRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
+        Month month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
+        return monthRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredientId, type, month.getUnit());
     }
 
     @Override
     public Month findMonthlyPrice(Long ingredientId, int type) throws Exception {
-        return monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
+        return monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
     }
 }
