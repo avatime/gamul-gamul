@@ -71,20 +71,18 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientDetailInfo(@PathVariable Long ingredientId, @PathVariable(required = false) String userName) {
-        try{
-            IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId, userName);
 
-            // 온라인 마트 정보 추가
-            String query = ingredientService.getOnlineIngredientInfo(ingredientId);
-            String resultString = naverShopSearch.search(query);
-            List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
+        IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId, userName);
 
-            ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+        // 온라인 마트 정보 추가
+        String query = ingredientService.getOnlineIngredientInfo(ingredientId);
+        String resultString = naverShopSearch.search(query);
+        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
 
-            return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
-        } catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
-        }
+        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+
+        return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
+
     }
 
     @GetMapping("/high-class")
