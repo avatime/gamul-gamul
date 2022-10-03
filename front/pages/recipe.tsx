@@ -117,7 +117,7 @@ export default RecipePage;
 
 export async function getServerSideProps() {
   const apiClient = ApiClient.getInstance();
-  const popularRecipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 50);
+  const popularRecipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 30);
   const popularYoutubeList = await apiClient.getPopularYoutubeList();
 
   return {
