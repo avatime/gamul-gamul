@@ -51,18 +51,10 @@ public class IngredientServiceImpl implements IngredientService{
     private final LocationDistance locationDistance;
 
     @Override
-    public List<IngredientInfoRes> getIngredientList(IngredientListReq ingredientListReq){
-        int highClassId = ingredientListReq.getHighClassId();
-        int orderType = ingredientListReq.getOrderType();
-        User user = new User();
+    public List<IngredientInfoRes> getIngredientList(int orderType, int highClassId){
         boolean allergyStatus = false;
         boolean selectedStatus = false;
         boolean basketStatus = false;
-        if (ingredientListReq.getUserName() == ""){
-            user = null;
-        }else{
-            user = userRepository.findByUsername(ingredientListReq.getUserName()).get();
-        }
 
         // 대분류 정보 가지고 재료 목록 리스트 가져오기
         List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).get();
@@ -103,30 +95,6 @@ public class IngredientServiceImpl implements IngredientService{
                 volatility = Math.round((volatility * 100) / 100.0);
             }
 
-            // 알러지 객체 가져오기
-            if (user != null){
-                Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
-                if (allergy != null){
-                    allergyStatus = allergy.isActiveFlag();
-                }
-            }
-
-            // 재료 찜 객체 가져오기
-            if (user != null){
-                IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
-                if (ingredientSelected != null){
-                    selectedStatus = ingredientSelected.isActiveFlag();
-                }
-            }
-
-            // 바구니 객체 가져오기
-            if (user != null){
-                Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
-                if (basket != null){
-                    basketStatus = basket.isActiveFlag();
-                }
-            }
-
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
 
@@ -148,7 +116,6 @@ public class IngredientServiceImpl implements IngredientService{
         else if(orderType == 4){
             Collections.sort(ingredientInfoResList, new PriceSortComparator());
         }
-
         return ingredientInfoResList;
     }
 
@@ -218,13 +185,14 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public IngredientDetailRes getIngredientDetailInfo(IngredientDetailReq ingredientDetailReq){
+    public IngredientDetailRes getIngredientDetailInfo(Long ingredientId, String userName){
         // 반환해야할 객체
         IngredientDetailRes ingredientDetailRes = new IngredientDetailRes();
-        Ingredient ingredient = ingredientRepository.findById(ingredientDetailReq.getIngredientId()).get();
+        Ingredient ingredient = ingredientRepository.findById(ingredientId).get();
+
         User user = new User();
-        if (ingredientDetailReq.getUserName() != ""){
-            user = userRepository.findByUsername(ingredientDetailReq.getUserName()).orElse(null);
+        if (userName != null){
+            user = userRepository.findByUsername(userName).orElse(null);
         }else {
             user = null;
         }
@@ -235,58 +203,84 @@ public class IngredientServiceImpl implements IngredientService{
         // daily 소매
         List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
         List<PriceInfoRes> dailySo = new ArrayList<>();
-        for (Day day1 : dayList){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(day1.getDatetime(), day1.getPrice());
-            priceInfoRes.setUnit(day1.getUnit());
-            priceInfoRes.setQuantity(day1.getQuantity());
-            dailySo.add(priceInfoRes);
+
+        if (dayList.size() > 0){
+            for (Day day1 : dayList){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(day1.getDatetime(), day1.getPrice());
+                priceInfoRes.setUnit(day1.getUnit());
+                priceInfoRes.setQuantity(day1.getQuantity());
+                dailySo.add(priceInfoRes);
+            }
         }
+
         // month 소매
+        String unitySo = "";
+        int quantitySo = 0;
         List<Month> monthList = monthRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
         List<PriceInfoRes> monthSo = new ArrayList<>();
-        for (Month month1 : monthList){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(month1.getDatetime(), month1.getPrice());
-            priceInfoRes.setUnit(month1.getUnit());
-            priceInfoRes.setQuantity(month1.getQuantity());
-            monthSo.add(priceInfoRes);
+        if (monthList.size() > 0){
+            for (Month month1 : monthList){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(month1.getDatetime(), month1.getPrice());
+                priceInfoRes.setUnit(month1.getUnit());
+                unitySo = month1.getUnit();
+                priceInfoRes.setQuantity(month1.getQuantity());
+                quantitySo = month1.getQuantity();
+                monthSo.add(priceInfoRes);
+            }
         }
+
         // year 소매
         List<Year> yearList = yearRepository.findTop10ByIngredientIdOrderByDatetimeDesc(ingredient.getId());
         List<PriceInfoRes> yearSo = new ArrayList<>();
-        for (Year year1 : yearList){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(year1.getDatetime(), year1.getPrice());
-            priceInfoRes.setUnit(day.getUnit());
-            priceInfoRes.setQuantity(day.getQuantity());
-            yearSo.add(priceInfoRes);
+        if (yearList.size() > 0){
+            for (Year year1 : yearList){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(year1.getDatetime(), year1.getPrice());
+                priceInfoRes.setUnit(unitySo);
+                priceInfoRes.setQuantity(quantitySo);
+                yearSo.add(priceInfoRes);
+            }
         }
 
         // day 도매
         List<Day> dayList1 = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
         List<PriceInfoRes> dailyDo = new ArrayList<>();
-        for (Day day2 : dayList1){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(day2.getDatetime(), day2.getPrice());
-            priceInfoRes.setUnit(day2.getUnit());
-            priceInfoRes.setQuantity(day2.getQuantity());
-            dailyDo.add(priceInfoRes);
+        if (dayList1.size() > 0){
+            for (Day day2 : dayList1){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(day2.getDatetime(), day2.getPrice());
+                priceInfoRes.setUnit(day2.getUnit());
+                priceInfoRes.setQuantity(day2.getQuantity());
+                dailyDo.add(priceInfoRes);
+            }
         }
+
         // month 도매
         List<Month> monthList1 = monthRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
         List<PriceInfoRes> monthDo = new ArrayList<>();
-        for (Month month2 : monthList1){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(month2.getDatetime(), month2.getPrice());
-            priceInfoRes.setUnit(month2.getUnit());
-            priceInfoRes.setQuantity(month2.getQuantity());
-            monthDo.add(priceInfoRes);
+        String unityDo = "";
+        int quantitydo = 0;
+        if (monthList1.size() > 0){
+            for (Month month2 : monthList1){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(month2.getDatetime(), month2.getPrice());
+                priceInfoRes.setUnit(month2.getUnit());
+                unityDo = month2.getUnit();
+                priceInfoRes.setQuantity(month2.getQuantity());
+                quantitydo = month2.getQuantity();
+                monthDo.add(priceInfoRes);
+            }
         }
+
         // year 도매
         List<Year> yearList1 = yearRepository.findTop10ByIngredientIdOrderByDatetimeDesc(ingredient.getId());
         List<PriceInfoRes> yearDo = new ArrayList<>();
-        for (Year year2 : yearList1){
-            PriceInfoRes priceInfoRes = new PriceInfoRes(year2.getDatetime(), year2.getPrice());
-            priceInfoRes.setUnit(day.getUnit());
-            priceInfoRes.setQuantity(day.getQuantity());
-            yearDo.add(priceInfoRes);
+        if (yearList1.size() > 0){
+            for (Year year2 : yearList1){
+                PriceInfoRes priceInfoRes = new PriceInfoRes(year2.getDatetime(), year2.getPrice());
+                priceInfoRes.setUnit(unityDo);
+                priceInfoRes.setQuantity(quantitydo);
+                yearDo.add(priceInfoRes);
+            }
         }
+
         SaleInfoRes wholeSales = new SaleInfoRes();
         wholeSales.setDaily(dailyDo);
         wholeSales.setMonthly(monthDo);
@@ -295,18 +289,19 @@ public class IngredientServiceImpl implements IngredientService{
         retailSales.setDaily(dailySo);
         retailSales.setMonthly(monthSo);
         retailSales.setYearly(yearSo);
+
         int beforePrice = 0;
         int todayPrice = 0;
         int pastPrice = 0;
         List<Day> dayList2 = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-        if (dayList2.get(0) != null){
+        if (dayList2.size() > 0){
             todayPrice = dayList2.get(0).getPrice();
-        }
-        if (dayList2.get(1) != null){
-            beforePrice = dayList2.get(1).getPrice();
-        }
-        if (dayList2.get(2) != null) {
-            pastPrice = dayList2.get(2).getPrice();
+            if (dayList2.size() > 1 ){
+                beforePrice = dayList2.get(1).getPrice();
+            }
+            if (dayList2.size() > 2 ) {
+                pastPrice = dayList2.get(2).getPrice();
+            }
         }
 
         double todayvol = (todayPrice - beforePrice) * 100.0 / todayPrice;
@@ -414,17 +409,17 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public List<OfflineMartInfoRes> getStoreList(OfflineMartInfoReq offlineMartInfoReq){
+    public List<OfflineMartInfoRes> getStoreList(Long ingredientId, double southWestLatitude, double southWestLongitude, double northEastLatitude,double northEastLongitude, double latitude, double longitude){
 
         List<OfflineMartInfoRes> offlineMartInfoResList = new ArrayList<>();
         // 주어진 위경도 내 store 객체
-        List<Store> storeList = storeRepository.findByLatitudeAndLongitude(offlineMartInfoReq.getSouthWestLatitude(), offlineMartInfoReq.getNorthEastLatitude(), offlineMartInfoReq.getSouthWestLongitude(), offlineMartInfoReq.getNorthEastLongitude());
+        List<Store> storeList = storeRepository.findByLatitudeAndLongitude(southWestLatitude, northEastLatitude, southWestLongitude, northEastLongitude);
 
         for (Store store: storeList){
             OfflineMartInfoRes offlineMartInfoRes = new OfflineMartInfoRes();
             int priceStatus = 0;
 
-            Price price = priceRepository.findTop1ByIngredientIdAndStoreIdOrderByDateTimeDesc(offlineMartInfoReq.getIngredientId(), store.getId());
+            Price price = priceRepository.findTop1ByIngredientIdAndStoreIdOrderByDateTimeDesc(ingredientId, store.getId());
             if (price != null){
                 priceStatus = price.getPrice();
             }
@@ -435,8 +430,8 @@ public class IngredientServiceImpl implements IngredientService{
             offlineMartInfoRes.setLongitude(store.getLongitude());
 
             // 거리 계산
-            double lat1 = offlineMartInfoReq.getLatitude();
-            double lon1 = offlineMartInfoReq.getLongitude();
+            double lat1 = latitude;
+            double lon1 = longitude;
             double lat2 = store.getLatitude();
             double lon2 = store.getLongitude();
 
@@ -456,9 +451,7 @@ public class IngredientServiceImpl implements IngredientService{
 
     }
     @Override
-    public List<IngredientInfoRes> getStoreIngredientList(OfflineMartDetailInfoReq offlineMartDetailInfoReq){
-        Long storeId = offlineMartDetailInfoReq.getStoreId();
-        User user = userRepository.findByUsername(offlineMartDetailInfoReq.getUserName()).orElse(null);
+    public List<IngredientInfoRes> getStoreIngredientList(Long storeId){
 
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
 
@@ -495,38 +488,11 @@ public class IngredientServiceImpl implements IngredientService{
                 volatility = Math.round((volatility * 100) / 100.0);
             }
             // 알러지
-            boolean allergyStatus;
+            boolean allergyStatus = false;
             // 재료 찜
-            boolean selectedStatus;
+            boolean selectedStatus = false;
             // 바구니
-            boolean basketStatus;
-            if (user == null){
-                allergyStatus = false;
-                selectedStatus = false;
-                basketStatus = false;
-            }else{
-                Allergy allergy = allergyRepository.findByIngredientIdAndUserId(ingredient.getId(), user.getId()).orElse(null);
-                IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredient.getId()).orElse(null);
-                Basket basket = basketRepository.findByUserIdAndIngredientId(user.getId(),ingredient.getId()).orElse(null);
-                // 알러지
-                if (allergy == null){
-                    allergyStatus = false;
-                }else{
-                    allergyStatus = allergy.isActiveFlag();
-                }
-                // 재료 찜
-                if (ingredientSelected == null){
-                    selectedStatus = false;
-                }else{
-                    selectedStatus = ingredientSelected.isActiveFlag();
-                }
-                // 바구니
-                if (basket == null){
-                    basketStatus = false;
-                }else{
-                    basketStatus = basket.isActiveFlag();
-                }
-            }
+            boolean basketStatus = false;
 
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
