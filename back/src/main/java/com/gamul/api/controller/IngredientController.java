@@ -1,12 +1,14 @@
 package com.gamul.api.controller;
 
-import com.gamul.api.request.*;
-import com.gamul.api.response.*;
+import com.gamul.api.request.IngredientSelectReq;
+import com.gamul.api.response.IngredientDetailRes;
+import com.gamul.api.response.IngredientInfoRes;
+import com.gamul.api.response.OfflineMartInfoRes;
+import com.gamul.api.response.OnlineMartInfoRes;
 import com.gamul.api.service.IngredientService;
 import com.gamul.common.model.response.BaseResponseBody;
 import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.HighClass;
-import com.gamul.db.entity.User;
 import com.gamul.db.repository.IngredientRepository;
 import com.gamul.db.repository.UserRepository;
 import io.swagger.annotations.Api;
@@ -130,13 +132,15 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientBasket(@PathVariable String userName) {
-        try{
-            List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
-            return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
-        }catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
-        }
+    public ResponseEntity<?> getIngredientBasket(@PathVariable String userName) throws Exception {
+//        try{
+//            List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
+//            return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
+//        }catch (Exception e){
+//            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+//        }
+        List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
+        return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
 
     }
 

@@ -1,28 +1,18 @@
 package com.gamul.api.service;
 
-import com.gamul.api.request.RecipeBasketReq;
-import com.gamul.api.request.RecipeDetailReq;
-import com.gamul.api.request.RecipeListReq;
 import com.gamul.api.response.*;
 import com.gamul.common.util.SubRecipePage;
 import com.gamul.common.util.YoutubeChannelSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
-import org.hibernate.annotations.SortComparator;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
-import java.util.function.Function;
 
 @Service("RecipeService")
 @RequiredArgsConstructor
@@ -332,6 +322,7 @@ public class RecipeServiceImpl implements RecipeService{
         for (RecipeIngredient recipeIngredient : recipeIngredientList){
             Ingredient ingredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId()).get();
             Basket basket = new Basket(user, ingredient);
+            if(basketRepository.existsByUserIdAndIngredientId(user.getId(), ingredient.getId())) continue;
             basketRepository.saveAndFlush(basket);
         }
     }
