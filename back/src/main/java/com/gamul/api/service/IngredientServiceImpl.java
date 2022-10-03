@@ -395,8 +395,7 @@ public class IngredientServiceImpl implements IngredientService{
             ingredientSelectedRepository.saveAndFlush(ingredientSelected);
         } else{
             IngredientSelected ingredientSelected = ingredientSelectedRepository.findByUserIdAndIngredientId(user.getId(), ingredientId).get();
-            ingredientSelected.setActiveFlag(!ingredientSelected.isActiveFlag());
-            ingredientSelectedRepository.saveAndFlush(ingredientSelected);
+            ingredientSelectedRepository.deleteById(ingredientSelected.getId());
         }
     }
 
