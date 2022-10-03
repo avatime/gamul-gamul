@@ -17,13 +17,18 @@ import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
 import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 
-interface IProps {}
+interface IProps {
+  blackList: number[];
+}
 
-const MyRecipeInfoPage: NextPage<IProps> = () => {
+const MyRecipeInfoPage: NextPage<IProps> = ({
+  blackList,
+}) => {
   const router = useRouter();
   const { id } = router.query;
   const apiClient = ApiClient.getInstance();
   const [userName, setUserName] = useState("");
+  const [graph, setGraph] = useState(false);
   const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>({
     ingredient_list: [],
     image_path: "",
@@ -52,8 +57,10 @@ const MyRecipeInfoPage: NextPage<IProps> = () => {
       ApiClient.getInstance()
       .getMyRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setMyRecipeDetailInfo(data));
+    if(!blackList.includes(Number(id))) {
+      setGraph(true);
+    }
   }, []);
-
 
   const modifyRecipe = () => {
     router.push({
@@ -96,12 +103,13 @@ const MyRecipeInfoPage: NextPage<IProps> = () => {
             rowSize={2}
             gridSize={5}
           />
-          {/* <IngredientPriceGraph
+          {graph && (<IngredientPriceGraph
             priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
             inputWidth="95%"
             inputHeight={500}
             type="line"
-          /> */}
+            myRecipe
+          />)}
           <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
             <ButtonFill
               onClick={deleteRecipe}
@@ -139,12 +147,13 @@ const MyRecipeInfoPage: NextPage<IProps> = () => {
           rowSize={2}
           gridSize={5}
         />
-        {/* <IngredientPriceGraph
+        {graph && (<IngredientPriceGraph
           priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
           inputWidth="95%"
           inputHeight={500}
           type="line"
-        /> */}
+          myRecipe
+        />)}
         <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
           <ButtonFill
             onClick={deleteRecipe}
@@ -195,13 +204,14 @@ const MyRecipeInfoPage: NextPage<IProps> = () => {
             </Box>
           </Box>
         </Box>
-        <IngredientListComp ingredientList={myRecipeDetailInfo.ingredient_list} totalPrice={myRecipeDetailInfo.total_price} />
-        {/* <IngredientPriceGraph
+        <IngredientListComp ingredientList={myRecipeDetailInfo.ingredient_list} totalPrice={myRecipeDetailInfo.total_price}/>
+        {graph && (<IngredientPriceGraph
           priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
           inputWidth="95%"
           inputHeight={400}
           type="line"
-        /> */}
+          myRecipe
+        />)}
         <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "75px" }}>
           <ButtonFill
             onClick={deleteRecipe}
@@ -221,9 +231,13 @@ const MyRecipeInfoPage: NextPage<IProps> = () => {
 export default MyRecipeInfoPage;
 
 export const getServerSideProps = async () => {
+  const apiClient = ApiClient.getInstance();
+  const blackList = await apiClient.getBlackList();
 
   return {
+
     props: {
+      blackList,
     },
   };
 };
