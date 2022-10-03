@@ -50,6 +50,7 @@ public class DailyPriceServiceImpl implements DailyPriceService {
     @Override
     public List<Month> findMonthlyPrices(Long ingredientId, int type) throws Exception {
         Month month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
+        if(month == null) return new ArrayList<>();
         return monthRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredientId, type, month.getUnit());
     }
 
