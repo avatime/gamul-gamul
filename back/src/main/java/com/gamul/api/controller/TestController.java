@@ -1,7 +1,7 @@
 package com.gamul.api.controller;
 
-import com.gamul.common.model.response.BaseResponseBody;
-import com.gamul.db.entity.Price;
+import com.gamul.api.service.DailyPriceService;
+import com.gamul.db.entity.Day;
 import com.gamul.db.repository.PriceRepository;
 import com.gamul.db.repository.TestRepository;
 import io.swagger.annotations.Api;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Api(value = "테스트 API", tags = {"Test."})
 @RestController
@@ -22,10 +24,13 @@ public class TestController {
     @Autowired
     PriceRepository priceRepository;
 
-    @GetMapping("/{testnum}")
-    public ResponseEntity<BaseResponseBody> test(@RequestParam Long testnum){
-        Price price = priceRepository.findById(testnum).get();
+    @Autowired
+    DailyPriceService dailyPriceService;
 
-        return ResponseEntity.ok(BaseResponseBody.of(200, price.getDateTime().toString()));
+    @GetMapping("/{testnum}")
+    public ResponseEntity<?> test(@RequestParam Long testnum) throws Exception{
+        List<Day> list = dailyPriceService.findDailyPrices(testnum, 0);
+
+        return ResponseEntity.status(200).body(list);
     }
 }
