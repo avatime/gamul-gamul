@@ -1,25 +1,17 @@
 package com.gamul.api.service;
 
-import com.gamul.api.request.IngredientDetailReq;
-import com.gamul.api.request.IngredientListReq;
-import com.gamul.api.request.OfflineMartDetailInfoReq;
-import com.gamul.api.request.OfflineMartInfoReq;
 import com.gamul.api.response.*;
 import com.gamul.common.util.LocationDistance;
-import com.gamul.common.util.NaverShopSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 @Service("ingredientService")
 @RequiredArgsConstructor
@@ -269,7 +261,13 @@ public class IngredientServiceImpl implements IngredientService{
             for (Day day2 : dayList1){
                 PriceInfoRes priceInfoRes = new PriceInfoRes(day2.getDatetime(), day2.getPrice());
                 priceInfoRes.setUnit(day2.getUnit());
-                priceInfoRes.setQuantity(day2.getQuantity());
+                if (dayList.size() > 0 && dayList.get(0).getUnit().equals(day2.getUnit())){
+                    priceInfoRes.setQuantity(dayList.get(0).getQuantity());
+                    priceInfoRes.setPrice((day2.getPrice()/day2.getQuantity()) * dayList.get(0).getQuantity());
+                }
+                else {
+                    priceInfoRes.setQuantity(day2.getQuantity());
+                }
                 dailyDo.add(priceInfoRes);
             }
             Collections.reverse(dailyDo);
