@@ -26,18 +26,22 @@ interface IProps {
 }
 
 const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList }) => {
-  // const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
-  // useEffect(() => {
-  //   ApiClient.getInstance()
-  //     .getMyRecipeList(getCookie("userName"))
-  //     .then((data) => setMyRecipeList(data));
-  // }, []);
+  const [userName, setUserName] = useState("");
+  const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
+  useEffect(() => {
+    setUserName(getCookie("userName"));
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
+      .getMyRecipeList(getCookie("userName"))
+      .then((data) => setMyRecipeList(data));
+    }
+  }, []);
   return (
     <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row">
-            <Grid item xs={8} marginTop="10px">
+            <Grid item xs={8}>
               <IngredientListComp
                 showMore
                 rowSize={2}
@@ -52,12 +56,12 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
             </Grid>
             <Grid item xs={4}>
               <RecipeListComp showMore rowSize={3} gridSize={3} recipeList={recipeList} />
-              {/* <MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} /> */}
+              {!!userName && (<MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} />)}
             </Grid>
           </Grid>
         </Box>
       </Desktop>
-      {/* <Tablet>
+      <Tablet>
         <Box className={styles.PageforTablet}>
           <IngredientListComp showMore rowSize={2} gridSize={6} ingredientList={ingredientList} />
           <HighClassComp
@@ -83,7 +87,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
           <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
           <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
         </Box>
-      </Mobile> */}
+      </Mobile>
     </Page>
   );
 };
@@ -93,7 +97,7 @@ export default MainPage;
 export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.VOLATILITY_ASC);
-  const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 90);
+  const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 50);
   const highClassList = await apiClient.getIngredientHighClassList();
 
   return {
