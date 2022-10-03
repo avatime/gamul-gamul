@@ -244,10 +244,10 @@ export class ApiClient
   }
 
   async putBasketAllRecipeIngredient(userName: string, recipeId: number): Promise<void> {
-    return await this.axiosInstance.request({
+    return (await this.axiosInstance.request({
       method: "put",
       url: `/recipes/${userName}/${recipeId}`,
-    });
+    }));
   }
   async getPopularYoutubeList(): Promise<YoutubeInfo[]> {
     return (
@@ -411,7 +411,7 @@ export class ApiClient
 
     return axios.create({
       baseURL: API_BASE_URL,
-      timeout: 3000,
+      timeout: 5000,
       headers,
     });
   };
