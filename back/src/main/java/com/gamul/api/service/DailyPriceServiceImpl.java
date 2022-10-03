@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("DailyPriceServiceImpl")
@@ -27,7 +28,8 @@ public class DailyPriceServiceImpl implements DailyPriceService {
     public List<Day> findDailyPrices(Long ingredientId, int type) throws Exception {
 //        return dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredientId, type);
         Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredientId, type);
-        return dayRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredientId, type, day.getUnit());
+        if(day == null) return new ArrayList<>();
+        return dayRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredientId, type, day.getUnit()).orElse(new ArrayList<>());
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Api(value = "마이레시피 API", tags = {"MyRecipe."})
@@ -145,8 +146,8 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, @PathVariable Long myRecipeId) {
-        try {
+    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, @PathVariable Long myRecipeId) throws Exception {
+//        try {
             MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
             if (!myRecipe.getUser().getUsername().equals(userName)) return ResponseEntity.status(401).body("인증 실패");
             MyRecipeDetailRes myRecipeDetailRes = new MyRecipeDetailRes();
@@ -185,23 +186,23 @@ public class MyRecipeController {
                 int price = 0;
                 for (int i = 0; i < 10; i++) {
                     if(i<dailyPrice.size()) {
-                        price = (int) (dailyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyPrice.get(i).getQuantity()));
+                        price = (int) (dailyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / dailyPrice.get(i).getQuantity()));
                         dayRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
                     }
                     if(i<monthlyPrice.size()) {
-                        price = (int) (monthlyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
+                        price = (int) (monthlyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
                         monthRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
                     }
                     if(i<dailyWholePrice.size()) {
-                        price = (int) (dailyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / dailyWholePrice.get(i).getQuantity()));
+                        price = (int) (dailyWholePrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / dailyWholePrice.get(i).getQuantity()));
                         dayWholePrice.get(i).setPrice(dayWholePrice.get(i).getPrice() + price);
                     }
                     if(i<monthlyWholePrice.size()){
-                        price = (int) (monthlyWholePrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyWholePrice.get(i).getQuantity()));
+                        price = (int) (monthlyWholePrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyWholePrice.get(i).getQuantity()));
                         monthWholePrice.get(i).setPrice(monthWholePrice.get(i).getPrice() + price);
                     }
                     if (i < yearlyPrice.size() && i<monthlyPrice.size()) {
-                        price = (int) (yearlyPrice.get(i).getPrice() * ((0.1) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
+                        price = (int) (yearlyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
                         yearRetailPrice.get(i).setPrice(monthRetailPrice.get(i).getPrice() + price);
                     }
                     if (setDate) {
@@ -240,6 +241,9 @@ public class MyRecipeController {
                     MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                             .ingredientId(myRecipeIngredient.getIngredient().getId())
                             .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(dailyWholePrice.get(0).getPrice())
+                            .unit(dailyWholePrice.get(0).getUnit())
+                            .quantity(dailyWholePrice.get(0).getQuantity())
                             .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                             .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                             .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
@@ -272,13 +276,13 @@ public class MyRecipeController {
                 }
             }
             priceTransitionInfoRes.setWholesales(new SaleInfoRes());
-            priceTransitionInfoRes.getWholesales().setDaily(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize)));
-            priceTransitionInfoRes.getWholesales().setYearly(new ArrayList<>(yearRetailPrice.subList(0, yearSize)));
-            priceTransitionInfoRes.getWholesales().setMonthly(new ArrayList<>(monthWholePrice.subList(0, monthlyWholeSize)));
+            priceTransitionInfoRes.getWholesales().setDaily(reverseList(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize))));
+            priceTransitionInfoRes.getWholesales().setYearly(reverseList(new ArrayList<>(yearRetailPrice.subList(0, yearSize))));
+            priceTransitionInfoRes.getWholesales().setMonthly(reverseList(new ArrayList<>(monthWholePrice.subList(0, monthlyWholeSize))));
             priceTransitionInfoRes.setRetailsales(new SaleInfoRes());
-            priceTransitionInfoRes.getRetailsales().setDaily(new ArrayList<>(dayRetailPrice.subList(0, dailySize)));
-            priceTransitionInfoRes.getRetailsales().setYearly(new ArrayList<>(yearRetailPrice.subList(0, yearSize)));
-            priceTransitionInfoRes.getRetailsales().setMonthly(new ArrayList<>(monthRetailPrice.subList(0,monthlySize)));
+            priceTransitionInfoRes.getRetailsales().setDaily(reverseList(new ArrayList<>(dayRetailPrice.subList(0, dailySize))));
+            priceTransitionInfoRes.getRetailsales().setYearly(reverseList(new ArrayList<>(yearRetailPrice.subList(0, yearSize))));
+            priceTransitionInfoRes.getRetailsales().setMonthly(reverseList(new ArrayList<>(monthRetailPrice.subList(0,monthlySize))));
 
             myRecipeDetailRes.setIngredientList(ingreidentlist);
             if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
@@ -288,9 +292,14 @@ public class MyRecipeController {
 
 
             return ResponseEntity.status(200).body(myRecipeDetailRes);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Internal Server Error");
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body("Internal Server Error" + e);
+//        }
+    }
+
+    public List<PriceInfoRes> reverseList(List<PriceInfoRes> list){
+        Collections.reverse(list);
+        return list;
     }
 
     @GetMapping("/ingredient/{userName}/{myRecipeId}")
