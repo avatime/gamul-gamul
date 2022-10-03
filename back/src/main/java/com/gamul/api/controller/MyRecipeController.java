@@ -280,7 +280,7 @@ public class MyRecipeController {
 
             return ResponseEntity.status(200).body(myRecipeDetailRes);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Internal Server Error");
+            return ResponseEntity.status(500).body("Internal Server Error" + e);
         }
     }
 
