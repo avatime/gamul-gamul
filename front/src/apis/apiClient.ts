@@ -372,6 +372,19 @@ export class ApiClient
     ).data;
   }
 
+  async uplodeImage(userName: string, imageData : string): Promise<void> {
+    return this.axiosInstance.request({
+      method: "post",
+      url: `/ocr`,
+      data: {
+        user_name: userName,
+        image_data: imageData,
+      },
+    });
+  }
+  
+
+
   static getInstance(): ApiClient {
     return this.instance || (this.instance = new this());
   }

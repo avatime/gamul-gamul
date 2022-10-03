@@ -44,8 +44,8 @@ export const OnlineMarketInfoComp: FC<IProps> = ({ onlineMartInfo, iconSize }) =
                   width: "50%",
                   overflow: "hidden",
                 }}
-              >
-                {row.name}
+              >{row.name.replace("<b>", "").replace("</b>", "")}
+               
               </TableCell>
              
               <TableCell>
