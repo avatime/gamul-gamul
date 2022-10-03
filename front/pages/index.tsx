@@ -21,11 +21,11 @@ import { useEffect, useState } from "react";
 
 interface IProps {
   ingredientList: IngredientInfo[];
-  // recipeList: RecipeInfo[];
+  recipeList: RecipeInfo[];
   highClassList: HighClass[];
 }
 
-const MainPage: NextPage<IProps> = ({ ingredientList, highClassList }) => {
+const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList }) => {
   // const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
   // useEffect(() => {
   //   ApiClient.getInstance()
@@ -51,7 +51,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, highClassList }) => {
               />
             </Grid>
             <Grid item xs={4}>
-              {/* <RecipeListComp showMore rowSize={3} gridSize={3} recipeList={recipeList} /> */}
+              <RecipeListComp showMore rowSize={3} gridSize={3} recipeList={recipeList} />
               {/* <MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} /> */}
             </Grid>
           </Grid>
@@ -93,13 +93,13 @@ export default MainPage;
 export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.VOLATILITY_ASC);
-  // const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 90);
+  const recipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 90);
   const highClassList = await apiClient.getIngredientHighClassList();
 
   return {
     props: {
       ingredientList,
-      // recipeList,
+      recipeList,
       highClassList,
     },
   };
