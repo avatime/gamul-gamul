@@ -7,7 +7,7 @@ import { ApiClient } from "../../apis/apiClient";
 import { useRouter } from "next/router";
 import { SearchBar } from "../SearchBar";
 import { IngredientItem } from "../IngredientItem";
-import useGeolocation from '../../hooks/useGeolocation';
+import useGeolocation from "../../hooks/useGeolocation";
 import { DebounceInput } from "react-debounce-input";
 import SearchIcon from "@mui/icons-material/Search";
 import searchStyles from "../../../styles/SearchHeaderBar.module.css";
@@ -49,7 +49,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
 
   useEffect(() => {
     async function getStoreInfo() {
-      if(storeId != 0) {
+      if (storeId != 0) {
         ApiClient.getInstance()
           .getOfflineMartDetailInfo(storeId)
           .then((data) => setIngredientList(data));
@@ -57,11 +57,15 @@ export const OfflineMartDetailComp: FC<IProps> = ({
     }
     getStoreInfo();
   }, [storeId]);
-  
+
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
+  const [searchedIngredientList, setSearchedIngredientList] = useState<
+    IngredientInfo[]
+  >([]);
   useEffect(() => {
-    setSearchedIngredientList(ingredientList.filter((v) => v.name.includes(searchKeyword)));
+    setSearchedIngredientList(
+      ingredientList.filter((v) => v.name.includes(searchKeyword)),
+    );
   }, [ingredientList, searchKeyword]);
 
   console.log(ingredientList);
@@ -83,31 +87,34 @@ export const OfflineMartDetailComp: FC<IProps> = ({
         </Box>
         <h2>{storeName}</h2>
         <Box height="60px" paddingX="15px">
-            <Box
-              maxWidth="500px"
-              height="40px"
-              borderRadius="20px"
-              display="flex"
-              bgcolor="#f5f5f5"
-              alignItems="center"
-              paddingX="10px"
-              marginTop="10px"
-            >
-              <DebounceInput
-                className={searchStyles.input}
-                forceNotifyByEnter={true}
-                forceNotifyOnBlur={true}
-                value={searchKeyword}
-                onChange={(e: any) => setSearchKeyword(e.target.value)}
-                debounceTimeout={300}
-                placeholder="식재료 검색"
-                style={{
-                  backgroundColor: "inherit",
-                }}
-              />
-              <SearchIcon color="success" style={{ width: "20px", height: "20px" }} />
-            </Box>
+          <Box
+            maxWidth="500px"
+            height="40px"
+            borderRadius="20px"
+            display="flex"
+            bgcolor="#f5f5f5"
+            alignItems="center"
+            paddingX="10px"
+            marginTop="10px"
+          >
+            <DebounceInput
+              className={searchStyles.input}
+              forceNotifyByEnter={true}
+              forceNotifyOnBlur={true}
+              value={searchKeyword}
+              onChange={(e: any) => setSearchKeyword(e.target.value)}
+              debounceTimeout={300}
+              placeholder="식재료 검색"
+              style={{
+                backgroundColor: "inherit",
+              }}
+            />
+            <SearchIcon
+              color="success"
+              style={{ width: "20px", height: "20px" }}
+            />
           </Box>
+        </Box>
         <Box
           marginBottom="10px"
           display="flex"
@@ -115,10 +122,17 @@ export const OfflineMartDetailComp: FC<IProps> = ({
           justifyContent="center"
           flexDirection="row"
         >
-          <span style={{ fontSize: 12, fontWeight: "bold", marginLeft: "40px" }}>식재료</span>
+          <span
+            style={{ fontSize: 12, fontWeight: "bold", marginLeft: "40px" }}
+          >
+            식재료
+          </span>
           <Box flex={5} />
-          <span style={{ fontSize: 12, fontWeight: "bold", marginRight: "40px" }}>가격</span>
-          <span style={{ fontSize: 12, fontWeight: "bold", marginRight: "15px" }}>등락폭</span>
+          <span
+            style={{ fontSize: 12, fontWeight: "bold", marginRight: "40px" }}
+          >
+            가격
+          </span>
         </Box>
         {searchedIngredientList?.map((data, index) => {
           return (
@@ -127,6 +141,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
               direction={"row"}
               ingredientInfo={data}
               onClickItem={onClickItem || defaultOnClickItem}
+              noVol
             />
           );
         })}

@@ -103,7 +103,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 mapId="desktop"
                 inputHeight="300px"
               />
-              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} iconSize="15px" />
             </Grid>
           </Grid>
         </Box>

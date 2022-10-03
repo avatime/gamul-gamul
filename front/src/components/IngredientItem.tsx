@@ -26,6 +26,7 @@ interface IProps {
   onDelete?: () => void;
   onClickItem: (id: number) => void;
   tail?: React.ReactNode;
+  noVol?: boolean;
 }
 
 export const IngredientItem: FC<IProps> = ({
@@ -34,6 +35,7 @@ export const IngredientItem: FC<IProps> = ({
   onDelete,
   onClickItem,
   tail,
+  noVol,
 }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
@@ -60,13 +62,16 @@ export const IngredientItem: FC<IProps> = ({
         justifyContent="center"
         flexDirection={direction}
       >
-        <Box position="relative" style={{ margin: direction == "column" ? 3 : 12 }}>
+        <Box
+          position="relative"
+          style={{ margin: direction == "column" ? 3 : 12 }}
+        >
           <Image
             width={avatarSize}
             height={avatarSize}
             alt={ingredientInfo?.name}
             src={`/assets/ingredientsImg/${ingredientInfo?.ingredient_id}.jpg`}
-            style={{borderRadius: avatarSize}}
+            style={{ borderRadius: avatarSize }}
           />
           {onDelete && (
             <IconButton
@@ -85,10 +90,11 @@ export const IngredientItem: FC<IProps> = ({
         </p>
         <Box flex={1} />
         <p style={{ fontSize: 8 }}>
-          {ingredientInfo?.price.toLocaleString() || 0}원/{ingredientInfo?.quantity}
+          {ingredientInfo?.price.toLocaleString() || 0}원/
+          {ingredientInfo?.quantity}
           {ingredientInfo?.unit}
         </p>
-        <Box
+        {!!!noVol && (<Box
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -107,8 +113,10 @@ export const IngredientItem: FC<IProps> = ({
           ) : (
             <ArrowDropDownIcon />
           )}
-          <p style={{ fontSize: 6, fontWeight: "bold" }}>{ingredientInfo?.volatility || 0} %</p>
-        </Box>
+          <p style={{ fontSize: 6, fontWeight: "bold" }}>
+            {ingredientInfo?.volatility || 0} %
+          </p>
+        </Box>)}
         <Box
           style={{
             margin: direction == "column" ? 3 : 10,
