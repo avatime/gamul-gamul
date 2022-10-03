@@ -14,6 +14,8 @@ import { IngredientListComp } from "../../src/components/templates/IngredientLis
 import IngredientPriceGraph from "../../src/components/IngredientPriceGraph";
 import { ButtonFill } from "../../src/components/button/ButtonFill";
 import { BackHeader } from "../../src/components/BackHeader";
+import { useEffect, useState } from "react";
+import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 
 interface IProps {
   totalPrice: number;
@@ -32,6 +34,19 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
 }) => {
   const router = useRouter();
   const { id } = router.query;
+  const apiClient = ApiClient.getInstance();
+  const [userName, setUserName] = useState("");
+  const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>();
+ 
+  useEffect(() => {
+    setUserName(getCookie("userName"));
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
+      .getMyRecipeDetailInfo(userName, Number(id))
+      .then((data) => setMyRecipeDetailInfo(data));
+    }
+  }, [id, userName]);
+
 
   const modifyRecipe = () => {
     router.push({
@@ -42,6 +57,9 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
 
   const deleteRecipe = async () => {
     // 나만의 요리법 삭제 api 호출
+    apiClient.deleteMyRecipe(userName, Number(id));
+    router.push('/my-recipe');
+
   };
 
   return (
@@ -49,7 +67,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
-            <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px" }} />
+            <Avatar src={imagePath} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
             <Box
               sx={{
                 display: "flex",
@@ -139,7 +157,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
           className={styles.PageforMobile}
         >
           
-          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px" }} />
+          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px", marginLeft:"15px" }} />
           <Box
             sx={{
               display: "flex",
@@ -198,20 +216,11 @@ export default MyRecipeInfoPage;
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
   const userName: string = await getCookie("userName");
-  const myRecipeDetailInfo = await apiClient.getMyRecipeDetailInfo(userName, context.params.id);
-  const totalPrice = myRecipeDetailInfo.total_price;
-  const ingredientList = myRecipeDetailInfo.ingredient_list;
-  const imagePath = myRecipeDetailInfo.image_path;
-  const name = myRecipeDetailInfo.name;
-  const priceTransitionInfo = myRecipeDetailInfo.price_transition_info;
+ 
 
   return {
     props: {
-      totalPrice,
-      ingredientList,
-      imagePath,
-      name,
-      priceTransitionInfo,
+    
     },
   };
 };
