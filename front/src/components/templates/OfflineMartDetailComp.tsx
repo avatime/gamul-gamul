@@ -49,7 +49,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
 
   useEffect(() => {
     async function getStoreInfo() {
-      const storeInfo = await apiClient.getOfflineMartDetailInfo(storeId, "no");
+      const storeInfo = await apiClient.getOfflineMartDetailInfo(storeId);
       setIngredientInfo(storeInfo);
     }
     getStoreInfo();
