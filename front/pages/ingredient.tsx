@@ -178,7 +178,6 @@ export const getStaticProps = async () => {
   const ingredientList = await apiClient.getIngredientList(3);
   const upIngredientList = new Array<IngredientInfo>();
   const downIngredientList = new Array<IngredientInfo>();
-  const ingredientList2 = await apiClient.getIngredientList(2);
   const highClassList = await apiClient.getIngredientHighClassList();
 
   ingredientList.forEach((v) => {
@@ -191,11 +190,12 @@ export const getStaticProps = async () => {
 
   const popularIngredientList = new Array();
 
-  for (var i = 0; i < 3; i++) {
-    const id = ingredientList2[i].ingredient_id;
-    const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(id);
-    popularIngredientList.push(ingredientDetailInfo);
-  }
+    const ingredientDetailInfo1 = await apiClient.getIngredientDetailInfo(40, "");
+    popularIngredientList.push(ingredientDetailInfo1);
+    const ingredientDetailInfo2 = await apiClient.getIngredientDetailInfo(10, "");
+    popularIngredientList.push(ingredientDetailInfo2);
+    const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(43, "");
+    popularIngredientList.push(ingredientDetailInfo3);
 
   return {
     props: {

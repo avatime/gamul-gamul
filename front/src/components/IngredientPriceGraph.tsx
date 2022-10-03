@@ -84,7 +84,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           },
           xaxis: {
             categories: priceTransitionInfo.retailsales.daily.map((v) =>
-              moment(v.date).format("MM.D")
+              moment(v.date).format("MM.DD")
             ),
             title: {
               text: "일자",
@@ -147,7 +147,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           },
           xaxis: {
             categories: priceTransitionInfo.retailsales.daily.map((v) =>
-              moment(v.date).format("MM.D")
+              moment(v.date).format("MM.DD")
             ),
           },
           yaxis: {

@@ -22,7 +22,7 @@ interface IProps {
 
 export const OfflineMartDetailComp: FC<IProps> = ({
   title = "주변 마트",
-  ingredientId = -1,
+  ingredientId = 1,
   onClickItem,
   inputHeight,
   mapId,
@@ -33,7 +33,7 @@ export const OfflineMartDetailComp: FC<IProps> = ({
 
   const [storeId, setStoreId] = useState(0);
   const [storeName, setStoreName] = useState("마트 이름");
-  const [ingredientInfo, setIngredientInfo] = useState<IngredientInfo[]>([]);
+  const [ingredientList, setIngredientList] = useState<IngredientInfo[]>([]);
 
   const defaultOnClickItem = (id: number) => {
     router.push(`/ingredient-info/${id}`);
@@ -49,18 +49,22 @@ export const OfflineMartDetailComp: FC<IProps> = ({
 
   useEffect(() => {
     async function getStoreInfo() {
-      const storeInfo = await apiClient.getOfflineMartDetailInfo(storeId);
-      setIngredientInfo(storeInfo);
+      if(storeId != 0) {
+        ApiClient.getInstance()
+          .getOfflineMartDetailInfo(storeId)
+          .then((data) => setIngredientList(data));
+      }
     }
     getStoreInfo();
   }, [storeId]);
-
   
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
   useEffect(() => {
-    setSearchedIngredientList(ingredientInfo.filter((v) => v.name.includes(searchKeyword)));
-  }, [ingredientInfo, searchKeyword]);
+    setSearchedIngredientList(ingredientList.filter((v) => v.name.includes(searchKeyword)));
+  }, [ingredientList, searchKeyword]);
+
+  console.log(ingredientList);
 
   return (
     <CardContainer title={title}>
