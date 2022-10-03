@@ -84,4 +84,8 @@ export interface IngredientApi {
    * @param ingredientId 식재료 ID
    */
   postIngredientView(ingredientId: number): Promise<void>;
+  /**
+   * 블랙리스트 배열
+   */
+   getBlackList(): Promise<[]>;
 }

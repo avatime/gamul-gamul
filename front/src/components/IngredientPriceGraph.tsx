@@ -10,26 +10,31 @@ interface IProps {
   inputWidth: any;
   inputHeight: number;
   type: Type;
+  myRecipe?: boolean;
 }
 
 moment.locale("ko");
 
-const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type }) => {
+const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type, myRecipe }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
   const Chart2 = dynamic(() => import("react-apexcharts"), { ssr: false });
 
   const retailMax = Math.max(...priceTransitionInfo.retailsales.daily.map((v) => v.price));
   const wholeMax = Math.max(...priceTransitionInfo.wholesales.daily.map((v) => v.price));
-  const max = Math.floor(Math.max(retailMax, wholeMax) * 1.05 / 100) * 100;
-  const max2 = Math.floor(retailMax * 1.05 / 100 ) * 100;
+  const max = Math.floor(Math.max(retailMax, wholeMax) * 1.05 / 100) * 100 < 1000 ? 1000 : Math.floor(Math.max(retailMax, wholeMax) * 1.05 / 100) * 100;
+  const max2 = Math.floor(retailMax * 1.05 / 100 ) * 100 < 1000 ? 1000 : Math.floor(retailMax * 1.05 / 100 ) * 100;
 
   const retailMin = Math.min(...priceTransitionInfo.retailsales.daily.map((v) => v.price));
   const wholeMin = Math.min(...priceTransitionInfo.wholesales.daily.map((v) => v.price));
   const min = Math.floor(Math.min(retailMin, wholeMin) * 0.95 / 100) * 100 < 1000 ? 0 : Math.floor(Math.min(retailMin, wholeMin) * 0.95 / 100) * 100;
   const min2 = Math.floor(retailMin * 0.95 / 100) * 100 < 1000 ? 0 : Math.floor(retailMin * 0.95 / 100) * 100;
 
-  const quantity = !!priceTransitionInfo?.retailsales ? priceTransitionInfo.retailsales.daily[0].quantity : priceTransitionInfo.wholesales.daily[0].quantity;
-  const unit = !!priceTransitionInfo?.retailsales ? priceTransitionInfo.retailsales.daily[0].unit : priceTransitionInfo.wholesales.daily[0].unit;
+  var quantity = "";
+  var unit = "";
+  if (!myRecipe) {
+  quantity = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].quantity : priceTransitionInfo.wholesales.yearly[0].quantity);
+  unit = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].unit : priceTransitionInfo.wholesales.yearly[0].unit);
+  } 
 
   return (
     <div>

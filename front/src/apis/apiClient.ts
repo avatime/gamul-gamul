@@ -382,8 +382,15 @@ export class ApiClient
       },
     });
   }
-  
 
+  async getBlackList() : Promise<[]> {
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/test/error`,
+      })
+    ).data;
+  }
 
   static getInstance(): ApiClient {
     return this.instance || (this.instance = new this());
