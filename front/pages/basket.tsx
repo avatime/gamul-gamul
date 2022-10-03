@@ -24,12 +24,14 @@ const BasketPage: NextPage<IProps> = ({
   const [recipeListWithBasket, setRecipeListWithBasket] = useState<RecipeInfo[]>([]);
 
   useEffect(() => {
-    ApiClient.getInstance()
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
       .getBasketIngredientList(getCookie("userName"))
       .then((data) => setBasketIngredientList(data));
     ApiClient.getInstance()
-      .getRecipeWithBasketList(getCookie("userName"), 2, 1, 30)
+      .getRecipeWithBasketList(getCookie("userName"), RecipeOrderType.VIEW_ASC, 1, 50)
       .then((data) => setRecipeListWithBasket(data));
+    }
   }, []);
 
   useEffect(() => {
