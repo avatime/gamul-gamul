@@ -112,10 +112,13 @@ export class ApiClient
       })
     ).data;
   }
-  async getIngredientDetailInfo(ingredientId: number): Promise<IngredientDetailInfo> {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(Dummy.getIngredientDetailInfo), delay)
-    );
+  async getIngredientDetailInfo(ingredientId: number, userName: string): Promise<IngredientDetailInfo> {
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/detail/${ingredientId}/${userName}`,
+      })
+    ).data;
   }
   async getIngredientHighClassList(): Promise<HighClass[]> {
     return (
@@ -161,11 +164,11 @@ export class ApiClient
       })
     ).data;
   }
-  async getOfflineMartDetailInfo(storeId: number, userName: string): Promise<IngredientInfo[]> {
+  async getOfflineMartDetailInfo(storeId: number): Promise<IngredientInfo[]> {
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/ingredients/stores/${storeId}/${userName}`,
+        url: `/ingredients/stores/${storeId}`,
       })
     ).data;
   }

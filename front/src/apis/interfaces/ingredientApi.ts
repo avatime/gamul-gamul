@@ -26,8 +26,9 @@ export interface IngredientApi {
   /**
    * 식재료 상세 조회
    * @param ingredientId 식재료 ID
+   * @param userName 유저 ID
    */
-  getIngredientDetailInfo(ingredientId: number): Promise<IngredientDetailInfo>;
+  getIngredientDetailInfo(ingredientId: number, userName: string): Promise<IngredientDetailInfo>;
   /**
    * 식재료 대분류 목록 조회
    */
@@ -66,9 +67,8 @@ export interface IngredientApi {
   /**
    * 오프라인마트 상세 정보 조회 (마트에서 무얼 파는지 조회)
    * @param storeId 마트 ID
-   * @param userName 유저 ID
    */
-  getOfflineMartDetailInfo(storeId: number, userName: string): Promise<IngredientInfo[]>;
+  getOfflineMartDetailInfo(storeId: number): Promise<IngredientInfo[]>;
   /**
    * 온라인 마트 정보 조회
    * @param ingredientId 식재료 ID
