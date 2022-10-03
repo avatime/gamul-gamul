@@ -258,7 +258,12 @@ export class ApiClient
     ).data;
   }
   async search(keyword: string): Promise<SearchResult> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.search(keyword)), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/search/${keyword}`,
+      })
+    ).data;
   }
   async postMyRecipe(
     userName: string,
