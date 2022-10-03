@@ -206,7 +206,7 @@ export class ApiClient
   ): Promise<RecipeInfo[]> {
     return (await this.axiosInstance.request({
       method: "get",
-      url: `/recipes/${orderType}/${page}/${size}/${userName}`,
+      url: `/recipes/basket/${orderType}/${page}/${size}/${userName}`,
     })
     ).data;
   }
@@ -217,10 +217,10 @@ export class ApiClient
     })
     ).data;
   }
-  async getRecipeDetailInfo(recipeId: number): Promise<RecipeDetailInfo> {
+  async getRecipeDetailInfo( userName:string, recipeId: number,): Promise<RecipeDetailInfo> {
     return (await this.axiosInstance.request({
       method: "get",
-      url: `/recipes/{recipeId}`,
+      url: `/recipes/${recipeId}/${userName}`,
     })
     ).data;
   }
@@ -418,7 +418,7 @@ export class ApiClient
 
     return axios.create({
       baseURL: API_BASE_URL,
-      timeout: 5000,
+      timeout: 100000,
       headers,
     });
   };

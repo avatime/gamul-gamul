@@ -25,9 +25,27 @@ interface IProps {
   recipeDetailInfo: RecipeDetailInfo;
 }
 
-const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, recipeDetailInfo }) => {
+const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
   const router = useRouter();
   const onClickBookmark = () => {};
+  const { id } = router.query;
+
+  const [userName, setUserName] = useState("");
+  const [recipeDetailInfo, setRecipeDetailInfo] =useState<RecipeDetailInfo>({
+    recipe_info: { recipe_id: 0, image_path: "/icon2.png", name: "", desc: "", bookmark: false, views: 0 },
+    ingredient_list: [],
+    extra_ingredient_list: [],
+    youtube_list: [],
+  });
+
+  useEffect(() => {
+    setUserName(getCookie("userName"));
+
+    ApiClient.getInstance()
+      .getRecipeDetailInfo(getCookie("userName"), Number(id))
+      .then((data) => setRecipeDetailInfo(data));
+    console.log(recipeDetailInfo.recipe_info.image_path);
+  }, [id, recipeDetailInfo.recipe_info.image_path, userName]);
 
   return (
     <div>
@@ -42,7 +60,7 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, recipeDetailInfo 
             bookmark={recipeDetailInfo.recipe_info.bookmark}
             onClickBookmark={onClickBookmark}
             views={recipeDetailInfo.recipe_info.views}
-            imagePath={recipeDetailInfo.recipe_info.image_path}
+            imagePath={recipeDetailInfo.recipe_info?.image_path}
             isExternalImage={true}
           />
           <Box p={2} />
@@ -215,12 +233,12 @@ export default RecipeDetailPage;
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
 
-  const recipeDetailInfo = await apiClient.getRecipeDetailInfo(context.params.id);
+  //const recipeDetailInfo = await apiClient.getRecipeDetailInfo(context.params.id);
   const recipeOrderInfo = await apiClient.getRecipeOrderList(context.params.id);
 
   return {
     props: {
-      recipeDetailInfo,
+      // recipeDetailInfo,
       recipeOrderInfo,
     },
   };
