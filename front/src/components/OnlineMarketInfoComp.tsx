@@ -44,17 +44,21 @@ export const OnlineMarketInfoComp: FC<IProps> = ({ onlineMartInfo, iconSize }) =
                   width: "50%",
                   overflow: "hidden",
                 }}
-              >{row.name.replace("<b>", "").replace("</b>", "")}
+              >{row.name.replaceAll("<b>", "").replaceAll("</b>", "")}
                
               </TableCell>
              
-              <TableCell>
-                <Stack direction="row" sx={{ alignItems: "center", whiteSpace: "nowrap",width: "30%", }}>
+              <TableCell sx={{ whiteSpace: "nowrap",width: "30%", textOverflow: "ellipsis", overflow: "hidden", }}>
+                <Stack direction="row" sx={{ alignItems: "center"}}>
                   {row.mall_name}
                 </Stack>
               </TableCell>
-              <TableCell sx={{ alignItems: "right", whiteSpace: "nowrap" , width: "20%",}}>
+              <TableCell sx={{ alignItems: "right", whiteSpace: "nowrap" , width: "20%"}}>
+                <Stack sx={{ display:"flex", justifyContent:"flex-end" }}>
                 {row.price.toLocaleString()}원
+
+                </Stack>
+    
               </TableCell>
             </TableRow>
           ))}
