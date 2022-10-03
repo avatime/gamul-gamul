@@ -38,6 +38,10 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
     youtube_list: [],
   });
 
+  useEffect(()=>{
+    ApiClient.getInstance().postRecipeView(Number(id))
+   },[id]);
+
   useEffect(() => {
     setUserName(getCookie("userName"));
 
