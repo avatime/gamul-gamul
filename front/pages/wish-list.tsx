@@ -11,18 +11,34 @@ import styles from "../styles/Page.module.css";
 import { BackHeader } from "../src/components/BackHeader";
 import { IngredientListComp } from "../src/components/templates/IngredientListComp";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
-import { Page } from '../src/components/Page';
+import { Page } from "../src/components/Page";
+import { useEffect, useState } from "react";
 
 interface IProps {
   bookmarkIngredientList: IngredientInfo[];
   bookmarkRecipeList: RecipeInfo[];
 }
 
-const WishListPage: NextPage<IProps> = ({ bookmarkIngredientList, bookmarkRecipeList }) => {
+const WishListPage: NextPage<IProps> = () => {
+  const [userName, setUserName] = useState("");
+  const [bookmarkIngredientList, setBookmarkIngredientList] = useState<IngredientInfo[]>([]);
+  const [bookmarkRecipeList, setBookmarkRecipeList] = useState<RecipeInfo[]>([]);
+
+  useEffect(() => {
+    setUserName(getCookie("userName"));
+
+    ApiClient.getInstance()
+      .getBookmarkIngredientList(getCookie("userName"))
+      .then((data) => setBookmarkIngredientList(data));
+    ApiClient.getInstance()
+      .getBookmarkRecipeList(getCookie("userName"))
+      .then((data) => setBookmarkRecipeList(data));
+  }, [bookmarkIngredientList, userName]);
+
   return (
     <Page>
       <Desktop>
-      <Box className={styles.PageforDesktop}>
+        <Box className={styles.PageforDesktop}>
           <IngredientListComp
             title="식재료 찜 목록"
             ingredientList={bookmarkIngredientList}
@@ -78,14 +94,14 @@ export default WishListPage;
 
 export async function getServerSideProps() {
   const userName = getCookie("userName");
-  const apiClient = ApiClient.getInstance();
-  const bookmarkIngredientList = await apiClient.getBookmarkIngredientList(userName);
-  const bookmarkRecipeList = await apiClient.getBookmarkRecipeList(userName);
+  // const apiClient = ApiClient.getInstance();
+  // const bookmarkIngredientList = await apiClient.getBookmarkIngredientList(userName);
+  // const bookmarkRecipeList = await apiClient.getBookmarkRecipeList(userName);
 
   return {
     props: {
-      bookmarkIngredientList,
-      bookmarkRecipeList,
+      // bookmarkIngredientList,
+      // bookmarkRecipeList,
     },
   };
 }
