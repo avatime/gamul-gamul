@@ -32,8 +32,8 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
   var quantity = "";
   var unit = "";
   if (!myRecipe) {
-  quantity = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].quantity : priceTransitionInfo.wholesales.yearly[0].quantity);
-  unit = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].unit : priceTransitionInfo.wholesales.yearly[0].unit);
+  quantity = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].quantity : priceTransitionInfo.wholesales.daily[0].quantity);
+  unit = String(priceTransitionInfo?.retailsales.daily.length > 0 ? priceTransitionInfo.retailsales.daily[0].unit : priceTransitionInfo.wholesales.daily[0].unit);
   } 
 
   return (

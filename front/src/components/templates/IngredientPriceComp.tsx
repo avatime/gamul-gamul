@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { IngredientDetailInfo } from "../../apis/responses/ingredientDetailInfo";
 import { CardContainer } from "../CardContainer";
 import IngredientPriceGraph from "../IngredientPriceGraph";
@@ -10,13 +10,15 @@ interface IProps {
   title?: string;
   inputWidth: any;
   inputHeight: number;
+  blackList?: number[];
 }
 
 export const IngredientPriceComp: FC<IProps> = ({
   ingredientDetailInfo,
   title = "물가 정보",
   inputWidth,
-  inputHeight
+  inputHeight,
+  blackList
 }) => {
   const priceTransitionInfo = ingredientDetailInfo.price_transition_info;
   const pastPrice = priceTransitionInfo.before_price;
@@ -25,6 +27,13 @@ export const IngredientPriceComp: FC<IProps> = ({
   const todayVol = priceTransitionInfo.todayvol;
   const quantity = ingredientDetailInfo.ingredient_info.quantity;
   const unit = ingredientDetailInfo.ingredient_info.unit;
+  const [graph, setGraph] = useState(false);
+
+  useEffect(() => {
+    if(!!blackList && !blackList.includes(ingredientDetailInfo.ingredient_info.ingredient_id)) {
+      setGraph(true);
+    }
+  }, []);
 
   return (
       <CardContainer title={title}>
@@ -53,11 +62,11 @@ export const IngredientPriceComp: FC<IProps> = ({
           원/{quantity}
           {unit}
         </p>
-        <IngredientPriceGraph
+        {graph && (<IngredientPriceGraph
           priceTransitionInfo={priceTransitionInfo}
           inputWidth={inputWidth}
-          inputHeight={inputHeight} type={"line"} />
-        </Box>    
+          inputHeight={inputHeight} type={"line"} />)}
+        </Box>
       </CardContainer>
   );
 };
