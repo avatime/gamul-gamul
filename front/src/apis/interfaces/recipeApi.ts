@@ -33,7 +33,7 @@ export interface RecipeApi {
    * 요리법 상세 조회
    * @param recipeId 요리법 ID
    */
-  getRecipeDetailInfo(recipeId: number): Promise<RecipeDetailInfo>;
+  getRecipeDetailInfo(userName:string, nrecipeId: number): Promise<RecipeDetailInfo>;
   /**
    * 요리법 찜 등록/해제
    * @param userName 유저 ID
