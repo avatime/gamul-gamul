@@ -39,16 +39,19 @@ public class RecipeController {
 
     private final YoutubeChannelSearch youtubeChannelSearch;
 
-    @GetMapping("/{orderType}/{page}")
+    @GetMapping("/{orderType}/{page}/{size}")
     @ApiOperation(value = "요리법 목록 반환", notes = "<strong>order type과 page</strong>에 따른 요리법 목록 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeList(@RequestBody RecipeListReq recipeListReq) {
-
-        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeList(recipeListReq);
-        return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
+    public ResponseEntity<?> getRecipeList(@PathVariable int orderType, @PathVariable int page, @PathVariable int size) {
+        try{
+            List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeList(orderType, page, size);
+            return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/basket/{userName}")
@@ -69,9 +72,9 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeSelected(@RequestBody RecipeSelectListReq recipeSelectListReq){
+    public ResponseEntity<?> getRecipeSelected(@PathVariable String userName){
 
-        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(recipeSelectListReq.getUserName());
+        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(userName);
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
     @GetMapping("/youtube")
