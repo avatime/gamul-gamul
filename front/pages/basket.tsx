@@ -15,19 +15,21 @@ import { useState, useEffect } from 'react';
 import { getCookie } from '../src/utils/cookie';
 
 interface IProps {
-  recipeListWithBasket: RecipeInfo[];
 }
 
 const BasketPage: NextPage<IProps> = ({
-  recipeListWithBasket,
 }) => {
   const [basketIngredientList, setBasketIngredientList] = useState<IngredientInfo[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [recipeListWithBasket, setRecipeListWithBasket] = useState<RecipeInfo[]>([]);
 
   useEffect(() => {
     ApiClient.getInstance()
       .getBasketIngredientList(getCookie("userName"))
       .then((data) => setBasketIngredientList(data));
+    ApiClient.getInstance()
+      .getRecipeWithBasketList(getCookie("userName"), 2, 1, 30)
+      .then((data) => setRecipeListWithBasket(data));
   }, []);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const BasketPage: NextPage<IProps> = ({
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
       </Desktop>
-      {/* <Tablet>
+      <Tablet>
         <Box className={styles.PageforTablet}>
           <IngredientListComp
             title="바구니"
@@ -69,7 +71,7 @@ const BasketPage: NextPage<IProps> = ({
           />
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
-      </Mobile> */}
+      </Mobile>
     </Page>
   );
 };
@@ -77,18 +79,9 @@ const BasketPage: NextPage<IProps> = ({
 export default BasketPage;
 
 export async function getServerSideProps() {
-  const userName = "";
-  const apiClient = ApiClient.getInstance();
-  const recipeListWithBasket = await apiClient.getRecipeWithBasketList(
-    userName,
-    RecipeOrderType.NAME_ASC,
-    1,
-    100
-  );
 
   return {
     props: {
-      recipeListWithBasket,
     },
   };
 }
