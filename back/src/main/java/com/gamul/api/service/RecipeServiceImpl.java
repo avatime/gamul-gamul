@@ -197,7 +197,9 @@ public class RecipeServiceImpl implements RecipeService{
                 // 가격 객체 가져오기
                 Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
                 // 가격 변동률
-                double volatility = 0;
+                int today = 0;
+                int yesterday = 0;
+                double volatility = 0.0;
                 if (day == null){
                     day = new Day();
                     day.setPrice(0);
@@ -206,11 +208,20 @@ public class RecipeServiceImpl implements RecipeService{
                 }else{
                     // 가격 변동률
                     List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-                    int today = dayList.get(0).getPrice();
 
-                    int yesterday = dayList.get(1).getPrice();
-                    volatility = (today - yesterday) * 100.0 / today ;
-                    volatility = Math.round((volatility * 100) / 100.0);
+                    if(dayList.size() == 0){
+                        today = 0;
+                        yesterday = 0;
+                        volatility = 0.0;
+                    }
+                    else if (dayList.size() == 1){
+                        volatility = 0.0;
+                    }else {
+                        today = dayList.get(0).getPrice();
+                        yesterday = dayList.get(1).getPrice();
+                        volatility = (today - yesterday) * 100.0 / today ;
+                        volatility = Math.round((volatility * 100) / 100.0);
+                    }
                 }
 
                 Allergy allergy = new Allergy();
