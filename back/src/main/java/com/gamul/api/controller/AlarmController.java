@@ -103,7 +103,6 @@ public class AlarmController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getAllergyList(@PathVariable String userName){
-        AllergyAlarmRes allergyAlarmRes = new AllergyAlarmRes();
         User user = new User();
         try{
             user = userService.getUserByUsername(userName);
@@ -116,11 +115,11 @@ public class AlarmController {
             for(Allergy allergy : allergyList) {
                 list.add(new IngredientPostReq(allergy.getIngredient().getId()));
             }
-            allergyAlarmRes.setIngredientList(list);
+            return ResponseEntity.status(200).body(list);
         } catch (Exception e){
             return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.status(200).body(allergyAlarmRes);
+
     }
 
     @GetMapping("/notice/{userName}")
