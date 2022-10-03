@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface RecipeService {
     List<RecipeInfoRes> getRecipeList(int orderType, int page, int size);
-    List<RecipeInfoRes> getRecipeBasket(RecipeBasketReq recipeBasketReq);
+    List<RecipeInfoRes> getRecipeBasket(int orderType, int page, int size, String userName);
 
     List<RecipeInfoRes> getRecipeSelected(String userName);
 

@@ -4,11 +4,13 @@ import com.gamul.api.request.RecipeBasketReq;
 import com.gamul.api.request.RecipeDetailReq;
 import com.gamul.api.request.RecipeListReq;
 import com.gamul.api.response.*;
+import com.gamul.common.util.SubRecipePage;
 import com.gamul.common.util.YoutubeChannelSearch;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
+import org.hibernate.annotations.SortComparator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +21,7 @@ import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 @Service("RecipeService")
@@ -54,23 +54,20 @@ public class RecipeServiceImpl implements RecipeService{
     IngredientNotneedRepository ingredientNotneedRepository;
     @Autowired
     DayRepository dayRepository;
-
     private final YoutubeChannelSearch youtubeChannelSearch;
+    private final SubRecipePage subRecipePage;
+
     @Override
     public List<RecipeInfoRes> getRecipeList(int orderType, int page, int size){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
+
         if(orderType == 1){
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
             for (Recipe x : recipeList.getContent()){
 
                 Recipe recipe = recipeRepository.findById(x.getId()).get();
-                // 레시피 찜 가져오기
-                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
-                boolean bookmark = true;
-                if (recipeSelected == null){
-                    bookmark = false;
-                }
+                boolean bookmark = false;
 
                 RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
@@ -79,14 +76,9 @@ public class RecipeServiceImpl implements RecipeService{
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "views"));
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
             for (Recipe x : recipeList.getContent()){
-//            System.out.println("X: "+ x.getId());
+
                 Recipe recipe = recipeRepository.findById(x.getId()).get();
-                // 레시피 찜 가져오기
-                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
-                boolean bookmark = true;
-                if (recipeSelected == null){
-                    bookmark = false;
-                }
+                boolean bookmark = false;
 
                 RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
                 recipeInfoResList.add(recipeInfoRes);
@@ -97,44 +89,58 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     @Override
-    public List<RecipeInfoRes> getRecipeBasket(RecipeBasketReq recipeBasketReq){
-        List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
+    public List<RecipeInfoRes> getRecipeBasket(int orderType, int page, int size, String userName){
+        // 바구니에 있는 재료 들로 만들 수 있는 요리법 이라는 거지?
 
-        if(recipeBasketReq.getOrderType() == 1){
-            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "id"));
-            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
-            for (Recipe x : recipeList.getContent()){
+        User user = userRepository.findByUsername(userName).get();
+        List<Basket> basketList = basketRepository.findAllByUserId(user.getId());
+        List<Long> recipeList1 = new ArrayList<>();
+        for(Basket basket : basketList){
 
-                Recipe recipe = recipeRepository.findById(x.getId()).get();
-                // 레시피 찜 가져오기
-                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
-                boolean bookmark = true;
-                if (recipeSelected == null){
-                    bookmark = false;
-                }
+            Long ingredientId = basket.getIngredient().getId();
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
-                recipeInfoResList.add(recipeInfoRes);
-            }
-        }else {
-            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
-            Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
-            for (Recipe x : recipeList.getContent()){
-//            System.out.println("X: "+ x.getId());
-                Recipe recipe = recipeRepository.findById(x.getId()).get();
-                // 레시피 찜 가져오기
-                RecipeSelected recipeSelected = recipeSelectedRepository.findByRecipeId(recipe.getId()).orElse(null);
-                boolean bookmark = true;
-                if (recipeSelected == null){
-                    bookmark = false;
-                }
+            List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findAllByIngredientId(ingredientId).get();
 
-                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
-                recipeInfoResList.add(recipeInfoRes);
+            for (RecipeIngredient recipeIngredient : recipeIngredientList){
+                Long recipeId = recipeRepository.findById(recipeIngredient.getRecipe().getId()).get().getId();
+
+                recipeList1.add(recipeId);
             }
         }
+        Set<Long> set = new HashSet<Long>(recipeList1);
+        List<Long> newList = new ArrayList<Long>(set);
 
+        List<Recipe> recipeList = new ArrayList<>();
+        for (Long num : newList){
+            Recipe recipe = recipeRepository.findById(num).get();
+            System.out.println(recipe.getName());
+            recipeList.add(recipe);
+        }
+        System.out.println("recipeList: " + recipeList);
+        // 분기 처리
+        if(orderType == 1){
+            Collections.sort(recipeList, new IdSortComparator());
+        }else{
+            Collections.sort(recipeList, new ViewsSortComparator());
+        }
+        List<Recipe> newRecipeList = subRecipePage.getPage(recipeList, page, size);
+
+        List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
+        for (Recipe x : newRecipeList){
+            Recipe recipe = recipeRepository.findById(x.getId()).get();
+            // 레시피 찜 가져오기
+            RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipe.getId()).orElse(null);
+            boolean bookmark = true;
+            if (recipeSelected == null){
+                bookmark = false;
+            }
+
+            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+            recipeInfoResList.add(recipeInfoRes);
+
+        }
         return recipeInfoResList;
+
     }
 
     @Override
@@ -326,3 +332,30 @@ public class RecipeServiceImpl implements RecipeService{
         recipeRepository.saveAndFlush(recipe);
     }
 }
+
+// 정렬
+class IdSortComparator implements Comparator<Recipe> {
+    @Override
+    public int compare(Recipe r1, Recipe r2){
+        if(r1.getId() > r2.getId()){
+            return 1;
+        } else if (r1.getId() < r2.getId()) {
+            return -1;
+        }
+        return 0;
+    }
+}
+
+class ViewsSortComparator implements Comparator<Recipe> {
+    @Override
+    public int compare(Recipe r1, Recipe r2){
+        if(r1.getViews() > r2.getViews()){
+            return 1;
+        } else if (r1.getViews() < r2.getViews()) {
+            return -1;
+        }
+        return 0;
+    }
+}
+
+

@@ -259,7 +259,8 @@ public class IngredientServiceImpl implements IngredientService{
         }
 
         // day 도매
-        List<Day> dayList1 = dayRepository.findTop7ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+        Day dayTmp = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredient.getId(), 0);
+        List<Day> dayList1 = dayRepository.findTop7ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredient.getId(), 0, dayTmp.getUnit());
         List<PriceInfoRes> dailyDo = new ArrayList<>();
         if (dayList1.size() > 0){
             for (Day day2 : dayList1){
@@ -272,7 +273,8 @@ public class IngredientServiceImpl implements IngredientService{
         }
 
         // month 도매
-        List<Month> monthList1 = monthRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+        Month monthTmp = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(ingredient.getId(), 0);
+        List<Month> monthList1 = monthRepository.findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(ingredient.getId(), 0, monthTmp.getUnit());
         List<PriceInfoRes> monthDo = new ArrayList<>();
         String unityDo = "";
         int quantitydo = 0;
@@ -333,7 +335,6 @@ public class IngredientServiceImpl implements IngredientService{
                 pastvol = Math.round(pastvol * 100) / 100.0;
             }
         }
-
 
         PriceTransitionInfoRes priceTransitionInfoRes = new PriceTransitionInfoRes();
         priceTransitionInfoRes.setPrice(todayPrice);
