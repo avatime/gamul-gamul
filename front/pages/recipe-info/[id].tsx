@@ -54,11 +54,20 @@ const RecipeInfoPage: NextPage<IProps> = () => {
     );
   }, [recipeDetailInfo.recipe_info.recipe_id, recipeDetailInfo.recipe_info.name]);
 
-  const onClickBookmark = () => {};
+  const onClickBookmark = () => {
+    ApiClient.getInstance().putBookmarkRecipe(getCookie("userName"), Number(id));
+  };
   const onClickStartCook = () => {
     router.push(`/recipe-detail/${id}`);
   };
-  const onClickPutBasket = () => {};
+  const onClickPutBasket = () => {
+
+    ApiClient.getInstance()
+      .putBasketAllRecipeIngredient(getCookie("userName"), Number(id))
+      .then(() =>router.push("/basket"));
+
+   
+  };
   return (
     <Box>
       <Desktop>
