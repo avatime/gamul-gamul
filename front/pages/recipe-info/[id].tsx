@@ -35,13 +35,18 @@ const RecipeInfoPage: NextPage<IProps> = () => {
     youtube_list: [],
   });
 
+  const apiClient = ApiClient.getInstance();
+
+  useEffect(()=>{
+   apiClient.postRecipeView(Number(id))
+  },[apiClient, id]);
+
   useEffect(() => {
-    setUserName(getCookie("userName"));
+  setUserName(getCookie("userName"));
 
     ApiClient.getInstance()
       .getRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setRecipeDetailInfo(data));
-    console.log(recipeDetailInfo.recipe_info.image_path);
   }, [id, recipeDetailInfo.recipe_info.image_path, userName]);
 
   const totalPrice = recipeDetailInfo.ingredient_list.reduce((p, c) => p + c.price, 0);
