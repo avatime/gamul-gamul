@@ -44,10 +44,6 @@ const IngredientPage: NextPage<IProps> = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(wishList);
-  }, [wishList]);
-
   return (
     <Box>
       <Desktop>
@@ -179,10 +175,10 @@ export default IngredientPage;
 
 export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
-  const ingredientList = await apiClient.getIngredientList(3, 0);
+  const ingredientList = await apiClient.getIngredientList(3);
   const upIngredientList = new Array<IngredientInfo>();
   const downIngredientList = new Array<IngredientInfo>();
-  const ingredientList2 = await apiClient.getIngredientList(2, 0);
+  const ingredientList2 = await apiClient.getIngredientList(2);
   const highClassList = await apiClient.getIngredientHighClassList();
 
   ingredientList.forEach((v) => {
