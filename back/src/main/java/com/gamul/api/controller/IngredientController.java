@@ -38,45 +38,53 @@ public class IngredientController {
     private final NaverShopSearch naverShopSearch;
 
     @GetMapping("/{orderType}/{highClassId}")
-    @ApiOperation(value = "식재료 목록 반환", notes = "<strong>order type과 high clas id</strong>에 따른 식재료 목록 반환")
+    @ApiOperation(value = "식재료 목록 조회", notes = "<strong>order type과 high clas id</strong>에 따른 식재료 목록 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientList(@RequestBody IngredientListReq ingredientListReq) {
+    public ResponseEntity<?> getIngredientList(@PathVariable int orderType, @PathVariable int highClassId) {
 
-        List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(ingredientListReq);
+        List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(orderType, highClassId);
         return new ResponseEntity<List<IngredientInfoRes>>(ingredientList, HttpStatus.OK);
     }
 
     @GetMapping("/bookmark/{userName}")
-    @ApiOperation(value = "식재료 찜 목록 반환", notes = "<strong>user name</strong>에 따른 식재료 찜 목록 반환")
+    @ApiOperation(value = "식재료 찜 목록 조회", notes = "<strong>user name</strong>에 따른 식재료 찜 목록 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getSelectedIngredientList(@PathVariable String userName) {
-        List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(userName);
-        return new ResponseEntity<List<IngredientInfoRes>>(ingredientSelectedList, HttpStatus.OK);
+        try {
+            List<IngredientInfoRes> ingredientSelectedList = ingredientService.getIngredientSelectedList(userName);
+            return new ResponseEntity<List<IngredientInfoRes>>(ingredientSelectedList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
-    @GetMapping("/{ingredientId}")
+    @GetMapping(value = {"/detail/{ingredientId}/{userName}", "/detail/{ingredientId}"})
     @ApiOperation(value = "식재료 상세 정보", notes = "<strong>ingredient id</strong>에 따른 식재료 상세 정보 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getIngredientDetailInfo(@RequestBody IngredientDetailReq ingredientDetailReq) {
-        IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientDetailReq);
+    public ResponseEntity<?> getIngredientDetailInfo(@PathVariable Long ingredientId, @PathVariable(required = false) String userName) {
+        try{
+            IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId, userName);
 
-        // 온라인 마트 정보 추가
-        String query = ingredientService.getOnlineIngredientInfo(ingredientDetailReq.getIngredientId());
-        String resultString = naverShopSearch.search(query);
-        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
+            // 온라인 마트 정보 추가
+            String query = ingredientService.getOnlineIngredientInfo(ingredientId);
+            String resultString = naverShopSearch.search(query);
+            List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
 
-        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
+            ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
 
-        return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
+            return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/high-class")
@@ -95,46 +103,27 @@ public class IngredientController {
     }
 
     @PutMapping("/bookmark/{userName}/{ingredientId}")
-    @ApiOperation(value = "식재료 찜 등록 해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 찜 등록/해제")
+    @ApiOperation(value = "식재료 찜 등록/해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 찜 등록/해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 404, message = "존재하지 않는 id"),
             @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
-        try {
-            ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
-
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Internal Server Error");
-        }
-        return ResponseEntity.status(200).body("Success");
+    public void ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
+        ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
     }
 
     @PutMapping("/basket/{userName}/{ingredientId}")
-    @ApiOperation(value = "식재료 바구니 등록 해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 바구니 등록/해제")
+    @ApiOperation(value = "식재료 바구니 등록/해제", notes = "<strong>username과 ingredient id</strong>에 따른 식재료 바구니 등록/해제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 404, message = "존재하지 않는 user"),
             @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> ingredientBasket(@PathVariable String userName, @PathVariable Long ingredientId) {
-        if (userRepository.existsByUsername(userName)) {
-            if (!ingredientRepository.existsById(ingredientId)) {
-                return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
-            }
-            ingredientService.ingredientBasket(userName, ingredientId);
-        } else {
-            return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
-        }
-        try {
-        }catch (Exception e){
-
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
-        }
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    public void ingredientBasket(@RequestBody IngredientSelectReq ingredientSelectReq) {
+        ingredientService.ingredientBasket(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
     }
 
     @GetMapping("/basket/{userName}")
@@ -144,21 +133,28 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientBasket(@PathVariable String userName) {
-        User user = userRepository.findByUsername(userName).orElse(null);
+        try{
+            List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
+            return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
 
-        List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
-        return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
     }
 
-    @GetMapping("/{ingredientId}/stores")
+    @GetMapping("/stores/{ingredientId}/{southWestLatitude}/{southWestLongitude}/{northEastLatitude}/{northEastLongitude}/{latitude}/{longitude}")
     @ApiOperation(value = "오프라인 마트 정보", notes = "<strong>ingredient id</strong>에 따른 마트 정보 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getStoreList(@RequestBody OfflineMartInfoReq offlineMartInfoReq){
-        List<OfflineMartInfoRes> storeList = ingredientService.getStoreList(offlineMartInfoReq);
-        return new ResponseEntity<List<OfflineMartInfoRes>>(storeList, HttpStatus.OK);
+    public ResponseEntity<?> getStoreList(@PathVariable Long ingredientId, @PathVariable double southWestLatitude, @PathVariable double southWestLongitude, @PathVariable double northEastLatitude, @PathVariable double northEastLongitude, @PathVariable double latitude, @PathVariable double longitude){
+        try {
+            List<OfflineMartInfoRes> storeList = ingredientService.getStoreList(ingredientId, southWestLatitude, southWestLongitude, northEastLatitude, northEastLongitude, latitude, longitude);
+            return new ResponseEntity<List<OfflineMartInfoRes>>(storeList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/stores/{storeId}")
@@ -167,9 +163,13 @@ public class IngredientController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getStoreIngredientList(@RequestBody OfflineMartDetailInfoReq offlineMartDetailInfoReq) {
-        List<IngredientInfoRes> storeIngredientList = ingredientService.getStoreIngredientList(offlineMartDetailInfoReq);
-        return new ResponseEntity<List<IngredientInfoRes>>(storeIngredientList, HttpStatus.OK);
+    public ResponseEntity<?> getStoreIngredientList(@PathVariable Long storeId) {
+        try {
+            List<IngredientInfoRes> storeIngredientList = ingredientService.getStoreIngredientList(storeId);
+            return new ResponseEntity<List<IngredientInfoRes>>(storeIngredientList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/online/{ingredientId}")
@@ -180,9 +180,6 @@ public class IngredientController {
     })
     public ResponseEntity<?> getOnlineIngredient(@PathVariable Long ingredientId){
         try{
-            if(!ingredientRepository.existsById(ingredientId)){
-                return ResponseEntity.ok(BaseResponseBody.of(405, "존재하지 않는 식재료"));
-            }
             String query = ingredientService.getOnlineIngredientInfo(ingredientId);
             String resultString = naverShopSearch.search(query);
             List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
@@ -192,7 +189,6 @@ public class IngredientController {
         }
     }
 
-
     @PostMapping("/{ingredientId}")
     @ApiOperation(value = "식재료 조회수 추가", notes = "<strong>ingredient id</strong>에 따른 식재료 조회수 추가")
     @ApiResponses({
@@ -200,18 +196,8 @@ public class IngredientController {
             @ApiResponse(code = 405, message = "존재하지 않는 식재료"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> addRecipeViews(@PathVariable Long ingredientId){
-        try{
-            if (!ingredientRepository.existsById(ingredientId)){
-                return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
-            }else{
-                ingredientService.addIngredientViews(ingredientId);
-            }
-        }catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
-        }
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    public void addRecipeViews(@PathVariable Long ingredientId){
+        ingredientService.addIngredientViews(ingredientId);
     }
-
 
 }
