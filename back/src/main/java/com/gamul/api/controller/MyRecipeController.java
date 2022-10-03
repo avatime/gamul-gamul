@@ -145,7 +145,7 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, Long myRecipeId) {
+    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, @PathVariable Long myRecipeId) {
         try {
             MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
             if (!myRecipe.getUser().getUsername().equals(userName)) return ResponseEntity.status(401).body("인증 실패");
@@ -280,7 +280,7 @@ public class MyRecipeController {
 
             return ResponseEntity.status(200).body(myRecipeDetailRes);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Internal Server Error" + e);
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
 
@@ -292,7 +292,7 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeIngredientList(@PathVariable String userName, Long myRecipeId) {
+    public ResponseEntity<?> showMyrecipeIngredientList(@PathVariable String userName, @PathVariable Long myRecipeId) {
         List<MyRecipeIngredient> MyRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
         List<MyRecipeIngredientRes> list = new ArrayList<>();
         for (MyRecipeIngredient myRecipeIngredient : MyRecipeIngredientList) {
@@ -309,7 +309,7 @@ public class MyRecipeController {
             @ApiResponse(code = 405, message = "해당 유저의 레시피가 아닙니다"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteMyRecipe(@PathVariable String userName, Long myRecipeId) {
+    public ResponseEntity<?> deleteMyRecipe(@PathVariable String userName, @PathVariable Long myRecipeId) {
         try {
             if (myRecipeService.getRecipeOwner(myRecipeId).equals(userName))
                 myRecipeService.deleteMyRecipe(myRecipeId);
