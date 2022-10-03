@@ -57,12 +57,14 @@ public class IngredientServiceImpl implements IngredientService{
         boolean basketStatus = false;
 
         // 대분류 정보 가지고 재료 목록 리스트 가져오기
-        List<Ingredient> ingredientList = ingredientRepository.findAllByHighClass(highClassId).get();
+        List<Ingredient> ingredientList = new ArrayList<>();
+        if (highClassId == 0){
+            ingredientList = ingredientRepository.findAll();
+        }else{
+            ingredientList = ingredientRepository.findAllByHighClass(highClassId).get();
+        }
+
         List<IngredientInfoRes> ingredientInfoResList = new ArrayList<>();
-
-        // 대분류 객체 가져오기
-        HighClass highClass = highClassRepository.findById(highClassId).get();
-
         for (Ingredient ingredient : ingredientList){
 
             // 가격 객체 가져오기
@@ -94,6 +96,8 @@ public class IngredientServiceImpl implements IngredientService{
                 volatility = (today - yesterday) * 100.0 / today ;
                 volatility = Math.round((volatility * 100) / 100.0);
             }
+            // 대분류 가져오기
+            HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
             IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
