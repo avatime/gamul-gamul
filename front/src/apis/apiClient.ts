@@ -21,8 +21,10 @@ import { MyRecipeIngredientInfo } from "./responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
+import { getCookie, setCookie } from "../utils/cookie";
 import { NotificationInfo } from "./responses/notificationInfo";
-import { getCookie } from "../utils/cookie";
+import { getNotificationItemList } from "./dummy/dummyApi";
+import { OnlineMartInfo } from "./responses/onlineMartInfo";
 
 const delay = 0;
 
@@ -93,18 +95,20 @@ export class ApiClient
   }
   async getIngredientList(
     orderType: IngredientOrderType,
-    highClassId: number = 0
+    highClassId: number = 0,
   ): Promise<IngredientInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getIngredientList), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/${orderType}/${highClassId}`,
+      })
+    ).data;
   }
   async getBookmarkIngredientList(userName: string): Promise<IngredientInfo[]> {
     return (
       await this.axiosInstance.request({
         method: "get",
         url: `/ingredients/bookmark/${userName}`,
-        data: {
-          user_name: userName,
-        },
       })
     ).data;
   }
@@ -153,27 +157,23 @@ export class ApiClient
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/ingredients/stores/${ingredientId}`,
-        data: {
-          ingredient_id: ingredientId,
-          south_west_latitude: southWestLatitude,
-          south_west_longitude: southWestLongitude,
-          north_east_latitude: northEastLatitude,
-          north_east_longitude: northEastLongitude,
-          latitude: latitude,
-          longitude: longitude,
-        },
+        url: `/ingredients/stores/${ingredientId}/${southWestLatitude}/${southWestLongitude}/${northEastLatitude}/${northEastLongitude}/${latitude}/${longitude}`,
       })
     ).data;
   }
-  async getOfflineMartDetailInfo(storeId: number): Promise<IngredientInfo[]> {
+  async getOfflineMartDetailInfo(storeId: number, userName: string): Promise<IngredientInfo[]> {
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/ingredients/stores/${storeId}`,
-        data: {
-          store_id: storeId,
-        }
+        url: `/ingredients/stores/${storeId}/${userName}`,
+      })
+    ).data;
+  }
+  async getOnlineMartList(ingredientId: number): Promise<OnlineMartInfo[]> {
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/online/${ingredientId}`,
       })
     ).data;
   }
@@ -181,9 +181,6 @@ export class ApiClient
     return (await this.axiosInstance.request({
       method: "get",
       url: `/ingredients/basket/${userName}`,
-      data: {
-        user_name: userName,
-      },
     })
     ).data;
   }
@@ -192,7 +189,11 @@ export class ApiClient
     page: number,
     size: number
   ): Promise<RecipeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeList), delay));
+    return (await this.axiosInstance.request({
+      method: "get",
+      url: `/recipes/${orderType}/${page}/${size}`,
+    })
+    ).data;
   }
   async getRecipeWithBasketList(
     userName: string,
@@ -200,18 +201,34 @@ export class ApiClient
     page: number,
     size: number
   ): Promise<RecipeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeList), delay));
+    return (await this.axiosInstance.request({
+      method: "get",
+      url: `/recipes/${orderType}/${page}/${size}/${userName}`,
+    })
+    ).data;
   }
   async getBookmarkRecipeList(userName: string): Promise<RecipeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeList), delay));
+    return (await this.axiosInstance.request({
+      method: "get",
+      url: `/recipes/bookmark/${userName}`,
+    })
+    ).data;
   }
   async getRecipeDetailInfo(recipeId: number): Promise<RecipeDetailInfo> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getRecipeDetailInfo), delay));
+    return (await this.axiosInstance.request({
+      method: "get",
+      url: `/recipes/{recipeId}`,
+    })
+    ).data;
   }
   async putBookmarkRecipe(userName: string, recipeId: number): Promise<void> {
     return await this.axiosInstance.request({
       method: "put",
       url: `/recipes/bookmark/${userName}/${recipeId}`,
+      data: {
+        user_name: userName,
+        recipe_id: recipeId,
+      },
     });
   }
   async getRecipeOrderList(recipeId: number): Promise<RecipeOrderInfo[]> {
@@ -230,15 +247,15 @@ export class ApiClient
     });
   }
   async getPopularYoutubeList(): Promise<YoutubeInfo[]> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getPopularYoutubeList), delay));
-  }
-  async search(keyword: string): Promise<SearchResult> {
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/search/${keyword}`,
+        url: `/recipes/youtube`,
       })
     ).data;
+  }
+  async search(keyword: string): Promise<SearchResult> {
+    return new Promise((resolve) => setTimeout(() => resolve(Dummy.search(keyword)), delay));
   }
   async postMyRecipe(
     userName: string,
@@ -269,6 +286,7 @@ export class ApiClient
       url: "/recipes/my",
       data: {
         user_name: userName,
+        my_recipe_id: myRecipeId,
         image_data_url: imageDataUrl,
         my_recipe_name: myRecipeName,
         ingredient_list: ingredientList,
@@ -284,7 +302,12 @@ export class ApiClient
     ).data;
   }
   async getMyRecipeDetailInfo(userName: string, myRecipeId: number): Promise<MyRecipeDetailInfo> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.getMyRecipeDetailInfo), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/my/${userName}/${myRecipeId}`,
+      })
+    ).data;
   }
   async getMyRecipeIngredientList(
     userName: string,
