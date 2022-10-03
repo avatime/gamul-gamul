@@ -10,27 +10,49 @@ import { Tablet } from "../src/components/Tablet";
 import { RecipeListComp } from "../src/components/templates/RecipeListComp";
 import { YoutubeRecipeListComp } from "../src/components/templates/YoutubeRecipeListComp";
 import styles from "../styles/Page.module.css";
-import { Page } from '../src/components/Page';
+import { Page } from "../src/components/Page";
+import { useEffect, useState } from "react";
+import { getCookie } from "../src/utils/cookie";
 
 interface IProps {
-  bookmarkRecipeList: RecipeInfo[];
   popularRecipeList: RecipeInfo[];
-  recipeWithBasketList: RecipeInfo[];
   popularYoutubeList: YoutubeInfo[];
 }
 
 const RecipePage: NextPage<IProps> = ({
-  bookmarkRecipeList,
   popularRecipeList,
-  recipeWithBasketList,
   popularYoutubeList,
 }) => {
+  const apiClient = ApiClient.getInstance();
+  const [userName, setUserName] = useState("");
+  const [bookmarkRecipeList, setBookmarkRecipeList] = useState<RecipeInfo[]>([]);
+  const [recipeWithBasketList, setRecipeWithBasketList] = useState<RecipeInfo[]>([]);
+
+  useEffect(() => {
+    setUserName(getCookie("userName"));
+    console.log(userName);
+    
+    if (getCookie("userName") != null) {
+      apiClient.getBookmarkRecipeList(userName).then((data) => setBookmarkRecipeList(data));
+      apiClient.getRecipeWithBasketList(userName, RecipeOrderType.VIEW_ASC, 1, 50).then((data)=>setRecipeWithBasketList(data));
+    }
+  }, [apiClient, userName]);
   return (
     <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
-          <RecipeListComp title="찜 목록" rowSize={1} gridSize={6} recipeList={bookmarkRecipeList} />
-          <RecipeListComp title="인기 요리법" rowSize={1}gridSize={6} recipeList={popularRecipeList} />
+          <RecipeListComp
+            title="찜 목록"
+            rowSize={1}
+            gridSize={6}
+            recipeList={bookmarkRecipeList}
+          />
+          <RecipeListComp
+            title="인기 요리법"
+            rowSize={1}
+            gridSize={6}
+            recipeList={popularRecipeList}
+          />
           <Grid container>
             <Grid item xs={4}>
               <RecipeListComp
@@ -51,9 +73,19 @@ const RecipePage: NextPage<IProps> = ({
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <RecipeListComp title="찜 목록" rowSize={1} gridSize={6} recipeList={bookmarkRecipeList} />
-          <RecipeListComp title="인기 요리법" rowSize={1}gridSize={6} recipeList={popularRecipeList} />
-          <Grid container>
+          {/* <RecipeListComp
+            title="찜 목록"
+            rowSize={1}
+            gridSize={6}
+            recipeList={bookmarkRecipeList}
+          /> */}
+          <RecipeListComp
+            title="인기 요리법"
+            rowSize={1}
+            gridSize={6}
+            recipeList={popularRecipeList}
+          />
+          {/* <Grid container>
             <Grid item xs>
               <RecipeListComp
                 type="row"
@@ -67,15 +99,15 @@ const RecipePage: NextPage<IProps> = ({
                 youtubeInfoList={popularYoutubeList}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Box>
       </Tablet>
       <Mobile>
         <Box className={styles.PageforMobile}>
-          <RecipeListComp title="찜 목록" rowSize={1} recipeList={bookmarkRecipeList} />
+          {/* <RecipeListComp title="찜 목록" rowSize={1} recipeList={bookmarkRecipeList} /> */}
           <RecipeListComp title="인기 요리법" rowSize={1} recipeList={popularRecipeList} />
-          <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeWithBasketList} />
-          <YoutubeRecipeListComp title="인기 요리법 유튜브" youtubeInfoList={popularYoutubeList} />
+          {/* <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeWithBasketList} />
+          <YoutubeRecipeListComp title="인기 요리법 유튜브" youtubeInfoList={popularYoutubeList} /> */}
         </Box>
       </Mobile>
     </Page>
@@ -85,23 +117,13 @@ const RecipePage: NextPage<IProps> = ({
 export default RecipePage;
 
 export async function getServerSideProps() {
-  const userName = "";
   const apiClient = ApiClient.getInstance();
-  const bookmarkRecipeList = await apiClient.getBookmarkRecipeList(userName);
   const popularRecipeList = await apiClient.getRecipeList(RecipeOrderType.VIEW_ASC, 1, 50);
-  const recipeWithBasketList = await apiClient.getRecipeWithBasketList(
-    userName,
-    RecipeOrderType.VIEW_ASC,
-    1,
-    50
-  );
   const popularYoutubeList = await apiClient.getPopularYoutubeList();
 
   return {
     props: {
-      bookmarkRecipeList,
       popularRecipeList,
-      recipeWithBasketList,
       popularYoutubeList,
     },
   };
