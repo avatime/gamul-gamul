@@ -31,6 +31,8 @@ public class IngredientInfoRes {
 
     boolean favorite;
 
+    boolean bookmark;
+
     boolean basket;
 
     @JsonProperty("high_class_id")
@@ -53,6 +55,7 @@ public class IngredientInfoRes {
         this.volatility = volatility;
         this.allergy = allergy;
         this.favorite = ingredientSelected;
+        this.bookmark = ingredientSelected;
         this.basket = basket;
         this.highClassId = ingredient.getHighClass();
         this.highClassName = highClass.getName();
