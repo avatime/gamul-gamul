@@ -21,9 +21,8 @@ import { MyRecipeIngredientInfo } from "./responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
 import * as Dummy from "./dummy/dummyApi";
-import { getCookie, setCookie } from "../utils/cookie";
 import { NotificationInfo } from "./responses/notificationInfo";
-import { getNotificationItemList } from "./dummy/dummyApi";
+import { getCookie } from "../utils/cookie";
 
 const delay = 0;
 
@@ -234,7 +233,12 @@ export class ApiClient
     return new Promise((resolve) => setTimeout(() => resolve(Dummy.getPopularYoutubeList), delay));
   }
   async search(keyword: string): Promise<SearchResult> {
-    return new Promise((resolve) => setTimeout(() => resolve(Dummy.search(keyword)), delay));
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/search/${keyword}`,
+      })
+    ).data;
   }
   async postMyRecipe(
     userName: string,
