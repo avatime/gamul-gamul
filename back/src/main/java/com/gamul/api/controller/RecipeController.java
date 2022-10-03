@@ -54,14 +54,14 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/basket/{userName}")
+    @GetMapping("/basket/{orderType}/{page}/{size}/{userName}")
     @ApiOperation(value = "요리법 바구니 정보 반환", notes = "<strong>username</strong>에 따른 요리법 바구니 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeBasket(@RequestBody RecipeBasketReq recipeBasketReq){
-        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeBasket(recipeBasketReq);
+    public ResponseEntity<?> getRecipeBasket(@PathVariable int orderType, @PathVariable int page, @PathVariable int size, @PathVariable String userName){
+        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeBasket(orderType, page, size, userName);
 
         return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
     }

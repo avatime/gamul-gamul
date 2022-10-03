@@ -13,8 +13,11 @@ public interface DayRepository extends JpaRepository<Day, Long> {
 
     List<Day> findTop7ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
 
+
     public Day findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(Long ingredientId, int type);
 
     public Day findTop1ByIngredientIdAndTypeOrderByDatetimeDescUnit(Long ingredientId, int type);
     public List<Day> findTop10ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(Long ingredientId, int type, String unit);
+
+    List<Day> findTop7ByIngredientIdAndTypeAndUnitOrderByDatetimeDesc(Long ingredientId, int type, String unit);
 }
