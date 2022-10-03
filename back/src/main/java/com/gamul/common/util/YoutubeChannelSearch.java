@@ -6,24 +6,19 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
-
 import com.google.api.client.json.JsonFactory;
-
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.*;
-import io.micrometer.core.instrument.search.Search;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -40,6 +35,8 @@ public class YoutubeChannelSearch {
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final long NUMBER_OF_VIDEOS_RETURNED = 10;
     private static YouTube youtube;
+
+    private static String api_Key = "AIzaSyCEOteOZLwJUNHkyB4kD91eqhirP4o3WX4"; //AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA
 
 
     public static List<ResourceId> Search(String query){
@@ -66,7 +63,7 @@ public class YoutubeChannelSearch {
              * non-authenticated requests (found under the Credentials tab at this link:
              * console.developers.google.com/). This is good practice and increased your quota.
              */
-            String apiKey = "AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA";
+            String apiKey = api_Key;
 
             search.setKey(apiKey);
             search.setQ(queryTerm);
@@ -171,7 +168,7 @@ public class YoutubeChannelSearch {
 
                 //내가 원하는 정보 지정할 수 있어요. 공식 API문서를 참고해주세요.
                 YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
-                videos.setKey("AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA");
+                videos.setKey(api_Key);
                 videos.setId(videoId.getVideoId());
                 videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED); //조회 최대 갯수.
                 List<Video> videoList = videos.execute().getItems();
@@ -196,7 +193,7 @@ public class YoutubeChannelSearch {
     }
 
     private static long getViewCountFromVideo(String videoId) throws IOException, JSONException {
-        String apikey = "AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA";
+        String apikey = api_Key;
 
         String url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id="+videoId+"&key="+apikey;
         JSONObject json = readJsonFromUrl(url);
