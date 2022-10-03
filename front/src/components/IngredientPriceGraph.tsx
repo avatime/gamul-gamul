@@ -17,9 +17,19 @@ moment.locale("ko");
 const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inputHeight, type }) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
   const Chart2 = dynamic(() => import("react-apexcharts"), { ssr: false });
+
   const retailMax = Math.max(...priceTransitionInfo.retailsales.daily.map((v) => v.price));
   const wholeMax = Math.max(...priceTransitionInfo.wholesales.daily.map((v) => v.price));
-  const max = Math.floor(Math.max(retailMax, wholeMax) * 1.2 / 100) * 100;
+  const max = Math.floor(Math.max(retailMax, wholeMax) * 1.05 / 100) * 100;
+  const max2 = Math.floor(retailMax * 1.05 / 100 ) * 100;
+
+  const retailMin = Math.min(...priceTransitionInfo.retailsales.daily.map((v) => v.price));
+  const wholeMin = Math.min(...priceTransitionInfo.wholesales.daily.map((v) => v.price));
+  const min = Math.floor(Math.min(retailMin, wholeMin) * 0.95 / 100) * 100 < 1000 ? 0 : Math.floor(Math.min(retailMin, wholeMin) * 0.95 / 100) * 100;
+  const min2 = Math.floor(retailMin * 0.95 / 100) * 100 < 1000 ? 0 : Math.floor(retailMin * 0.95 / 100) * 100;
+
+  const quantity = !!priceTransitionInfo?.retailsales ? priceTransitionInfo.retailsales.daily[0].quantity : priceTransitionInfo.wholesales.daily[0].quantity;
+  const unit = !!priceTransitionInfo?.retailsales ? priceTransitionInfo.retailsales.daily[0].unit : priceTransitionInfo.wholesales.daily[0].unit;
 
   return (
     <div>
@@ -82,9 +92,9 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           },
           yaxis: {
             title: {
-              text: `가격(${priceTransitionInfo.retailsales.daily[0].quantity}${priceTransitionInfo.retailsales.daily[0].unit})`,
+              text: `가격(${quantity}${unit})`,
             },
-            min: 0,
+            min: min,
             max: max,
           },
           legend: {
@@ -105,10 +115,6 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           {
             name: "소매",
             data: priceTransitionInfo.retailsales.daily.map((v) => v.price),
-          },
-          {
-            name: "도매",
-            data: priceTransitionInfo.wholesales.daily.map((v) => v.price),
           },
         ]}
         options={{
@@ -145,8 +151,8 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
             ),
           },
           yaxis: {
-            min: 0,
-            max: max,
+            min: min2,
+            max: max2,
           },
           legend: {
             position: "top",

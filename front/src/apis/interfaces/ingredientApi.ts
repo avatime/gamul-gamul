@@ -2,6 +2,7 @@ import { HighClass } from "../responses/highClass";
 import { IngredientDetailInfo } from "../responses/ingredientDetailInfo";
 import { IngredientInfo } from "../responses/ingredientInfo";
 import { OfflineMartInfo } from "../responses/offlineMartInfo";
+import { OnlineMartInfo } from '../responses/onlineMartInfo';
 
 export enum IngredientOrderType {
   NAME_ASC = 1, // 이름 사전 순 (오름차순)
@@ -25,8 +26,9 @@ export interface IngredientApi {
   /**
    * 식재료 상세 조회
    * @param ingredientId 식재료 ID
+   * @param userName 유저 ID
    */
-  getIngredientDetailInfo(ingredientId: number): Promise<IngredientDetailInfo>;
+  getIngredientDetailInfo(ingredientId: number, userName: string): Promise<IngredientDetailInfo>;
   /**
    * 식재료 대분류 목록 조회
    */
@@ -67,6 +69,11 @@ export interface IngredientApi {
    * @param storeId 마트 ID
    */
   getOfflineMartDetailInfo(storeId: number): Promise<IngredientInfo[]>;
+  /**
+   * 온라인 마트 정보 조회
+   * @param ingredientId 식재료 ID
+   */
+  getOnlineMartList(ingredientId: number): Promise<OnlineMartInfo[]>;
   /**
    * 식재료 바구니 목록 조회
    * @param userName 유저 ID

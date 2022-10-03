@@ -26,14 +26,12 @@ interface IProps {
 }
 
 const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList }) => {
-  const [userName, setUserName] = useState("");
-  const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
-  useEffect(() => {
-    setUserName(getCookie("userName"));
-    ApiClient.getInstance()
-      .getMyRecipeList(getCookie("userName"))
-      .then((data) => setMyRecipeList(data));
-  }, []);
+  // const [myRecipeList, setMyRecipeList] = useState<MyRecipeInfo[]>([]);
+  // useEffect(() => {
+  //   ApiClient.getInstance()
+  //     .getMyRecipeList(getCookie("userName"))
+  //     .then((data) => setMyRecipeList(data));
+  // }, []);
   return (
     <Page>
       <Desktop>
@@ -54,12 +52,12 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
             </Grid>
             <Grid item xs={4}>
               <RecipeListComp showMore rowSize={3} gridSize={3} recipeList={recipeList} />
-              <MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} />
+              {/* <MyRecipeListComp showMore rowSize={3} gridSize={3} myRecipeList={myRecipeList} /> */}
             </Grid>
           </Grid>
         </Box>
       </Desktop>
-      <Tablet>
+      {/* <Tablet>
         <Box className={styles.PageforTablet}>
           <IngredientListComp showMore rowSize={2} gridSize={6} ingredientList={ingredientList} />
           <HighClassComp
@@ -85,7 +83,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
           <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
           <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
         </Box>
-      </Mobile>
+      </Mobile> */}
     </Page>
   );
 };

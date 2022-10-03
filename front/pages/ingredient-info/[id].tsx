@@ -29,14 +29,14 @@ interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
   onlineMartInfo: OnlineMartInfo[];
-  recipeList: RecipeInfo[];
+  // recipeList: RecipeInfo[];
 }
 
 const IngredientInfoPage: NextPage<IProps> = ({
   ingredientDetailInfo,
   ingredientInfo,
   onlineMartInfo,
-  recipeList,
+  // recipeList,
 }) => {
  
 
@@ -65,6 +65,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
     }
   }, [ingredientInfo]);
 
+  useEffect
+
   return (
     <Box>
       <Desktop>
@@ -90,23 +92,23 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 </Box>
               <IngredientPriceComp
                 ingredientDetailInfo={ingredientDetailInfo}
-                inputWidth={"95%"}
+                inputWidth={"90%"}
                 inputHeight={650}
               />
             </Grid>
             <Grid item xs={5}>
-            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
-              <OfflineMartComp
+            {/* <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} /> */}
+              {/* <OfflineMartComp
                 ingredientInfo={ingredientInfo}
                 mapId="desktop"
                 inputHeight="300px"
-              />
-              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+              /> */}
+              {/* <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" /> */}
             </Grid>
           </Grid>
         </Box>
       </Desktop>
-      <Tablet>
+      {/* <Tablet>
         <Box className={styles.PageforTablet}>
           <Box marginTop="10px">
           <InfoTitle
@@ -156,7 +158,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
           />
           <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
         </Box>
-      </Mobile>
+      </Mobile> */}
     </Box>
   );
 };
@@ -180,17 +182,18 @@ export const getStaticProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
   const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(
     context.params.id,
+    "",
   );
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
   // const recipeList = await apiClient.search(ingredientInfo.name); // api 구현시 적용
-  const recipeList = await apiClient.getRecipeList(1, 1, 20);
+  // const recipeList = await apiClient.getRecipeList(1, 1, 20);
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
       onlineMartInfo,
-      recipeList,
+      // recipeList,
     },
   };
 };

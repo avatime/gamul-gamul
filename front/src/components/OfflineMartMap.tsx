@@ -23,7 +23,7 @@ interface MapProps {
 
 function OfflineMartMap({
   mapId,
-  ingredientId,
+  ingredientId = 1,
   latitude,
   longitude,
   onSetStoreId,
