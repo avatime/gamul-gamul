@@ -91,15 +91,15 @@ public class RecipeController {
 
     }
 
-    @GetMapping("/{recipeId}")
+    @GetMapping(value = {"/{recipeId}/{userName}", "/{recipeId}"})
     @ApiOperation(value = "요리법 상세 조회", notes = "<strong>recipe id</strong>에 따른 요리법 상세 정보 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<?> getRecipeDetail(@RequestBody RecipeDetailReq recipeDetailReq){
+    public ResponseEntity<?> getRecipeDetail(@PathVariable Long recipeId, @PathVariable(required = false) String userName){
         try {
-            RecipeDetailRes recipeDetailRes = recipeService.getRecipeDetail(recipeDetailReq.getRecipeId(), recipeDetailReq.getUserName());
+            RecipeDetailRes recipeDetailRes = recipeService.getRecipeDetail(recipeId, userName);
             return ResponseEntity.status(200).body(recipeDetailRes);
         } catch (Exception e){
             return ResponseEntity.status(500).body("Internal Server Error");
