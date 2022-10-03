@@ -33,7 +33,7 @@ export const SearchHeaderBar: FC<IProps> = ({ searchKeyword, onChange, onClickBa
           forceNotifyOnBlur={true}
           value={searchKeyword}
           onChange={onChange}
-          debounceTimeout={300}
+          debounceTimeout={500}
         />
       </Box>
       <IconButton onClick={onClickBack} style={{ height: "40px", marginTop: "10px" }}>

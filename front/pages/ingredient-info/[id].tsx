@@ -60,10 +60,10 @@ const IngredientInfoPage: NextPage<IProps> = ({
     }
 
   useEffect(() => {
-    if (id) {
-      saveRecentSearchLocalStorage("ingredient", +(id as string), `이름 ${id}`);
+    if (ingredientInfo) {
+      saveRecentSearchLocalStorage("ingredient", ingredientInfo.ingredient_id, ingredientInfo.name);
     }
-  }, [id]);
+  }, [ingredientInfo]);
 
   return (
     <Box>
