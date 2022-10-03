@@ -172,11 +172,17 @@ public class RecipeServiceImpl implements RecipeService{
         boolean allergyStatus = false;
         boolean selectedStatus = false;
         boolean basketStatus = false;
-        if (userRepository.existsByUsername(userName)){
+//        if (userRepository.existsByUsername(userName)){
+//            user = userRepository.findByUsername(userName).orElse(null);
+//        }else{
+//            user = null;
+//        }
+        if (userName != null){
             user = userRepository.findByUsername(userName).orElse(null);
-        }else{
+        }else {
             user = null;
         }
+
         RecipeSelected recipeSelected = new RecipeSelected();
         if (user == null){
             recipeSelected = null;
