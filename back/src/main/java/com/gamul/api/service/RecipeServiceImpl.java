@@ -90,55 +90,60 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public List<RecipeInfoRes> getRecipeBasket(int orderType, int page, int size, String userName){
-        // 바구니에 있는 재료 들로 만들 수 있는 요리법 이라는 거지?
-
-        User user = userRepository.findByUsername(userName).get();
-        List<Basket> basketList = basketRepository.findAllByUserId(user.getId());
-        List<Long> recipeList1 = new ArrayList<>();
-        for(Basket basket : basketList){
-
-            Long ingredientId = basket.getIngredient().getId();
-
-            List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findAllByIngredientId(ingredientId).get();
-
-            for (RecipeIngredient recipeIngredient : recipeIngredientList){
-                Long recipeId = recipeRepository.findById(recipeIngredient.getRecipe().getId()).get().getId();
-
-                recipeList1.add(recipeId);
-            }
-        }
-        Set<Long> set = new HashSet<Long>(recipeList1);
-        List<Long> newList = new ArrayList<Long>(set);
-
-        List<Recipe> recipeList = new ArrayList<>();
-        for (Long num : newList){
-            Recipe recipe = recipeRepository.findById(num).get();
-            System.out.println(recipe.getName());
-            recipeList.add(recipe);
-        }
-        System.out.println("recipeList: " + recipeList);
-        // 분기 처리
-        if(orderType == 1){
-            Collections.sort(recipeList, new IdSortComparator());
-        }else{
-            Collections.sort(recipeList, new ViewsSortComparator());
-        }
-        List<Recipe> newRecipeList = subRecipePage.getPage(recipeList, page, size);
 
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
-        for (Recipe x : newRecipeList){
-            Recipe recipe = recipeRepository.findById(x.getId()).get();
-            // 레시피 찜 가져오기
-            RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipe.getId()).orElse(null);
-            boolean bookmark = true;
-            if (recipeSelected == null){
-                bookmark = false;
+        User user = userRepository.findByUsername(userName).orElse(null);
+        if (user == null){
+            return recipeInfoResList;
+        }
+        List<Basket> basketList = basketRepository.findAllByUserId(user.getId());
+        List<Long> recipeList1 = new ArrayList<>();
+
+        if(basketList != null){
+            for(Basket basket : basketList){
+
+                Long ingredientId = basket.getIngredient().getId();
+                List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findTop10ByIngredientIdOrderByRecipeViewsDesc(ingredientId);
+
+                for (RecipeIngredient recipeIngredient : recipeIngredientList){
+                    Long recipeId = recipeRepository.findById(recipeIngredient.getRecipe().getId()).get().getId();
+                    recipeList1.add(recipeId);
+                }
             }
 
-            RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
-            recipeInfoResList.add(recipeInfoRes);
+            Set<Long> set = new HashSet<Long>(recipeList1);
+            List<Long> newList = new ArrayList<Long>(set);
 
+            List<Recipe> recipeList = new ArrayList<>();
+            for (Long num : newList){
+                Recipe recipe = recipeRepository.findById(num).get();
+                recipeList.add(recipe);
+            }
+
+            // 분기 처리
+            System.out.println(recipeList.get(0).getName());
+            if(orderType == 1){
+                Collections.sort(recipeList, new IdSortComparator());
+            }else{
+                Collections.sort(recipeList, new ViewsSortComparator());
+            }
+            List<Recipe> newRecipeList = subRecipePage.getPage(recipeList, page, size);
+
+
+            for (Recipe x : newRecipeList){
+                Recipe recipe = recipeRepository.findById(x.getId()).get();
+                // 레시피 찜 가져오기
+                RecipeSelected recipeSelected = recipeSelectedRepository.findByUserIdAndRecipeId(user.getId(), recipe.getId()).orElse(null);
+                boolean bookmark = true;
+                if (recipeSelected == null){
+                    bookmark = false;
+                }
+
+                RecipeInfoRes recipeInfoRes = new RecipeInfoRes(recipe.getId(), recipe.getThumbnail(), recipe.getInformation(), recipe.getName(), bookmark, recipe.getViews());
+                recipeInfoResList.add(recipeInfoRes);
+            }
         }
+
         return recipeInfoResList;
 
     }
