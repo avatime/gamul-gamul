@@ -111,9 +111,9 @@ public class AlarmController {
         }
         try{
             List<Allergy> allergyList = alarmService.getAllergyList(user);
-            List<IngredientPostReq> list = new ArrayList<>();
+            List<Long> list = new ArrayList<>();
             for(Allergy allergy : allergyList) {
-                list.add(new IngredientPostReq(allergy.getIngredient().getId()));
+                list.add(allergy.getIngredient().getId());
             }
             return ResponseEntity.status(200).body(list);
         } catch (Exception e){
