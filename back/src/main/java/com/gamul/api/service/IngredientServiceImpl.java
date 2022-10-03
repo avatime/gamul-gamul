@@ -568,6 +568,7 @@ public class IngredientServiceImpl implements IngredientService{
 
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+            if(day == null) day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
 
             // 가격 변동률
             List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
