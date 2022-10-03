@@ -298,6 +298,7 @@ public class IngredientServiceImpl implements IngredientService{
         int beforePrice = 0;
         int todayPrice = 0;
         int pastPrice = 0;
+
         List<Day> dayList2 = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
         if (dayList2.size() > 0){
             todayPrice = dayList2.get(0).getPrice();
@@ -333,7 +334,10 @@ public class IngredientServiceImpl implements IngredientService{
             // 가격 변동률
             List<Day> dayListV = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             int today = dayListV.get(0).getPrice();
-            int yesterday = dayListV.get(1).getPrice();
+            int yesterday = 0;
+            if (dayListV.size() > 1){
+                yesterday = dayListV.get(1).getPrice();
+            }
             volatility = (today - yesterday) * 100.0 / today ;
             volatility = Math.round(volatility * 100) / 100.0;
         }
