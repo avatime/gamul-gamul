@@ -231,6 +231,7 @@ public class IngredientServiceImpl implements IngredientService{
                 quantitySo = month1.getQuantity();
                 monthSo.add(priceInfoRes);
             }
+
         }
 
         // year 소매

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,14 +57,11 @@ public class RecipeServiceImpl implements RecipeService{
 
     private final YoutubeChannelSearch youtubeChannelSearch;
     @Override
-    public List<RecipeInfoRes> getRecipeList(RecipeListReq recipeListReq){
+    public List<RecipeInfoRes> getRecipeList(int orderType, int page, int size){
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
-
-        if(recipeListReq.getOrderType() == 1){
-            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.DESC, "name"));
-            System.out.println("페이지: " + pageRequest);
+        if(orderType == 1){
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
-            System.out.println(recipeList.getContent().size());
             for (Recipe x : recipeList.getContent()){
 
                 Recipe recipe = recipeRepository.findById(x.getId()).get();
@@ -78,7 +76,7 @@ public class RecipeServiceImpl implements RecipeService{
                 recipeInfoResList.add(recipeInfoRes);
             }
         }else {
-            PageRequest pageRequest = PageRequest.of(recipeListReq.getPage(), recipeListReq.getSize(), Sort.by(Sort.Direction.DESC, "views"));
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "views"));
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
             for (Recipe x : recipeList.getContent()){
 //            System.out.println("X: "+ x.getId());
@@ -103,10 +101,8 @@ public class RecipeServiceImpl implements RecipeService{
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
 
         if(recipeBasketReq.getOrderType() == 1){
-            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "name"));
-            System.out.println("페이지: " + pageRequest);
+            PageRequest pageRequest = PageRequest.of(recipeBasketReq.getPage(), recipeBasketReq.getSize(), Sort.by(Sort.Direction.DESC, "id"));
             Page<Recipe> recipeList = recipeRepository.findAll(pageRequest);
-            System.out.println(recipeList.getContent().size());
             for (Recipe x : recipeList.getContent()){
 
                 Recipe recipe = recipeRepository.findById(x.getId()).get();
