@@ -103,19 +103,13 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
-        try{
-            if (userRepository.existsByUsername(ingredientSelectReq.getUserName())) {
-                if (!ingredientRepository.existsById(ingredientSelectReq.getIngredientId())) {
-                    return ResponseEntity.ok(BaseResponseBody.of(405, "식재료 없음"));
-                }
-                ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
-            } else{
-                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
-            }
+        try {
+            ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
+
         }catch (Exception e){
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     @PutMapping("/basket/{userName}/{ingredientId}")
