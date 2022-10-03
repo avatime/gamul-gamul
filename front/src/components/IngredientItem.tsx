@@ -22,7 +22,7 @@ type Direction = "row" | "column";
 
 interface IProps {
   direction: Direction;
-  ingredientInfo: IngredientInfo | null;
+  ingredientInfo: IngredientInfo;
   onDelete?: () => void;
   onClickItem: (id: number) => void;
   tail?: React.ReactNode;

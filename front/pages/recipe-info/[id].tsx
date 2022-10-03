@@ -16,23 +16,43 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { CardContainer } from "../../src/components/CardContainer";
 import { YoutubeRecipeListComp } from "../../src/components/templates/YoutubeRecipeListComp";
 import { Grid, Stack } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { saveRecentSearchLocalStorage } from "../../src/utils/localStorageUtil";
+import { getCookie } from "../../src/utils/cookie"
 
 interface IProps {
   recipeDetailInfo: RecipeDetailInfo;
-  totalPrice: number;
 }
 
-const RecipeInfoPage: NextPage<IProps> = ({
-  recipeDetailInfo: { recipe_info, extra_ingredient_list, ingredient_list, youtube_list },
-  totalPrice,
-}) => {
+const RecipeInfoPage: NextPage<IProps> = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [userName, setUserName] = useState("");
+  const [recipeDetailInfo, setRecipeDetailInfo] = useState<RecipeDetailInfo>({
+    recipe_info: { recipe_id: 0, image_path: "/icon2.png", name: "", desc: "", bookmark: false, views: 0 },
+    ingredient_list: [],
+    extra_ingredient_list: [],
+    youtube_list: [],
+  });
+
   useEffect(() => {
-    saveRecentSearchLocalStorage("recipe", recipe_info.recipe_id, recipe_info.name);
-  }, [recipe_info.recipe_id, recipe_info.name]);
+    setUserName(getCookie("userName"));
+
+    ApiClient.getInstance()
+      .getRecipeDetailInfo(getCookie("userName"), Number(id))
+      .then((data) => setRecipeDetailInfo(data));
+    console.log(recipeDetailInfo.recipe_info.image_path);
+  }, [id, recipeDetailInfo.recipe_info.image_path, userName]);
+
+  const totalPrice = recipeDetailInfo.ingredient_list.reduce((p, c) => p + c.price, 0);
+
+  useEffect(() => {
+    saveRecentSearchLocalStorage(
+      "recipe",
+      recipeDetailInfo.recipe_info.recipe_id,
+      recipeDetailInfo.recipe_info.name
+    );
+  }, [recipeDetailInfo.recipe_info.recipe_id, recipeDetailInfo.recipe_info.name]);
 
   const onClickBookmark = () => {};
   const onClickStartCook = () => {
@@ -46,11 +66,11 @@ const RecipeInfoPage: NextPage<IProps> = ({
           <Grid container direction="row" justifyContent="space-between" alignItems="center">
             <Grid item xs={8}>
               <InfoTitle
-                name={recipe_info.name}
-                bookmark={recipe_info.bookmark}
+                name={recipeDetailInfo.recipe_info.name}
+                bookmark={recipeDetailInfo.recipe_info.bookmark}
                 onClickBookmark={onClickBookmark}
-                views={recipe_info.views}
-                imagePath={recipe_info.image_path}
+                views={recipeDetailInfo.recipe_info.views}
+                imagePath={recipeDetailInfo.recipe_info.image_path}
                 isExternalImage={true}
               />
             </Grid>
@@ -81,19 +101,22 @@ const RecipeInfoPage: NextPage<IProps> = ({
             <Grid item xs={8}>
               <IngredientListComp
                 title="식재료"
-                ingredientList={ingredient_list}
+                ingredientList={recipeDetailInfo.ingredient_list}
                 rowSize={2}
                 gridSize={5}
                 totalPrice={totalPrice}
               />
               <CardContainer title="기타 재료">
                 <p style={{ fontSize: 14, marginLeft: 10 }}>
-                  {extra_ingredient_list.reduce((p, c) => (p === "" ? c : `${p}, ${c}`), "")}
+                  {recipeDetailInfo.extra_ingredient_list.reduce(
+                    (p, c) => (p === "" ? c : `${p}, ${c}`),
+                    ""
+                  )}
                 </p>
               </CardContainer>
             </Grid>
             <Grid item xs={4}>
-              <YoutubeRecipeListComp youtubeInfoList={youtube_list} />
+              <YoutubeRecipeListComp youtubeInfoList={recipeDetailInfo.youtube_list} />
             </Grid>
           </Grid>
         </Box>
@@ -103,11 +126,11 @@ const RecipeInfoPage: NextPage<IProps> = ({
           <Grid container direction="row" justifyContent="space-between" alignItems="center">
             <Grid item xs={8}>
               <InfoTitle
-                name={recipe_info.name}
-                bookmark={recipe_info.bookmark}
+                name={recipeDetailInfo.recipe_info.name}
+                bookmark={recipeDetailInfo.recipe_info.bookmark}
                 onClickBookmark={onClickBookmark}
-                views={recipe_info.views}
-                imagePath={recipe_info.image_path}
+                views={recipeDetailInfo.recipe_info.views}
+                imagePath={recipeDetailInfo.recipe_info.image_path}
                 isExternalImage={true}
               />
             </Grid>
@@ -137,17 +160,20 @@ const RecipeInfoPage: NextPage<IProps> = ({
           <Box marginTop="10px">
             <IngredientListComp
               title="식재료"
-              ingredientList={ingredient_list}
+              ingredientList={recipeDetailInfo.ingredient_list}
               rowSize={2}
               gridSize={5}
               totalPrice={totalPrice}
             />
             <CardContainer title="기타 재료">
               <p style={{ fontSize: 14, marginLeft: 10 }}>
-                {extra_ingredient_list.reduce((p, c) => (p === "" ? c : `${p}, ${c}`), "")}
+                {recipeDetailInfo.extra_ingredient_list.reduce(
+                  (p, c) => (p === "" ? c : `${p}, ${c}`),
+                  ""
+                )}
               </p>
             </CardContainer>
-            <YoutubeRecipeListComp youtubeInfoList={youtube_list} gridSize={2} />
+            <YoutubeRecipeListComp youtubeInfoList={recipeDetailInfo.youtube_list} gridSize={2} />
           </Box>
         </Box>
       </Tablet>
@@ -160,11 +186,11 @@ const RecipeInfoPage: NextPage<IProps> = ({
           alignItems="stretch"
         >
           <InfoTitle
-            name={recipe_info.name}
-            bookmark={recipe_info.bookmark}
+            name={recipeDetailInfo.recipe_info.name}
+            bookmark={recipeDetailInfo.recipe_info.bookmark}
             onClickBookmark={onClickBookmark}
-            views={recipe_info.views}
-            imagePath={recipe_info.image_path}
+            views={recipeDetailInfo.recipe_info.views}
+            imagePath={recipeDetailInfo.recipe_info.image_path}
             isExternalImage={true}
           />
           <ButtonOutlined
@@ -179,7 +205,7 @@ const RecipeInfoPage: NextPage<IProps> = ({
           />
           <IngredientListComp
             title="식재료"
-            ingredientList={ingredient_list}
+            ingredientList={recipeDetailInfo.ingredient_list}
             rowSize={2}
             gridSize={3}
             totalPrice={totalPrice}
@@ -195,10 +221,13 @@ const RecipeInfoPage: NextPage<IProps> = ({
           />
           <CardContainer title="기타 재료">
             <p style={{ fontSize: 14, marginLeft: 10 }}>
-              {extra_ingredient_list.reduce((p, c) => (p === "" ? c : `${p}, ${c}`), "")}
+              {recipeDetailInfo.extra_ingredient_list.reduce(
+                (p, c) => (p === "" ? c : `${p}, ${c}`),
+                ""
+              )}
             </p>
           </CardContainer>
-          <YoutubeRecipeListComp youtubeInfoList={youtube_list} />
+          <YoutubeRecipeListComp youtubeInfoList={recipeDetailInfo.youtube_list} />
         </Box>
       </Mobile>
     </Box>
@@ -210,13 +239,8 @@ export default RecipeInfoPage;
 export async function getServerSideProps(context: any) {
   const id = context.params.id;
   const apiClient = ApiClient.getInstance();
-  const recipeDetailInfo = await apiClient.getRecipeDetailInfo(+id);
-  const totalPrice = recipeDetailInfo.ingredient_list.reduce((p, c) => p + c.price, 0);
 
   return {
-    props: {
-      recipeDetailInfo,
-      totalPrice,
-    },
+    props: {},
   };
 }
