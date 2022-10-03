@@ -17,35 +17,42 @@ import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
 import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 
-interface IProps {
-  totalPrice: number;
-  ingredientList: IngredientInfo[];
-  imagePath: string;
-  name: string;
-  priceTransitionInfo: PriceTransitionInfo;
-}
+interface IProps {}
 
-const MyRecipeInfoPage: NextPage<IProps> = ({
-  totalPrice,
-  ingredientList,
-  imagePath,
-  name,
-  priceTransitionInfo,
-}) => {
+const MyRecipeInfoPage: NextPage<IProps> = () => {
   const router = useRouter();
   const { id } = router.query;
   const apiClient = ApiClient.getInstance();
   const [userName, setUserName] = useState("");
-  const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>();
+  const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>({
+    ingredient_list: [],
+    image_path: "",
+    name: "",
+    price_transition_info: {
+      before_price: 0,
+      pastvol: 0,
+      price: 0,
+      todayvol: 0,
+      retailsales: {
+        daily: [],
+        monthly: [],
+        yearly: [],
+      },
+      wholesales: {
+        daily: [],
+        monthly: [],
+        yearly: [],
+      }
+    },
+    total_price: 0,
+  });
  
   useEffect(() => {
     setUserName(getCookie("userName"));
-    if(getCookie("userName") != null) {
       ApiClient.getInstance()
-      .getMyRecipeDetailInfo(userName, Number(id))
+      .getMyRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setMyRecipeDetailInfo(data));
-    }
-  }, [id, userName]);
+  }, []);
 
 
   const modifyRecipe = () => {
@@ -67,7 +74,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
-            <Avatar src={imagePath} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
+            <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
             <Box
               sx={{
                 display: "flex",
@@ -77,24 +84,24 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
                 marginRight: "20px",
               }}
             >
-              <h3>{name}</h3>
+              <h3>{myRecipeDetailInfo.name}</h3>
             </Box>
             <IconButton onClick={modifyRecipe}>
               <EditIcon color="secondary" />
             </IconButton>
           </Box>
           <IngredientListComp
-            ingredientList={ingredientList}
-            totalPrice={totalPrice}
+            ingredientList={myRecipeDetailInfo.ingredient_list}
+            totalPrice={myRecipeDetailInfo.total_price}
             rowSize={2}
             gridSize={5}
           />
-          <IngredientPriceGraph
-            priceTransitionInfo={priceTransitionInfo}
+          {/* <IngredientPriceGraph
+            priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
             inputWidth="95%"
             inputHeight={500}
             type="line"
-          />
+          /> */}
           <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
             <ButtonFill
               onClick={deleteRecipe}
@@ -110,7 +117,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
       </Desktop>
       <Tablet className={styles.PageforTablet}>
         <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
-          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px" }} />
+        <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
           <Box
             sx={{
               display: "flex",
@@ -120,24 +127,24 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
               marginRight: "20px",
             }}
           >
-            <h3>{name}</h3>
+            <h3>{myRecipeDetailInfo.name}</h3>
           </Box>
           <IconButton onClick={modifyRecipe}>
             <EditIcon color="secondary" />
           </IconButton>
         </Box>
         <IngredientListComp
-          ingredientList={ingredientList}
-          totalPrice={totalPrice}
+          ingredientList={myRecipeDetailInfo.ingredient_list}
+          totalPrice={myRecipeDetailInfo.total_price}
           rowSize={2}
           gridSize={5}
         />
-        <IngredientPriceGraph
-          priceTransitionInfo={priceTransitionInfo}
+        {/* <IngredientPriceGraph
+          priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
           inputWidth="95%"
           inputHeight={500}
           type="line"
-        />
+        /> */}
         <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
           <ButtonFill
             onClick={deleteRecipe}
@@ -157,7 +164,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
           className={styles.PageforMobile}
         >
           
-          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px", marginLeft:"15px" }} />
+          <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px", marginLeft:"15px" }} />
           <Box
             sx={{
               display: "flex",
@@ -166,7 +173,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
               marginLeft: "20px",
             }}
           >
-            <h3>{name}</h3>
+            <h3>{myRecipeDetailInfo.name}</h3>
           </Box>
           <Box
             sx={{
@@ -188,13 +195,13 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
             </Box>
           </Box>
         </Box>
-        <IngredientListComp ingredientList={ingredientList} totalPrice={totalPrice} />
-        <IngredientPriceGraph
-          priceTransitionInfo={priceTransitionInfo}
+        <IngredientListComp ingredientList={myRecipeDetailInfo.ingredient_list} totalPrice={myRecipeDetailInfo.total_price} />
+        {/* <IngredientPriceGraph
+          priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
           inputWidth="95%"
           inputHeight={400}
           type="line"
-        />
+        /> */}
         <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "75px" }}>
           <ButtonFill
             onClick={deleteRecipe}
@@ -213,11 +220,10 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
 
 export default MyRecipeInfoPage;
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async () => {
 
   return {
     props: {
-    
     },
   };
 };
