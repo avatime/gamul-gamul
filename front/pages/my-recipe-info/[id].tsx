@@ -139,7 +139,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
           className={styles.PageforMobile}
         >
           
-          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px" }} />
+          <Avatar src="/test_hamburger.jpg" alt="햄버거" sx={{ width: "60px", height: "60px", marginLeft:"15px" }} />
           <Box
             sx={{
               display: "flex",
