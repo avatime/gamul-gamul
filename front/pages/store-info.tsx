@@ -14,7 +14,7 @@ const StoreInfoPage: NextPage<IProps> = (props) => {
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container sx={{display: "flex", justifyContent: "center"}}>
-            <Grid item xs={7} sx={{margin: "20px"}}>
+            <Grid item xs={6} sx={{margin: "20px"}}>
             <OfflineMartDetailComp inputHeight={"400px"} mapId="desktop" />
             </Grid>
           </Grid>
@@ -23,7 +23,7 @@ const StoreInfoPage: NextPage<IProps> = (props) => {
       <Tablet>
         <Box className={styles.PageforTablet}>
         <Grid container sx={{display: "flex", justifyContent: "center"}}>
-            <Grid item xs={8} sx={{margin: "20px"}}>
+            <Grid item xs={7} sx={{margin: "20px"}}>
             <OfflineMartDetailComp inputHeight={"350px"} mapId="tablet" />
             </Grid>
           </Grid>
