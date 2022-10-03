@@ -1,8 +1,9 @@
 package com.gamul.api.controller;
 
 import com.gamul.api.service.DailyPriceService;
-import com.gamul.db.entity.Day;
+import com.gamul.db.entity.RecipeIngredient;
 import com.gamul.db.repository.PriceRepository;
+import com.gamul.db.repository.RecipeIngredientRepository;
 import com.gamul.db.repository.TestRepository;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,12 @@ public class TestController {
     @Autowired
     DailyPriceService dailyPriceService;
 
+    @Autowired
+    RecipeIngredientRepository repository;
+
     @GetMapping("/{testnum}")
     public ResponseEntity<?> test(@RequestParam Long testnum) throws Exception{
-        List<Day> list = dailyPriceService.findDailyPrices(testnum, 0);
+        List<RecipeIngredient> list = repository.findTop10ByIngredientIdOrderByRecipeViewsDesc(testnum);
 
         return ResponseEntity.status(200).body(list);
     }
