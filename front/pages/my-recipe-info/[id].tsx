@@ -214,9 +214,6 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
 export default MyRecipeInfoPage;
 
 export const getServerSideProps = async (context: any) => {
-  const apiClient = ApiClient.getInstance();
-  const userName: string = await getCookie("userName");
- 
 
   return {
     props: {
