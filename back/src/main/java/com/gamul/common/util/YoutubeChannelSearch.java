@@ -137,7 +137,7 @@ public class YoutubeChannelSearch {
 
                 String videoLink = "https://www.youtube.com/watch?v=" + singleVideo.getId();
 
-                youtubeInfoRes.setThumbnailPath(thumbnail.getUrl().replace("default.jpg","").concat("maxresdefault.jpg"));
+                youtubeInfoRes.setThumbnailPath(thumbnail.getUrl().replace("default.jpg","").concat("sddefault.jpg"));
 //                youtubeInfoRes.setThumbnailPath(thumbnail.getUrl());
                 youtubeInfoRes.setName(singleVideo.getSnippet().getTitle());
                 youtubeInfoRes.setChannelName(singleVideo.getSnippet().getChannelTitle());
