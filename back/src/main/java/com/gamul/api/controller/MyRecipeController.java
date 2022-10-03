@@ -207,14 +207,14 @@ public class MyRecipeController {
                     }
                     if (setDate) {
                         for (int j = 0; j < 10; j++) {
-                            dayRetailPrice.get(j).setDate(dailyPrice.get(j).getDatetime());
-                            monthRetailPrice.get(j).setDate(monthlyPrice.get(j).getDatetime());
-                            dayWholePrice.get(j).setDate(dailyWholePrice.get(j).getDatetime());
-                            monthWholePrice.get(j).setDate(monthlyWholePrice.get(j).getDatetime());
+                            if(dailyPrice != null && dailyPrice.size() > j) dayRetailPrice.get(j).setDate(dailyPrice.get(j).getDatetime());
+                            if(monthlyPrice!= null && monthlyPrice.size()>j) monthRetailPrice.get(j).setDate(monthlyPrice.get(j).getDatetime());
+                            if(dailyWholePrice != null && dailyWholePrice.size() > j) dayWholePrice.get(j).setDate(dailyWholePrice.get(j).getDatetime());
+                            if(monthlyWholePrice != null && monthlyWholePrice.size() > j) monthWholePrice.get(j).setDate(monthlyWholePrice.get(j).getDatetime());
                             if (j >= yearlyPrice.size()) continue;
                             yearRetailPrice.get(j).setDate(yearlyPrice.get(j).getDatetime());
                         }
-                        setDate = false;
+//                        setDate = false;
                     }
                 }
 
