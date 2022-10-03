@@ -83,7 +83,7 @@ function OfflineMartMap({
           // 지도의 현재 영역을 얻어옵니다 남서(qa, ha) 북동(pa, oa)
           var bounds = map.getBounds();
 
-          const store = await apiClient.getOfflineMartList(
+          var store = await apiClient.getOfflineMartList(
             ingredientId,
             bounds.qa,
             bounds.ha,
@@ -92,6 +92,10 @@ function OfflineMartMap({
             center.getLat(),
             center.getLng()
           );
+
+          if(store.length > 10) {
+            store = store.slice(0, 10);
+          }
 
           setStores(store);
 

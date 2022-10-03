@@ -29,14 +29,14 @@ interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
   onlineMartInfo: OnlineMartInfo[];
-  // recipeList: RecipeInfo[];
+  recipeList: RecipeInfo[];
 }
 
 const IngredientInfoPage: NextPage<IProps> = ({
   ingredientDetailInfo,
   ingredientInfo,
   onlineMartInfo,
-  // recipeList,
+  recipeList,
 }) => {
  
 
@@ -97,18 +97,18 @@ const IngredientInfoPage: NextPage<IProps> = ({
               />
             </Grid>
             <Grid item xs={5}>
-            {/* <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} /> */}
-              {/* <OfflineMartComp
+            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
+              <OfflineMartComp
                 ingredientInfo={ingredientInfo}
                 mapId="desktop"
                 inputHeight="300px"
-              /> */}
-              {/* <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" /> */}
+              />
+              <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
             </Grid>
           </Grid>
         </Box>
       </Desktop>
-      {/* <Tablet>
+      <Tablet>
         <Box className={styles.PageforTablet}>
           <Box marginTop="10px">
           <InfoTitle
@@ -126,12 +126,12 @@ const IngredientInfoPage: NextPage<IProps> = ({
             inputHeight={500}
           />
           <RecipeListComp recipeList={recipeList} gridSize={4} />
-          <OfflineMartComp
+          {/* <OfflineMartComp
             ingredientInfo={ingredientInfo}
             mapId="tablet"
             inputHeight="350px"
           />
-          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" /> */}
         </Box>
       </Tablet>
       <Mobile>
@@ -151,14 +151,14 @@ const IngredientInfoPage: NextPage<IProps> = ({
             inputHeight={500}
           />
           <RecipeListComp recipeList={recipeList} rowSize={1} />
-          <OfflineMartComp
+          {/* <OfflineMartComp
             ingredientInfo={ingredientInfo}
             mapId="mobile"
             inputHeight="300px"
           />
-          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" />
+          <OnlineMarketInfoComp onlineMartInfo={onlineMartInfo} width="95%" iconSize="15px" /> */}
         </Box>
-      </Mobile> */}
+      </Mobile>
     </Box>
   );
 };
@@ -187,13 +187,13 @@ export const getStaticProps = async (context: any) => {
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
   // const recipeList = await apiClient.search(ingredientInfo.name); // api 구현시 적용
-  // const recipeList = await apiClient.getRecipeList(1, 1, 20);
+  const recipeList = await apiClient.getRecipeList(2, 1, 40);
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
       onlineMartInfo,
-      // recipeList,
+      recipeList,
     },
   };
 };
