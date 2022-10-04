@@ -62,10 +62,27 @@ public class IngredientServiceImpl implements IngredientService{
             // 가격 객체 가져오기
             Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
             if (day == null){
-                day = new Day();
-                day.setPrice(0);
-                day.setUnit("");
-                day.setQuantity(0);
+                day = day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+                if(day == null){
+                    day = new Day();
+                    Month month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                    if(month != null){
+                        day.setPrice(month.getPrice());
+                        day.setUnit(month.getUnit());
+                        day.setQuantity(month.getQuantity());
+                    }else{
+                        month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+                        if(month != null){
+                            day.setPrice(month.getPrice());
+                            day.setUnit(month.getUnit());
+                            day.setQuantity(month.getQuantity());
+                        }else{
+                            day.setPrice(0);
+                            day.setUnit("");
+                            day.setQuantity(0);
+                        }
+                    }
+                }
             }
 
             // 가격 변동률
