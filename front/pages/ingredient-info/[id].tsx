@@ -42,6 +42,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
   const [bookmark, setBookmark] = useState(false);
   const [basket, setBasket] = useState(false);
   const [recipeList, setRecipeList] = useState<RecipeInfo[]>([]);
+  const [showChild, setShowChild] = useState(false);
 
   useEffect(() => {
     apiClient.postIngredientView(Number(id as string));
@@ -63,120 +64,131 @@ const IngredientInfoPage: NextPage<IProps> = ({
     }
   }, [ingredientDetailInfo]);
 
-  // useEffect(() => {
-  //   if(getCookie("userName") != null) {
-  //     ApiClient.getInstance()
-  //       .getIngredientDetailInfo(Number(id), getCookie("userName"))
-  //       .then((data) => {
-  //         setBookmark(data.ingredient_info.bookmark);
-  //         setBasket(data.ingredient_info.basket);
-  //       });
-  //   }
-  //   ApiClient.getInstance()
-  //     .search(ingredientDetailInfo.ingredient_info.name)
-  //     .then((data) => setRecipeList(data.recipe_list));
-  // }, []);
+  useEffect(() => {
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
+        .getIngredientDetailInfo(Number(id), getCookie("userName"))
+        .then((data) => {
+          setBookmark(data.ingredient_info.bookmark);
+          setBasket(data.ingredient_info.basket);
+        });
+    }
+    ApiClient.getInstance()
+      .search(ingredientDetailInfo.ingredient_info.name)
+      .then((data) => setRecipeList(data.recipe_list));
+    setShowChild(true);
+  }, []);
 
-  return (
-    <Box>
-      <Desktop>
-        <Box className={styles.PageforDesktop}>
-          <Grid container>
-            <Grid item xs={7}>
-                <Box
-                  height="175px"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <InfoTitle
-                    name={ingredientDetailInfo.ingredient_info.name}
-                    bookmark={bookmark}
-                    basket={basket}
-                    onClickBookmark={onClickBookmark}
-                    onClickBasket={onClickBasket}
-                    views={ingredientDetailInfo.ingredient_info.views}
-                    imagePath={`/assets/ingredientsImg/${id}.jpg`}
-                  />
-                </Box>
-              <IngredientPriceComp
-                ingredientDetailInfo={ingredientDetailInfo}
-                inputWidth={"90%"}
-                inputHeight={500}
-                blackList={blackList}
-              />
-              <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
+  if (!showChild) {
+    return null;
+  }
+
+  if (typeof window === 'undefined') {
+    return <></>;
+  } else {
+    return (
+      <Box>
+        <Desktop>
+          <Box className={styles.PageforDesktop}>
+            <Grid container>
+              <Grid item xs={7}>
+                  <Box
+                    height="175px"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <InfoTitle
+                      name={ingredientDetailInfo.ingredient_info.name}
+                      bookmark={bookmark}
+                      basket={basket}
+                      onClickBookmark={onClickBookmark}
+                      onClickBasket={onClickBasket}
+                      views={ingredientDetailInfo.ingredient_info.views}
+                      imagePath={`/assets/ingredientsImg/${id}.jpg`}
+                    />
+                  </Box>
+                <IngredientPriceComp
+                  ingredientDetailInfo={ingredientDetailInfo}
+                  inputWidth={"90%"}
+                  inputHeight={500}
+                  blackList={blackList}
+                />
+                <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
+              </Grid>
+              <Grid item xs={5}>
+                <OfflineMartComp
+                  ingredientInfo={ingredientDetailInfo.ingredient_info}
+                  mapId="desktop"
+                  inputHeight="300px"
+                />
+                <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+              </Grid>
             </Grid>
-            <Grid item xs={5}>
-              <OfflineMartComp
-                ingredientInfo={ingredientDetailInfo.ingredient_info}
-                mapId="desktop"
-                inputHeight="300px"
-              />
-              <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
-            </Grid>
-          </Grid>
-        </Box>
-      </Desktop>
-      <Tablet>
-        <Box className={styles.PageforTablet}>
-          <Box marginTop="10px">
-          <InfoTitle
-            name={ingredientDetailInfo.ingredient_info.name}
-            bookmark={bookmark}
-            basket={basket}
-            onClickBookmark={onClickBookmark}
-            onClickBasket={onClickBasket}
-            views={ingredientDetailInfo.ingredient_info.views}
-            imagePath={`/assets/ingredientsImg/${id}.jpg`}
-          />
           </Box>
-          <IngredientPriceComp
-            ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"95%"}
-            inputHeight={450}
-            blackList={blackList}
-          />
-          <RecipeListComp recipeList={recipeList} gridSize={4} />
-          <OfflineMartComp
-            ingredientInfo={ingredientDetailInfo.ingredient_info}
-            mapId="tablet"
-            inputHeight="350px"
-          />
-          <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
-        </Box>
-      </Tablet>
-      <Mobile>
-      <BackHeader />
-        <Box className={styles.PageforMobile}>
-          <InfoTitle
-            name={ingredientDetailInfo.ingredient_info.name}
-            bookmark={bookmark}
-            basket={basket}
-            onClickBookmark={onClickBookmark}
-            onClickBasket={onClickBasket}
-            views={ingredientDetailInfo.ingredient_info.views}
-            imagePath={`/assets/ingredientsImg/${id}.jpg`}
-          />
-          <IngredientPriceComp
-            ingredientDetailInfo={ingredientDetailInfo}
-            inputWidth={"95%"}
-            inputHeight={400}
-            blackList={blackList}
-          />
-          <RecipeListComp recipeList={recipeList} rowSize={1} />
-          <OfflineMartComp
-            ingredientInfo={ingredientDetailInfo.ingredient_info}
-            mapId="mobile"
-            inputHeight="300px"
-          />
-          <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
-        </Box>
-      </Mobile>
-    </Box>
-  );
+        </Desktop>
+        <Tablet>
+          <Box className={styles.PageforTablet}>
+            <Box marginTop="10px">
+            <InfoTitle
+              name={ingredientDetailInfo.ingredient_info.name}
+              bookmark={bookmark}
+              basket={basket}
+              onClickBookmark={onClickBookmark}
+              onClickBasket={onClickBasket}
+              views={ingredientDetailInfo.ingredient_info.views}
+              imagePath={`/assets/ingredientsImg/${id}.jpg`}
+            />
+            </Box>
+            <IngredientPriceComp
+              ingredientDetailInfo={ingredientDetailInfo}
+              inputWidth={"95%"}
+              inputHeight={450}
+              blackList={blackList}
+            />
+            <RecipeListComp recipeList={recipeList} gridSize={4} />
+            <OfflineMartComp
+              ingredientInfo={ingredientDetailInfo.ingredient_info}
+              mapId="tablet"
+              inputHeight="350px"
+            />
+            <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+          </Box>
+        </Tablet>
+        <Mobile>
+        <BackHeader />
+          <Box className={styles.PageforMobile}>
+            <InfoTitle
+              name={ingredientDetailInfo.ingredient_info.name}
+              bookmark={bookmark}
+              basket={basket}
+              onClickBookmark={onClickBookmark}
+              onClickBasket={onClickBasket}
+              views={ingredientDetailInfo.ingredient_info.views}
+              imagePath={`/assets/ingredientsImg/${id}.jpg`}
+            />
+            <IngredientPriceComp
+              ingredientDetailInfo={ingredientDetailInfo}
+              inputWidth={"95%"}
+              inputHeight={400}
+              blackList={blackList}
+            />
+            <RecipeListComp recipeList={recipeList} rowSize={1} />
+            <OfflineMartComp
+              ingredientInfo={ingredientDetailInfo.ingredient_info}
+              mapId="mobile"
+              inputHeight="300px"
+            />
+            <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+          </Box>
+        </Mobile>
+      </Box>
+    );
+  }
+
+  
 };
 
 export default IngredientInfoPage;
