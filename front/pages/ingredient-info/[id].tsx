@@ -63,19 +63,19 @@ const IngredientInfoPage: NextPage<IProps> = ({
     }
   }, [ingredientDetailInfo]);
 
-  useEffect(() => {
-    if(getCookie("userName") != null) {
-      ApiClient.getInstance()
-        .getIngredientDetailInfo(Number(id), getCookie("userName"))
-        .then((data) => {
-          setBookmark(data.ingredient_info.bookmark);
-          setBasket(data.ingredient_info.basket);
-        });
-    }
-    ApiClient.getInstance()
-      .search(ingredientDetailInfo.ingredient_info.name)
-      .then((data) => setRecipeList(data.recipe_list));
-  }, []);
+  // useEffect(() => {
+  //   if(getCookie("userName") != null) {
+  //     ApiClient.getInstance()
+  //       .getIngredientDetailInfo(Number(id), getCookie("userName"))
+  //       .then((data) => {
+  //         setBookmark(data.ingredient_info.bookmark);
+  //         setBasket(data.ingredient_info.basket);
+  //       });
+  //   }
+  //   ApiClient.getInstance()
+  //     .search(ingredientDetailInfo.ingredient_info.name)
+  //     .then((data) => setRecipeList(data.recipe_list));
+  // }, []);
 
   return (
     <Box>
