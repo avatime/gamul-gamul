@@ -191,26 +191,26 @@ const IngredientInfoPage: NextPage<IProps> = ({
 
 export default IngredientInfoPage;
 
-export async function getStaticPaths() {
-  const lastId = 72;
-  const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
-    params: {
-      id: id.toString(),
-    },
-  }));
-  return {
-    paths,
-    fallback: false,
-  };
-}
+// export async function getStaticPaths() {
+//   const lastId = 72;
+//   const paths = Array.from({ length: lastId }, (_, i) => i + 1).map((id) => ({
+//     params: {
+//       id: id.toString(),
+//     },
+//   }));
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }
 
-export const getStaticProps = async (context: any) => {
+export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
   const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(
     context.params.id,
     "",
   );
-  const recipeList = apiClient.search(ingredientDetailInfo.ingredient_info.name);
+  const recipeList = (await apiClient.search(ingredientDetailInfo.ingredient_info.name)).recipe_list;
   const blackList = await apiClient.getBlackList();
   return {
     props: {
