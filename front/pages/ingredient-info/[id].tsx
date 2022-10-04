@@ -76,9 +76,9 @@ const IngredientInfoPage: NextPage<IProps> = ({
           setBasket(data.ingredient_info.basket);
         });
     }
-    ApiClient.getInstance()
-      .search(ingredientInfo.name)
-      .then((data) => setRecipeList(data.recipe_list));
+    // ApiClient.getInstance()
+    //   .search(ingredientInfo.name)
+    //   .then((data) => setRecipeList(data.recipe_list));
   }, []);
 
   return (
