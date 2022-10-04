@@ -76,9 +76,9 @@ const IngredientInfoPage: NextPage<IProps> = ({
           setBasket(data.ingredient_info.basket);
         });
     }
-    ApiClient.getInstance()
-      .search(ingredientInfo.name)
-      .then((data) => setRecipeList(data.recipe_list));
+    // ApiClient.getInstance()
+    //   .search(ingredientInfo.name)
+    //   .then((data) => setRecipeList(data.recipe_list));
   }, []);
 
   return (
@@ -111,7 +111,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 inputHeight={500}
                 blackList={blackList}
               />
-              <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
+              {/* <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} /> */}
             </Grid>
             <Grid item xs={5}>
               <OfflineMartComp
@@ -142,7 +142,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             inputHeight={450}
             blackList={blackList}
           />
-          <RecipeListComp recipeList={recipeList} gridSize={4} />
+          {/* <RecipeListComp recipeList={recipeList} gridSize={4} /> */}
           <OfflineMartComp
             ingredientInfo={ingredientInfo}
             mapId="tablet"
@@ -168,7 +168,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             inputHeight={400}
             blackList={blackList}
           />
-          <RecipeListComp recipeList={recipeList} rowSize={1} />
+          {/* <RecipeListComp recipeList={recipeList} rowSize={1} /> */}
           <OfflineMartComp
             ingredientInfo={ingredientInfo}
             mapId="mobile"
