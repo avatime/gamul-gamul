@@ -22,7 +22,7 @@ public class MyRecipeIngredientInfoRes {
 
     int quantity;
 
-    int volatility;
+    double volatility;
 
     boolean allergy;
 
@@ -31,7 +31,7 @@ public class MyRecipeIngredientInfoRes {
     boolean basket;
 
     @JsonProperty("high_class_id")
-    Long highClassId;
+    int highClassId;
 
     @JsonProperty("high_class_name")
     String highClassName;

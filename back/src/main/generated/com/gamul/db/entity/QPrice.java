@@ -24,7 +24,7 @@ public class QPrice extends EntityPathBase<Price> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final DateTimePath<java.util.Date> dateTime = createDateTime("dateTime", java.util.Date.class);
+    public final StringPath dateTime = createString("dateTime");
 
     //inherited
     public final NumberPath<Long> id = _super.id;

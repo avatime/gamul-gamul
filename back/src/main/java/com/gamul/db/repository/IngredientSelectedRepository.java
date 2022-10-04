@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface IngredientSelectedRepository extends JpaRepository<IngredientSelected, Long> {
     List<IngredientSelected> findAllByUserId(Long userId);
+    public List<IngredientSelected> findByUserIdOrderByCreatedTimeDesc(Long userId);
     Optional<IngredientSelected> findByUserIdAndIngredientId(Long userId, Long ingredientId);
     Boolean existsByUserIdAndIngredientId(Long userId, Long ingredientId);
 }

@@ -6,16 +6,18 @@ import com.gamul.api.request.RecipeListReq;
 import com.gamul.api.response.RecipeDetailRes;
 import com.gamul.api.response.RecipeInfoRes;
 import com.gamul.api.response.RecipeProcedureRes;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 public interface RecipeService {
-    List<RecipeInfoRes> getRecipeList(int orderType, int page, RecipeListReq recipeListReq);
-    List<RecipeInfoRes> getRecipeBasket(RecipeBasketReq recipeBasketReq);
+    List<RecipeInfoRes> getRecipeList(int orderType, int page, int size);
+    List<RecipeInfoRes> getRecipeBasket(int orderType, int page, int size, String userName);
 
     List<RecipeInfoRes> getRecipeSelected(String userName);
 
-//    RecipeDetailRes getRecipeDetail(RecipeDetailReq recipeDetailReq);
+    RecipeDetailRes getRecipeDetail(Long recipeId, String userName);
 
     void recipeSelected(String userName, Long recipeId);
 

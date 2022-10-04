@@ -4,12 +4,11 @@ import com.gamul.api.request.IngredientQuantityPostReq;
 import com.gamul.api.request.MyRecipeEditReq;
 import com.gamul.api.request.MyRecipeRegisterPostReq;
 import com.gamul.api.response.*;
+import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.MyRecipeService;
 import com.gamul.api.service.UserService;
 import com.gamul.common.model.response.BaseResponseBody;
-import com.gamul.db.entity.MyRecipe;
-import com.gamul.db.entity.MyRecipeIngredient;
-import com.gamul.db.entity.User;
+import com.gamul.db.entity.*;
 import com.gamul.db.repository.*;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Collections;
 import java.util.List;
 
 @Api(value = "마이레시피 API", tags = {"MyRecipe."})
@@ -46,7 +43,7 @@ public class MyRecipeController {
     @Autowired
     PriceRepository priceRepository;
     @Autowired
-    DayRepository dayRepository;
+    DailyPriceService dailyPriceService;
 
     @PostMapping("")
     @ApiOperation(value = "나만의 레시피 저장", notes = "<strong>나만의 레시피</strong>를 저장한다.")
@@ -56,25 +53,26 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> RegistMyRecipe(@RequestBody @ApiParam(value="마이레시피 정보", required = true) MyRecipeRegisterPostReq myRecipeRegisterPostReq){
-        try{
+    public ResponseEntity<?> RegistMyRecipe(@RequestBody @ApiParam(value = "마이레시피 정보", required = true) MyRecipeRegisterPostReq myRecipeRegisterPostReq) {
+        try {
             User user = userService.getUserByUsername(myRecipeRegisterPostReq.getUserName());
-            if(user == null)  return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+            if (user == null) return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
             MyRecipe myRecipe = MyRecipe.builder().name(myRecipeRegisterPostReq.getMyRecipeName())
                     .user(user).build();
-            if(!myRecipeRegisterPostReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeRegisterPostReq.getImageDataUrl());
+            if (!myRecipeRegisterPostReq.getImageDataUrl().equals(""))
+                myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeRegisterPostReq.getImageDataUrl());
             else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
 
             List<MyRecipeIngredient> list = new ArrayList<>();
-            for(IngredientQuantityPostReq ingredient : myRecipeRegisterPostReq.getIngredientList()){
+            for (IngredientQuantityPostReq ingredient : myRecipeRegisterPostReq.getIngredientList()) {
                 list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
             }
             myRecipeService.saveMyRecipeIngredient(list);
         } catch (Exception e) {
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
 
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     @PutMapping("")
@@ -86,27 +84,29 @@ public class MyRecipeController {
             @ApiResponse(code = 405, message = "레시피 정보 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> editMyRecipe(@RequestBody @ApiParam(value="마이레시피 정보", required = true) MyRecipeEditReq myRecipeEditReq){
-        try{
+    public ResponseEntity<?> editMyRecipe(@RequestBody @ApiParam(value = "마이레시피 정보", required = true) MyRecipeEditReq myRecipeEditReq) {
+        try {
             User user = userService.getUserByUsername(myRecipeEditReq.getUserName());
-            if(user == null)  return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 정보 없음"));
+            if (user == null) return ResponseEntity.status(404).body("사용자 정보 없음");
             MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeEditReq.getMyRecipeId());
-            if(myRecipe == null) return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 정보 없음"));
+            if (myRecipe == null)
+                return ResponseEntity.status(405).body("레시피 정보 없음");
             myRecipe.setName(myRecipeEditReq.getMyRecipeName());
-            if(!myRecipeEditReq.getImageDataUrl().equals("")) myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeEditReq.getImageDataUrl());
+            if (!myRecipeEditReq.getImageDataUrl().equals(""))
+                myRecipe = myRecipeService.saveMyRecipe(myRecipe, myRecipeEditReq.getImageDataUrl());
             else myRecipe = myRecipeService.saveMyRecipe(myRecipe);
 
             myRecipeService.deleteMyRecipeIngredients(myRecipeEditReq.getMyRecipeId());
             List<MyRecipeIngredient> list = new ArrayList<>();
-            for(IngredientQuantityPostReq ingredient : myRecipeEditReq.getIngredientList()){
+            for (IngredientQuantityPostReq ingredient : myRecipeEditReq.getIngredientList()) {
                 list.add(MyRecipeIngredient.builder().myRecipe(myRecipe).quantity(ingredient.getQuantity()).ingredient(ingredientRepository.getById(ingredient.getIngredientId())).build());
             }
             myRecipeService.saveMyRecipeIngredient(list);
         } catch (Exception e) {
-            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
 
-        return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body("Success");
     }
 
     @GetMapping("/{userName}")
@@ -117,17 +117,17 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeList(@PathVariable String userName){
+    public ResponseEntity<?> showMyrecipeList(@PathVariable String userName) {
         List<MyRecipeInfoRes> myRecipeList = new ArrayList<>();
-        try{
+        try {
             User user = userService.getUserByUsername(userName);
-            if(user == null)  return ResponseEntity.status(404).body("사용자 없음");
+            if (user == null) return ResponseEntity.status(404).body("사용자 없음");
             List<MyRecipe> list = myRecipeService.getMyRecipeList(user.getId());
-            for(MyRecipe myRecipe : list) {
+            for (MyRecipe myRecipe : list) {
                 myRecipeList.add(MyRecipeInfoRes.builder()
-                                .myRecipeId(myRecipe.getId())
-                                .imagePath(myRecipe.getImageURL())
-                                .name(myRecipe.getName())
+                        .myRecipeId(myRecipe.getId())
+                        .imagePath(myRecipe.getImageURL())
+                        .name(myRecipe.getName())
                         .build());
             }
 
@@ -146,47 +146,159 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, Long myRecipeId){
-        MyRecipeDetailRes myRecipeDetailRes = new MyRecipeDetailRes();
-        MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
-        List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
-        List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
-        List<PriceTransitionInfoRes> pricelist = getPriceTransition(myRecipeId);
+    public ResponseEntity<?> showMyrecipeInfo(@PathVariable String userName, @PathVariable Long myRecipeId) throws Exception {
+//        try {
+            MyRecipe myRecipe = myRecipeService.getMyRecipe(myRecipeId);
+            if (!myRecipe.getUser().getUsername().equals(userName)) return ResponseEntity.status(401).body("인증 실패");
+            MyRecipeDetailRes myRecipeDetailRes = new MyRecipeDetailRes();
+            List<MyRecipeIngredient> myRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
+            List<MyRecipeIngredientInfoRes> ingreidentlist = new ArrayList<>();
+            PriceTransitionInfoRes priceTransitionInfoRes = new PriceTransitionInfoRes();
+            ArrayList<PriceInfoRes> dayWholePrice = new ArrayList<PriceInfoRes>(10);
+            ArrayList<PriceInfoRes> monthWholePrice = new ArrayList<PriceInfoRes>(10);
+            ArrayList<PriceInfoRes> dayRetailPrice = new ArrayList<PriceInfoRes>(10);
+            ArrayList<PriceInfoRes> yearRetailPrice = new ArrayList<PriceInfoRes>(10);
+            ArrayList<PriceInfoRes> monthRetailPrice = new ArrayList<PriceInfoRes>(10);
 
-        int idx = 0;
-        for(MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList){
-            Calendar cal = new GregorianCalendar();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 형식 어케 ?/
-            int todayPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
-            cal.add(Calendar.DATE, -1);
-            int yesterPrice = (int)Math.round(priceRepository.getAvgPriceByDateAndIngredient(sdf.format(cal.getTime()), myRecipeIngredient.getIngredient()));
-//            List<Day> dayPriceList = dayRepository.getAvgPriceByIngredientAndType(myRecipeIngredient.getIngredient(), 1);
-            MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
-                    .ingredientId(myRecipeIngredient.getIngredient().getId())
-                    .name(myRecipeIngredient.getMyRecipe().getName())
-                    .price(todayPrice)
-                    .unit("") // 단량 어떤거로???
-                    .quantity(myRecipeIngredient.getQuantity())
-                    .volatility(((todayPrice - yesterPrice)/todayPrice) * 100)
-                    .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
-                    .highClassId(myRecipeIngredient.getIngredient().getHighClass())
-                    .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
-                    .build();
+            for (int i = 0; i < 10; i++) {
+                dayRetailPrice.add(new PriceInfoRes(null, 0));
+                monthRetailPrice.add(new PriceInfoRes(null, 0));
+                yearRetailPrice.add(new PriceInfoRes(null, 0));
+                dayWholePrice.add(new PriceInfoRes(null, 0));
+                monthWholePrice.add(new PriceInfoRes(null, 0));
+            }
 
-            ingreidentlist.add(ingredientInfoRes);
-            idx++;
-        }
+            boolean setDate = true;
+            int dailySize = 10, monthlySize = 10, dailyWholeSize = 10, monthlyWholeSize = 10, yearSize = 10;
 
-        myRecipeDetailRes.setIngredientList(ingreidentlist);
+            for (MyRecipeIngredient myRecipeIngredient : myRecipeIngredientList) {
+                List<Day> dailyPrice = dailyPriceService.findDailyPrices(myRecipeIngredient.getIngredient().getId(), 1);
+                List<Month> monthlyPrice = dailyPriceService.findMonthlyPrices(myRecipeIngredient.getIngredient().getId(), 1);
+                List<Year> yearlyPrice = dailyPriceService.findYearlyPrices(myRecipeIngredient.getIngredient().getId(), 1);
+                List<Day> dailyWholePrice = dailyPriceService.findDailyPrices(myRecipeIngredient.getIngredient().getId(), 0);
+                List<Month> monthlyWholePrice = dailyPriceService.findMonthlyPrices(myRecipeIngredient.getIngredient().getId(), 0);
+                dailySize = Math.min(dailySize, dailyPrice.size());
+                monthlySize = Math.min(monthlySize, monthlyPrice.size());
+                dailyWholeSize = Math.min(dailyWholeSize, dailyWholePrice.size());
+                monthlyWholeSize = Math.min(monthlyWholeSize, dailyWholePrice.size());
+                yearSize = Math.min(monthlySize, Math.min(yearSize, yearlyPrice.size()));
 
-        return ResponseEntity.status(200).body(myRecipeDetailRes);
+                int price = 0;
+                for (int i = 0; i < 10; i++) {
+                    if(i<dailyPrice.size()) {
+                        price = (int) (dailyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / dailyPrice.get(i).getQuantity()));
+                        dayRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
+                    }
+                    if(i<monthlyPrice.size()) {
+                        price = (int) (monthlyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
+                        monthRetailPrice.get(i).setPrice(dayRetailPrice.get(i).getPrice() + price);
+                    }
+                    if(i<dailyWholePrice.size()) {
+                        price = (int) (dailyWholePrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / dailyWholePrice.get(i).getQuantity()));
+                        dayWholePrice.get(i).setPrice(dayWholePrice.get(i).getPrice() + price);
+                    }
+                    if(i<monthlyWholePrice.size()){
+                        price = (int) (monthlyWholePrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyWholePrice.get(i).getQuantity()));
+                        monthWholePrice.get(i).setPrice(monthWholePrice.get(i).getPrice() + price);
+                    }
+                    if (i < yearlyPrice.size() && i<monthlyPrice.size()) {
+                        price = (int) (yearlyPrice.get(i).getPrice() * ((1.0) * myRecipeIngredient.getQuantity() / monthlyPrice.get(i).getQuantity()));
+                        yearRetailPrice.get(i).setPrice(monthRetailPrice.get(i).getPrice() + price);
+                    }
+                    if (setDate) {
+                        for (int j = 0; j < 10; j++) {
+                            if(dailyPrice != null && dailyPrice.size() > j) dayRetailPrice.get(j).setDate(dailyPrice.get(j).getDatetime());
+                            if(monthlyPrice!= null && monthlyPrice.size()>j) monthRetailPrice.get(j).setDate(monthlyPrice.get(j).getDatetime());
+                            if(dailyWholePrice != null && dailyWholePrice.size() > j) dayWholePrice.get(j).setDate(dailyWholePrice.get(j).getDatetime());
+                            if(monthlyWholePrice != null && monthlyWholePrice.size() > j) monthWholePrice.get(j).setDate(monthlyWholePrice.get(j).getDatetime());
+                            if (j >= yearlyPrice.size()) continue;
+                            yearRetailPrice.get(j).setDate(yearlyPrice.get(j).getDatetime());
+                        }
+//                        setDate = false;
+                    }
+                }
+
+                System.out.println(myRecipeIngredient.getIngredient().getId());
+                if(dailyPrice.size() > 0) {
+                    double volatility = 1.0 * ((dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice()) / dailyPrice.get(1).getPrice()) * 100;
+                    volatility = Math.round(volatility * 100) / 100.0;
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(dailyPrice.get(0).getPrice())
+                            .unit(dailyPrice.get(0).getUnit())
+                            .quantity(dailyPrice.get(0).getQuantity())
+                            .volatility(volatility)
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+                else {
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(dailyWholePrice.get(0).getPrice())
+                            .unit(dailyWholePrice.get(0).getUnit())
+                            .quantity(dailyWholePrice.get(0).getQuantity())
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+
+            }
+
+
+            yearRetailPrice.removeIf(item -> item.getDate() == null);
+
+            if(dailySize != 0) {
+                priceTransitionInfoRes.setBeforePrice(dayRetailPrice.get(1).getPrice());
+                priceTransitionInfoRes.setPrice(dayRetailPrice.get(0).getPrice());
+                if(dayRetailPrice.get(1).getPrice() == 0){
+                    priceTransitionInfoRes.setTodayvol(0);
+                    priceTransitionInfoRes.setPastvol(0);
+                } else {
+                    double todayvol = (1.0 * (dayRetailPrice.get(0).getPrice() - dayRetailPrice.get(1).getPrice()) / dayRetailPrice.get(1).getPrice()) * 100;
+                    priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                    if(dayRetailPrice.get(2).getPrice() == 0){
+                        priceTransitionInfoRes.setPastvol(0);
+                    } else {
+                        double pastvol = (1.0 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100;
+                        priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                    }
+                }
+            }
+            priceTransitionInfoRes.setWholesales(new SaleInfoRes());
+            priceTransitionInfoRes.getWholesales().setDaily(reverseList(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize))));
+            priceTransitionInfoRes.getWholesales().setYearly(reverseList(new ArrayList<>(yearRetailPrice.subList(0, yearSize))));
+            priceTransitionInfoRes.getWholesales().setMonthly(reverseList(new ArrayList<>(monthWholePrice.subList(0, monthlyWholeSize))));
+            priceTransitionInfoRes.setRetailsales(new SaleInfoRes());
+            priceTransitionInfoRes.getRetailsales().setDaily(reverseList(new ArrayList<>(dayRetailPrice.subList(0, dailySize))));
+            priceTransitionInfoRes.getRetailsales().setYearly(reverseList(new ArrayList<>(yearRetailPrice.subList(0, yearSize))));
+            priceTransitionInfoRes.getRetailsales().setMonthly(reverseList(new ArrayList<>(monthRetailPrice.subList(0,monthlySize))));
+
+            myRecipeDetailRes.setIngredientList(ingreidentlist);
+            if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
+            myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
+            myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
+            myRecipeDetailRes.setName(myRecipe.getName());
+
+
+            return ResponseEntity.status(200).body(myRecipeDetailRes);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body("Internal Server Error" + e);
+//        }
     }
 
-    public List<PriceTransitionInfoRes> getPriceTransition(Long myRecipeId){
-        List<PriceTransitionInfoRes> list = new ArrayList<>();
-
+    public List<PriceInfoRes> reverseList(List<PriceInfoRes> list){
+        Collections.reverse(list);
         return list;
     }
 
@@ -198,10 +310,10 @@ public class MyRecipeController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> showMyrecipeIngredientList(@PathVariable String userName, Long myRecipeId){
+    public ResponseEntity<?> showMyrecipeIngredientList(@PathVariable String userName, @PathVariable Long myRecipeId) {
         List<MyRecipeIngredient> MyRecipeIngredientList = myRecipeService.getMyRecipeIngredientList(myRecipeId);
         List<MyRecipeIngredientRes> list = new ArrayList<>();
-        for(MyRecipeIngredient myRecipeIngredient : MyRecipeIngredientList){
+        for (MyRecipeIngredient myRecipeIngredient : MyRecipeIngredientList) {
             list.add(MyRecipeIngredientRes.builder().ingredientId(myRecipeIngredient.getIngredient().getId()).quantity(myRecipeIngredient.getQuantity()).build());
         }
         return ResponseEntity.status(200).body(list);
@@ -215,19 +327,19 @@ public class MyRecipeController {
             @ApiResponse(code = 405, message = "해당 유저의 레시피가 아닙니다"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteMyRecipe(@PathVariable String userName, Long myRecipeId){
-        try{
-            if(myRecipeService.getRecipeOwner(myRecipeId).equals(userName))
+    public ResponseEntity<?> deleteMyRecipe(@PathVariable String userName, @PathVariable Long myRecipeId) {
+        try {
+            if (myRecipeService.getRecipeOwner(myRecipeId).equals(userName))
                 myRecipeService.deleteMyRecipe(myRecipeId);
             else return ResponseEntity.status(405).body("해당 유저의 레시피가 아닙니다");
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(404).body("존재하지 않는 id");
         }
         return ResponseEntity.status(200).body("success");
     }
 
     @PostMapping("/test")
-    public ResponseEntity<String> test(@RequestPart MultipartFile file){
+    public ResponseEntity<String> test(@RequestPart MultipartFile file) {
         return ResponseEntity.status(200).body(file.getName());
     }
 

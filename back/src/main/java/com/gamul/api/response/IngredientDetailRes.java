@@ -15,8 +15,6 @@ public class IngredientDetailRes {
     @JsonProperty("ingredient_info")
     IngredientInfoRes ingredientInfo;
 
-    Long views;
-
     @JsonProperty("price_transition_info")
     PriceTransitionInfoRes priceTransitionInfo;
 

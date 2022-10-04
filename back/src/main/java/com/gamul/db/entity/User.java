@@ -30,12 +30,14 @@ public class User extends BaseEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private boolean activeFlag;
-
     @JsonProperty("refresh_token")
     @Column
     private String refreshToken;
+
+    @JsonProperty("subscription")
+    @Column(name = "subscription", columnDefinition = "json")
+//    @Convert(attributeName = "data", converter = JsonToMapConverter.class)
+    private String subscription;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonProperty("created_time")
@@ -61,6 +63,5 @@ public class User extends BaseEntity {
     public User(String username, String password, MyRecipe myRecipe){
         this.username = username;
         this.password = password;
-        this.activeFlag = false;
     }
 }

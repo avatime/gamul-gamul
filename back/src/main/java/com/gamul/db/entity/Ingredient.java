@@ -14,12 +14,13 @@ import java.util.Date;
 @DynamicUpdate
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ingredient extends BaseEntity{
     @JsonProperty("high_class")
     @Column(updatable = false, nullable = false)
-    private Long highClass;
+    private int highClass;
 
     @JsonProperty("mid_class")
     @Column(updatable = false, nullable = false)
@@ -31,13 +32,5 @@ public class Ingredient extends BaseEntity{
 
     @Column(columnDefinition = "INT UNSIGNED")
     private long views;
-
-    @Builder
-    public Ingredient(Long highClass, String midClass, String lowClass){
-        this.highClass = highClass;
-        this.midClass = midClass;
-        this.lowClass = lowClass;
-        this.views = 0;
-    }
 
 }

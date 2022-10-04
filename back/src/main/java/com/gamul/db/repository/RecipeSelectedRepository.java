@@ -9,7 +9,10 @@ import java.util.Optional;
 
 public interface RecipeSelectedRepository extends JpaRepository<RecipeSelected, Long> {
     Optional<List<RecipeSelected>> findByUserId(Long userId);
+    public List<RecipeSelected> findByUserIdOrderByCreatedTimeDesc(Long userId);
     Optional<RecipeSelected> findByRecipeId(Long recipeId);
 
     Optional<RecipeSelected> findByUserIdAndRecipeId(Long userId, Long recipeId);
+
+    boolean existsRecipeSelectedByUserIdAndRecipeId(Long userId, Long recipeId);
 }

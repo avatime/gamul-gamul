@@ -21,8 +21,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final BooleanPath activeFlag = createBoolean("activeFlag");
-
     public final DateTimePath<java.util.Date> createdTime = createDateTime("createdTime", java.util.Date.class);
 
     //inherited
@@ -31,6 +29,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath password = createString("password");
 
     public final StringPath refreshToken = createString("refreshToken");
+
+    public final StringPath subscription = createString("subscription");
 
     public final DateTimePath<java.util.Date> updateTime = createDateTime("updateTime", java.util.Date.class);
 

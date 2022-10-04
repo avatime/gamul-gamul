@@ -2,15 +2,17 @@ package com.gamul.api.service;
 
 import com.gamul.db.entity.Allergy;
 import com.gamul.db.entity.IngredientPriceNotice;
+import com.gamul.db.entity.Notice;
 import com.gamul.db.entity.User;
-import com.gamul.db.repository.AllergyRepository;
-import com.gamul.db.repository.IngredientPriceNoticeRepository;
-import com.gamul.db.repository.IngredientRepository;
-import com.gamul.db.repository.UserRepository;
+import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class AlarmServiceImpl implements AlarmService {
     UserRepository userRepository;
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    NoticeRepository noticeRepository;
 
     @Override
     public List<Allergy> getAllergyList(User user) {
@@ -60,5 +64,17 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public List<IngredientPriceNotice> saveAllIngredientPriceNotice(List<IngredientPriceNotice> list) {
         return ingredientPriceNoticeRepository.saveAll(list);
+    }
+
+    @Override
+    public List<Notice> getAllNoticeByUser(User user) {
+        return noticeRepository.getAllByIngredientPriceNotice_User(user);
+    }
+
+    @Override
+    public List<Notice> getAllNotice() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        return noticeRepository.getAllByCreatedTimeBetween(Timestamp.valueOf(start), Timestamp.valueOf(end));
     }
 }

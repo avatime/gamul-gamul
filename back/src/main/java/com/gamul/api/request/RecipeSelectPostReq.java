@@ -15,5 +15,6 @@ public class RecipeSelectPostReq {
     String userName;
 
     @JsonProperty("recipe_id")
-    int recipeId;
+    Long recipeId;
+
 }

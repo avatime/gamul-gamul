@@ -23,4 +23,10 @@ public class Month extends BaseEntity {
 
     @Column
     private int type;
+
+    @Column
+    private int quantity;
+
+    @Column
+    private String unit;
 }
