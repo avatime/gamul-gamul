@@ -18,36 +18,29 @@ import { YoutubeRecipeListComp } from "../../src/components/templates/YoutubeRec
 import { Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { saveRecentSearchLocalStorage } from "../../src/utils/localStorageUtil";
-import { getCookie } from "../../src/utils/cookie"
+import { getCookie } from "../../src/utils/cookie";
 
 interface IProps {
-  recipeDetailInfo: RecipeDetailInfo;
+  initialRecipeDetailInfo: RecipeDetailInfo;
 }
 
-const RecipeInfoPage: NextPage<IProps> = () => {
+const RecipeInfoPage: NextPage<IProps> = ({ initialRecipeDetailInfo }) => {
   const router = useRouter();
   const { id } = router.query;
-  const [userName, setUserName] = useState("");
-  const [recipeDetailInfo, setRecipeDetailInfo] = useState<RecipeDetailInfo>({
-    recipe_info: { recipe_id: 0, image_path: "/icon2.png", name: "", desc: "", bookmark: false, views: 0 },
-    ingredient_list: [],
-    extra_ingredient_list: [],
-    youtube_list: [],
-  });
+  const [recipeDetailInfo, setRecipeDetailInfo] =
+    useState<RecipeDetailInfo>(initialRecipeDetailInfo);
 
   const apiClient = ApiClient.getInstance();
 
-  useEffect(()=>{
-   apiClient.postRecipeView(Number(id))
-  },[apiClient, id]);
+  useEffect(() => {
+    apiClient.postRecipeView(Number(id));
+  }, [apiClient, id]);
 
   useEffect(() => {
-  setUserName(getCookie("userName"));
-
     ApiClient.getInstance()
       .getRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setRecipeDetailInfo(data));
-  }, [id, recipeDetailInfo.recipe_info.image_path, userName]);
+  }, [id, recipeDetailInfo.recipe_info.image_path]);
 
   const totalPrice = recipeDetailInfo.ingredient_list.reduce((p, c) => p + c.price, 0);
 
@@ -66,12 +59,9 @@ const RecipeInfoPage: NextPage<IProps> = () => {
     router.push(`/recipe-detail/${id}`);
   };
   const onClickPutBasket = () => {
-
     ApiClient.getInstance()
       .putBasketAllRecipeIngredient(getCookie("userName"), Number(id))
-      .then(() =>router.push("/basket"));
-
-   
+      .then(() => router.push("/basket"));
   };
   return (
     <Box>
@@ -253,8 +243,11 @@ export default RecipeInfoPage;
 export async function getServerSideProps(context: any) {
   const id = context.params.id;
   const apiClient = ApiClient.getInstance();
-
+  const initialRecipeDetailInfo = await apiClient.getRecipeDetailInfo("", id);
+  
   return {
-    props: {},
+    props: {
+      initialRecipeDetailInfo,
+    },
   };
 }

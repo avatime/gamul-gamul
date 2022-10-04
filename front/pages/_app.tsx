@@ -66,7 +66,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>가물가물</title>
         <link rel="icon" href="/icon2.png" />
-        <link rel="shortcut icon" href="alarm-clock.png" type="image/x-icon" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <Box className="page-background">
