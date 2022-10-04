@@ -261,7 +261,7 @@ export class ApiClient
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/search/${keyword}`,
+        url: `/search/${encodeURI(keyword)}`,
       })
     ).data;
   }
