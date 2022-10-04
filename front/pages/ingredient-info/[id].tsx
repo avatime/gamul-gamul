@@ -45,6 +45,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
   const { id } = router.query;
   const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
+  const [bookmark, setBookmark] = useState(false);
+  const [basket, setBasket] = useState(false);
 
   useEffect(() => {
     apiClient.postIngredientView(Number(id as string));
@@ -66,6 +68,17 @@ const IngredientInfoPage: NextPage<IProps> = ({
     }
   }, [ingredientInfo]);
 
+  useEffect(() => {
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
+        .getIngredientDetailInfo(Number(id), getCookie("userName"))
+        .then((data) => {
+          setBookmark(data.ingredient_info.bookmark);
+          setBasket(data.ingredient_info.basket);
+        });
+    }
+  }, []);
+
   return (
     <Box>
       <Desktop>
@@ -82,7 +95,8 @@ const IngredientInfoPage: NextPage<IProps> = ({
                 >
                   <InfoTitle
                     name={ingredientInfo.name}
-                    bookmark={ingredientInfo.bookmark}
+                    bookmark={bookmark}
+                    basket={basket}
                     onClickBookmark={onClickBookmark}
                     onClickBasket={onClickBasket}
                     views={ingredientInfo.views}
@@ -92,12 +106,12 @@ const IngredientInfoPage: NextPage<IProps> = ({
               <IngredientPriceComp
                 ingredientDetailInfo={ingredientDetailInfo}
                 inputWidth={"90%"}
-                inputHeight={650}
+                inputHeight={500}
                 blackList={blackList}
               />
+              <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
             </Grid>
             <Grid item xs={5}>
-            <RecipeListComp recipeList={recipeList} rowSize={2} gridSize={3} />
               <OfflineMartComp
                 ingredientInfo={ingredientInfo}
                 mapId="desktop"
@@ -123,7 +137,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
           <IngredientPriceComp
             ingredientDetailInfo={ingredientDetailInfo}
             inputWidth={"95%"}
-            inputHeight={500}
+            inputHeight={450}
             blackList={blackList}
           />
           <RecipeListComp recipeList={recipeList} gridSize={4} />
@@ -149,7 +163,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
           <IngredientPriceComp
             ingredientDetailInfo={ingredientDetailInfo}
             inputWidth={"95%"}
-            inputHeight={500}
+            inputHeight={400}
             blackList={blackList}
           />
           <RecipeListComp recipeList={recipeList} rowSize={1} />
@@ -190,7 +204,7 @@ export const getStaticProps = async (context: any) => {
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
   // const recipeList = await apiClient.search(ingredientInfo.name); // api 구현시 적용
   const blackList = await apiClient.getBlackList();
-  const recipeList = await apiClient.getRecipeList(2, 1, 40);
+  const recipeList = await apiClient.getRecipeList(2, 0, 30);
   return {
     props: {
       ingredientDetailInfo,
