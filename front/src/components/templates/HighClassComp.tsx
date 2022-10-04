@@ -37,19 +37,18 @@ export const HighClassComp: FC<IProps> = ({
     <CardContainer title={title} onClickBack={highClassId !== 0 ? onClickBack : undefined}>
       {highClassId === 0 ? (
         <CarouselContainer
+          key={highClassId}
           showArrowBackground={true}
           itemList={highClassList}
           rowSize={rowSize}
           gridSize={gridSize}
           getItemComponent={(item) => (
-            <HighClassItem
-              highClass={item}
-              onClick={() => onClickHighClassItem(item.high_class_id)}
-            />
+            <HighClassItem highClass={item} onClick={() => onClickHighClassItem(item.id)} />
           )}
         />
       ) : (
         <CarouselContainer
+          key={highClassId}
           itemList={ingredientList.filter((v) => v.high_class_id === highClassId)}
           rowSize={rowSize}
           gridSize={gridSize}
