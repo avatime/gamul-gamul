@@ -27,11 +27,13 @@ import { BackHeader } from '../../src/components/BackHeader';
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
+  recipeList: RecipeInfo[];
   blackList: number[];
 }
 
 const IngredientInfoPage: NextPage<IProps> = ({
   ingredientDetailInfo,
+  recipeList,
   blackList,
 }) => {
  
@@ -41,7 +43,6 @@ const IngredientInfoPage: NextPage<IProps> = ({
   const apiClient = ApiClient.getInstance();
   const [bookmark, setBookmark] = useState(false);
   const [basket, setBasket] = useState(false);
-  const [recipeList, setRecipeList] = useState<RecipeInfo[]>([]);
   const [showChild, setShowChild] = useState(false);
 
   useEffect(() => {
@@ -73,9 +74,6 @@ const IngredientInfoPage: NextPage<IProps> = ({
           setBasket(data.ingredient_info.basket);
         });
     }
-    ApiClient.getInstance()
-      .search(ingredientDetailInfo.ingredient_info.name)
-      .then((data) => setRecipeList(data.recipe_list));
     setShowChild(true);
   }, []);
 
@@ -212,10 +210,12 @@ export const getStaticProps = async (context: any) => {
     context.params.id,
     "",
   );
+  const recipeList = apiClient.search(ingredientDetailInfo.ingredient_info.name);
   const blackList = await apiClient.getBlackList();
   return {
     props: {
       ingredientDetailInfo,
+      recipeList,
       blackList,
     },
   };
