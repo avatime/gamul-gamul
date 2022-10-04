@@ -3,6 +3,8 @@ import React, { FC, useEffect, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Image from "next/image";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { getCookie } from '../utils/cookie';
+import { useRouter } from 'next/router';
 
 interface IProps {
   name: string;
@@ -25,6 +27,7 @@ export const InfoTitle: FC<IProps> = ({
   onClickBasket,
   isExternalImage = false,
 }) => {
+  const router = useRouter();
   const [bookmarked, setBookmarked] = useState<boolean>(false);
   const [basketed, setBasketed] = useState<boolean>(false);
 
@@ -50,6 +53,10 @@ export const InfoTitle: FC<IProps> = ({
         <IconButton
           style={{ color: bookmarked ? "red" : "#A1A1AA" }}
           onClick={() => {
+            if (!getCookie("userName")) {
+              router.push("/login");
+              return;
+            }
             onClickBookmark();
             setBookmarked((prev) => !prev);
           }}
@@ -68,6 +75,10 @@ export const InfoTitle: FC<IProps> = ({
             <IconButton
               style={{ color: basketed ? "#4411AA" : "#A1A1AA" }}
               onClick={() => {
+                if (!getCookie("userName")) {
+                  router.push("/login");
+                  return;
+                }
                 onClickBasket();
                 setBasketed((prev) => !prev);
               }}
