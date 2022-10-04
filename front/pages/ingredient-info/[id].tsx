@@ -29,7 +29,6 @@ interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
   ingredientInfo: IngredientInfo;
   onlineMartInfo: OnlineMartInfo[];
-  recipeList: RecipeInfo[];
   blackList: number[];
 }
 
@@ -37,7 +36,6 @@ const IngredientInfoPage: NextPage<IProps> = ({
   ingredientDetailInfo,
   ingredientInfo,
   onlineMartInfo,
-  recipeList,
   blackList,
 }) => {
  
@@ -47,6 +45,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
   const apiClient = ApiClient.getInstance();
   const [bookmark, setBookmark] = useState(false);
   const [basket, setBasket] = useState(false);
+  const [recipeList, setRecipeList] = useState<RecipeInfo[]>([]);
 
   useEffect(() => {
     apiClient.postIngredientView(Number(id as string));
@@ -77,6 +76,9 @@ const IngredientInfoPage: NextPage<IProps> = ({
           setBasket(data.ingredient_info.basket);
         });
     }
+    ApiClient.getInstance()
+      .search(ingredientInfo.name)
+      .then((data) => setRecipeList(data.recipe_list));
   }, []);
 
   return (
@@ -202,15 +204,12 @@ export const getStaticProps = async (context: any) => {
   );
   const ingredientInfo = ingredientDetailInfo.ingredient_info;
   const onlineMartInfo = ingredientDetailInfo.online_mart_info;
-  // const recipeList = await apiClient.search(ingredientInfo.name); // api 구현시 적용
   const blackList = await apiClient.getBlackList();
-  const recipeList = await apiClient.getRecipeList(2, 0, 30);
   return {
     props: {
       ingredientDetailInfo,
       ingredientInfo,
       onlineMartInfo,
-      recipeList,
       blackList,
     },
   };
