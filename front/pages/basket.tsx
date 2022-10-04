@@ -29,7 +29,7 @@ const BasketPage: NextPage<IProps> = ({
       .getBasketIngredientList(getCookie("userName"))
       .then((data) => setBasketIngredientList(data));
     ApiClient.getInstance()
-      .getRecipeWithBasketList(getCookie("userName"), RecipeOrderType.VIEW_ASC, 1, 50)
+      .getRecipeWithBasketList(getCookie("userName"), RecipeOrderType.VIEW_ASC, 0, 20)
       .then((data) => setRecipeListWithBasket(data));
     }
   }, []);

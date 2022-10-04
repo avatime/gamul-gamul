@@ -32,7 +32,7 @@ const RecipePage: NextPage<IProps> = ({
     
     if (getCookie("userName") != null) {
       ApiClient.getInstance().getBookmarkRecipeList(getCookie("userName")).then((data) => setBookmarkRecipeList(data));
-      ApiClient.getInstance().getRecipeWithBasketList(getCookie("userName"), RecipeOrderType.VIEW_ASC, 1, 50).then((data)=>setRecipeWithBasketList(data));
+      ApiClient.getInstance().getRecipeWithBasketList(getCookie("userName"), RecipeOrderType.VIEW_ASC, 0, 20).then((data)=>setRecipeWithBasketList(data));
     }
   }, [userName]);
 
