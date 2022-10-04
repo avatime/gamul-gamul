@@ -70,7 +70,7 @@ public class SearchServiceImpl implements SearchService{
         searchRes.setIngredientList(ingredientInfoResList);
 
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
-        List<Recipe> recipeList = recipeRepository.findByNameLike(result).orElse(null);
+        List<Recipe> recipeList = recipeRepository.findTop30ByNameLike(result);
         if (recipeList != null){
             for (Recipe recipe: recipeList){
 
