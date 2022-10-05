@@ -33,7 +33,7 @@ public class YoutubeChannelSearch {
     private static String PROPERTIES_FILENAME = "youtube.properties";
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 10;
+    private static final long NUMBER_OF_VIDEOS_RETURNED = 12;
     private static YouTube youtube;
 
     private static String api_Key = "AIzaSyCEOteOZLwJUNHkyB4kD91eqhirP4o3WX4"; //AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA
