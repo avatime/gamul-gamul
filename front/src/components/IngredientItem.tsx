@@ -85,11 +85,11 @@ export const IngredientItem: FC<IProps> = ({
           )}
         </Box>
 
-        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>
+        <p style={{ fontSize: 12, fontWeight: "bold", margin: 3 }}>
           {ingredientInfo?.name || "이름"}
         </p>
         <Box flex={1} />
-        <p style={{ fontSize: 8 }}>
+        <p style={{ fontSize: 10 }}>
           {ingredientInfo?.price.toLocaleString() || 0}원/
           {ingredientInfo?.quantity}
           {ingredientInfo?.unit}
@@ -113,7 +113,7 @@ export const IngredientItem: FC<IProps> = ({
           ) : (
             <ArrowDropDownIcon />
           )}
-          <p style={{ fontSize: 6, fontWeight: "bold" }}>
+          <p style={{ fontSize: 8, fontWeight: "bold" }}>
             {ingredientInfo?.volatility || 0} %
           </p>
         </Box>)}
