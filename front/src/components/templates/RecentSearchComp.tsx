@@ -4,9 +4,11 @@ import { getRecentSearchLocalStorage, RecentSearch } from "../../utils/localStor
 import { CardContainer } from "../CardContainer";
 import { RecentSearchItem } from "../RecentSearchItem";
 
-interface IProps {}
+interface IProps {
+  onCloseSearch: () => void;
+}
 
-export const RecentSearchComp: FC<IProps> = (props) => {
+export const RecentSearchComp: FC<IProps> = ({ onCloseSearch }) => {
   const [recentList, setRecentList] = useState<RecentSearch[]>([]);
   useEffect(() => {
     setRecentList(getRecentSearchLocalStorage<RecentSearch>());
@@ -14,13 +16,13 @@ export const RecentSearchComp: FC<IProps> = (props) => {
   return (
     <CardContainer
       title="최근"
-      style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+      style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, overflow:"auto"}}
     >
       <Box p={1}>
         {recentList.length !== 0 ? (
           <List>
             {recentList.map((v, i) => (
-              <RecentSearchItem key={i} recentSearch={v} />
+              <RecentSearchItem key={i} recentSearch={v} onCloseSearch={onCloseSearch} />
             ))}
           </List>
         ) : (
