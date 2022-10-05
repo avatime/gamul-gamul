@@ -167,6 +167,7 @@ const IngredientPage: NextPage<IProps> = ({
             title="오늘은 피해요!"
             rowSize={1}
           />
+          <HighClassComp highClassList={highClassList} ingredientList={ingredientList} />
           <CardContainer title="주요 물품 현황">
             <Box>
               {popularIngredientList.map((data, index) => {
@@ -180,7 +181,6 @@ const IngredientPage: NextPage<IProps> = ({
               })}
             </Box>
           </CardContainer>
-          <HighClassComp highClassList={highClassList} ingredientList={ingredientList} />
         </Box>
       </Mobile>
     </Box>
