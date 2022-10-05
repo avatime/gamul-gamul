@@ -242,6 +242,8 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (dailyWholePrice.size() > 0) {
+                double volatility = 1.0 * ((dailyWholePrice.get(0).getPrice() - dailyWholePrice.get(1).getPrice()) / dailyWholePrice.get(1).getPrice()) * 100;
+                volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
                         .name(myRecipeIngredient.getIngredient().getMidClass())
@@ -249,6 +251,7 @@ public class MyRecipeController {
                         .unit(dailyWholePrice.get(0).getUnit())
                         .quantity(dailyWholePrice.get(0).getQuantity())
                         .myQuantity(myRecipeIngredient.getQuantity())
+                        .volatility(volatility)
                         .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
@@ -257,6 +260,8 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (monthlyPrice.size() > 0) {
+                double volatility = 1.0 * ((monthlyPrice.get(0).getPrice() - monthlyPrice.get(1).getPrice()) / monthlyPrice.get(1).getPrice()) * 100;
+                volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
                         .name(myRecipeIngredient.getIngredient().getMidClass())
@@ -264,6 +269,7 @@ public class MyRecipeController {
                         .unit(monthlyPrice.get(0).getUnit())
                         .quantity(monthlyPrice.get(0).getQuantity())
                         .myQuantity(myRecipeIngredient.getQuantity())
+                        .volatility(volatility)
                         .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
@@ -272,6 +278,8 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (monthlyWholePrice.size() > 0) {
+                double volatility = 1.0 * ((monthlyWholePrice.get(0).getPrice() - monthlyWholePrice.get(1).getPrice()) / monthlyWholePrice.get(1).getPrice()) * 100;
+                volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
                         .name(myRecipeIngredient.getIngredient().getMidClass())
@@ -279,6 +287,7 @@ public class MyRecipeController {
                         .unit(monthlyWholePrice.get(0).getUnit())
                         .quantity(monthlyWholePrice.get(0).getQuantity())
                         .myQuantity(myRecipeIngredient.getQuantity())
+                        .volatility(volatility)
                         .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                         .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
