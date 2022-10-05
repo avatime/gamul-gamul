@@ -65,7 +65,7 @@ export const MyRecipeItem: FC<IProps> = ({ direction, myRecipeInfo, onDelete, on
           )}
         </Box>
 
-        <p style={{ fontSize: 10, fontWeight: "bold", margin: 3 }}>{myRecipeInfo?.name || "이름"}</p>
+        <p style={{ fontSize: 12, fontWeight: "bold", margin: 3 }}>{myRecipeInfo?.name || "이름"}</p>
         <Box flex={1} />
         {direction === "row" && <></>}
       </Box>
