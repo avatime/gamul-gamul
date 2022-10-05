@@ -82,6 +82,7 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
             {recipeOrderInfo.map((item, idx) => (
               <Box key={idx} sx={{ display: "flex" }}>
                 <CardContainer title={""} style={{ width: "90vw", position: "relative" }}>
+                  {item.image_path !== "" ? 
                   <Image
                     src={item.image_path}
                     width="50px"
@@ -90,7 +91,7 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
                     layout="responsive"
                     unoptimized
                     style={{ borderRadius: 10 }}
-                  />
+                  /> : ""}
                   <Box sx={{ bottom: "10%", left: 10 }}>
                     <Typography
                       sx={{
@@ -214,14 +215,15 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
                       </Typography>
                       <Typography>{item.description}</Typography>
                     </Box>
-                    <Image
+                    {item.image_path !== "" ?   <Image
                       src={item.image_path}
                       width="300px"
                       height="300px"
                       alt="recipe_order"
                       style={{ borderRadius: 10 }}
                       unoptimized
-                    />
+                    /> :"" }
+                  
                   </Stack>
                 </CardContainer>
               </Box>
