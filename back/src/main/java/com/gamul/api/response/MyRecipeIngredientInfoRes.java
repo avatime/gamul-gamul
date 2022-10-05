@@ -22,7 +22,7 @@ public class MyRecipeIngredientInfoRes {
 
     int quantity;
 
-    @JsonProperty("high_class_id")
+    @JsonProperty("my_quantity")
     int myQuantity;
 
     double volatility;
