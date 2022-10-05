@@ -7,11 +7,13 @@ import Image from "next/image";
 
 interface IProps {
   recentSearch: RecentSearch;
+  onCloseSearch: () => void;
 }
 
-export const RecentSearchItem: FC<IProps> = ({ recentSearch }) => {
+export const RecentSearchItem: FC<IProps> = ({ recentSearch, onCloseSearch }) => {
   const router = useRouter();
   const onClick = () => {
+    onCloseSearch();
     if (recentSearch.recentType === "ingredient") {
       router.push(`/ingredient-info/${recentSearch.id}`);
     } else {

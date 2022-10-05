@@ -74,8 +74,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
         {showNav && <Navbar activeIndex={activeIndex} />}
       </Box>
-      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={showSearch}>
-        <SearchComp onCloseSearch={onCloseSearch} />
+      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={showSearch} >
+        {showSearch && <SearchComp onCloseSearch={onCloseSearch} />}
       </Backdrop>
     </ThemeProvider>
   );

@@ -49,9 +49,9 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp onCloseSearch={onCloseSearch} />
             ) : (
-              <SearchResultComp searchKeyword={searchKeyword} />
+              <SearchResultComp searchKeyword={searchKeyword} onCloseSearch={onCloseSearch} />
             )}
           </Box>
         </Box>
@@ -72,9 +72,9 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp onCloseSearch={onCloseSearch} />
             ) : (
-              <SearchResultComp searchKeyword={searchKeyword} />
+              <SearchResultComp searchKeyword={searchKeyword} onCloseSearch={onCloseSearch} />
             )}
           </Box>
         </Box>
@@ -94,9 +94,9 @@ export const SearchComp: FC<IProps> = ({ onCloseSearch }) => {
           />
           <Box flex={1} position="relative">
             {searchKeyword.length === 0 ? (
-              <RecentSearchComp />
+              <RecentSearchComp onCloseSearch={onCloseSearch} />
             ) : (
-              <SearchResultComp searchKeyword={searchKeyword} />
+              <SearchResultComp searchKeyword={searchKeyword} onCloseSearch={onCloseSearch} />
             )}
           </Box>
         </Box>
