@@ -224,7 +224,7 @@ public class MyRecipeController {
             }
 
             if (dailyPrice.size() > 0) {
-                double volatility = 1.0 * ((dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice()) / dailyPrice.get(1).getPrice()) * 100;
+                double volatility =  (1.0 *(dailyPrice.get(0).getPrice() - dailyPrice.get(1).getPrice()) / dailyPrice.get(1).getPrice()) * 100;
                 volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
@@ -242,7 +242,7 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (dailyWholePrice.size() > 0) {
-                double volatility = 1.0 * ((dailyWholePrice.get(0).getPrice() - dailyWholePrice.get(1).getPrice()) / dailyWholePrice.get(1).getPrice()) * 100;
+                double volatility = ((1.0 * dailyWholePrice.get(0).getPrice() - dailyWholePrice.get(1).getPrice()) / dailyWholePrice.get(1).getPrice()) * 100;
                 volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
@@ -260,7 +260,7 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (monthlyPrice.size() > 0) {
-                double volatility = 1.0 * ((monthlyPrice.get(0).getPrice() - monthlyPrice.get(1).getPrice()) / monthlyPrice.get(1).getPrice()) * 100;
+                double volatility = (1.0 * (monthlyPrice.get(0).getPrice() - monthlyPrice.get(1).getPrice()) / monthlyPrice.get(1).getPrice()) * 100;
                 volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
@@ -278,7 +278,7 @@ public class MyRecipeController {
                         .build();
                 ingreidentlist.add(ingredientInfoRes);
             } else if (monthlyWholePrice.size() > 0) {
-                double volatility = 1.0 * ((monthlyWholePrice.get(0).getPrice() - monthlyWholePrice.get(1).getPrice()) / monthlyWholePrice.get(1).getPrice()) * 100;
+                double volatility = (1.0 * (monthlyWholePrice.get(0).getPrice() - monthlyWholePrice.get(1).getPrice()) / monthlyWholePrice.get(1).getPrice()) * 100;
                 volatility = Math.round(volatility * 100) / 100.0;
                 MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                         .ingredientId(myRecipeIngredient.getIngredient().getId())
