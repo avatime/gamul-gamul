@@ -27,7 +27,6 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
   const router = useRouter();
   const { id } = router.query;
   const apiClient = ApiClient.getInstance();
-  const [userName, setUserName] = useState("");
   const [graph, setGraph] = useState(false);
   const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>({
     ingredient_list: [],
@@ -53,7 +52,6 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
   });
  
   useEffect(() => {
-    setUserName(getCookie("userName"));
       ApiClient.getInstance()
       .getMyRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setMyRecipeDetailInfo(data));
@@ -66,12 +64,13 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
     router.push({
       pathname: "/register-my-recipe",
       query: { id: id },
+      
     });
   };
 
   const deleteRecipe = async () => {
     // 나만의 요리법 삭제 api 호출
-    apiClient.deleteMyRecipe(userName, Number(id));
+    apiClient.deleteMyRecipe(getCookie("userName"), Number(id));
     router.push('/my-recipe');
 
   };

@@ -220,7 +220,7 @@ export class ApiClient
   async getRecipeDetailInfo( userName:string, recipeId: number,): Promise<RecipeDetailInfo> {
     return (await this.axiosInstance.request({
       method: "get",
-      url: `/recipes/${recipeId}/${userName}`,
+      url: `/recipes/${recipeId}/${encodeURI(userName)}`,
     })
     ).data;
   }
@@ -313,7 +313,7 @@ export class ApiClient
     return (
       await this.axiosInstance.request({
         method: "get",
-        url: `/recipes/my/${userName}/${myRecipeId}`,
+        url: `/recipes/my/${encodeURI(userName)}/${myRecipeId}`,
       })
     ).data;
   }
@@ -321,10 +321,10 @@ export class ApiClient
     userName: string,
     myRecipeId: number
   ): Promise<MyRecipeIngredientInfo[]> {
-    return await this.axiosInstance.request({
+    return (await this.axiosInstance.request({
       method: "get",
-      url: `/recipes/my/ingredients/${userName}/${myRecipeId}`,
-    });
+      url: `/recipes/my/ingredient/${encodeURI(userName)}/${myRecipeId}`,
+    })).data;
   }
   async deleteMyRecipe(userName: string, myRecipeId: number): Promise<void> {
     return this.axiosInstance.request({
