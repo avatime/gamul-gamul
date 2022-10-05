@@ -9,12 +9,17 @@ import { NotificationInfo } from "../src/apis/responses/notificationInfo";
 import { NotificationItem } from "../src/components/NotificationItem";
 import { Desktop } from "../src/components/Desktop";
 import { Tablet } from "../src/components/Tablet";
+import { useEffect, useState } from "react";
 
-interface IProps {
-  notificationInfoList: NotificationInfo[];
-}
+interface IProps {}
 
-const NoticePage: NextPage<IProps> = ({ notificationInfoList }) => {
+const NoticePage: NextPage<IProps> = () => {
+  const [notificationInfoList, setNotificationInfoList] = useState<NotificationInfo[]>([]);
+  useEffect(() => {
+    ApiClient.getInstance()
+      .getNotificationInfoList(getCookie("userName"))
+      .then((data) => setNotificationInfoList(data));
+  }, []);
   return (
     <Box bgcolor="white" minHeight="100vh">
       <Desktop>
@@ -50,15 +55,3 @@ const NoticePage: NextPage<IProps> = ({ notificationInfoList }) => {
 };
 
 export default NoticePage;
-
-export async function getServerSideProps() {
-  const notificationInfoList = await ApiClient.getInstance().getNotificationInfoList(
-    getCookie("userName")
-  );
-
-  return {
-    props: {
-      notificationInfoList,
-    },
-  };
-}
