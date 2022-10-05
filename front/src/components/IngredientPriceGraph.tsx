@@ -99,7 +99,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
           },
           yaxis: {
             title: {
-              text: `가격(${quantity}${unit})`,
+              text: !!!myRecipe ? `가격(${quantity}${unit})` : "가격(원)",
             },
             min: min,
             max: max,
