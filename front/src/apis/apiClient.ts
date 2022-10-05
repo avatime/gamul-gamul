@@ -37,6 +37,16 @@ export class ApiClient
   constructor() {
     this.axiosInstance = this.createAxiosInstance();
   }
+  postOCR(userName: string, imageData: string): Promise<void> {
+    return this.axiosInstance.request({
+      method: "posr",
+      url: "/ocr",
+      data: {
+        user_name: userName,
+        image_data: imageData,
+      },
+    });
+  }
   postRecipeView(recipeId: number): Promise<void> {
     return this.axiosInstance.request({
       method: "post",
@@ -95,7 +105,7 @@ export class ApiClient
   }
   async getIngredientList(
     orderType: IngredientOrderType,
-    highClassId: number = 0,
+    highClassId: number = 0
   ): Promise<IngredientInfo[]> {
     return (
       await this.axiosInstance.request({
@@ -112,7 +122,10 @@ export class ApiClient
       })
     ).data;
   }
-  async getIngredientDetailInfo(ingredientId: number, userName: string): Promise<IngredientDetailInfo> {
+  async getIngredientDetailInfo(
+    ingredientId: number,
+    userName: string
+  ): Promise<IngredientDetailInfo> {
     return (
       await this.axiosInstance.request({
         method: "get",
@@ -181,10 +194,11 @@ export class ApiClient
     ).data;
   }
   async getBasketIngredientList(userName: string): Promise<IngredientInfo[]> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/ingredients/basket/${userName}`,
-    })
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/ingredients/basket/${userName}`,
+      })
     ).data;
   }
   async getRecipeList(
@@ -192,10 +206,11 @@ export class ApiClient
     page: number,
     size: number
   ): Promise<RecipeInfo[]> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/recipes/${orderType}/${page}/${size}`,
-    })
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/${orderType}/${page}/${size}`,
+      })
     ).data;
   }
   async getRecipeWithBasketList(
@@ -204,24 +219,27 @@ export class ApiClient
     page: number,
     size: number
   ): Promise<RecipeInfo[]> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/recipes/basket/${orderType}/${page}/${size}/${userName}`,
-    })
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/basket/${orderType}/${page}/${size}/${userName}`,
+      })
     ).data;
   }
   async getBookmarkRecipeList(userName: string): Promise<RecipeInfo[]> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/recipes/bookmark/${userName}`,
-    })
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/bookmark/${userName}`,
+      })
     ).data;
   }
-  async getRecipeDetailInfo( userName:string, recipeId: number,): Promise<RecipeDetailInfo> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/recipes/${recipeId}/${encodeURI(userName)}`,
-    })
+  async getRecipeDetailInfo(userName: string, recipeId: number): Promise<RecipeDetailInfo> {
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/${recipeId}/${encodeURI(userName)}`,
+      })
     ).data;
   }
   async putBookmarkRecipe(userName: string, recipeId: number): Promise<void> {
@@ -244,10 +262,10 @@ export class ApiClient
   }
 
   async putBasketAllRecipeIngredient(userName: string, recipeId: number): Promise<void> {
-    return (await this.axiosInstance.request({
+    return await this.axiosInstance.request({
       method: "put",
       url: `/recipes/${userName}/${recipeId}`,
-    }));
+    });
   }
   async getPopularYoutubeList(): Promise<YoutubeInfo[]> {
     return (
@@ -321,10 +339,12 @@ export class ApiClient
     userName: string,
     myRecipeId: number
   ): Promise<MyRecipeIngredientInfo[]> {
-    return (await this.axiosInstance.request({
-      method: "get",
-      url: `/recipes/my/ingredient/${encodeURI(userName)}/${myRecipeId}`,
-    })).data;
+    return (
+      await this.axiosInstance.request({
+        method: "get",
+        url: `/recipes/my/ingredient/${encodeURI(userName)}/${myRecipeId}`,
+      })
+    ).data;
   }
   async deleteMyRecipe(userName: string, myRecipeId: number): Promise<void> {
     return this.axiosInstance.request({
@@ -372,7 +392,7 @@ export class ApiClient
     ).data;
   }
 
-  async uplodeImage(userName: string, imageData : string): Promise<void> {
+  async uplodeImage(userName: string, imageData: string): Promise<void> {
     return this.axiosInstance.request({
       method: "post",
       url: `/ocr`,
@@ -383,7 +403,7 @@ export class ApiClient
     });
   }
 
-  async getBlackList() : Promise<[]> {
+  async getBlackList(): Promise<[]> {
     return (
       await this.axiosInstance.request({
         method: "get",
