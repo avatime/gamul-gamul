@@ -59,9 +59,13 @@ const RecipeInfoPage: NextPage<IProps> = ({ initialRecipeDetailInfo }) => {
     router.push(`/recipe-detail/${id}`);
   };
   const onClickPutBasket = () => {
-    ApiClient.getInstance()
+    if(getCookie("userName") != null) {
+      ApiClient.getInstance()
       .putBasketAllRecipeIngredient(getCookie("userName"), Number(id))
       .then(() => router.push("/basket"));
+    } else {
+      router.push(`/login`);
+    }
   };
   return (
     <Box>
