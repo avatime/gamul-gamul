@@ -23,6 +23,7 @@ interface IProps {
   popularIngredientList: IngredientDetailInfo[];
   highClassList: HighClass[];
   ingredientList: IngredientInfo[];
+  ingredientList2: IngredientInfo[];
 }
 
 const IngredientPage: NextPage<IProps> = ({
@@ -31,6 +32,7 @@ const IngredientPage: NextPage<IProps> = ({
   popularIngredientList,
   highClassList,
   ingredientList,
+  ingredientList2,
 }) => {
   const [userName, setUserName] = useState("");
   const [wishList, setWishList] = useState<IngredientInfo[]>([]);
@@ -58,6 +60,11 @@ const IngredientPage: NextPage<IProps> = ({
                   gridSize={6}
                 />
               )}
+              <IngredientListComp
+                ingredientList={ingredientList2}
+                title="식재료 목록"
+                gridSize={6}
+              />
               <IngredientListComp
                 ingredientList={downIngredientList}
                 title="지금이 기회!"
@@ -105,6 +112,11 @@ const IngredientPage: NextPage<IProps> = ({
             />
           )}
           <IngredientListComp
+                ingredientList={ingredientList2}
+                title="식재료 목록"
+                gridSize={6}
+              />
+          <IngredientListComp
             ingredientList={downIngredientList}
             title="지금이 기회!"
             rowSize={1}
@@ -142,6 +154,10 @@ const IngredientPage: NextPage<IProps> = ({
             <IngredientListComp ingredientList={wishList} title="찜 목록" rowSize={1} />
           )}
           <IngredientListComp
+            ingredientList={ingredientList2}
+            title="식재료 목록"
+          />
+          <IngredientListComp
             ingredientList={downIngredientList}
             title="지금이 기회!"
             rowSize={1}
@@ -176,6 +192,7 @@ export default IngredientPage;
 export const getStaticProps = async () => {
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(3);
+  const ingredientList2 = await apiClient.getIngredientList(1);
   const upIngredientList = new Array<IngredientInfo>();
   const downIngredientList = new Array<IngredientInfo>();
   const highClassList = await apiClient.getIngredientHighClassList();
@@ -190,12 +207,16 @@ export const getStaticProps = async () => {
 
   const popularIngredientList = new Array();
 
-    const ingredientDetailInfo1 = await apiClient.getIngredientDetailInfo(40, "");
+    const ingredientDetailInfo1 = await apiClient.getIngredientDetailInfo(27, "");
     popularIngredientList.push(ingredientDetailInfo1);
-    const ingredientDetailInfo2 = await apiClient.getIngredientDetailInfo(10, "");
+    const ingredientDetailInfo2 = await apiClient.getIngredientDetailInfo(28, "");
     popularIngredientList.push(ingredientDetailInfo2);
     const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(43, "");
     popularIngredientList.push(ingredientDetailInfo3);
+    const ingredientDetailInfo4 = await apiClient.getIngredientDetailInfo(44, "");
+    popularIngredientList.push(ingredientDetailInfo4);
+    const ingredientDetailInfo5 = await apiClient.getIngredientDetailInfo(10, "");
+    popularIngredientList.push(ingredientDetailInfo5);
 
   return {
     props: {
@@ -204,6 +225,7 @@ export const getStaticProps = async () => {
       popularIngredientList: popularIngredientList,
       highClassList,
       ingredientList,
+      ingredientList2,
     },
   };
 };

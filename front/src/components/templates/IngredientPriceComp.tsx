@@ -42,25 +42,23 @@ export const IngredientPriceComp: FC<IProps> = ({
           어제 평균{" "}
           <span
             style={{
-              color: !pastVol ? "inherit" : 0 < pastVol ? "red" : "blue",
+              color: pastPrice == 0 ? "#808080" : 0 < pastVol ? "red" : 0 > pastVol ? "blue" : "black",
             }}
           >
-            {pastPrice.toLocaleString()}
+            {pastPrice != 0 ? pastPrice.toLocaleString() : "정보 없음"}
           </span>
-          원/{quantity}
-          {unit}
+          {!!pastPrice && (`원/${quantity}${unit}`)}
         </p>
         <p style={{ fontWeight: "bold", margin: "20px 10px" }}>
           오늘 평균{" "}
           <span
             style={{
-              color: !todayVol ? "inherit" : 0 < todayVol ? "red" : "blue",
+              color: todayPrice == 0 ? "#808080" : 0 < todayVol ? "red" : 0 > todayVol ? "blue" : "black",
             }}
           >
-            {todayPrice.toLocaleString()}
+            {todayPrice != 0 ? todayPrice.toLocaleString() : "정보 없음"}
           </span>
-          원/{quantity}
-          {unit}
+          {!!todayPrice && (`원/${quantity}${unit}`)}
         </p>
         {graph && (<IngredientPriceGraph
           priceTransitionInfo={priceTransitionInfo}

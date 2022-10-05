@@ -110,7 +110,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
                   </Box>
                 <IngredientPriceComp
                   ingredientDetailInfo={ingredientDetailInfo}
-                  inputWidth={"90%"}
+                  inputWidth={"98%"}
                   inputHeight={500}
                   blackList={blackList}
                 />
@@ -142,7 +142,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             </Box>
             <IngredientPriceComp
               ingredientDetailInfo={ingredientDetailInfo}
-              inputWidth={"95%"}
+              inputWidth={"98%"}
               inputHeight={450}
               blackList={blackList}
             />
@@ -169,7 +169,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             />
             <IngredientPriceComp
               ingredientDetailInfo={ingredientDetailInfo}
-              inputWidth={"95%"}
+              inputWidth={"98%"}
               inputHeight={400}
               blackList={blackList}
             />

@@ -77,7 +77,7 @@ export const IngredientBarGraphComp: FC<IProps> = ({
       <Grid item xs={10}>
         <IngredientPriceGraph
           priceTransitionInfo={priceTransitionInfo}
-          inputWidth="95%"
+          inputWidth="98%"
           inputHeight={240}
           type="bar"
         />
