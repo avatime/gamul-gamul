@@ -3,14 +3,8 @@ package com.gamul.api.service;
 import com.gamul.api.response.IngredientInfoRes;
 import com.gamul.api.response.RecipeInfoRes;
 import com.gamul.api.response.SearchRes;
-import com.gamul.db.entity.Day;
-import com.gamul.db.entity.HighClass;
-import com.gamul.db.entity.Ingredient;
-import com.gamul.db.entity.Recipe;
-import com.gamul.db.repository.DayRepository;
-import com.gamul.db.repository.HighClassRepository;
-import com.gamul.db.repository.IngredientRepository;
-import com.gamul.db.repository.RecipeRepository;
+import com.gamul.db.entity.*;
+import com.gamul.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +23,8 @@ public class SearchServiceImpl implements SearchService{
     HighClassRepository highClassRepository;
     @Autowired
     RecipeRepository recipeRepository;
+    @Autowired
+    MonthRepository monthRepository;
 
     @Override
     public SearchRes search(String keyword){
@@ -44,19 +40,47 @@ public class SearchServiceImpl implements SearchService{
             for (Ingredient ingredient : ingredientList){
                 // 가격 객체 가져오기
                 Day day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-                // 가격 변동률
-                double volatility = 0;
                 if (day == null){
-                    day = new Day();
-                    day.setPrice(0);
-                    day.setUnit("");
-                    day.setQuantity(0);
-                }else{
-                    // 가격 변동률
-                    List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
-                    int today = dayList.get(0).getPrice();
+                    day = day = dayRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+                    if(day == null){
+                        day = new Day();
+                        Month month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+                        if(month != null){
+                            day.setPrice(month.getPrice());
+                            day.setUnit(month.getUnit());
+                            day.setQuantity(month.getQuantity());
+                        }else{
+                            month = monthRepository.findTop1ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 0);
+                            if(month != null){
+                                day.setPrice(month.getPrice());
+                                day.setUnit(month.getUnit());
+                                day.setQuantity(month.getQuantity());
+                            }else{
+                                day.setPrice(0);
+                                day.setUnit("");
+                                day.setQuantity(0);
+                            }
+                        }
+                    }
+                }
 
-                    int yesterday = dayList.get(1).getPrice();
+                // 가격 변동률
+                List<Day> dayList = dayRepository.findTop10ByIngredientIdAndTypeOrderByDatetimeDesc(ingredient.getId(), 1);
+
+                int today = 0;
+                int yesterday = 0;
+                double volatility = 0.0;
+
+                if(dayList.size() == 0){
+                    today = 0;
+                    yesterday = 0;
+                    volatility = 0.0;
+                }
+                else if (dayList.size() == 1){
+                    volatility = 0.0;
+                }else {
+                    today = dayList.get(0).getPrice();
+                    yesterday = dayList.get(1).getPrice();
                     volatility = (today - yesterday) * 100.0 / today ;
                     volatility = Math.round((volatility * 100) / 100.0);
                 }
