@@ -72,7 +72,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
             gridSize={4}
           />
           <RecipeListComp showMore rowSize={2} gridSize={6} recipeList={recipeList} />
-          <MyRecipeListComp showMore rowSize={2} gridSize={6} myRecipeList={myRecipeList} />
+          {!!userName && (<MyRecipeListComp showMore rowSize={2} gridSize={6} myRecipeList={myRecipeList} />)}
         </Box>
       </Tablet>
       <Mobile>
@@ -85,7 +85,7 @@ const MainPage: NextPage<IProps> = ({ ingredientList, recipeList, highClassList 
             ingredientList={ingredientList}
           />
           <RecipeListComp showMore rowSize={2} gridSize={3} recipeList={recipeList} />
-          <MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />
+          {!!userName && (<MyRecipeListComp showMore rowSize={2} gridSize={3} myRecipeList={myRecipeList} />)}
         </Box>
       </Mobile>
     </Page>
