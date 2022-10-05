@@ -104,7 +104,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
           />
           {graph && (<IngredientPriceGraph
             priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-            inputWidth="95%"
+            inputWidth="98%"
             inputHeight={500}
             type="line"
             myRecipe
@@ -148,7 +148,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
         />
         {graph && (<IngredientPriceGraph
           priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-          inputWidth="95%"
+          inputWidth="98%"
           inputHeight={500}
           type="line"
           myRecipe
@@ -206,7 +206,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
         <IngredientListComp ingredientList={myRecipeDetailInfo.ingredient_list} totalPrice={myRecipeDetailInfo.total_price}/>
         {graph && (<IngredientPriceGraph
           priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-          inputWidth="95%"
+          inputWidth="98%"
           inputHeight={400}
           type="line"
           myRecipe
