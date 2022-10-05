@@ -153,14 +153,15 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
                       </Typography>
                       <Typography sx={{ fontSize: "20px" }}>{item.description}</Typography>
                     </Box>
-                    <Image
+                    {item.image_path !== "" ?  <Image
                       src={item.image_path}
                       width="300px"
                       height="300px"
                       alt="recipe_order"
                       style={{ borderRadius: 10 }}
                       unoptimized
-                    />
+                    /> : "" }
+                   
                   </Stack>
                 </CardContainer>
               </Box>
