@@ -77,7 +77,8 @@ public class OcrController {
 
             for(item i:list){
                 Ingredient ingredient = ingredientRepository.findByMidClass(i.name).orElseGet(null);
-                if(ingredient != null && basketRepository.existsByUserIdAndIngredientId(user.getId(), ingredient.getId())) {
+//                System.out.println(ingredient.getMidClass());
+                if(ingredient != null && !basketRepository.existsByUserIdAndIngredientId(user.getId(), ingredient.getId())) {
                     basketRepository.save(new Basket(user,ingredient));
                 }
             }
