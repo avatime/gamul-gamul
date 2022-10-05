@@ -53,14 +53,14 @@ const RecipePage: NextPage<IProps> = ({
             recipeList={popularRecipeList}
           />
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <RecipeListComp
                 type="row"
                 title="요리법 with 바구니"
                 recipeList={recipeWithBasketList}
               />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <YoutubeRecipeListComp
                 title="인기 요리법 유튜브"
                 youtubeInfoList={popularYoutubeList}
