@@ -46,9 +46,12 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientList(@PathVariable int orderType, @PathVariable int highClassId) {
-
-        List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(orderType, highClassId);
-        return new ResponseEntity<List<IngredientInfoRes>>(ingredientList, HttpStatus.OK);
+        try {
+            List<IngredientInfoRes> ingredientList = ingredientService.getIngredientList(orderType, highClassId);
+            return new ResponseEntity<List<IngredientInfoRes>>(ingredientList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/bookmark/{userName}")
@@ -73,18 +76,20 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientDetailInfo(@PathVariable Long ingredientId, @PathVariable(required = false) String userName) {
+        try {
+            IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId, userName);
 
-        IngredientDetailRes ingredientDetailRes = ingredientService.getIngredientDetailInfo(ingredientId, userName);
+            // 온라인 마트 정보 추가
+            String query = ingredientService.getOnlineIngredientInfo(ingredientId);
+            String resultString = naverShopSearch.search(query);
+            List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
 
-        // 온라인 마트 정보 추가
-        String query = ingredientService.getOnlineIngredientInfo(ingredientId);
-        String resultString = naverShopSearch.search(query);
-        List<OnlineMartInfoRes> onlineMartInfoResList = naverShopSearch.fromJSONtoItems(resultString);
+            ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
 
-        ingredientDetailRes.setOnlineMartInfo(onlineMartInfoResList);
-
-        return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
-
+            return new ResponseEntity<IngredientDetailRes>(ingredientDetailRes, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/high-class")
@@ -110,8 +115,13 @@ public class IngredientController {
             @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public void ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
-        ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
+    public ResponseEntity<?> ingredientSelected(@RequestBody IngredientSelectReq ingredientSelectReq) {
+        try {
+            ingredientService.ingredientSelected(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
+            return ResponseEntity.status(200).body("Success");
+        }catch(Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @PutMapping("/basket/{userName}/{ingredientId}")
@@ -122,8 +132,13 @@ public class IngredientController {
             @ApiResponse(code = 405, message = "존재하지 않는 ingredient"),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public void ingredientBasket(@RequestBody IngredientSelectReq ingredientSelectReq) {
-        ingredientService.ingredientBasket(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
+    public ResponseEntity<?> ingredientBasket(@RequestBody IngredientSelectReq ingredientSelectReq) {
+        try{
+            ingredientService.ingredientBasket(ingredientSelectReq.getUserName(), ingredientSelectReq.getIngredientId());
+            return ResponseEntity.status(200).body("Success");
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/basket/{userName}")
@@ -133,15 +148,12 @@ public class IngredientController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getIngredientBasket(@PathVariable String userName) throws Exception {
-//        try{
-//            List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
-//            return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
-//        }catch (Exception e){
-//            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
-//        }
-        List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
-        return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
-
+        try{
+            List<IngredientInfoRes> basketList = ingredientService.getBasketList(userName);
+            return new ResponseEntity<List<IngredientInfoRes>>(basketList, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/stores/{ingredientId}/{southWestLatitude}/{southWestLongitude}/{northEastLatitude}/{northEastLongitude}/{latitude}/{longitude}")

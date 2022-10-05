@@ -61,9 +61,15 @@ public class RecipeController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getRecipeBasket(@PathVariable int orderType, @PathVariable int page, @PathVariable int size, @PathVariable String userName){
-        List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeBasket(orderType, page, size, userName);
-
-        return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
+        try {
+            if (!userRepository.existsByUsername(userName)){
+                return ResponseEntity.ok(BaseResponseBody.of(404, "존재하지 않는 유저"));
+            }
+            List<RecipeInfoRes> recipeInfoResList = recipeService.getRecipeBasket(orderType, page, size, userName);
+            return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoResList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping("/bookmark/{userName}")
@@ -73,10 +79,18 @@ public class RecipeController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getRecipeSelected(@PathVariable String userName){
+        try {
+            if (!userRepository.existsByUsername(userName)){
+                return ResponseEntity.ok(BaseResponseBody.of(404, "존재하지 않는 유저"));
+            }
+            List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(userName);
+            return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
 
-        List<RecipeInfoRes> recipeInfoRes = recipeService.getRecipeSelected(userName);
-        return new ResponseEntity<List<RecipeInfoRes>>(recipeInfoRes, HttpStatus.OK);
     }
+
     @GetMapping("/youtube")
     @ApiOperation(value = "인기 요리법 유튜브", notes = "<strong>recipe id</strong>에 따른 인기 요리법 반환")
     @ApiResponses({
@@ -84,11 +98,13 @@ public class RecipeController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getRecipeYoutube(){
-
-        String query = "인기 요리법";
-        List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(query);
-        return ResponseEntity.status(200).body(youtubeInfoResList);
-
+        try {
+            String query = "인기 요리법";
+            List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(query);
+            return ResponseEntity.status(200).body(youtubeInfoResList);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @GetMapping(value = {"/{recipeId}/{userName}", "/{recipeId}"})
@@ -118,12 +134,12 @@ public class RecipeController {
         try{
             if (userRepository.existsByUsername(recipeSelectPostReq.getUserName())){
                 if (!recipeRepository.existsById(recipeSelectPostReq.getRecipeId())) {
-                    return ResponseEntity.ok(BaseResponseBody.of(405, "레시피 없음"));
+                    return ResponseEntity.status(405).body("레시피 없음");
                 }
                 recipeService.recipeSelected(recipeSelectPostReq.getUserName(), recipeSelectPostReq.getRecipeId());
             }
             else{
-                return ResponseEntity.ok(BaseResponseBody.of(404, "사용자 없음"));
+                return ResponseEntity.ok(BaseResponseBody.of(404, "존재하지 않는 유저"));
             }
         }catch (Exception e){
             return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
@@ -138,8 +154,12 @@ public class RecipeController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> getRecipeOrder(@PathVariable Long recipeId){
-        List<RecipeProcedureRes> recipeProcedureResList = recipeService.getRecipeOrder(recipeId);
-        return new ResponseEntity<List<RecipeProcedureRes>>(recipeProcedureResList, HttpStatus.OK);
+        try {
+            List<RecipeProcedureRes> recipeProcedureResList = recipeService.getRecipeOrder(recipeId);
+            return new ResponseEntity<List<RecipeProcedureRes>>(recipeProcedureResList, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 
     @PutMapping("/{userName}/{recipeId}")

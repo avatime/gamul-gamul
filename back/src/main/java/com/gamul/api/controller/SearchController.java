@@ -31,7 +31,11 @@ public class SearchController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<?> search(@PathVariable String keyword){
-        SearchRes searchRes = searchService.search(keyword);
-        return new ResponseEntity<SearchRes>(searchRes, HttpStatus.OK);
+        try {
+            SearchRes searchRes = searchService.search(keyword);
+            return new ResponseEntity<SearchRes>(searchRes, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
+        }
     }
 }
