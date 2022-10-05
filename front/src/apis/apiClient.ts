@@ -39,7 +39,7 @@ export class ApiClient
   }
   postOCR(userName: string, imageData: string): Promise<void> {
     return this.axiosInstance.request({
-      method: "posr",
+      method: "post",
       url: "/ocr",
       data: {
         user_name: userName,
