@@ -22,25 +22,21 @@ import { RecipeDetailInfo } from "../../src/apis/responses/recipeDetailInfo";
 
 interface IProps {
   recipeOrderInfo: RecipeOrderInfo[];
-  recipeDetailInfo: RecipeDetailInfo;
+  initialRecipeDetailInfo: RecipeDetailInfo;
 }
 
-const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
+const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, initialRecipeDetailInfo }) => {
   const router = useRouter();
   const onClickBookmark = () => {};
   const { id } = router.query;
 
   const [userName, setUserName] = useState("");
-  const [recipeDetailInfo, setRecipeDetailInfo] =useState<RecipeDetailInfo>({
-    recipe_info: { recipe_id: 0, image_path: "/icon2.png", name: "", desc: "", bookmark: false, views: 0 },
-    ingredient_list: [],
-    extra_ingredient_list: [],
-    youtube_list: [],
-  });
+  const [recipeDetailInfo, setRecipeDetailInfo] =
+    useState<RecipeDetailInfo>(initialRecipeDetailInfo);
 
-  useEffect(()=>{
-    ApiClient.getInstance().postRecipeView(Number(id))
-   },[id]);
+  useEffect(() => {
+    ApiClient.getInstance().postRecipeView(Number(id));
+  }, [id]);
 
   useEffect(() => {
     setUserName(getCookie("userName"));
@@ -82,16 +78,19 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
             {recipeOrderInfo.map((item, idx) => (
               <Box key={idx} sx={{ display: "flex" }}>
                 <CardContainer title={""} style={{ width: "90vw", position: "relative" }}>
-                  {item.image_path !== "" ? 
-                  <Image
-                    src={item.image_path}
-                    width="50px"
-                    height="50px"
-                    alt="recipe_order"
-                    layout="responsive"
-                    unoptimized
-                    style={{ borderRadius: 10 }}
-                  /> : ""}
+                  {item.image_path !== "" ? (
+                    <Image
+                      src={item.image_path}
+                      width="50px"
+                      height="50px"
+                      alt="recipe_order"
+                      layout="responsive"
+                      unoptimized
+                      style={{ borderRadius: 10 }}
+                    />
+                  ) : (
+                    ""
+                  )}
                   <Box sx={{ bottom: "10%", left: 10 }}>
                     <Typography
                       sx={{
@@ -154,15 +153,18 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
                       </Typography>
                       <Typography sx={{ fontSize: "20px" }}>{item.description}</Typography>
                     </Box>
-                    {item.image_path !== "" ?  <Image
-                      src={item.image_path}
-                      width="300px"
-                      height="300px"
-                      alt="recipe_order"
-                      style={{ borderRadius: 10 }}
-                      unoptimized
-                    /> : "" }
-                   
+                    {item.image_path !== "" ? (
+                      <Image
+                        src={item.image_path}
+                        width="300px"
+                        height="300px"
+                        alt="recipe_order"
+                        style={{ borderRadius: 10 }}
+                        unoptimized
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Stack>
                 </CardContainer>
               </Box>
@@ -215,15 +217,18 @@ const RecipeDetailPage: NextPage<IProps> = ({recipeOrderInfo}) => {
                       </Typography>
                       <Typography>{item.description}</Typography>
                     </Box>
-                    {item.image_path !== "" ?   <Image
-                      src={item.image_path}
-                      width="300px"
-                      height="300px"
-                      alt="recipe_order"
-                      style={{ borderRadius: 10 }}
-                      unoptimized
-                    /> :"" }
-                  
+                    {item.image_path !== "" ? (
+                      <Image
+                        src={item.image_path}
+                        width="300px"
+                        height="300px"
+                        alt="recipe_order"
+                        style={{ borderRadius: 10 }}
+                        unoptimized
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Stack>
                 </CardContainer>
               </Box>
@@ -240,12 +245,12 @@ export default RecipeDetailPage;
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
 
-  //const recipeDetailInfo = await apiClient.getRecipeDetailInfo(context.params.id);
+  const initialRecipeDetailInfo = await apiClient.getRecipeDetailInfo("", context.params.id);
   const recipeOrderInfo = await apiClient.getRecipeOrderList(context.params.id);
 
   return {
     props: {
-      // recipeDetailInfo,
+      initialRecipeDetailInfo,
       recipeOrderInfo,
     },
   };
