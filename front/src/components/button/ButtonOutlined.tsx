@@ -4,7 +4,7 @@ import React, { FC } from "react";
 interface IProps {
   text: string;
   icon: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   style?: object;
 }
 

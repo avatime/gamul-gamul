@@ -38,4 +38,10 @@ export interface MyInfoApi {
    * @param userName 유저 ID
    */
   getNotificationInfoList(userName: string): Promise<NotificationInfo[]>;
+  /**
+   * 영수증 OCR로 식재료 바구니 추가
+   * @param userName 유저 ID
+   * @param imageData 이미지 base64
+   */
+  postOCR(userName: string, imageData: string): Promise<void>;
 }
