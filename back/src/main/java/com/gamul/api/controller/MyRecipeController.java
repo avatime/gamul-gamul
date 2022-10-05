@@ -237,13 +237,56 @@ public class MyRecipeController {
                             .build();
                     ingreidentlist.add(ingredientInfoRes);
                 }
-                else {
+                else if(dailyWholePrice.size() > 0){
                     MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
                             .ingredientId(myRecipeIngredient.getIngredient().getId())
                             .name(myRecipeIngredient.getIngredient().getMidClass())
                             .price(dailyWholePrice.get(0).getPrice())
                             .unit(dailyWholePrice.get(0).getUnit())
                             .quantity(dailyWholePrice.get(0).getQuantity())
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+                else if(monthlyPrice.size() > 0) {
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(monthlyPrice.get(0).getPrice())
+                            .unit(monthlyPrice.get(0).getUnit())
+                            .quantity(monthlyPrice.get(0).getQuantity())
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+                else if(monthlyWholePrice.size() > 0) {
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(monthlyWholePrice.get(0).getPrice())
+                            .unit(monthlyWholePrice.get(0).getUnit())
+                            .quantity(monthlyWholePrice.get(0).getQuantity())
+                            .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
+                            .highClassId(myRecipeIngredient.getIngredient().getHighClass())
+                            .highClassName(highClassRepository.findById(myRecipeIngredient.getIngredient().getHighClass()).get().getName())
+                            .build();
+                    ingreidentlist.add(ingredientInfoRes);
+                }
+                else {
+                    MyRecipeIngredientInfoRes ingredientInfoRes = MyRecipeIngredientInfoRes.builder()
+                            .ingredientId(myRecipeIngredient.getIngredient().getId())
+                            .name(myRecipeIngredient.getIngredient().getMidClass())
+                            .price(0)
                             .allergy(allergyRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                             .favorite(ingredientSelectedRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
                             .basket(basketRepository.existsByUserIdAndIngredientId(myRecipe.getUser().getId(), myRecipeIngredient.getIngredient().getId()))
@@ -290,7 +333,6 @@ public class MyRecipeController {
             myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
             myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
             myRecipeDetailRes.setName(myRecipe.getName());
-
 
             return ResponseEntity.status(200).body(myRecipeDetailRes);
 //        } catch (Exception e) {
