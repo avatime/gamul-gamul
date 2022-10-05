@@ -275,7 +275,8 @@ public class MyRecipeController {
                     }
                 }
             }
-            priceTransitionInfoRes.setWholesales(new SaleInfoRes());
+        if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
+        priceTransitionInfoRes.setWholesales(new SaleInfoRes());
             priceTransitionInfoRes.getWholesales().setDaily(reverseList(new ArrayList<>(dayWholePrice.subList(0, dailyWholeSize))));
             priceTransitionInfoRes.getWholesales().setYearly(reverseList(new ArrayList<>(yearRetailPrice.subList(0, yearSize))));
             priceTransitionInfoRes.getWholesales().setMonthly(reverseList(new ArrayList<>(monthWholePrice.subList(0, monthlyWholeSize))));
@@ -285,7 +286,6 @@ public class MyRecipeController {
             priceTransitionInfoRes.getRetailsales().setMonthly(reverseList(new ArrayList<>(monthRetailPrice.subList(0,monthlySize))));
 
             myRecipeDetailRes.setIngredientList(ingreidentlist);
-            if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(0).getPrice());
             myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
             myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
             myRecipeDetailRes.setName(myRecipe.getName());
