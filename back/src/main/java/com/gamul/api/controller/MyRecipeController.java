@@ -285,7 +285,7 @@ public class MyRecipeController {
             priceTransitionInfoRes.getRetailsales().setMonthly(reverseList(new ArrayList<>(monthRetailPrice.subList(0,monthlySize))));
 
         if(priceTransitionInfoRes.getRetailsales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getRetailsales().getDaily().get(priceTransitionInfoRes.getRetailsales().getDaily().size()-1).getPrice());
-
+        else if (priceTransitionInfoRes.getWholesales().getDaily().size() > 0) myRecipeDetailRes.setTotalPrice(priceTransitionInfoRes.getWholesales().getDaily().get(priceTransitionInfoRes.getWholesales().getDaily().size()-1).getPrice());
         myRecipeDetailRes.setIngredientList(ingreidentlist);
             myRecipeDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
             myRecipeDetailRes.setImagePath(myRecipe.getImageURL());
