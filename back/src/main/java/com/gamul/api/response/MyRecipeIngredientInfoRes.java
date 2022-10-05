@@ -22,6 +22,9 @@ public class MyRecipeIngredientInfoRes {
 
     int quantity;
 
+    @JsonProperty("high_class_id")
+    int myQuantity;
+
     double volatility;
 
     boolean allergy;
