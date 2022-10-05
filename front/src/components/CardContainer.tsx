@@ -62,7 +62,7 @@ export const CardContainer: FC<IProps> = ({
             <KeyboardArrowLeftIcon />
           </IconButton>
         )}
-        {totalPrice && <Price total={totalPrice} size="12px" />}
+        {!!totalPrice && <Price total={totalPrice} size="12px" />}
       </Box>
       <Box maxHeight="inherit">{children}</Box>
     </Box>
