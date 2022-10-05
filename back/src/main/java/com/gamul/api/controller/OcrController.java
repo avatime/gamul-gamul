@@ -5,6 +5,7 @@ import com.gamul.api.service.OcrService;
 import com.gamul.api.service.UserService;
 import com.gamul.db.entity.Basket;
 import com.gamul.db.entity.Ingredient;
+import com.gamul.db.entity.User;
 import com.gamul.db.repository.BasketRepository;
 import com.gamul.db.repository.IngredientRepository;
 import com.google.gson.Gson;
@@ -72,10 +73,12 @@ public class OcrController {
                 }
             }
 
+            User user = userService.getUserByUsername(ocrRegisterReq.getUserName());
+
             for(item i:list){
                 Ingredient ingredient = ingredientRepository.findByMidClass(i.name).orElseGet(null);
-                if(ingredient != null) {
-                    basketRepository.save(new Basket(userService.getUserByUsername(ocrRegisterReq.getUserName()),ingredient));
+                if(ingredient != null && basketRepository.existsByUserIdAndIngredientId(user.getId(), ingredient.getId())) {
+                    basketRepository.save(new Basket(user,ingredient));
                 }
             }
 
