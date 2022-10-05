@@ -24,27 +24,33 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 interface IProps {
   ingredientList: IngredientInfo[];
-  myRecipeIngredientInfoList: MyRecipeIngredientInfo[];
-  imagePath: string;
-  name: string;
 }
 
-const MyRecipeRegisterPage: NextPage<IProps> = ({
-  ingredientList,
-  myRecipeIngredientInfoList,
-  imagePath,
-  name,
-}) => {
+const MyRecipeRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   const router = useRouter();
 
+  useEffect(() => {
+    if (!router.query.id) {
+      return;
+    }
+
+    ApiClient.getInstance()
+      .getMyRecipeIngredientList(getCookie("userName"), Number(router.query.id))
+      .then((data) => setSelectedList(data));
+      
+    ApiClient.getInstance()
+      .getMyRecipeDetailInfo(getCookie("userName"), Number(router.query.id))
+      .then((data) => {
+        setMyRecipeName(data.name);
+        setImageDataUrl(data.image_path);
+        setOriginImageDataUrl(data.image_path);
+      });
+  }, [router.query.id]);
+
+  const [originImageDataUrl, setOriginImageDataUrl] = useState<string>("");
   const [imageDataUrl, setImageDataUrl] = useState<string>("");
   const [myRecipeName, setMyRecipeName] = useState<string>("");
   const [selectedList, setSelectedList] = useState<MyRecipeIngredientInfo[]>([]);
-  useEffect(() => {
-    setSelectedList(myRecipeIngredientInfoList);
-    setMyRecipeName(name);
-    setImageDataUrl(imagePath);
-  }, [imagePath, myRecipeIngredientInfoList, name]);
 
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedIngredientList, setSearchedIngredientList] = useState<IngredientInfo[]>([]);
@@ -106,14 +112,28 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({
       return;
     }
 
-    ApiClient.getInstance()
-      .postMyRecipe(
+    if (router.query.id) {
+      ApiClient.getInstance()
+      .updateMyRecipe(
         getCookie("userName"),
-        imagePath === imageDataUrl ? "" : imageDataUrl,
+        Number(router.query.id),
+        originImageDataUrl === imageDataUrl ? "" : imageDataUrl,
         myRecipeName,
         selectedList
       )
       .then(() => router.back());
+    } else {
+      ApiClient.getInstance()
+      .postMyRecipe(
+        getCookie("userName"),
+        originImageDataUrl === imageDataUrl ? "" : imageDataUrl,
+        myRecipeName,
+        selectedList
+      )
+      .then(() => router.back());
+    }
+
+    
   };
 
   const uploadImage = (e: any) => {
@@ -133,7 +153,7 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({
         {!hideBackHeader && (
           <BackHeader
             backgroundColor="white"
-            text={`나만의 요리법 ${myRecipeIngredientInfoList.length === 0 ? "등록" : "편집"}`}
+            text={`나만의 요리법 ${!originImageDataUrl ? "등록" : "편집"}`}
             end={
               <IconButton onClick={onClickSave}>
                 <CheckIcon />
@@ -307,25 +327,12 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({
 export default MyRecipeRegisterPage;
 
 export async function getServerSideProps(context: any) {
-  const myRecipeId = context.query?.id;
-  const userName = getCookie("userName");
   const apiClient = ApiClient.getInstance();
   const ingredientList = await apiClient.getIngredientList(IngredientOrderType.NAME_ASC);
-  let myRecipeIngredientInfoList: MyRecipeIngredientInfo[] = [];
-  if (myRecipeId) {
-    myRecipeIngredientInfoList = await apiClient.getMyRecipeIngredientList(userName, +myRecipeId);
-  }
-  let myRecipeDetailInfo = null;
-  if (myRecipeId) {
-    myRecipeDetailInfo = await apiClient.getMyRecipeDetailInfo(userName, +myRecipeId);
-  }
 
   return {
     props: {
       ingredientList,
-      myRecipeIngredientInfoList,
-      imagePath: myRecipeDetailInfo ? myRecipeDetailInfo.image_path : "",
-      name: myRecipeDetailInfo ? myRecipeDetailInfo.name : "",
     },
   };
 }
