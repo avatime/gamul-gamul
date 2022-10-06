@@ -13,9 +13,9 @@ import { useState, useEffect } from "react";
 import { IngredientBarGraphComp } from "../src/components/templates/IngredientBarGraphComp";
 import { IngredientDetailInfo } from "../src/apis/responses/ingredientDetailInfo";
 import { CardContainer } from "../src/components/CardContainer";
-import { getIngredientHighClassList } from "../src/apis/dummy/dummyApi";
 import { HighClass } from "../src/apis/responses/highClass";
 import { HighClassComp } from "../src/components/templates/HighClassComp";
+import { Page } from "../src/components/Page";
 
 interface IProps {
   upIngredientList: IngredientInfo[];
@@ -47,7 +47,7 @@ const IngredientPage: NextPage<IProps> = ({
   }, []);
 
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container>
@@ -183,7 +183,7 @@ const IngredientPage: NextPage<IProps> = ({
           </CardContainer>
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 
@@ -211,11 +211,11 @@ export const getStaticProps = async () => {
     popularIngredientList.push(ingredientDetailInfo1);
     const ingredientDetailInfo2 = await apiClient.getIngredientDetailInfo(28, "");
     popularIngredientList.push(ingredientDetailInfo2);
-    const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(43, "");
+    const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(66, "");
     popularIngredientList.push(ingredientDetailInfo3);
-    const ingredientDetailInfo4 = await apiClient.getIngredientDetailInfo(44, "");
+    const ingredientDetailInfo4 = await apiClient.getIngredientDetailInfo(71, "");
     popularIngredientList.push(ingredientDetailInfo4);
-    const ingredientDetailInfo5 = await apiClient.getIngredientDetailInfo(10, "");
+    const ingredientDetailInfo5 = await apiClient.getIngredientDetailInfo(72, "");
     popularIngredientList.push(ingredientDetailInfo5);
 
   return {

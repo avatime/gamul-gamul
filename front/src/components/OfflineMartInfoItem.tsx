@@ -20,8 +20,8 @@ export const OfflineMartInfoItem: FC<IProps> = ({ offlineMartInfo, ingredientInf
           <p style={{ fontSize: 12 }}>{offlineMartInfo?.price.toLocaleString() || 0}원</p>
         ) : (
           <p style={{ fontSize: 12, fontWeight: "bold" }}>
-            가격({ingredientInfo?.quantity}
-            {ingredientInfo?.unit})
+            가격
+            {!!ingredientInfo?.quantity && `(${ingredientInfo?.quantity}${ingredientInfo?.unit})`}
           </p>
         )}
       </Grid>

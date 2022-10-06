@@ -39,7 +39,7 @@ export const IngredientListComp: FC<IProps> = ({
     <CardContainer
       title={title}
       onClickMore={showMore ? () => router.push("/ingredient") : undefined}
-      totalPrice={totalPrice?.toLocaleString()}
+      totalPrice={totalPrice}
     >
       {type === "column" && (
         <CarouselContainer

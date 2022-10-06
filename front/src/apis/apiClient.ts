@@ -20,10 +20,8 @@ import { MyRecipeInfo } from "./responses/myRecipeInfo";
 import { MyRecipeIngredientInfo } from "./responses/myRecipeIngredientInfo";
 import { LimitPriceNoticeInfo } from "./responses/limitPriceNoticeInfo";
 import { LoginRes } from "./responses/loginRes";
-import * as Dummy from "./dummy/dummyApi";
 import { getCookie, setCookie } from "../utils/cookie";
 import { NotificationInfo } from "./responses/notificationInfo";
-import { getNotificationItemList } from "./dummy/dummyApi";
 import { OnlineMartInfo } from "./responses/onlineMartInfo";
 
 const delay = 0;

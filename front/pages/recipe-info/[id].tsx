@@ -19,6 +19,7 @@ import { Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { saveRecentSearchLocalStorage } from "../../src/utils/localStorageUtil";
 import { getCookie } from "../../src/utils/cookie";
+import { Page } from "../../src/components/Page";
 
 interface IProps {
   initialRecipeDetailInfo: RecipeDetailInfo;
@@ -68,7 +69,7 @@ const RecipeInfoPage: NextPage<IProps> = ({ initialRecipeDetailInfo }) => {
     }
   };
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container direction="row" justifyContent="space-between" alignItems="center">
@@ -238,7 +239,7 @@ const RecipeInfoPage: NextPage<IProps> = ({ initialRecipeDetailInfo }) => {
           <YoutubeRecipeListComp youtubeInfoList={recipeDetailInfo.youtube_list} />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

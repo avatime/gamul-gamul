@@ -19,6 +19,7 @@ import { AlarmRegisterModal } from "../src/components/AlarmRegisterModal";
 import { Desktop } from "../src/components/Desktop";
 import { Tablet } from "../src/components/Tablet";
 import styles from "../styles/Page.module.css";
+import { Page } from '../src/components/Page';
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -225,7 +226,7 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   );
 
   return (
-    <>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>{Comp(true, "250px")}</Box>
       </Desktop>
@@ -245,7 +246,7 @@ const AlarmRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
           />
         </Backdrop>
       )}
-    </>
+    </Page>
   );
 };
 

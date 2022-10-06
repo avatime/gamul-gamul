@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { Tablet } from "../src/components/Tablet";
 import { Desktop } from "../src/components/Desktop";
 import styles from "../styles/Page.module.css";
+import { Page } from '../src/components/Page';
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -175,7 +176,7 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   );
 
   return (
-    <>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>{Comp(true, "250px")}</Box>
       </Desktop>
@@ -183,7 +184,7 @@ const AllergyRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
         <Box className={styles.PageforTablet}>{Comp(true, "150px")}</Box>
       </Tablet>
       <Mobile>{Comp(false)}</Mobile>
-    </>
+    </Page>
   );
 };
 
