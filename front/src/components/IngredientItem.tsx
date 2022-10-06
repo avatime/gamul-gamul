@@ -27,6 +27,7 @@ interface IProps {
   onClickItem: (id: number) => void;
   tail?: React.ReactNode;
   noVol?: boolean;
+  title?: string;
 }
 
 export const IngredientItem: FC<IProps> = ({
@@ -36,6 +37,7 @@ export const IngredientItem: FC<IProps> = ({
   onClickItem,
   tail,
   noVol,
+  title,
 }) => {
   const onMouseDownDelete = (e: any) => {
     e.stopPropagation();
@@ -86,7 +88,7 @@ export const IngredientItem: FC<IProps> = ({
         </Box>
 
         <p style={{ fontSize: 12, fontWeight: "bold", margin: 3 }}>
-          {ingredientInfo?.name || "이름"}
+          {title || ingredientInfo?.name || "이름"}
         </p>
         <Box flex={1} />
         <p style={{ fontSize: 10 }}>

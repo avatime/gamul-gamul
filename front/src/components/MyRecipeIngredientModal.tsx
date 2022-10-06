@@ -53,7 +53,13 @@ export const MyRecipeIngredientModal: FC<IProps> = ({
             type="number"
             color="success"
             sx={{ width: "80px" }}
-            onChange={(e: any) => setQuantity(e.target.value.replace(/^0+/, ''))}
+            onChange={(e: any) => {
+              let value = e.target.value.replace(/^0+/, '');
+              if (4 < value.length) {
+                value = value.substring(1, 5);
+              }
+              setQuantity(value.replace(/^0+/, ''))
+            }}
             value={quantity}
           />
           <Typography sx={{ fontWeight: "bold", color: "#A1A1AA", paddingTop: "4px" }}>
