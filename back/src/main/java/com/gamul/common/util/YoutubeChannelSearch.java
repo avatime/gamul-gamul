@@ -36,8 +36,8 @@ public class YoutubeChannelSearch {
     private static final long NUMBER_OF_VIDEOS_RETURNED = 12;
     private static YouTube youtube;
 
-    private static String api_Key = "AIzaSyCEOteOZLwJUNHkyB4kD91eqhirP4o3WX4"; //AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA
-
+//    private static String api_Key = "AIzaSyCEOteOZLwJUNHkyB4kD91eqhirP4o3WX4";
+    private static String api_Key = "AIzaSyCEMVrmcsR9UBBYWrWT5jc25HXF2uLFBZA";
 
     public static List<ResourceId> Search(String query){
         Properties properties = new Properties();

@@ -42,6 +42,7 @@ public class AlarmController {
 
     @Autowired
     DailyPriceService dailyPriceService;
+    private java.lang.Exception Exception;
 
     @PostMapping("/allergy")
     @ApiOperation(value = "알러지 등록/해제", notes = "식재료별 <strong>알러지</strong>를 등록 혹은 해제한다")
@@ -215,6 +216,8 @@ public class AlarmController {
         Day day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 1);
         if (day == null)
             day = dailyPriceService.findDailyPrice(notice.getIngredientPriceNotice().getIngredient().getId(), 0);
+        if (day == null)
+            throw Exception;
         String info = " - " + decFormat.format(day.getPrice()) + "원/" + day.getQuantity() + day.getUnit();
         NoticeRes send = new NoticeRes(notice, info);
         Map<String, Object> params = new HashMap<>();
