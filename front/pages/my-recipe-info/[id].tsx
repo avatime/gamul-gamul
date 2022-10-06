@@ -15,8 +15,9 @@ import IngredientPriceGraph from "../../src/components/IngredientPriceGraph";
 import { ButtonFill } from "../../src/components/button/ButtonFill";
 import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
-import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 import { CardContainer } from "../../src/components/CardContainer";
+import { MyIngredientPriceComp } from '../../src/components/templates/MyIngredientPriceComp';
+import { MyRecipeDetailInfo } from '../../src/apis/responses/myRecipeDetailInfo';
 
 interface IProps {
   blackList: number[];
@@ -54,16 +55,22 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
     ApiClient.getInstance()
       .getMyRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setMyRecipeDetailInfo(data));
+      console.log("데이터 넣음");
   }, []);
+
+  useEffect(() => {
+    console.log("그래프 바뀜 : "+ graph);
+  }, [graph]);
 
   useEffect(() => {
     myRecipeDetailInfo.ingredient_list.forEach((v) => {
       console.log(v.ingredient_id);
       if (blackList.includes(Number(v.ingredient_id))) {
+        console.log("만족");
         setGraph(false);
       }
     });
-  }, [myRecipeDetailInfo]);
+  }, [myRecipeDetailInfo, blackList]);
 
   const modifyRecipe = () => {
     router.push({
@@ -110,33 +117,12 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
             gridSize={5}
             itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
             />
-          {/* {graph && (
-            <CardContainer title="">
-              <Box>
-              <p style={{ fontWeight: "bold", margin: "20px 10px" }}>
-                오늘 소매가{" "}
-                <span style={{
-                  
-                }}>
-
-                </span>
-              </p>
-              <IngredientPriceGraph
-                priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-                inputWidth="98%"
-                inputHeight={500}
-                type="line"
-                myRecipe
-              />
-              </Box>
-            </CardContainer>
-          )} */}
-          {/* <MyIngredientPriceComp
+          <MyIngredientPriceComp
             inputWidth="98%"
             inputHeight={500}
             priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-            graph
-          /> */}
+            graph={graph}
+          />
           <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
             <ButtonFill
               onClick={deleteRecipe}
@@ -179,17 +165,12 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
           gridSize={5}
           itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
         />
-        {graph && (
-          <CardContainer title="">
-            <IngredientPriceGraph
-              priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-              inputWidth="98%"
-              inputHeight={500}
-              type="line"
-              myRecipe
-            />
-          </CardContainer>
-        )}
+       <MyIngredientPriceComp
+            inputWidth="98%"
+            inputHeight={500}
+            priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+            graph={graph}
+          />
         <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
           <ButtonFill
             onClick={deleteRecipe}
@@ -245,17 +226,12 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
           totalPrice={myRecipeDetailInfo.total_price}
           itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
         />
-        {graph && (
-          <CardContainer title="">
-            <IngredientPriceGraph
-              priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-              inputWidth="98%"
-              inputHeight={400}
-              type="line"
-              myRecipe
-            />
-          </CardContainer>
-        )}
+        <MyIngredientPriceComp
+            inputWidth="98%"
+            inputHeight={400}
+            priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+            graph={graph}
+          />
         <Box
           sx={{
             display: "flex",
@@ -282,7 +258,8 @@ export default MyRecipeInfoPage;
 
 export const getServerSideProps = async () => {
   const apiClient = ApiClient.getInstance();
-  const blackList = await apiClient.getBlackList();
+  // const blackList = await apiClient.getBlackList();
+  const blackList: number[] = [];
 
   return {
     props: {

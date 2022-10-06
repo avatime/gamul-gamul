@@ -11,7 +11,6 @@ interface IProps {
   title?: string;
   inputWidth: any;
   inputHeight: number;
-  blackList?: number[];
   priceTransitionInfo: PriceTransitionInfo;
   graph: boolean;
 }
@@ -20,7 +19,6 @@ export const MyIngredientPriceComp: FC<IProps> = ({
   title = "물가 정보",
   inputWidth,
   inputHeight,
-  blackList,
   priceTransitionInfo,
   graph,
 }) => {
@@ -28,6 +26,10 @@ export const MyIngredientPriceComp: FC<IProps> = ({
   const pastVol = priceTransitionInfo.pastvol;
   const todayPrice = priceTransitionInfo.price;
   const todayVol = priceTransitionInfo.todayvol;
+
+  useEffect(() => {
+    console.log(graph);
+  }, [graph]);
 
   return (
       <CardContainer title={title}>
