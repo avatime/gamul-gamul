@@ -40,19 +40,18 @@ const RecipePage: NextPage<IProps> = ({
     <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
-          <RecipeListComp
+          {!!userName && (<RecipeListComp
             title="찜 목록"
             rowSize={1}
             gridSize={6}
             recipeList={bookmarkRecipeList}
-          />
+          />)}
           <RecipeListComp
             title="인기 요리법"
-            rowSize={1}
             gridSize={6}
             recipeList={popularRecipeList}
-          />
-          <Grid container>
+          /> 
+          {!!userName && (<Grid container>
             <Grid item xs={5}>
               <RecipeListComp
                 type="row"
@@ -67,24 +66,28 @@ const RecipePage: NextPage<IProps> = ({
                 gridSize={2}
               />
             </Grid>
-          </Grid>
+          </Grid>)}
+          {!!!userName && (<YoutubeRecipeListComp
+                title="인기 요리법 유튜브"
+                youtubeInfoList={popularYoutubeList}
+                gridSize={4}
+              />)}
         </Box>
       </Desktop>
       <Tablet>
         <Box className={styles.PageforTablet}>
-          <RecipeListComp
+          {!!userName && (<RecipeListComp
             title="찜 목록"
             rowSize={1}
             gridSize={6}
             recipeList={bookmarkRecipeList}
-          />
+          />)}
           <RecipeListComp
             title="인기 요리법"
-            rowSize={1}
             gridSize={6}
             recipeList={popularRecipeList}
           />
-          <Grid container>
+          {!!userName && (<Grid container>
             <Grid item xs>
               <RecipeListComp
                 type="row"
@@ -98,15 +101,20 @@ const RecipePage: NextPage<IProps> = ({
                 youtubeInfoList={popularYoutubeList}
               />
             </Grid>
-          </Grid>
+          </Grid>)}
+          {!!!userName && (<YoutubeRecipeListComp
+                title="인기 요리법 유튜브"
+                youtubeInfoList={popularYoutubeList}
+                gridSize={4}
+              />)}
         </Box>
       </Tablet>
       <Mobile>
         <Box className={styles.PageforMobile}>
-          <RecipeListComp title="찜 목록" rowSize={1} recipeList={bookmarkRecipeList} />
+          {!!userName && (<RecipeListComp title="찜 목록" rowSize={1} recipeList={bookmarkRecipeList} />)}
           <RecipeListComp title="인기 요리법" rowSize={1} recipeList={popularRecipeList} />
-          <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeWithBasketList} />
-          <YoutubeRecipeListComp title="인기 요리법 유튜브" youtubeInfoList={popularYoutubeList} />
+          {!!userName && (<RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeWithBasketList} />)}
+          <YoutubeRecipeListComp title="인기 요리법 유튜브" youtubeInfoList={popularYoutubeList} gridSize={2}/>
         </Box>
       </Mobile>
     </Page>

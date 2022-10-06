@@ -16,63 +16,68 @@ import { ButtonFill } from "../../src/components/button/ButtonFill";
 import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
 import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
+import { CardContainer } from "../../src/components/CardContainer";
+import { MyIngredientPriceComp } from "../../src/components/templates/MyingredientPriceComp";
 
 interface IProps {
   blackList: number[];
 }
 
-const MyRecipeInfoPage: NextPage<IProps> = ({
-  blackList,
-}) => {
+const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
   const router = useRouter();
   const { id } = router.query;
   const apiClient = ApiClient.getInstance();
-  const [graph, setGraph] = useState(false);
-  const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>({
-    ingredient_list: [],
-    image_path: "",
-    name: "",
-    price_transition_info: {
-      before_price: 0,
-      pastvol: 0,
-      price: 0,
-      todayvol: 0,
-      retailsales: {
-        daily: [],
-        monthly: [],
-        yearly: [],
+  const [graph, setGraph] = useState(true);
+  const [myRecipeDetailInfo, setMyRecipeDetailInfo] =
+    useState<MyRecipeDetailInfo>({
+      ingredient_list: [],
+      image_path: "",
+      name: "",
+      price_transition_info: {
+        before_price: 0,
+        pastvol: 0,
+        price: 0,
+        todayvol: 0,
+        retailsales: {
+          daily: [],
+          monthly: [],
+          yearly: [],
+        },
+        wholesales: {
+          daily: [],
+          monthly: [],
+          yearly: [],
+        },
       },
-      wholesales: {
-        daily: [],
-        monthly: [],
-        yearly: [],
-      }
-    },
-    total_price: 0,
-  });
- 
+      total_price: 0,
+    });
+
   useEffect(() => {
-      ApiClient.getInstance()
+    ApiClient.getInstance()
       .getMyRecipeDetailInfo(getCookie("userName"), Number(id))
       .then((data) => setMyRecipeDetailInfo(data));
-    if(!blackList.includes(Number(id))) {
-      setGraph(true);
-    }
   }, []);
+
+  useEffect(() => {
+    myRecipeDetailInfo.ingredient_list.forEach(v => {
+      console.log(v.ingredient_id);
+      if (blackList.includes(Number(v.ingredient_id))) {
+        setGraph(false);
+      }
+    });
+  }, [myRecipeDetailInfo]);
 
   const modifyRecipe = () => {
     router.push({
       pathname: "/register-my-recipe",
       query: { id: id },
-      
     });
   };
 
   const deleteRecipe = async () => {
     // 나만의 요리법 삭제 api 호출
     apiClient.deleteMyRecipe(getCookie("userName"), Number(id));
-    router.push('/my-recipe');
-
+    router.push("/my-recipe");
   };
 
   return (
@@ -80,7 +85,11 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
-            <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
+            <Avatar
+              src={myRecipeDetailInfo.image_path}
+              alt="나만의요리법사진"
+              sx={{ width: "60px", height: "60px" }}
+            />
             <Box
               sx={{
                 display: "flex",
@@ -102,14 +111,31 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
             rowSize={2}
             gridSize={5}
           />
-          {graph && (<IngredientPriceGraph
-            priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-            inputWidth="98%"
-            inputHeight={500}
-            type="line"
-            myRecipe
-          />)}
-          <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
+          {/* {graph && (
+            <CardContainer title="">
+              <Box>
+              <p style={{ fontWeight: "bold", margin: "20px 10px" }}>
+                오늘 소매가{" "}
+                <span style={{
+                  
+                }}>
+
+                </span>
+              </p>
+              <IngredientPriceGraph
+                priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+                inputWidth="98%"
+                inputHeight={500}
+                type="line"
+                myRecipe
+              />
+              </Box>
+            </CardContainer>
+          )} */}
+          <MyIngredientPriceComp inputWidth="98%" inputHeight={500} priceTransitionInfo={myRecipeDetailInfo.price_transition_info} graph />
+          <Box
+            sx={{ display: "flex", justifyContent: "center", padding: "15px" }}
+          >
             <ButtonFill
               onClick={deleteRecipe}
               text="나만의 요리법 삭제"
@@ -124,7 +150,11 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
       </Desktop>
       <Tablet className={styles.PageforTablet}>
         <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
-        <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px" }} />
+          <Avatar
+            src={myRecipeDetailInfo.image_path}
+            alt="나만의요리법사진"
+            sx={{ width: "60px", height: "60px" }}
+          />
           <Box
             sx={{
               display: "flex",
@@ -146,14 +176,20 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
           rowSize={2}
           gridSize={5}
         />
-        {graph && (<IngredientPriceGraph
-          priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-          inputWidth="98%"
-          inputHeight={500}
-          type="line"
-          myRecipe
-        />)}
-        <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
+        {graph && (
+          <CardContainer title="">
+            <IngredientPriceGraph
+              priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+              inputWidth="98%"
+              inputHeight={500}
+              type="line"
+              myRecipe
+            />
+          </CardContainer>
+        )}
+        <Box
+          sx={{ display: "flex", justifyContent: "center", padding: "15px" }}
+        >
           <ButtonFill
             onClick={deleteRecipe}
             text="나만의 요리법 삭제"
@@ -166,13 +202,13 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
         </Box>
       </Tablet>
       <Mobile>
-      <BackHeader />
-        <Box
-          sx={{ display: "flex", }}
-          className={styles.PageforMobile}
-        >
-          
-          <Avatar src={myRecipeDetailInfo.image_path} alt="나만의요리법사진" sx={{ width: "60px", height: "60px", marginLeft:"15px" }} />
+        <BackHeader />
+        <Box sx={{ display: "flex" }} className={styles.PageforMobile}>
+          <Avatar
+            src={myRecipeDetailInfo.image_path}
+            alt="나만의요리법사진"
+            sx={{ width: "60px", height: "60px", marginLeft: "15px" }}
+          />
           <Box
             sx={{
               display: "flex",
@@ -203,15 +239,28 @@ const MyRecipeInfoPage: NextPage<IProps> = ({
             </Box>
           </Box>
         </Box>
-        <IngredientListComp ingredientList={myRecipeDetailInfo.ingredient_list} totalPrice={myRecipeDetailInfo.total_price}/>
-        {graph && (<IngredientPriceGraph
-          priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
-          inputWidth="98%"
-          inputHeight={400}
-          type="line"
-          myRecipe
-        />)}
-        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "75px" }}>
+        <IngredientListComp
+          ingredientList={myRecipeDetailInfo.ingredient_list}
+          totalPrice={myRecipeDetailInfo.total_price}
+        />
+        {graph && (
+          <CardContainer title="">
+            <IngredientPriceGraph
+              priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+              inputWidth="98%"
+              inputHeight={400}
+              type="line"
+              myRecipe
+            />
+          </CardContainer>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "75px",
+          }}
+        >
           <ButtonFill
             onClick={deleteRecipe}
             text="나만의 요리법 삭제"
@@ -234,7 +283,6 @@ export const getServerSideProps = async () => {
   const blackList = await apiClient.getBlackList();
 
   return {
-
     props: {
       blackList,
     },
