@@ -12,8 +12,8 @@ interface IProps {
   inputWidth: any;
   inputHeight: number;
   blackList?: number[];
-  ingredientList: IngredientInfo[];
   priceTransitionInfo: PriceTransitionInfo;
+  graph: boolean;
 }
 
 export const MyIngredientPriceComp: FC<IProps> = ({
@@ -21,24 +21,14 @@ export const MyIngredientPriceComp: FC<IProps> = ({
   inputWidth,
   inputHeight,
   blackList,
-  ingredientList,
   priceTransitionInfo,
+  graph,
 }) => {
   const pastPrice = priceTransitionInfo.before_price;
   const pastVol = priceTransitionInfo.pastvol;
   const todayPrice = priceTransitionInfo.price;
   const todayVol = priceTransitionInfo.todayvol;
-  const [graph, setGraph] = useState(true);
 
-  useEffect(() => {
-    if(!!blackList) {
-      ingredientList.forEach((v) => {
-        if(blackList.includes(v.ingredient_id)) {
-          setGraph(false);
-        }
-      })
-    }
-  }, []);
   return (
       <CardContainer title={title}>
         <Box overflow={"hidden"}>
