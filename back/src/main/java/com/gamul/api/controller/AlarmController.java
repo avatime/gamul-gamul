@@ -9,6 +9,7 @@ import com.gamul.api.service.DailyPriceService;
 import com.gamul.api.service.UserService;
 import com.gamul.db.entity.*;
 import com.gamul.db.repository.IngredientRepository;
+import com.gamul.db.repository.NoticeRepository;
 import com.google.gson.Gson;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class AlarmController {
 
     @Autowired
     DailyPriceService dailyPriceService;
+    @Autowired
+    NoticeRepository noticeRepository;
     private java.lang.Exception Exception;
 
     @PostMapping("/allergy")
@@ -80,7 +83,24 @@ public class AlarmController {
     public ResponseEntity<?> noticeAlarm(@RequestBody @ApiParam(value="가격 알림 정보", required = true)IngredientLimitPricePostReq ingredientLimitPricePostReq){
         try{
             alarmService.deleteMyNotice(ingredientLimitPricePostReq.getUserName());
-            alarmService.saveAllIngredientPriceNotice(changeIngredientPriceNotice(ingredientLimitPricePostReq.getUserName(), ingredientLimitPricePostReq.getIngredientList()));
+            List<IngredientPriceNotice> list = alarmService.saveAllIngredientPriceNotice(changeIngredientPriceNotice(ingredientLimitPricePostReq.getUserName(), ingredientLimitPricePostReq.getIngredientList()));
+            List<Notice> noticeList = new ArrayList<>();
+            for(IngredientPriceNotice ingredientPriceNotice : list) {
+                Day day = dailyPriceService.findDailyPrice(ingredientPriceNotice.getIngredient().getId(), 1);
+                Notice notice;
+                if(day != null){
+                    if(day.getPrice() < ingredientPriceNotice.getLowerLimitPrice()){
+                        notice = new Notice(ingredientPriceNotice, false);
+                        noticeRepository.save(notice);
+                        sendNotice(notice);
+                    }
+                    if (day.getPrice() > ingredientPriceNotice.getUpperLimitPrice()){
+                        notice = new Notice(ingredientPriceNotice, true);
+                        noticeRepository.save(notice);
+                        sendNotice(notice);
+                    }
+                }
+            }
         } catch (Exception e){
             return ResponseEntity.status(500).body("Internal Server Error");
         }
