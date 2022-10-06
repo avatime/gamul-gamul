@@ -87,7 +87,7 @@ public class SearchServiceImpl implements SearchService{
 
                 // 대분류 객체 가져오기
                 HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
-                IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+                IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
                 ingredientInfoResList.add(ingredientInfoRes);
             }
         }
