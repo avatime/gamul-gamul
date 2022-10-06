@@ -73,7 +73,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public List<Notice> getAllNotice() {
-        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0));
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         return noticeRepository.getAllByCreatedTimeBetween(Timestamp.valueOf(start), Timestamp.valueOf(end));
     }
