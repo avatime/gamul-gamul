@@ -120,7 +120,7 @@ const IngredientPriceGraph: FC<IProps> = ({ priceTransitionInfo, inputWidth, inp
         }}
       />
       }
-      {!retailStatus && !wholeStatus && !allStatus && type === "bar" && <Chart2
+      {type === "bar" && <Chart2
         height={inputHeight}
         width={inputWidth}
         type="bar"
