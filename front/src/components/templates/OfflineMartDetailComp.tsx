@@ -22,7 +22,7 @@ interface IProps {
 
 export const OfflineMartDetailComp: FC<IProps> = ({
   title = "주변 마트",
-  ingredientId = 1,
+  ingredientId = 66,
   onClickItem,
   inputHeight,
   mapId,
