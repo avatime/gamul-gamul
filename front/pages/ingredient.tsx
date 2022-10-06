@@ -211,11 +211,11 @@ export const getStaticProps = async () => {
     popularIngredientList.push(ingredientDetailInfo1);
     const ingredientDetailInfo2 = await apiClient.getIngredientDetailInfo(28, "");
     popularIngredientList.push(ingredientDetailInfo2);
-    const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(43, "");
+    const ingredientDetailInfo3 = await apiClient.getIngredientDetailInfo(66, "");
     popularIngredientList.push(ingredientDetailInfo3);
-    const ingredientDetailInfo4 = await apiClient.getIngredientDetailInfo(44, "");
+    const ingredientDetailInfo4 = await apiClient.getIngredientDetailInfo(71, "");
     popularIngredientList.push(ingredientDetailInfo4);
-    const ingredientDetailInfo5 = await apiClient.getIngredientDetailInfo(10, "");
+    const ingredientDetailInfo5 = await apiClient.getIngredientDetailInfo(72, "");
     popularIngredientList.push(ingredientDetailInfo5);
 
   return {

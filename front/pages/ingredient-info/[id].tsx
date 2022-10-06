@@ -1,10 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {
-  saveRecentSearchLocalStorage,
-  RecentSearch,
-} from "../../src/utils/localStorageUtil";
+import { saveRecentSearchLocalStorage, RecentSearch } from "../../src/utils/localStorageUtil";
 import { ApiClient } from "../../src/apis/apiClient";
 import { Box } from "@mui/system";
 import { Desktop } from "../../src/components/Desktop";
@@ -19,11 +16,11 @@ import { Mobile } from "../../src/components/Mobile";
 import { InfoTitle } from "../../src/components/InfoTitle";
 import { getCookie } from "../../src/utils/cookie";
 import { Grid } from "@mui/material";
-import { OnlineMarketInfoComp } from '../../src/components/OnlineMarketInfoComp';
-import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
-import { RecipeInfo } from '../../src/apis/responses/recipeInfo';
-import { RecipeListComp } from '../../src/components/templates/RecipeListComp';
-import { BackHeader } from '../../src/components/BackHeader';
+import { OnlineMarketInfoComp } from "../../src/components/OnlineMarketInfoComp";
+import { OnlineMartInfo } from "../../src/apis/responses/onlineMartInfo";
+import { RecipeInfo } from "../../src/apis/responses/recipeInfo";
+import { RecipeListComp } from "../../src/components/templates/RecipeListComp";
+import { BackHeader } from "../../src/components/BackHeader";
 import { Page } from "../../src/components/Page";
 
 interface IProps {
@@ -32,12 +29,7 @@ interface IProps {
   blackList: number[];
 }
 
-const IngredientInfoPage: NextPage<IProps> = ({
-  ingredientDetailInfo,
-  recipeList,
-  blackList,
-}) => {
- 
+const IngredientInfoPage: NextPage<IProps> = ({ ingredientDetailInfo, recipeList, blackList }) => {
   const router = useRouter();
   const { id } = router.query;
   const userName = getCookie("userName");
@@ -45,34 +37,39 @@ const IngredientInfoPage: NextPage<IProps> = ({
   const [bookmark, setBookmark] = useState(false);
   const [basket, setBasket] = useState(false);
   const [showChild, setShowChild] = useState(false);
+  const [isAllergy, setIsAllergy] = useState(false);
 
   useEffect(() => {
     apiClient.postIngredientView(Number(id as string));
   }, [apiClient, id]);
 
   const onClickBookmark = async () => {
-    ApiClient.getInstance()
-      .putBookmarkIngredient(userName, Number(id));
+    ApiClient.getInstance().putBookmarkIngredient(userName, Number(id));
   };
 
   const onClickBasket = () => {
-    ApiClient.getInstance()
-      .putBasketIngredient(userName, Number(id));
-    }
+    ApiClient.getInstance().putBasketIngredient(userName, Number(id));
+  };
 
   useEffect(() => {
     if (ingredientDetailInfo.ingredient_info) {
-      saveRecentSearchLocalStorage("ingredient", ingredientDetailInfo.ingredient_info.ingredient_id, ingredientDetailInfo.ingredient_info.name);
+      saveRecentSearchLocalStorage(
+        "ingredient",
+        ingredientDetailInfo.ingredient_info.ingredient_id,
+        ingredientDetailInfo.ingredient_info.name
+      );
     }
   }, [ingredientDetailInfo]);
 
   useEffect(() => {
-    if(getCookie("userName") != null) {
+    if (getCookie("userName") != null) {
       ApiClient.getInstance()
         .getIngredientDetailInfo(Number(id), getCookie("userName"))
         .then((data) => {
           setBookmark(data.ingredient_info.bookmark);
           setBasket(data.ingredient_info.basket);
+          setIsAllergy(data.ingredient_info.allergy);
+          console.log(data);
         });
     }
     setShowChild(true);
@@ -82,7 +79,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
     return null;
   }
 
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return <></>;
   } else {
     return (
@@ -91,24 +88,25 @@ const IngredientInfoPage: NextPage<IProps> = ({
           <Box className={styles.PageforDesktop}>
             <Grid container>
               <Grid item xs={7}>
-                  <Box
-                    height="175px"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <InfoTitle
-                      name={ingredientDetailInfo.ingredient_info.name}
-                      bookmark={bookmark}
-                      basket={basket}
-                      onClickBookmark={onClickBookmark}
-                      onClickBasket={onClickBasket}
-                      views={ingredientDetailInfo.ingredient_info.views}
-                      imagePath={`/assets/ingredientsImg/${id}.jpg`}
-                    />
-                  </Box>
+                <Box
+                  height="175px"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <InfoTitle
+                    name={ingredientDetailInfo.ingredient_info.name}
+                    bookmark={bookmark}
+                    basket={basket}
+                    onClickBookmark={onClickBookmark}
+                    onClickBasket={onClickBasket}
+                    views={ingredientDetailInfo.ingredient_info.views}
+                    imagePath={`/assets/ingredientsImg/${id}.jpg`}
+                    allergy={isAllergy}
+                  />
+                </Box>
                 <IngredientPriceComp
                   ingredientDetailInfo={ingredientDetailInfo}
                   inputWidth={"98%"}
@@ -123,7 +121,10 @@ const IngredientInfoPage: NextPage<IProps> = ({
                   mapId="desktop"
                   inputHeight="300px"
                 />
-                <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+                <OnlineMarketInfoComp
+                  onlineMartInfo={ingredientDetailInfo.online_mart_info}
+                  iconSize="15px"
+                />
               </Grid>
             </Grid>
           </Box>
@@ -131,15 +132,16 @@ const IngredientInfoPage: NextPage<IProps> = ({
         <Tablet>
           <Box className={styles.PageforTablet}>
             <Box marginTop="10px">
-            <InfoTitle
-              name={ingredientDetailInfo.ingredient_info.name}
-              bookmark={bookmark}
-              basket={basket}
-              onClickBookmark={onClickBookmark}
-              onClickBasket={onClickBasket}
-              views={ingredientDetailInfo.ingredient_info.views}
-              imagePath={`/assets/ingredientsImg/${id}.jpg`}
-            />
+              <InfoTitle
+                name={ingredientDetailInfo.ingredient_info.name}
+                bookmark={bookmark}
+                basket={basket}
+                onClickBookmark={onClickBookmark}
+                onClickBasket={onClickBasket}
+                views={ingredientDetailInfo.ingredient_info.views}
+                imagePath={`/assets/ingredientsImg/${id}.jpg`}
+                allergy={isAllergy}
+              />
             </Box>
             <IngredientPriceComp
               ingredientDetailInfo={ingredientDetailInfo}
@@ -153,11 +155,14 @@ const IngredientInfoPage: NextPage<IProps> = ({
               mapId="tablet"
               inputHeight="350px"
             />
-            <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+            <OnlineMarketInfoComp
+              onlineMartInfo={ingredientDetailInfo.online_mart_info}
+              iconSize="15px"
+            />
           </Box>
         </Tablet>
         <Mobile>
-        <BackHeader />
+          <BackHeader />
           <Box className={styles.PageforMobile}>
             <InfoTitle
               name={ingredientDetailInfo.ingredient_info.name}
@@ -167,6 +172,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
               onClickBasket={onClickBasket}
               views={ingredientDetailInfo.ingredient_info.views}
               imagePath={`/assets/ingredientsImg/${id}.jpg`}
+              allergy={isAllergy}
             />
             <IngredientPriceComp
               ingredientDetailInfo={ingredientDetailInfo}
@@ -180,14 +186,15 @@ const IngredientInfoPage: NextPage<IProps> = ({
               mapId="mobile"
               inputHeight="300px"
             />
-            <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
+            <OnlineMarketInfoComp
+              onlineMartInfo={ingredientDetailInfo.online_mart_info}
+              iconSize="15px"
+            />
           </Box>
         </Mobile>
       </Page>
     );
   }
-
-  
 };
 
 export default IngredientInfoPage;
@@ -207,11 +214,9 @@ export default IngredientInfoPage;
 
 export const getServerSideProps = async (context: any) => {
   const apiClient = ApiClient.getInstance();
-  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(
-    context.params.id,
-    "",
-  );
-  const recipeList = (await apiClient.search(ingredientDetailInfo.ingredient_info.name)).recipe_list;
+  const ingredientDetailInfo = await apiClient.getIngredientDetailInfo(context.params.id, "");
+  const recipeList = (await apiClient.search(ingredientDetailInfo.ingredient_info.name))
+    .recipe_list;
   // const blackList = await apiClient.getBlackList();
   const blackList: number[] = [];
   return {
