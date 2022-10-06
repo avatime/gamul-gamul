@@ -181,8 +181,8 @@ public class MyRecipeController {
                 dailySize = Math.min(dailySize, dailyPrice.size());
                 monthlySize = Math.min(monthlySize, monthlyPrice.size());
                 dailyWholeSize = Math.min(dailyWholeSize, dailyWholePrice.size());
-                monthlyWholeSize = Math.min(monthlyWholeSize, dailyWholePrice.size());
-                yearSize = Math.min(monthlySize, Math.min(yearSize, yearlyPrice.size()));
+                monthlyWholeSize = Math.min(monthlyWholeSize, monthlyWholePrice.size());
+                yearSize = Math.min(yearSize, yearlyPrice.size());
 
                 int price = 0;
                 for (int i = 0; i < 10; i++) {
@@ -219,7 +219,6 @@ public class MyRecipeController {
                             if (j >= yearlyPrice.size()) continue;
                             yearRetailPrice.get(j).setDate(yearlyPrice.get(j).getDatetime());
                         }
-//                        setDate = false;
                     }
                 }
 
@@ -341,6 +340,57 @@ public class MyRecipeController {
                         priceTransitionInfoRes.setPastvol(0);
                     } else {
                         double pastvol = (1.0 * (dayRetailPrice.get(1).getPrice() - dayRetailPrice.get(2).getPrice()) / dayRetailPrice.get(2).getPrice()) * 100;
+                        priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                    }
+                }
+            }
+            else if (dailyWholeSize > 1) {
+                priceTransitionInfoRes.setBeforePrice(dayWholePrice.get(1).getPrice());
+                priceTransitionInfoRes.setPrice(dayWholePrice.get(0).getPrice());
+                if (dayWholePrice.get(1).getPrice() == 0) {
+                    priceTransitionInfoRes.setTodayvol(0);
+                    priceTransitionInfoRes.setPastvol(0);
+                } else {
+                    double todayvol = (1.0 * (dayWholePrice.get(0).getPrice() - dayWholePrice.get(1).getPrice()) / dayWholePrice.get(1).getPrice()) * 100;
+                    priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                    if (dayRetailPrice.get(2).getPrice() == 0) {
+                        priceTransitionInfoRes.setPastvol(0);
+                    } else {
+                        double pastvol = (1.0 * (dayWholePrice.get(1).getPrice() - dayWholePrice.get(2).getPrice()) / dayWholePrice.get(2).getPrice()) * 100;
+                        priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                    }
+                }
+            }
+            else if (monthlySize > 1) {
+                priceTransitionInfoRes.setBeforePrice(monthRetailPrice.get(1).getPrice());
+                priceTransitionInfoRes.setPrice(monthRetailPrice.get(0).getPrice());
+                if (monthRetailPrice.get(1).getPrice() == 0) {
+                    priceTransitionInfoRes.setTodayvol(0);
+                    priceTransitionInfoRes.setPastvol(0);
+                } else {
+                    double todayvol = (1.0 * (monthRetailPrice.get(0).getPrice() - monthRetailPrice.get(1).getPrice()) / monthRetailPrice.get(1).getPrice()) * 100;
+                    priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                    if (monthRetailPrice.get(2).getPrice() == 0) {
+                        priceTransitionInfoRes.setPastvol(0);
+                    } else {
+                        double pastvol = (1.0 * (monthRetailPrice.get(1).getPrice() - monthRetailPrice.get(2).getPrice()) / monthRetailPrice.get(2).getPrice()) * 100;
+                        priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
+                    }
+                }
+            }
+            else if (monthlyWholeSize > 1) {
+                priceTransitionInfoRes.setBeforePrice(monthWholePrice.get(1).getPrice());
+                priceTransitionInfoRes.setPrice(monthWholePrice.get(0).getPrice());
+                if (monthWholePrice.get(1).getPrice() == 0) {
+                    priceTransitionInfoRes.setTodayvol(0);
+                    priceTransitionInfoRes.setPastvol(0);
+                } else {
+                    double todayvol = (1.0 * (monthWholePrice.get(0).getPrice() - monthWholePrice.get(1).getPrice()) / monthWholePrice.get(1).getPrice()) * 100;
+                    priceTransitionInfoRes.setTodayvol(Math.round(todayvol * 100) / 100.0);
+                    if (monthWholePrice.get(2).getPrice() == 0) {
+                        priceTransitionInfoRes.setPastvol(0);
+                    } else {
+                        double pastvol = (1.0 * (monthWholePrice.get(1).getPrice() - monthWholePrice.get(2).getPrice()) / monthWholePrice.get(2).getPrice()) * 100;
                         priceTransitionInfoRes.setPastvol(Math.round(pastvol * 100) / 100.0);
                     }
                 }
