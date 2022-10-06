@@ -244,7 +244,7 @@ public class RecipeServiceImpl implements RecipeService{
                     today = dayList.get(0).getPrice();
                     yesterday = dayList.get(1).getPrice();
                     volatility = (today - yesterday) * 100.0 / today ;
-                    volatility = Math.round((volatility * 100) / 100.0);
+                    volatility = Math.round(volatility * 100)/ 100.0;
                 }
 
                 Allergy allergy = new Allergy();
@@ -284,7 +284,14 @@ public class RecipeServiceImpl implements RecipeService{
                 // 대분류 객체 가져오기
                 HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-                IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+                // 이름 변경
+                String name = ingredient.getMidClass();
+
+                if(recipeIngredient.getQuantity().length() != 0){
+                    name = name + " (" + recipeIngredient.getQuantity() + ")";
+                }
+
+                IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, name, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
                 ingredientInfoResList.add(ingredientInfoRes);
             }
         }
@@ -294,7 +301,11 @@ public class RecipeServiceImpl implements RecipeService{
         List<String> extraIngredientList = new ArrayList<>();
         List<IngredientNotneed> ingredientNotNeedList = ingredientNotneedRepository.findAllByRecipeId(recipeId).get();
         for (IngredientNotneed ingredientNotneed : ingredientNotNeedList){
-            extraIngredientList.add(ingredientNotneed.getIngredient());
+            String name = ingredientNotneed.getIngredient();
+            if (ingredientNotneed.getQuantity().length() != 0){
+                name = name + " (" + ingredientNotneed.getQuantity() + ")";
+            }
+            extraIngredientList.add(name);
         }
         List<YoutubeInfoRes> youtubeInfoResList = youtubeChannelSearch.get(recipe.getName());
         RecipeDetailRes recipeDetailRes = new RecipeDetailRes(recipeInfoRes, ingredientInfoResList, extraIngredientList, youtubeInfoResList);
