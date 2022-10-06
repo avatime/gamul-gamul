@@ -21,35 +21,34 @@ const NoticePage: NextPage<IProps> = () => {
       .getNotificationInfoList(getCookie("userName"))
       .then((data) => setNotificationInfoList(data));
   }, []);
+
+  const Comp = () =>
+    notificationInfoList.length ? (
+      <List>
+        {notificationInfoList.map((v, i) => (
+          <NotificationItem key={i} notificationInfo={v} />
+        ))}
+      </List>
+    ) : (
+      <p style={{ fontSize: "18px", fontWeight: "bold", margin: "15px" }}>알람 내역이 없습니다.</p>
+    );
   return (
     <Page>
       <Box bgcolor="white" minHeight="100vh">
         <Desktop>
           <Box className={styles.PageforDesktop}>
-            <List>
-              {notificationInfoList.map((v, i) => (
-                <NotificationItem key={i} notificationInfo={v} />
-              ))}
-            </List>
+            <Comp />
           </Box>
         </Desktop>
         <Tablet>
           <Box className={styles.PageforTablet}>
-            <List>
-              {notificationInfoList.map((v, i) => (
-                <NotificationItem key={i} notificationInfo={v} />
-              ))}
-            </List>
+            <Comp />
           </Box>
         </Tablet>
         <Mobile>
           <BackHeader backgroundColor="white" />
           <Box className={styles.PageforMobile}>
-            <List>
-              {notificationInfoList.map((v, i) => (
-                <NotificationItem key={i} notificationInfo={v} />
-              ))}
-            </List>
+            <Comp />
           </Box>
         </Mobile>
       </Box>
