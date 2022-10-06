@@ -17,7 +17,6 @@ import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
 import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 import { CardContainer } from "../../src/components/CardContainer";
-import { MyIngredientPriceComp } from "../../src/components/templates/MyingredientPriceComp";
 
 interface IProps {
   blackList: number[];
@@ -28,29 +27,28 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
   const { id } = router.query;
   const apiClient = ApiClient.getInstance();
   const [graph, setGraph] = useState(true);
-  const [myRecipeDetailInfo, setMyRecipeDetailInfo] =
-    useState<MyRecipeDetailInfo>({
-      ingredient_list: [],
-      image_path: "",
-      name: "",
-      price_transition_info: {
-        before_price: 0,
-        pastvol: 0,
-        price: 0,
-        todayvol: 0,
-        retailsales: {
-          daily: [],
-          monthly: [],
-          yearly: [],
-        },
-        wholesales: {
-          daily: [],
-          monthly: [],
-          yearly: [],
-        },
+  const [myRecipeDetailInfo, setMyRecipeDetailInfo] = useState<MyRecipeDetailInfo>({
+    ingredient_list: [],
+    image_path: "",
+    name: "",
+    price_transition_info: {
+      before_price: 0,
+      pastvol: 0,
+      price: 0,
+      todayvol: 0,
+      retailsales: {
+        daily: [],
+        monthly: [],
+        yearly: [],
       },
-      total_price: 0,
-    });
+      wholesales: {
+        daily: [],
+        monthly: [],
+        yearly: [],
+      },
+    },
+    total_price: 0,
+  });
 
   useEffect(() => {
     ApiClient.getInstance()
@@ -59,7 +57,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
   }, []);
 
   useEffect(() => {
-    myRecipeDetailInfo.ingredient_list.forEach(v => {
+    myRecipeDetailInfo.ingredient_list.forEach((v) => {
       console.log(v.ingredient_id);
       if (blackList.includes(Number(v.ingredient_id))) {
         setGraph(false);
@@ -110,7 +108,8 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
             totalPrice={myRecipeDetailInfo.total_price}
             rowSize={2}
             gridSize={5}
-          />
+            itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
+            />
           {/* {graph && (
             <CardContainer title="">
               <Box>
@@ -132,10 +131,13 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
               </Box>
             </CardContainer>
           )} */}
-          <MyIngredientPriceComp inputWidth="98%" inputHeight={500} priceTransitionInfo={myRecipeDetailInfo.price_transition_info} graph />
-          <Box
-            sx={{ display: "flex", justifyContent: "center", padding: "15px" }}
-          >
+          {/* <MyIngredientPriceComp
+            inputWidth="98%"
+            inputHeight={500}
+            priceTransitionInfo={myRecipeDetailInfo.price_transition_info}
+            graph
+          /> */}
+          <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
             <ButtonFill
               onClick={deleteRecipe}
               text="나만의 요리법 삭제"
@@ -175,6 +177,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
           totalPrice={myRecipeDetailInfo.total_price}
           rowSize={2}
           gridSize={5}
+          itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
         />
         {graph && (
           <CardContainer title="">
@@ -187,9 +190,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
             />
           </CardContainer>
         )}
-        <Box
-          sx={{ display: "flex", justifyContent: "center", padding: "15px" }}
-        >
+        <Box sx={{ display: "flex", justifyContent: "center", padding: "15px" }}>
           <ButtonFill
             onClick={deleteRecipe}
             text="나만의 요리법 삭제"
@@ -242,6 +243,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
         <IngredientListComp
           ingredientList={myRecipeDetailInfo.ingredient_list}
           totalPrice={myRecipeDetailInfo.total_price}
+          itemTitle={(v) => v && `${v.name} (${v.my_quantity}${v.unit})`}
         />
         {graph && (
           <CardContainer title="">

@@ -66,7 +66,7 @@ export const RecipeItem: FC<IProps> = ({ direction, recipeInfo, onDelete, onClic
 
         <p
           style={{
-            height: "26px",
+            height: "30px",
             fontSize: 12,
             fontWeight: "bold",
             margin: 3,

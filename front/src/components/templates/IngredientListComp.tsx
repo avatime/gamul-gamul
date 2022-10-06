@@ -17,6 +17,7 @@ interface IProps {
   gridSize?: number;
   ingredientList: IngredientInfo[];
   onClickItem?: (id: number) => void;
+  itemTitle?: (ingredientInfo: IngredientInfo) => string;
 }
 
 export const IngredientListComp: FC<IProps> = ({
@@ -28,6 +29,7 @@ export const IngredientListComp: FC<IProps> = ({
   gridSize = 3,
   ingredientList,
   onClickItem,
+  itemTitle,
 }) => {
   const router = useRouter();
   const defaultOnClickItem = (id: number) => {
@@ -37,7 +39,7 @@ export const IngredientListComp: FC<IProps> = ({
     <CardContainer
       title={title}
       onClickMore={showMore ? () => router.push("/ingredient") : undefined}
-      totalPrice={totalPrice}
+      totalPrice={totalPrice?.toLocaleString()}
     >
       {type === "column" && (
         <CarouselContainer
@@ -49,6 +51,7 @@ export const IngredientListComp: FC<IProps> = ({
               direction={type}
               ingredientInfo={item}
               onClickItem={onClickItem || defaultOnClickItem}
+              title={itemTitle?.(item)}
             />
           )}
         />
@@ -61,6 +64,7 @@ export const IngredientListComp: FC<IProps> = ({
               direction={type}
               ingredientInfo={v}
               onClickItem={onClickItem || defaultOnClickItem}
+              title={itemTitle?.(v)}
             />
           ))}
         </Box>

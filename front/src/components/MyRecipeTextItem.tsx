@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, ListItem } from "@mui/material";
 import { MyRecipeInfo } from "../apis/responses/myRecipeInfo";
 import { useRouter } from "next/router";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -25,14 +25,18 @@ export const MyRecipeTextItem: FC<IProps> = ({ myRecipeInfo }) => {
       alignItems="center"
       justifyContent="center"
       flexDirection="row"
+      onClick={onClickMove}
+      style={{
+        cursor: "pointer",
+      }}
     >
-        <span style={{ fontSize: 12, fontWeight: "bold", marginLeft : "10px" }}>
-          {myRecipeInfo?.name || "요리법 이름"}
-        </span>
-        <Box flex="1" />
-          <IconButton color="inherit" onClick={onClickMove}>
-            <KeyboardArrowRightIcon />
-          </IconButton>
+      <span style={{ fontSize: 12, fontWeight: "bold", marginLeft: "10px" }}>
+        {myRecipeInfo?.name || "요리법 이름"}
+      </span>
+      <Box flex="1" />
+      <IconButton color="inherit">
+        <KeyboardArrowRightIcon />
+      </IconButton>
     </Box>
   );
 };

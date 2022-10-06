@@ -211,18 +211,22 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
               overflowX: "auto",
             }}
           >
-            {selectedList.map((v) => (
-              <Box minWidth="95px" key={v.ingredient_id}>
-                <IngredientItem
-                  direction="column"
-                  ingredientInfo={
-                    ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!
-                  }
-                  onClickItem={() => onClickItem(v.ingredient_id)}
-                  onDelete={() => onClickDelete(v.ingredient_id)}
-                />
-              </Box>
-            ))}
+            {selectedList.map((v) => {
+              const ingredient = ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!;
+              return (
+                <Box minWidth="95px" key={v.ingredient_id}>
+                  <IngredientItem
+                    direction="column"
+                    ingredientInfo={
+                      ingredientList.find((it) => it.ingredient_id === v.ingredient_id)!
+                    }
+                    onClickItem={() => onClickItem(v.ingredient_id)}
+                    onDelete={() => onClickDelete(v.ingredient_id)}
+                    title={`${ingredient.name} (${v.quantity}${ingredient.unit})`}
+                  />
+                </Box>
+              );
+            })}
           </Stack>
 
           <Box height="60px" paddingX="15px">
