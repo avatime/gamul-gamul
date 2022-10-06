@@ -112,7 +112,10 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, initialRecipeDeta
         </Box>
       </Mobile>
       <Desktop>
-        <Box className={styles.PageforDesktop} sx={{ flexDirection: "column", height: "100vh" }}>
+        <Box
+          className={styles.PageforDesktop}
+          sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
+        >
           <InfoTitle
             name={recipeDetailInfo.recipe_info.name}
             bookmark={recipeDetailInfo.recipe_info.bookmark}
