@@ -40,7 +40,7 @@ public class TestController {
 
     @GetMapping("/error")
     public ResponseEntity<?> error() throws Exception {
-        int list[] = new int[]{11, 15, 2, 25, 26, 29, 34, 37, 53, 54, 56, 57, 61, 63};
+        int list[] = new int[]{ 11, 25, 34, 54, 57, 61, 63};
         return ResponseEntity.status(200).body(list);
     }
 }
