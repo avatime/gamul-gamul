@@ -103,12 +103,12 @@ public class IngredientServiceImpl implements IngredientService{
                 today = dayList.get(0).getPrice();
                 yesterday = dayList.get(1).getPrice();
                 volatility = (today - yesterday) * 100.0 / today ;
-                volatility = Math.round((volatility * 100) / 100.0);
+                volatility = Math.round(volatility * 100)/ 100.0;
             }
             // 대분류 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
 
         }
@@ -171,7 +171,7 @@ public class IngredientServiceImpl implements IngredientService{
                     today = dayList.get(0).getPrice();
                     yesterday = dayList.get(1).getPrice();
                     volatility = (today - yesterday) * 100.0 / today ;
-                    volatility = Math.round((volatility * 100) / 100.0);
+                    volatility = Math.round(volatility * 100)/ 100.0;
                 }
             }
             // 알러지 객체 가져오기
@@ -201,7 +201,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoResList.add(ingredientInfoRes);
         }
         return ingredientInfoResList;
@@ -388,7 +388,7 @@ public class IngredientServiceImpl implements IngredientService{
                 today = dayListV.get(0).getPrice();
                 yesterday = dayListV.get(1).getPrice();
                 volatility = (today - yesterday) * 100.0 / today ;
-                volatility = Math.round((volatility * 100) / 100.0);
+                volatility = Math.round(volatility * 100)/ 100.0;
             }
         }
 
@@ -426,7 +426,7 @@ public class IngredientServiceImpl implements IngredientService{
             }
         }
         HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
-        IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+        IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
 
         ingredientDetailRes.setIngredientInfo(ingredientInfoRes);
         ingredientDetailRes.setPriceTransitionInfo(priceTransitionInfoRes);
@@ -548,7 +548,7 @@ public class IngredientServiceImpl implements IngredientService{
                 today = dayList.get(0).getPrice();
                 yesterday = dayList.get(1).getPrice();
                 volatility = (today - yesterday) * 100.0 / today ;
-                volatility = Math.round((volatility * 100) / 100.0);
+                volatility = Math.round(volatility * 100)/ 100.0;
             }
             // 알러지
             boolean allergyStatus = false;
@@ -560,7 +560,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
             ingredientInfoRes.setPrice(priceStatus.getPrice());
             ingredientInfoRes.setUnit(price.getUnit());
             ingredientInfoRes.setQuantity(price.getQuantity());
@@ -605,7 +605,7 @@ public class IngredientServiceImpl implements IngredientService{
                 today = dayList.get(0).getPrice();
                 yesterday = dayList.get(1).getPrice();
                 volatility = (today - yesterday) * 100.0 / today ;
-                volatility = Math.round((volatility * 100) / 100.0);
+                volatility = Math.round(volatility * 100)/ 100.0;
             }
             // 알러지 객체 가져오기
             boolean allergyStatus;
@@ -634,7 +634,7 @@ public class IngredientServiceImpl implements IngredientService{
             // 대분류 객체 가져오기
             HighClass highClass = highClassRepository.findById(ingredient.getHighClass()).get();
 
-            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
+            IngredientInfoRes ingredientInfoRes = new IngredientInfoRes(ingredient, ingredient.getMidClass(), day, allergyStatus, selectedStatus, basketStatus, highClass, volatility);
 
             ingredientInfoResList.add(ingredientInfoRes);
         }
