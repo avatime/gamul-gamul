@@ -13,7 +13,6 @@ import { useState, useEffect } from "react";
 import { IngredientBarGraphComp } from "../src/components/templates/IngredientBarGraphComp";
 import { IngredientDetailInfo } from "../src/apis/responses/ingredientDetailInfo";
 import { CardContainer } from "../src/components/CardContainer";
-import { getIngredientHighClassList } from "../src/apis/dummy/dummyApi";
 import { HighClass } from "../src/apis/responses/highClass";
 import { HighClassComp } from "../src/components/templates/HighClassComp";
 
