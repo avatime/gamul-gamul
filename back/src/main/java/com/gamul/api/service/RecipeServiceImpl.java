@@ -303,7 +303,7 @@ public class RecipeServiceImpl implements RecipeService{
         for (IngredientNotneed ingredientNotneed : ingredientNotNeedList){
             String name = ingredientNotneed.getIngredient();
             if (ingredientNotneed.getQuantity().length() != 0){
-                name = name + " (" + ingredientNotneed.getQuantity() + ")";
+                name = name + "(" + ingredientNotneed.getQuantity() + ")";
             }
             extraIngredientList.add(name);
         }
