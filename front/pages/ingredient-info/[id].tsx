@@ -212,7 +212,8 @@ export const getServerSideProps = async (context: any) => {
     "",
   );
   const recipeList = (await apiClient.search(ingredientDetailInfo.ingredient_info.name)).recipe_list;
-  const blackList = await apiClient.getBlackList();
+  // const blackList = await apiClient.getBlackList();
+  const blackList: number[] = [];
   return {
     props: {
       ingredientDetailInfo,
