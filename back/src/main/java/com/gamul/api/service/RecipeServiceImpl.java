@@ -86,6 +86,7 @@ public class RecipeServiceImpl implements RecipeService{
 
         List<RecipeInfoRes> recipeInfoResList = new ArrayList<>();
         User user = userRepository.findByUsername(userName).orElse(null);
+
         if (user == null){
             return recipeInfoResList;
         }
@@ -103,10 +104,8 @@ public class RecipeServiceImpl implements RecipeService{
                     recipeList1.add(recipeId);
                 }
             }
-
             Set<Long> set = new HashSet<Long>(recipeList1);
             List<Long> newList = new ArrayList<Long>(set);
-
             List<Recipe> recipeList = new ArrayList<>();
             for (Long num : newList){
                 Recipe recipe = recipeRepository.findById(num).get();
@@ -114,7 +113,7 @@ public class RecipeServiceImpl implements RecipeService{
             }
 
             // 분기 처리
-            System.out.println(recipeList.get(0).getName());
+
             if(orderType == 1){
                 Collections.sort(recipeList, new IdSortComparator());
             }else{

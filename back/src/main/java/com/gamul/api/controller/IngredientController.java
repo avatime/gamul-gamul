@@ -90,6 +90,7 @@ public class IngredientController {
         } catch (Exception e){
             return ResponseEntity.ok(BaseResponseBody.of(500, "Internal Server Error"));
         }
+
     }
 
     @GetMapping("/high-class")
