@@ -19,6 +19,7 @@ import { Desktop } from "../../src/components/Desktop";
 import { useScroll, useSpring } from "framer-motion";
 import { Tablet } from "../../src/components/Tablet";
 import { RecipeDetailInfo } from "../../src/apis/responses/recipeDetailInfo";
+import { Page } from "../../src/components/Page";
 
 interface IProps {
   recipeOrderInfo: RecipeOrderInfo[];
@@ -48,7 +49,7 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, initialRecipeDeta
   }, [id, recipeDetailInfo.recipe_info.image_path, userName]);
 
   return (
-    <div>
+    <Page>
       <Mobile>
         <BackHeader />
         <Box
@@ -236,7 +237,7 @@ const RecipeDetailPage: NextPage<IProps> = ({ recipeOrderInfo, initialRecipeDeta
           </Stack>
         </Box>
       </Tablet>
-    </div>
+    </Page>
   );
 };
 

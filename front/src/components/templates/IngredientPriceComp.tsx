@@ -15,7 +15,7 @@ interface IProps {
 
 export const IngredientPriceComp: FC<IProps> = ({
   ingredientDetailInfo,
-  title = "물가 정보",
+  title = "소매 물가 정보",
   inputWidth,
   inputHeight,
   blackList

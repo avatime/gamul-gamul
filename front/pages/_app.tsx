@@ -7,9 +7,9 @@ import { Navbar } from "../src/components/Navbar";
 import { SearchComp } from "../src/components/templates/SearchComp";
 import { useRouter } from "next/router";
 import { showHeaderBar, getNavBarActiveIndex, showNavBar } from "../src/utils/headerNavUtil";
-import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
 import { useWebPushSubscription } from "../src/hooks/useWebPushSubscription";
+import Head from "next/head";
 
 export const theme = createTheme({
   palette: {

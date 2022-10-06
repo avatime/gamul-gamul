@@ -1,10 +1,12 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Image from "next/image";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { getCookie } from '../utils/cookie';
-import { useRouter } from 'next/router';
+import { getCookie } from "../utils/cookie";
+import { useRouter } from "next/router";
+import { Stack } from "@mui/system";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 interface IProps {
   name: string;
@@ -15,6 +17,7 @@ interface IProps {
   basket?: boolean;
   onClickBasket?: () => void;
   isExternalImage?: boolean;
+  allergy?: boolean;
 }
 
 export const InfoTitle: FC<IProps> = ({
@@ -26,6 +29,7 @@ export const InfoTitle: FC<IProps> = ({
   basket = false,
   onClickBasket,
   isExternalImage = false,
+  allergy = false,
 }) => {
   const router = useRouter();
   const [bookmarked, setBookmarked] = useState<boolean>(false);
@@ -48,7 +52,13 @@ export const InfoTitle: FC<IProps> = ({
           unoptimized={isExternalImage}
         />
         <Box p={1} />
-        <p style={{ fontSize: 22, fontWeight: "bold" }}>{name}</p>
+        <Stack direction="row" alignItems="center">
+          <p style={{ fontSize: 22, fontWeight: "bold", marginRight: "3px" }}>{name}</p>
+          <Tooltip title="알러지 주의!">
+            <WarningAmberIcon style={{ color: "#fd9f28" }} />
+          </Tooltip>
+        </Stack>
+
         <Box flex="1" />
         <IconButton
           style={{ color: bookmarked ? "red" : "#A1A1AA" }}
