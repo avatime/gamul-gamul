@@ -11,7 +11,7 @@ declare global {
 
 interface MapProps {
   mapId: string;
-  ingredientId: number;
+  ingredientId?: number;
   latitude: any;
   longitude: any;
   onSetStoreId?: Function;
