@@ -1,0 +1,9 @@
+.fireworks {
+    background-image: url("../public/assets/fireworks.gif");
+}
+
+.button {
+    position: fixed;
+    bottom:auto;
+
+}
