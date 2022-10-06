@@ -90,6 +90,7 @@ const BasketPage: NextPage<IProps> = ({}) => {
             title="바구니"
             ingredientList={basketIngredientList}
             gridSize={6}
+            totalPrice={totalPrice}
           />
 
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
@@ -108,6 +109,7 @@ const BasketPage: NextPage<IProps> = ({}) => {
             ingredientList={basketIngredientList}
             rowSize={1}
             gridSize={6}
+            totalPrice={totalPrice}
           />
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
@@ -124,6 +126,7 @@ const BasketPage: NextPage<IProps> = ({}) => {
             title="바구니"
             ingredientList={basketIngredientList}
             rowSize={1}
+            totalPrice={totalPrice}
           />
           <RecipeListComp type="row" title="요리법 with 바구니" recipeList={recipeListWithBasket} />
         </Box>
