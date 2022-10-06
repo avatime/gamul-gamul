@@ -54,9 +54,11 @@ export const InfoTitle: FC<IProps> = ({
         <Box p={1} />
         <Stack direction="row" alignItems="center">
           <p style={{ fontSize: 22, fontWeight: "bold", marginRight: "3px" }}>{name}</p>
-          <Tooltip title="알러지 주의!">
-            <WarningAmberIcon style={{ color: "#fd9f28" }} />
-          </Tooltip>
+          {allergy && (
+            <Tooltip title="알러지 주의!">
+              <WarningAmberIcon style={{ color: "#fd9f28" }} />
+            </Tooltip>
+          )}
         </Stack>
 
         <Box flex="1" />
