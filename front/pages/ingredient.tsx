@@ -15,6 +15,7 @@ import { IngredientDetailInfo } from "../src/apis/responses/ingredientDetailInfo
 import { CardContainer } from "../src/components/CardContainer";
 import { HighClass } from "../src/apis/responses/highClass";
 import { HighClassComp } from "../src/components/templates/HighClassComp";
+import { Page } from "../src/components/Page";
 
 interface IProps {
   upIngredientList: IngredientInfo[];
@@ -46,7 +47,7 @@ const IngredientPage: NextPage<IProps> = ({
   }, []);
 
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container>
@@ -182,7 +183,7 @@ const IngredientPage: NextPage<IProps> = ({
           </CardContainer>
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

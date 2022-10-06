@@ -10,6 +10,7 @@ import { NotificationItem } from "../src/components/NotificationItem";
 import { Desktop } from "../src/components/Desktop";
 import { Tablet } from "../src/components/Tablet";
 import { useEffect, useState } from "react";
+import { Page } from "../src/components/Page";
 
 interface IProps {}
 
@@ -21,36 +22,38 @@ const NoticePage: NextPage<IProps> = () => {
       .then((data) => setNotificationInfoList(data));
   }, []);
   return (
-    <Box bgcolor="white" minHeight="100vh">
-      <Desktop>
-        <Box className={styles.PageforDesktop}>
-          <List>
-            {notificationInfoList.map((v, i) => (
-              <NotificationItem key={i} notificationInfo={v} />
-            ))}
-          </List>
-        </Box>
-      </Desktop>
-      <Tablet>
-        <Box className={styles.PageforTablet}>
-          <List>
-            {notificationInfoList.map((v, i) => (
-              <NotificationItem key={i} notificationInfo={v} />
-            ))}
-          </List>
-        </Box>
-      </Tablet>
-      <Mobile>
-        <BackHeader backgroundColor="white" />
-        <Box className={styles.PageforMobile}>
-          <List>
-            {notificationInfoList.map((v, i) => (
-              <NotificationItem key={i} notificationInfo={v} />
-            ))}
-          </List>
-        </Box>
-      </Mobile>
-    </Box>
+    <Page>
+      <Box bgcolor="white" minHeight="100vh">
+        <Desktop>
+          <Box className={styles.PageforDesktop}>
+            <List>
+              {notificationInfoList.map((v, i) => (
+                <NotificationItem key={i} notificationInfo={v} />
+              ))}
+            </List>
+          </Box>
+        </Desktop>
+        <Tablet>
+          <Box className={styles.PageforTablet}>
+            <List>
+              {notificationInfoList.map((v, i) => (
+                <NotificationItem key={i} notificationInfo={v} />
+              ))}
+            </List>
+          </Box>
+        </Tablet>
+        <Mobile>
+          <BackHeader backgroundColor="white" />
+          <Box className={styles.PageforMobile}>
+            <List>
+              {notificationInfoList.map((v, i) => (
+                <NotificationItem key={i} notificationInfo={v} />
+              ))}
+            </List>
+          </Box>
+        </Mobile>
+      </Box>
+    </Page>
   );
 };
 

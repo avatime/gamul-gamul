@@ -10,6 +10,7 @@ import { ApiClient } from "../src/apis/apiClient";
 import { getCookie } from "../src/utils/cookie";
 import { useEffect, useState } from "react";
 import { BackHeader } from "../src/components/BackHeader";
+import { Page } from '../src/components/Page';
 
 interface IProps {}
 
@@ -22,7 +23,7 @@ const MyRecipePage: NextPage<IProps> = () => {
   }, []);
 
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
@@ -47,7 +48,7 @@ const MyRecipePage: NextPage<IProps> = () => {
           <MyRecipeComp myRecipeList={myRecipeList} />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

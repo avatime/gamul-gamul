@@ -17,6 +17,7 @@ import { BackHeader } from "../../src/components/BackHeader";
 import { useEffect, useState } from "react";
 import { MyRecipeDetailInfo } from "../../src/apis/responses/myRecipeDetailInfo";
 import { CardContainer } from "../../src/components/CardContainer";
+import { Page } from "../../src/components/Page";
 
 interface IProps {
   blackList: number[];
@@ -79,7 +80,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
   };
 
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Box sx={{ display: "flex", margin: "10px 10px 0px 20px" }}>
@@ -274,7 +275,7 @@ const MyRecipeInfoPage: NextPage<IProps> = ({ blackList }) => {
           />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

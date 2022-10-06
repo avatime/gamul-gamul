@@ -6,11 +6,12 @@ import { Tablet } from "../src/components/Tablet";
 import styles from "../styles/Page.module.css";
 import { OfflineMartDetailComp } from "../src/components/templates/OfflineMartDetailComp";
 import { BackHeader } from "../src/components/BackHeader";
+import { Page } from '../src/components/Page';
 interface IProps {}
 
 const StoreInfoPage: NextPage<IProps> = (props) => {
   return (
-    <Box>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
@@ -35,7 +36,7 @@ const StoreInfoPage: NextPage<IProps> = (props) => {
           <OfflineMartDetailComp inputHeight={"300px"} mapId="mobile" />
         </Box>
       </Mobile>
-    </Box>
+    </Page>
   );
 };
 

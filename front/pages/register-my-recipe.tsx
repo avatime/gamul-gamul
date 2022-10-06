@@ -21,6 +21,7 @@ import { MyRecipeIngredientInfo } from "../src/apis/responses/myRecipeIngredient
 import { MyRecipeIngredientModal } from "../src/components/MyRecipeIngredientModal";
 import { convertFileToBase64 } from "../src/utils/fileUtil";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { Page } from '../src/components/Page';
 
 interface IProps {
   ingredientList: IngredientInfo[];
@@ -305,7 +306,7 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
   );
 
   return (
-    <>
+    <Page>
       <Desktop>
         <Box className={styles.PageforDesktop}>{Comp(true, "250px")}</Box>
       </Desktop>
@@ -324,7 +325,7 @@ const MyRecipeRegisterPage: NextPage<IProps> = ({ ingredientList }) => {
           />
         </Backdrop>
       )}
-    </>
+    </Page>
   );
 };
 

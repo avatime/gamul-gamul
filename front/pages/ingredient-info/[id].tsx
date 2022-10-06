@@ -24,6 +24,7 @@ import { OnlineMartInfo } from '../../src/apis/responses/onlineMartInfo';
 import { RecipeInfo } from '../../src/apis/responses/recipeInfo';
 import { RecipeListComp } from '../../src/components/templates/RecipeListComp';
 import { BackHeader } from '../../src/components/BackHeader';
+import { Page } from "../../src/components/Page";
 
 interface IProps {
   ingredientDetailInfo: IngredientDetailInfo;
@@ -85,7 +86,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
     return <></>;
   } else {
     return (
-      <Box>
+      <Page>
         <Desktop>
           <Box className={styles.PageforDesktop}>
             <Grid container>
@@ -182,7 +183,7 @@ const IngredientInfoPage: NextPage<IProps> = ({
             <OnlineMarketInfoComp onlineMartInfo={ingredientDetailInfo.online_mart_info} iconSize="15px" />
           </Box>
         </Mobile>
-      </Box>
+      </Page>
     );
   }
 
