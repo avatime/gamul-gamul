@@ -1,0 +1,30 @@
+.buttonFillStyle {
+  background-color: #4411aa;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  text-align: center;
+  border: none;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #ffff;
+  font-size: large;
+
+
+}
+
+
+.buttonOutlinedStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffff;
+  border-radius: 10px;
+  text-align: center;
+ /*border: 3px solid #000;*/
+  font-weight: bold;
+  padding: 10px 0 10px 0;
+  letter-spacing: 2px;
+  color: #000;
+ 
+}

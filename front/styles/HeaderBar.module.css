@@ -1,0 +1,27 @@
+.stylesforMobile {
+    width: 100vw;
+    background-color: #fff;
+    height: 50px;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 5;
+
+  
+}
+
+.styles{
+    width: 100vw;
+    background-color: #fff;
+    height: 50px;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 5;
+
+
+}
