@@ -1,16 +1,18 @@
-import { ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { RecentSearch } from "../utils/localStorageUtil";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import Image from "next/image";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface IProps {
   recentSearch: RecentSearch;
   onCloseSearch: () => void;
+  onClickDelete: (recentSearch: RecentSearch) => void;
 }
 
-export const RecentSearchItem: FC<IProps> = ({ recentSearch, onCloseSearch }) => {
+export const RecentSearchItem: FC<IProps> = ({ recentSearch, onCloseSearch, onClickDelete }) => {
   const router = useRouter();
   const onClick = () => {
     onCloseSearch();
@@ -21,7 +23,14 @@ export const RecentSearchItem: FC<IProps> = ({ recentSearch, onCloseSearch }) =>
     }
   };
   return (
-    <ListItem disablePadding>
+    <ListItem
+      disablePadding
+      secondaryAction={
+        <IconButton onClick={() => onClickDelete(recentSearch)}>
+          <CancelIcon />
+        </IconButton>
+      }
+    >
       <ListItemButton onClick={onClick}>
         <ListItemIcon>
           {recentSearch.recentType === "ingredient" ? (
