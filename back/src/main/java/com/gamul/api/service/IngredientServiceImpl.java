@@ -39,7 +39,8 @@ public class IngredientServiceImpl implements IngredientService{
     MonthRepository monthRepository;
     @Autowired
     YearRepository yearRepository;
-
+    @Autowired
+    EntireRepository entireRepository;
     private final LocationDistance locationDistance;
 
     @Override
@@ -236,6 +237,18 @@ public class IngredientServiceImpl implements IngredientService{
             }
             Collections.reverse(dailySo);
         }
+
+         // daily 소매 테스트 용
+
+//        List<Object[]> entireList = entireRepository.findAllByIngredientIdAndType(ingredient.getId(), 1);
+//        List<Object[]> entireList1 = entireRepository.findAllByIngredientIdAndType(ingredient.getId(), 0);
+//
+//        System.out.println("이거 나와??: " + entireList.size());
+//        for(Object[] x : entireList){
+//            System.out.println(x[0]);
+//            System.out.println(x[1]);
+//            System.out.println("-------------------------------");
+//        }
 
         // month 소매
         String unitySo = "";
