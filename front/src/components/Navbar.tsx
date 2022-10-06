@@ -11,7 +11,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import MuiBottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { getCookie } from "../utils/cookie";
 
 interface IProps {
@@ -27,34 +27,31 @@ const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
 `);
 const token = getCookie("token");
 
-
-
 const elements = [
   {
     text: "홈",
     icon: (isActive: boolean) => <HomeIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:(isUser : boolean) => isUser ? '/' : '/'
+    path: (isUser: boolean) => (isUser ? "/" : "/"),
   },
   {
     text: "식재료",
     icon: (isActive: boolean) => <EggIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:(isUser : boolean) => isUser ? '/ingredient' : '/ingredient'
+    path: (isUser: boolean) => (isUser ? "/ingredient" : "/ingredient"),
   },
   {
     text: "바구니",
     icon: (isActive: boolean) => <ShoppingCartIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:(isUser : boolean) => isUser ? '/basket' : '/login'
+    path: (isUser: boolean) => (isUser ? "/basket" : "/login"),
   },
   {
     text: "요리법",
     icon: (isActive: boolean) => <RestaurantIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path:(isUser : boolean) => isUser ? '/recipe' : '/recipe',
+    path: (isUser: boolean) => (isUser ? "/recipe" : "/recipe"),
   },
   {
     text: "내정보",
     icon: (isActive: boolean) => <PersonIcon sx={{ color: isActive ? "#fff" : "#A1A1AA" }} />,
-    path: (isUser : boolean) => isUser ? '/my-info' : '/login'
-
+    path: (isUser: boolean) => (isUser ? "/my-info" : "/login"),
   },
 ];
 
@@ -68,6 +65,8 @@ const elementActiveStyles = {
 export const Navbar: FC<IProps> = ({ activeIndex }) => {
   const router = useRouter();
   const token = getCookie("token");
+
+  const actionStyle = { minWidth: "40px" };
   return (
     <div>
       <Mobile>
@@ -76,6 +75,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
             showLabels
             value={activeIndex}
             sx={{
+              width: "100%",
               position: "fixed",
               bottom: 0,
               left: 0,
@@ -86,11 +86,36 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
               zIndex: 5,
             }}
           >
-            <BottomNavigationAction label="홈" icon={<HomeIcon />}   onClick={() => router.push('/')} />
-            <BottomNavigationAction label="식재료" icon={<EggIcon />}  onClick={() => router.push('/ingredient')}/>
-            <BottomNavigationAction label="바구니" icon={< ShoppingCartIcon/>}  onClick={() => token? router.push('/basket') : router.push('/login')} />
-            <BottomNavigationAction label="요리법" icon={<RestaurantIcon />}  onClick={() => router.push('/recipe')}/>
-            <BottomNavigationAction label="내정보" icon={<PersonIcon />}  onClick={() => token?  router.push('/my-info') : router.push('/login')}/>
+            <BottomNavigationAction
+              label="홈"
+              icon={<HomeIcon />}
+              onClick={() => router.push("/")}
+              sx={actionStyle}
+            />
+            <BottomNavigationAction
+              label="식재료"
+              icon={<EggIcon />}
+              onClick={() => router.push("/ingredient")}
+              sx={actionStyle}
+            />
+            <BottomNavigationAction
+              label="바구니"
+              icon={<ShoppingCartIcon />}
+              onClick={() => (token ? router.push("/basket") : router.push("/login"))}
+              sx={actionStyle}
+            />
+            <BottomNavigationAction
+              label="요리법"
+              icon={<RestaurantIcon />}
+              onClick={() => router.push("/recipe")}
+              sx={actionStyle}
+            />
+            <BottomNavigationAction
+              label="내정보"
+              icon={<PersonIcon />}
+              onClick={() => (token ? router.push("/my-info") : router.push("/login"))}
+              sx={actionStyle}
+            />
           </BottomNavigation>
         </Box>
       </Mobile>
@@ -111,13 +136,13 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
             return (
               <Stack
                 key={idx}
-                direction="row"  
+                direction="row"
                 onClick={() => router.push(item.path(token))}
                 sx={{
                   marginLeft: 1,
                   padding: 2,
                   ...(idx === activeIndex ? elementActiveStyles : {}),
-                  cursor:"pointer",
+                  cursor: "pointer",
                 }}
               >
                 {item.icon(idx === activeIndex)}
@@ -159,7 +184,7 @@ export const Navbar: FC<IProps> = ({ activeIndex }) => {
                   marginLeft: 1,
                   padding: 2,
                   ...(idx === activeIndex ? elementActiveStyles : {}),
-                  cursor:"pointer",
+                  cursor: "pointer",
                 }}
               >
                 {item.icon(idx === activeIndex)}
