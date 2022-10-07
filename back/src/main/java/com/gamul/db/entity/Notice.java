@@ -36,6 +36,11 @@ public class Notice extends BaseEntity {
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdTime;
 
+    public Notice(IngredientPriceNotice ingredientPriceNotice, boolean type) {
+        this.ingredientPriceNotice = ingredientPriceNotice;
+        this.type = type;
+    }
+
     @PrePersist
     public void onCreate() {
         this.createdTime = Timestamp.valueOf(LocalDateTime.now());
