@@ -10,6 +10,7 @@ import { showHeaderBar, getNavBarActiveIndex, showNavBar } from "../src/utils/he
 import { useMediaQuery } from "react-responsive";
 import { useWebPushSubscription } from "../src/hooks/useWebPushSubscription";
 import Head from "next/head";
+import { getCookie } from '../src/utils/cookie';
 
 export const theme = createTheme({
   palette: {
@@ -59,6 +60,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   useWebPushSubscription();
 
   const onClickNotice = () => {
+    if (!getCookie("userName")) {
+      router.push("/login");
+      return;
+    }
     router.push("/notice");
   };
   return (
