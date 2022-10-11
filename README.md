@@ -161,18 +161,18 @@ front 와 back 으로 나누어 `faature`의 하위 브랜치를 사용하였으
 ## 프로젝트 산출물
 ### 1. Figma
 - 모바일
-[![피그마](./assets/피그마-1.PNG)](https://www.figma.com/file/PYtwGp3MmWgHFNSboeg0tK/%EA%B0%80%EB%AC%BC%EA%B0%80%EB%AC%BC?node-id=0%3A1)
+[![피그마](./assets/피그마-1.png)](https://www.figma.com/file/PYtwGp3MmWgHFNSboeg0tK/%EA%B0%80%EB%AC%BC%EA%B0%80%EB%AC%BC?node-id=0%3A1)
 
 - 데스크탑
-[![피그마](./assets/피그마-2.PNG)](https://www.figma.com/file/PYtwGp3MmWgHFNSboeg0tK/%EA%B0%80%EB%AC%BC%EA%B0%80%EB%AC%BC?node-id=0%3A1)
+[![피그마](./assets/피그마-2.png)](https://www.figma.com/file/PYtwGp3MmWgHFNSboeg0tK/%EA%B0%80%EB%AC%BC%EA%B0%80%EB%AC%BC?node-id=0%3A1)
 <br>
 
 ### 2. ERD
-[![erd](./assets/erd.PNG)](https://www.erdcloud.com/d/78wNq5QZ2RCLHxMhw)
+[![erd](./assets/erd.png)](https://www.erdcloud.com/d/78wNq5QZ2RCLHxMhw)
 <br>
 
 ### 3. API 문서
-[![api](./assets/API.PNG)](https://www.notion.so/API-96d6542da91d49e8a8980dd5f64837a6)
+[![api](./assets/API.png)](https://www.notion.so/API-96d6542da91d49e8a8980dd5f64837a6)
 
 <div id="6"></div>
 
